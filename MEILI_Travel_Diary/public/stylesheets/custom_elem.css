@@ -1,0 +1,473 @@
+/*
+ MEILI Travel Diary - web interface that allows to annotate GPS trajectories
+ fused with accelerometer readings into travel diaries
+
+ Copyright (C) 2014-2016 Adrian C. Prelipcean - http://adrianprelipcean.github.io/
+ Copyright (C) 2016 adIT AI - https://github.com/adIT-AI
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as
+ published by the Free Software Foundation, either version 3 of the
+ License, or (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+body { padding-top: 50px; }
+
+.navbar-inverse{
+    background: #2f4767;
+}
+
+.navbar-inverse .navbar-nav > li > a {
+    color:#ffffff;
+}
+/*Text message in navbar*/
+.navtext-right{
+    padding-right:30px;
+}
+
+#language-selector{
+    padding-top: 9px;
+}
+
+
+/*Only login styling src= http://bootsnipp.com/snippets/featured/google-style-login */
+
+.form-signin
+{
+    max-width: 330px;
+    padding: 15px;
+    margin: 0 auto;
+}
+.form-signin .form-signin-heading, .form-signin .checkbox
+{
+    margin-bottom: 10px;
+}
+.form-signin .checkbox
+{
+    font-weight: normal;
+}
+.form-signin .form-control
+{
+    position: relative;
+    font-size: 16px;
+    height: auto;
+    padding: 10px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.form-signin .form-control:focus
+{
+    z-index: 2;
+}
+
+.form-signin input[type="text"]
+{
+    margin-bottom: -1px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.form-signin input[type="password"]
+{
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+.account-wall
+{
+    margin-top: 20px;
+    padding: 40px 0px 20px 0px;
+    background-color: #f7f7f7;
+    -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+}
+.login-title
+{
+    color: #555;
+    font-size: 18px;
+    font-weight: 400;
+    display: block;
+}
+.profile-img
+{
+    width: 96px;
+    height: 96px;
+    margin: 0 auto 10px;
+    display: block;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+}
+.need-help
+{
+    margin-top: 10px;
+}
+.new-account
+{
+    display: block;
+    margin-top: 10px;
+}
+/*
+PLUS SYMBOL
+*/
+
+.plus {
+    width: 31px;
+    height: 31px;
+    border-radius: 50%;
+    border: 3px solid #2f4767;
+}
+.plus:before {
+    content: '';
+    width: 20px;
+    height: 1px;
+    border-top: 3px solid #2f4767;
+    display: block;
+    position: absolute;
+    margin-top: 12px;
+    margin-left: 3px;
+}
+.plus:after {
+    content: '';
+    width: 1px;
+    height: 20px;
+    border-right: 3px solid #2f4767;
+    display: block;
+    position: absolute;
+    margin-top: 3px;
+    margin-left: 12px;
+}
+
+/*timeline*/
+.page-header h1 {
+    font-size: 3.26em;
+    text-align: center;
+    color: #efefef;
+    text-shadow: 1px 1px 0 #000;
+}
+
+/** timeline box structure **/
+.timeline {
+    list-style: none;
+    padding: 20px 0 20px;
+    position: relative;
+}
+
+.timeline .text-muted{
+    color:#000000;
+}
+
+.timeline .form-control{
+    margin: 0;
+    color: #c25b4e;
+    font-size: 18px;
+}
+
+.timeline li .timeline-panel .form-control-inline {
+max-width: 300px;
+}
+
+
+.timeline:before {
+    top: 0;
+    bottom: 0;
+    position: absolute;
+    content: " ";
+    width: 3px;
+    background-color: #eee;
+    left: 50%;
+    margin-left: -1.5px;
+}
+
+.tldate {
+    display: block;
+    width: 200px;
+    background: #c25b4e;
+    border: 3px solid #212121;
+    color: #ededed;
+    margin: 0 auto;
+    padding: 3px 0;
+    font-weight: bold;
+    text-align: center;
+    -webkit-box-shadow: 0 0 11px rgba(0,0,0,0.35);
+}
+
+
+.tldate p{
+    margin:0;
+}
+
+
+.tldatecontrol{
+    display: block;
+    width: 200px;
+    background: #0071BC;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+    border: 3px solid #212121;
+    color: #ededed;
+    margin: 0 auto;
+    padding: 3px 0;
+    font-weight: bold;
+    text-align: center;
+    -webkit-box-shadow: 0 0 11px rgba(0,0,0,0.35);
+}
+
+.timeline li {
+    margin-bottom: 25px;
+    position: relative;
+
+}
+
+.timeline li:before, .timeline li:after {
+    content: " ";
+    display: table;
+}
+.timeline li:after {
+    clear: both;
+}
+.timeline li:before, .timeline li:after {
+    content: " ";
+    display: table;
+}
+
+/** timeline panels **/
+.timeline li .timeline-panel {
+    width: 50%;
+    float: left;
+    background: #fff;
+    border: 1px solid #d4d4d4;
+    padding: 20px;
+    position: relative;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+    -webkit-box-shadow: 0 1px 6px rgba(0, 0, 0, 0.15);
+    -moz-box-shadow: 0 1px 6px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.15);
+    -webkit-appearance: none;
+}
+
+/*
+IMPORTANT IMPLEMENT FOR SMARTPHONE A SET OF RULES**/
+.timeline li .timeline-panel .form-control{
+    -webkit-appearance: none;
+    border: 0;
+    border-bottom: 1px solid #c25b4e;
+}
+
+.timeline li .timeline-panel .form-control-inline{
+    -webkit-appearance: none;
+    border: 0;
+    border-bottom: 1px solid #c25b4e;
+    max-width: 260px;
+    display: inline;
+    font-size:16px;
+}
+
+.timeline li .timeline-panel .form-need-check{
+    color:red;
+    font-weight: bold;
+    max-width: 235px;
+}
+
+.timeline li .timeline-panel .form-checked{
+    color:#c25b4e;
+    font-weight: normal;
+}
+
+.timeline li .timeline-panel:hover .bootstrap-timepicker{
+    font-weight: bold;
+}
+
+.timeline li .timeline-panel:hover .glyphicon{
+    font-weight: bold;
+}
+
+.timeline li .timeline-panel:hover .form-control{
+    -webkit-appearance: menulist;
+    border: 1px solid #cccccc;
+}
+
+/* END OF IMPORTANT IMPLEMENT FOR SMARTPHONE A SET OF RULES**/
+
+/** panel arrows **/
+.timeline li .timeline-panel:before {
+    position: absolute;
+    top: 26px;
+    right: -15px;
+    display: inline-block;
+    border-top: 15px solid transparent;
+    border-left: 15px solid #ccc;
+    border-right: 0 solid #ccc;
+    border-bottom: 15px solid transparent;
+    /*content: " ";*/
+}
+
+.timeline li .timeline-panel:after {
+    position: absolute;
+    top: 27px;
+    right: -14px;
+    display: inline-block;
+    border-top: 14px solid transparent;
+    border-left: 14px solid #fff;
+    border-right: 0 solid #fff;
+    border-bottom: 14px solid transparent;
+    /*content: " ";*/
+}
+.timeline li .timeline-panel.noarrow:before, .timeline li .timeline-panel.noarrow:after {
+    top:0;
+    right:0;
+    display: none;
+    border: 0;
+}
+
+.timeline li.timeline-inverted .timeline-panel {
+    float: right;
+}
+
+.timeline li.timeline-inverted .timeline-panel:before {
+    border-left-width: 0;
+    border-right-width: 15px;
+    left: -15px;
+    right: auto;
+}
+
+.timeline li.timeline-inverted .timeline-panel:after {
+    border-left-width: 0;
+    border-right-width: 14px;
+    left: -14px;
+    right: auto;
+}
+
+
+/** timeline circle icons **/
+.timeline li .tl-circ {
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    text-align: center;
+    background: #2f4767;
+    color: #fff;
+    width: 35px;
+    height: 35px;
+    line-height: 35px;
+    margin-left: -16px;
+    border: 3px solid #90acc7;
+    border-top-right-radius: 50%;
+    border-top-left-radius: 50%;
+    border-bottom-right-radius: 50%;
+    border-bottom-left-radius: 50%;
+   z-index: 2;
+}
+
+
+/** timeline content **/
+
+.tl-heading h4{
+    margin: 0;
+    color: #c25b4e;
+}
+
+/* TEST
+.tl-heading h4 {
+    margin: 0;
+    background: #c25b4e;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+*/
+
+.tl-body p, .tl-body ul {
+    margin-bottom: 0;
+}
+
+
+.tl-body hr {
+    margin:1px;
+    color:#000000;
+    border-top: 1px solid #000000;
+}
+
+.tl-body > p + p {
+    margin-top: 5px;
+}
+
+/** media queries **/
+
+@media (max-width: 1920px){
+    .thisone{
+        top:0px;
+    }
+}
+
+@media (max-width: 991px) {
+    .timeline{
+        top:100px;
+    }
+
+    .timeline li .timeline-panel {
+        width: 44%;
+    }
+
+}
+
+@media (max-width: 700px) {
+
+    .page-header h1 { font-size: 1.8em; }
+
+
+
+    ul.timeline:before {
+        left: 40px;
+    }
+
+    .tldate { width: 100%; }
+
+    .tldatecontrol {width:100%;}
+
+    ul.timeline li .timeline-panel {
+        width: calc(100% - 90px);
+        width: -moz-calc(100% - 90px);
+        width: -webkit-calc(100% - 90px);
+        margin-left:40px;
+    }
+
+    ul.timeline li .tl-circ {
+        top: 22px;
+        left: 22px;
+        margin-left: 0;
+
+    }
+    ul.timeline > li > .tldate {
+        margin: 0;
+    }
+
+    ul.timeline > li > .timeline-panel {
+        float: right;
+    }
+
+    ul.timeline > li > .timeline-panel:before {
+        border-left-width: 0;
+        border-right-width: 15px;
+        left: -15px;
+        right: auto;
+    }
+
+    ul.timeline > li > .timeline-panel:after {
+        border-left-width: 0;
+        border-right-width: 14px;
+        left: -14px;
+        right: auto;
+    }
+}

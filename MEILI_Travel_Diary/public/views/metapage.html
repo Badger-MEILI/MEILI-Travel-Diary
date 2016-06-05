@@ -1,0 +1,157 @@
+<!--
+MEILI Travel Diary - web interface that allows to annotate GPS trajectories
+fused with accelerometer readings into travel diaries
+
+Copyright (C) 2014-2016 Adrian C. Prelipcean - http://adrianprelipcean.github.io/
+Copyright (C) 2016 adIT AI - https://github.com/adIT-AI
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<!DOCTYPE html>
+<html ng-app="app">
+<head lang="en">
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript" src="/javascripts/jquery.js"></script>
+    <script type="text/javascript" language="javascript" src="/javascripts/angular.min.js"></script>
+    <script type="text/javascript" language="javascript" src="/javascripts/angular-resource.min.js"></script>
+    <script type="text/javascript" language="javascript" src="/javascripts/angular-route.min.js"></script>
+    <script type="text/javascript" src="/javascripts/translationOp.js"></script>
+    <script type="text/javascript" src="/javascripts/intro.js"></script>
+    <script type="text/javascript" src="/javascripts/d3.min.js"></script>
+
+    <script type="text/javascript" src="/javascripts/graphVis.js"></script>
+
+    <!--<script type="text/javascript" language="javascript" src="/javascripts/leaflet.js"></script>
+    <script type="text/javascript" language="javascript" src="/javascripts/angular-leaflet-directive.min.js"></script>-->
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+
+    <script type="text/javascript" src="/javascripts/TriplegOperations.js"></script>
+    <script type="text/javascript" src="/javascripts/databaseAbstractionCalls.js"></script>
+    <script type="text/javascript" src="/javascripts/leafletembed.js"></script>
+    <script type="text/javascript" src="/javascripts/bootstrap.js"></script>
+    <script type="text/javascript" src="/javascripts/segmenter.js"></script>
+
+
+    <!--date picker-->
+
+    <script type="text/javascript" src="/javascripts/timepicker.js"></script>
+    <link href="/stylesheets/bootstrap-timepicker.css" rel="stylesheet" type="text/css" />
+
+    <!--<script type="text/javascript" src="https://github.com/rendom/bootstrap-3-timepicker/blob/master/js/bootstrap-timepicker.js"></script>
+    <script type="text/javascript" src="http://dev.jtsage.com/cdn/datebox/latest/jqm-datebox.mode.datebox.min.js"></script>
+    <script type="text/javascript" src="http://cdn.jtsage.com/datebox/i18n/jquery.mobile.datebox.i18n.en_US.utf8.js"></script>-->
+
+    <!--end of date picker-->
+
+
+    <script type="text/javascript" language="javascript" src="/javascripts/app.js"></script>
+
+    <link href="/stylesheets/vis.css" rel="stylesheet" type="text/css" />
+    <link href="/stylesheets/bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="/stylesheets/custom_elem.css" rel="stylesheet" type="text/css" />
+    <link href="/stylesheets/introjs.css" rel="stylesheet" type="text/css" />
+
+    <!--
+        <link href="/stylesheets/leaflet.css" rel="stylesheet" type="text/css" />
+    -->
+
+    <script type="text/javascript" language="javascript" src="/javascripts/vis.js"></script>
+
+    <title>MEILI</title>
+
+    <script>
+
+        function activateMe(id) {
+            //forceLoad();
+           // $('.nav li').removeClass('active');
+           $('#'+id).addClass('active');
+//            $('#'+id+'sv').addClass('active');
+            console.log(id);
+        }
+    </script>
+
+</head>
+
+<nav class="navbar navbar-default navbar-fixed-top navbar-inverse" id="navbarId">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#/">MEILI</a>
+            <p class="navbar-text navbar-right visible-xs">{{actionMessage}} <a lang="en" href="#/map">Trips left<span class="badge">42</span></a>
+                <!--<a lang="sv" href="#/map">Förflyttningar kvar<span class="badge">42</span></a>-->
+            </p>
+
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li lang="en" onclick="activateMe(id)" class="active" id="firstOption"><a href="#/">Home <span class="sr-only">(current)</span></a></li>
+                    <!--<li lang="sv" onclick="activateMe(id)" class="active" id="firstOptionsv"><a href="#/">Hem <span class="sr-only">(current)</span></a></li>-->
+                <li lang="en" onclick="activateMe(id)" id="secondOption"><a href="#Statistics">Statistics</a></li>
+                    <!--<li lang="sv" onclick="activateMe(id)" id="secondOptionsv"><a href="#Statistics">Statistik</a></li>-->
+                <li lang="en" onclick="activateMe(id)" id="thirdOption"><a href="#FAQ">FAQ</a></li>
+                    <!--<li lang="sv" onclick="activateMe(id)" id="thirdOptionsv"><a href="#FAQ">Frågor och svar</a></li>-->
+                <li lang="en" onclick="activateMe(id)" id="fourthOption"><a href="#Contact">Contact</a></li>
+                    <!--<li lang="sv" onclick="activateMe(id)" id="fourthOptionsv"><a href="#Contact">Kontakt</a></li>-->
+                <li lang="en" onclick="activateMe(id)" id="fifthOption"><a href="#About">About</a></li>
+                    <!--<li lang="sv" onclick="activateMe(id)" id="fifthOptionsv"><a href="#About">Om</a></li>-->
+
+                <li id="language-selector">
+                    <select id="language-select" class="form-control" ng-change="translate()" ng-model="selectedLanguage" onchange="select_language(this.options[this.selectedIndex].value)">
+                        <!--<option value="sv" selected>Svenska</option>-->
+                        <option value="en" ng-selected="selected">English</option>
+                    </select>
+                </li>
+            </ul>
+
+            <ul class="nav navbar-nav" style="width:20%; visibility: hidden;">
+                <!--<p lang="sv" id="assistantSv" class="navbar-text navbar-right hidden-xs navtext-right" style="color:#F88A8A; display: none">Hjälp <span class="glyphicon glyphicon-info-sign"></span></p>-->
+                <p lang="en" id="assistant" class="navbar-text navbar-right hidden-xs navtext-right" style="color:#F88A8A; display: none">Assistant <span class="glyphicon glyphicon-info-sign"></span></p>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <p class="navbar-text navbar-right hidden-xs navtext-right" style="visibility: hidden;" id="badge_holder">{{actionMessage}}
+                    <a href="#/map">Trips left<span class="badge" id="tripsLeft">42</span></a></p>
+            </ul>
+            <script type="text/javascript">
+                forceLoad();
+            </script>
+        </div><!-- /.navbar-collapse -->
+
+    </div><!-- /.container-fluid -->
+</nav>
+
+<body>
+
+<!--
+{{message}}
+
+<h4>Selected language:<strong>{{selectedLanguage}}</strong>
+</h4>-->
+
+<ng-view></ng-view>
+
+</body>
+</html>

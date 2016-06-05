@@ -1,0 +1,156 @@
+<!--
+MEILI Travel Diary - web interface that allows to annotate GPS trajectories
+fused with accelerometer readings into travel diaries
+
+Copyright (C) 2014-2016 Adrian C. Prelipcean - http://adrianprelipcean.github.io/
+ Copyright (C) 2016 adIT AI - https://github.com/adIT-AI
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+<div class="row">
+    <div class="container">
+        <h1 lang="en">Contact us</h1> <h1 lang="sv">Kontakta oss</h1>
+
+        <div class="control-group">
+            <div class="controls">
+                <div class="input-group"> <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+
+                    <input
+                            class="col-md-12" placeholder="Namn" id="contactName" type="text" required="required" style="height:29px">
+                </div>
+            </div>
+        </div>
+        <div class="control-group" style="margin-top:1px">
+            <div class="controls">
+                <div class="input-group"> <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+
+                    <input
+                            class="col-md-12" placeholder="E-post" id="emailAddress" type="email" style="height:29px"
+                            required="required">
+                </div>
+            </div>
+        </div>
+        <div class="control-group" style="margin-top:1px">
+            <div class="controls">
+                <div class="input-group"> <span class="input-group-addon"><i class="glyphicon glyphicon-phone"></i></span>
+
+                    <input
+                            class="col-md-12" placeholder="Telefon" id="phoneNumber" type="tel" style="height:29px">
+                </div>
+            </div>
+        </div>
+        <div class="btn-toolbar" style="margin-bottom: 3px; margin-top:3px;">
+            <div class="btn-group btn-group-justified" required="required">
+                <div class="btn-group">
+                <button lang="en" class="btn btn-default" href="#" ><i class="glyphicon glyphicon-question-sign"></i> Question</button>
+                    <button lang="sv" class="btn btn-default" href="#" ><i class="glyphicon glyphicon-question-sign"></i> Frågor</button>
+                </div>
+                <div class="btn-group">
+                <button lang="en" class="btn btn-default" href="#" ><i class="glyphicon glyphicon-info-sign"></i> Suggestions</button>
+                    <button lang="sv" class="btn btn-default" href="#" ><i class="glyphicon glyphicon-info-sign"></i> Förslag</button>
+                </div>
+                <div class="btn-group">
+                <button lang="en" class="btn btn-default" href="#" ><i class="glyphicon glyphicon-wrench"></i> Product Support</button>
+                    <button lang="sv" class="btn btn-default" href="#" ><i class="glyphicon glyphicon-wrench"></i> Support</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <textarea id="message" name="message" class="col-md-12" placeholder="Ditt meddelande"
+                      rows="5" required="required"></textarea>
+        </div>
+        <p>
+            <button lang="en" class="btn btn-primary" type="button" onclick="submitForm()">Send</button>
+            <button lang="sv" class="btn btn-primary" type="button" onclick="submitForm()">Skicka</button>
+        </p>
+    </div>
+</div>
+
+</body>
+
+<script>
+    function submitForm() {
+        var contactName = document.getElementById('contactName');
+        var emailAddress = document.getElementById('emailAddress');
+        var phoneNumber = document.getElementById('phoneNumber');
+        var message = document.getElementById('message');
+
+        if(contactName.checkValidity()) {
+            console.log('contact name is correct');
+            if (emailAddress.checkValidity()){
+                console.log('email is correct');
+                if (phoneNumber.checkValidity()){
+                    console.log('phone number is correct');
+                        if (message.checkValidity()){
+                                var request = $.ajax({
+                                    url: "/users/contactForm",
+                                    type: "POST",
+                                    data: {
+                                        contactName:contactName.value,
+                                        emailAddress:emailAddress.value,
+                                        phoneNumber:phoneNumber.value,
+                                        message:message.value
+                                    },
+                                    cache: false
+                                });
+
+
+                                request.done(function (msg) {
+                                    if (getLanguage()=="en")
+                                    alert('Thanks for contacting our team. We will get back to you shortly.');
+                                    else alert('Tack för att du har kontaktat oss. Vi återkommer så snart som möjligt.');
+                                });
+
+                        }
+                    else {
+                            if (getLanguage()=="en")
+                            alert('Empty messages will not be sent to us');
+                            else
+                                alert('Tomma meddelanden kommer inte att skickas.');
+                        }
+                }
+                else {
+                    if (getLanguage()=="en")
+                    alert('Please specify a correct phone number');
+                    else
+                        alert('Ange ett korrekt telefonnummer');
+                }
+            }
+            else {
+                if (getLanguage()=="en")
+                alert('Please specify a correct email address');
+                else
+                    alert('Ange en korrekt e-postadress');
+            }
+        } else {
+            if (getLanguage()=="en")
+            alert('Please specify the contact name');
+            else
+                alert('Ange namn för kontakt');
+        }
+    }
+
+</script>
+
+</html>

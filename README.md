@@ -45,7 +45,8 @@ Want to contribute? Great! See the Todos list for needed improvements. Also, you
  - AngularJS is used in a very hacky way, that should change  
  - Secure the password field when communicating to the MEILI Database 
  - Responsive design
- - remove / improve the in-memory storage of the trips that are being annotated to maintain consistency with the remote database
+ - Remove / improve the in-memory storage of the trips that are being annotated to maintain consistency with the remote database
+ - Look into licensing of images and clipart 
 
 Need help setting up MEILI in production
 ----

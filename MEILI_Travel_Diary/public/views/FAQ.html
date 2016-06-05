@@ -1,0 +1,361 @@
+<!--
+MEILI Travel Diary - web interface that allows to annotate GPS trajectories
+fused with accelerometer readings into travel diaries
+
+Copyright (C) 2014-2016 Adrian C. Prelipcean - http://adrianprelipcean.github.io/
+ Copyright (C) 2016 adIT AI - https://github.com/adIT-AI
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+
+    <style>
+        .faqHeader{
+            font-size: 24px;
+            margin-top: 25px;
+        }
+    </style>
+</head>
+<body>
+
+
+
+<div class="container">
+    <br />
+
+
+    <div class="panel-group" id="accordion">
+        <div class="faqHeader"><p lang="en">MEILI Mobility Collector Web App</p><p lang="sv">MEILI hemsida</p></div>
+        <div class="panel panel-default">
+            <div class="panel-heading" style="background-color: #D1DAE2">
+                <h4 class="panel-title">
+                    <a lang="en" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" data-target="#collapseOneWeb" href="">How do I register a new user?</a>
+                    <a lang="sv" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" data-target="#collapseOneWeb" href="">Hur registerar jag en ny användare?</a>
+                </h4>
+            </div>
+            <div id="collapseOneWeb" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <p lang="en">You register as a user through the MEILI Mobility Collector Mobile App by providing your email address and a password.</p>
+                    <p lang="sv">Du registrerar dig via MEILI smartphone-app genom att uppge din e-postadress och lösenord. </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading" style="background-color: #D1DAE2">
+                <h4 class="panel-title">
+                    <a lang="en" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" data-target="#collapseTenWeb" href="">Which email address should I use to register?</a>
+                    <a lang="sv" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" data-target="#collapseTenWeb" href="">Vilken e-postadress ska jag använda när jag registrerar mig?</a>
+                </h4>
+            </div>
+            <div id="collapseTenWeb" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <p lang="en"> You should use an email address that you check periodically throughout the survey so that the SPOT team can get in touch with you in case of potential problems. The email address that you provide is treated confidentially and is only used by the SPOT project team.</p>
+                    <p lang="sv"> Du ska använda samma e-postadress som du lämnade när du anmälde dig till undersökningen. Du bör läsa din e-post regelbundet under hela undersökningsperioden så att SPOT kan komma i kontakt med dig om det skulle uppstå problem. Den e-postadress du uppger behandlas konfidentiellt och används bara av ansvariga för undersökningen. </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="faqHeader"> <p lang="en">Trip annotation</p> <p lang="sv">Resegranskning</p> </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading" style="background-color: #D1DAE2">
+                <h4 class="panel-title">
+                    <a lang="en" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne" href="">What should I check for when annotating one of my trips?</a>
+                    <a lang="sv" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne" href="">Vad ska jag kontrollera när jag granskar mina förflyttningar?</a>
+                </h4>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <p lang="en">MEILI tries to capture all your trips. This entails the collection of sensor data from your phone (GPS and accelerometer) and the automatic trip-semantic enrichment of the collected information (time-, geographic-, and travel mode aspects of your trip and its triplegs as well as the purpose and destination of your trip). As with all technical and automatic processes, a number of things can go wrong. However, you can help MEILI by verifying and, if necessary, by complementing and changing the geographic aspects of the collected information and how this information been enriched (location and start and end time of a trip and its triplegs, the travel mode of a tripleg, and the destination and purpose of the trip).</p>
+                    <p lang="sv">Du ska granska start och sluttid för förflyttningen, färdsätt, eventuella bytespunkter, målpunkt och ärende. MEILI försöker registrera alla dina förflyttningar. Det innebär automatisk insamling från din mobil. Tekniska och automatiska processer är dock inte alltid felfria, och du kan hjälpa MEILI genom att verifiera och justera den insamlade informationen.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading" style="background-color: #D1DAE2">
+                <h4 class="panel-title">
+                    <a lang="en" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" data-target="#collapseTen" href="">What should I do if I have made a mistake in my trip annotation?</a>
+                    <a lang="sv" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" data-target="#collapseTen" href="">Vad ska jag göra om jag har gjort ett misstag när jag granskat och justerat en förflyttning?</a>
+                </h4>
+            </div>
+            <div id="collapseTen" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <p lang="en"> You can edit your input at anytime you want. MEILI currently supports the following direct edit operations on the timeline: delete <span class="glyphicon glyphicon-trash"></span> and merge <span class="glyphicon glyphicon-share-alt"></span> trips and insert "Did we miss a transition?" and delete <span class="glyphicon glyphicon-trash"></span> triplegs.</b>.</p>
+                    <p lang="sv"> Du kan justera din resdata när du vill. MEILI stödjer för närvarande följande justeringar: ta bort <span class="glyphicon glyphicon-trash"></span> och sammanfoga <span class="glyphicon glyphicon-share-alt"></span> förflyttningar, samt lägg till "Missade vi ett byte?".</b></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading" style="background-color: #D1DAE2">
+                <h4 class="panel-title">
+                    <a lang="en" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" data-target="#collapseEleven" href="">Why can't I see my last trip?</a>
+                    <a lang="sv" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" data-target="#collapseEleven" href="">Varför kan jag inte se min senaste förflyttning?</a>
+                </h4>
+            </div>
+            <div id="collapseEleven" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <p lang="en">Simply put, MEILI can only detect and present a trip if it is reasonably certain that you have already moved on from the destination of the trip in question.</p>
+                    <p lang="sv">MEILI kan bara upptäcka och visa din senaste förflyttning när du har lämnat nuvarande målpunkt och påbörjat en ny förflyttning.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading" style="background-color: #D1DAE2">
+                <h4 class="panel-title">
+                    <a lang="en" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" data-target="#collapseTwo" href="">Why are my trips merged?</a>
+                    <a lang="sv" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" data-target="#collapseTwo" href="">Varför är mina resor sammafogade?</a>
+                </h4>
+            </div>
+            <div id="collapseTwo" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <p lang="en">MEILI tries to automatically segment the long sequence of the sensor measurements it has obtained from your phone into trips and triplegs. In large part due to the inherent noise in the measurements sometimes this segmentation fails. You can help MEILI to correct these mistakes by changing the location or times of trip and tripleg starts and ends.</p>
+                    <p lang="sv">MEILI försöker automatiskt att dela upp de långa förflyttningarna och dela in dem i olika färdsätt. Ibland misslyckas denna uppdelning. Du kan då hjälpa MEILI att justera dessa misstag genom att ändra förflyttningens tidpunkt, start eller målpunkt.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading" style="background-color: #D1DAE2">
+                <h4 class="panel-title">
+                        <a lang="en" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" data-target="#collapseThree" href="">What should I do if the detected destination location of my trip is incorrect?</a>
+                        <a lang="sv" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" data-target="#collapseThree" href="">Vad ska jag göra om den föreslagna målpunkten för min förflyttning är felaktig?</a>
+                </h4>
+            </div>
+            <div id="collapseThree" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <p lang="en"> You can either click on your trip's incorrectly detected destination on the map and chose the "I did not stop here" option in the dialog box or use the "Click <span class="glyphicon glyphicon-share-alt"></span> to merge with next trip" option from the trip end element on the timeline.</p>
+                    <p lang="sv"> Du kan antingen klicka på den felaktigt föreslagna målpunkten på kartan och välja "detta var inte min målpunkt" i dialogrutan eller "klicka <span class="glyphicon glyphicon-share-alt"></span> för att sammanfoga med nästa förflyttning". </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading" style="background-color: #D1DAE2">
+                <h4 class="panel-title">
+                    <a lang="en" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" data-target="#collapseFive" href="">Why are parts of my trips only sparsely recorded? What can I do about it?</a>
+                    <a lang="sv" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" data-target="#collapseFive" href="">Varför är vissa av mina förflyttningar bara glest registrerade? Vad kan jag göra åt det?</a>
+                </h4>
+            </div>
+            <div id="collapseFive" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <p lang="en">Technology is not always perfect. In order to acquire your positions during your trips MEILI needs to have good visibility to a number of the GPS satellites in the sky. You can help MEILI to gain a better visibility by wearing your phone, when possible, in a way that during your trips it has a relatively clear line-of-sight to the sky. If you feel the need to complement the locations that MEILI managed to collect, you can add a new location by pointing and double clicking on the line segment of your trip that you want to complement and dragging the point drawing tool to the desired location.</p>
+                    <p lang="sv">För att registrera dina positioner under förflyttningarna på ett korrekt sätt behöver MEILI ha bra kontakt med flera GPS satelliter. För att underlätta registreringen är det viktigt att du placerar din telefon så att den får god kontakt med satelliterna, dvs inte långt ner i en väska. Om du behöver komplettera de platser som MEILI registrerat så kan du lägga till platser genom att klicka och sedan dubbelklicka på den del av din förflyttning som du vill justera. Använd ritverktyget och dra punkten till önksad position.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading" style="background-color: #D1DAE2">
+                <h4 class="panel-title">
+                    <a lang="en" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" data-target="#collapseSix" href="">What should I do if the collector failed to record a location where I made a transfer?</a>
+                    <a lang="sv" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" data-target="#collapseSix" href="">Vad ska jag göra om appen inte registrerade platsen där jag gjorde ett byte?</a>
+                </h4>
+            </div>
+            <div id="collapseSix" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <p lang="en"> You can add a missing location for your place of transfer by double clicking on the incomplete line segment and dragging the point drawing tool to the desired location and marking this newly added location as a transfer location. </p>
+                    <p lang="sv"> Du kan lägga till en missad bytespunkt genom att dubbelklicka på förflyttningen (linje på kartan) och dra punkten till önskad plats. </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading" style="background-color: #D1DAE2">
+                <h4 class="panel-title">
+                    <a lang="en" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" data-target="#collapseEight" href="">What should I do if my trips are sparsely recorded?</a>
+                    <a lang="sv" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" data-target="#collapseEight" href="">Vad ska jag göra om mina förflyttningar bara är glest registrerade?</a>
+                </h4>
+            </div>
+            <div id="collapseEight" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <p lang="en">If you feel that MEILI did not collect all critical locations of your trip, you can complement the trip with a new location by double clicking on the incomplete line segment and dragging the point drawing tool to the desired location.</p>
+                    <p lang="sv">Om MEILI inte registerarde alla dina besökta platser/målpunkter kan du komplettera förflyttningen genom att dubbelklicka på förflyttningen (linje på kartan) och dra den nya punkten till önskad plats.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading" style="background-color: #D1DAE2">
+                <h4 class="panel-title">
+                    <a lang="en" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" data-target="#collapseNine" href="">How should I annotate short triplegs?</a>
+                    <a lang="sv" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" data-target="#collapseNine" href="">Hur ska jag granska mycket korta förflyttningar?</a>
+                </h4>
+            </div>
+            <div id="collapseNine" class="panel-collapse collapse">
+                <div class="panel-body">
+                   <p lang="en"> If the measured locations are too space to define a tripleg of your trip then you can complement the trip with a new location by double clicking on the incomplete line segment and dragging the point drawing tool to the desired location. </p>
+                    <p lang="sv"> Om de registrerade platserna är för nära varandra för att utgöra en förflyttning så kan du komplettera förflyttningen genom att dubbelklicka på förflyttningen (linje på kartan) och dra den nya punkten till önskad plats. </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading" style="background-color: #D1DAE2">
+                <h4 class="panel-title">
+                    <a lang="en" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" data-target="#collapse1" href="">What should I do if one of my trips is not recorded by the MEILI system?</a>
+                    <a lang="sv" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" data-target="#collapse1" href="">Vad ska jag göra om en av mina förflyttningar inte har registrerats av appen?</a>
+                </h4>
+            </div>
+            <div id="collapse1" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <p lang="en">You should make a mental note about this missing trip and report it to the SPOT team in the after survey follow up.</p>
+                    <p lang="sv">Du bör skicka ett e-postmeddelande till spot@sweco.se</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading" style="background-color: #D1DAE2">
+                <h4 class="panel-title">
+                    <a lang="en" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" data-target="#collapse1miss" href="">Can I add missed locations to my trip? </a>
+                    <a lang="sv" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" data-target="#collapse1miss" href="">Kan jag lägga till platser/målpunkter som inte registrerats?</a>
+                </h4>
+            </div>
+            <div id="collapse1miss" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <p lang="en">You can complement the trip with a new location by double clicking on the incomplete line segment and dragging the point drawing tool to the desired location.</p>
+                    <p lang="sv">Du kan komplettera förflyttningen med en ny punkt genom att dubbelklicka på förflyttningen (linje på kartan) och dra den nya punkten till önskad plats.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading" style="background-color: #D1DAE2">
+                <h4 class="panel-title">
+                    <a lang="en" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" data-target="#collapse1edit" href="">Can I edit the places I have added? </a>
+                    <a lang="sv" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" data-target="#collapse1edit" href="">Kan jag justera de platser/målpunkter jag har lagt till?</a>
+                </h4>
+            </div>
+            <div id="collapse1edit" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <p lang="en">Yes you can change both the location (by dragging the corresponding marker on the map) and any other information (in the corresponding dialog box) of the personal places that you have previously added.</p>
+                    <p lang="sv">Ja, du kan justera både plats (genom att flytta markören på kartan) och annan information (via dialogrutorna) för de platser du har lagt till.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="faqHeader"><p lang="en">MEILI Mobility Collector Mobile App</p><p lang="sv">MEILI smartphone-app</p></div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading" style="background-color: #D1DAE2">
+                <h4 class="panel-title">
+                    <a lang="en" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" data-target="#collapseSeven" href="">How can I stop the collection?</a>
+                    <a lang="sv" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" data-target="#collapseSeven" href="">Hur kan jag stoppa registreringen av mina förflyttningar?</a>
+                </h4>
+            </div>
+            <div id="collapseSeven" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <p lang="en">You can stop the collection by accessing MEILI's main page (MEILI Mobility Collector Control Center) and pushing the "Stop collection" button. Once started through the same interface, this is the only way to stop MEILI. In particular, to make sure that MEILI is never accidentally off, once started, MEILI will restart automatically even if your phone is restarted.</p>
+                    <p lang="sv">Om du inte vill bidra med data efter försöket är det bara att stänga av insamlingen genom att klicka på Stop/Stoppa insamling.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading" style="background-color: #D1DAE2">
+                <h4 class="panel-title">
+                    <a lang="en" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" data-target="#collapse5" href="">How much battery does the MEILI Mobility Collector use?</a>
+                    <a lang="sv" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" data-target="#collapse5" href="">Hur mycket batteri drar MEILI?</a>
+                </h4>
+            </div>
+            <div id="collapse5" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <p lang="en"> You do not have to worry about MEILI's battery consumption. Thanks to the sophisticated battery savings methods of MEILI, for an average user for an entire day of collection MEILI will use about 30% of the total battery capacity. The battery consumption increases significantly when travelling long distances, but usually in these cases (car or train) you will have a power source for charging nearby.</p>
+                    <p lang="sv"> En dags registrerande av förflyttningar kommer att använda ca 30 % av ett normalt batteris kapacitet. Batteriåtgången ökar då man förflyttar sig långa sträckor. Du bör vara beredd på att du kan komma att behöva ladda telefonen under dagen.  </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading" style="background-color: #D1DAE2">
+                <h4 class="panel-title">
+                    <a lang="en" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" data-target="#collapse6" href="">How much wireless data does the MEILI Mobility Collector use?</a>
+                    <a lang="sv" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" data-target="#collapse6" href="">Hur mycket surfmängd använder MEILI?</a>
+                </h4>
+            </div>
+            <div id="collapse6" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <p lang="en">The wireless data consumption of MEILI is minimal. For an average user who travels 50 kilometers in a day MEILI will collect and send approximately 100 kB of data which is approximately the same as a medium sized mobile webpage or a minimal Word-file email attachment.</p>
+                    <p lang="sv">Den surfmängd som går åt för registrering av resdata via MEILI är liten. För en normal användare som förflyttar sig  maximalt 50 km per dag kommer MEILI att ladda upp ungefär 100 kB (vilket motsvarar att titta på en hemsida i telefonen).</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="faqHeader"> <p lang="en">Privacy and security</p><p lang="sv">Integritet och säkerhet</p></div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading" style="background-color: #D1DAE2">
+                <h4 class="panel-title">
+                    <a lang="en" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" data-target="#collapse7" href="">Who has access to my data?</a>
+                    <a lang="sv" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" data-target="#collapse7" href="">Vem/vilka har tillgång till min insamlade resdata?</a>
+                </h4>
+            </div>
+            <div id="collapse7" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <p lang="en">Only a very limited number of authorised researchers within the SPOT project that is funded by Trafikverket have access to the data.</p>
+                    <p lang="sv">Endast en liten grupp av godkända forskare som är ansvariga för undersökningen kommer ha tillgång till det insamlade resdatat. </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading" style="background-color: #D1DAE2">
+                <h4 class="panel-title">
+                    <a lang="en" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" data-target="#collapse8" href="">How is my data used?</a>
+                    <a lang="sv" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" data-target="#collapse8" href="">Hur används min resdata?</a>
+                </h4>
+            </div>
+            <div id="collapse8" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <p lang="en">The data is primarily used to evaluate and improve MEILI. All data will be treated anonymously and the users privacy and security will be treated at utmost respect and care. Within the transport science research domain, this kind of data will be used to provide insight into individual and group travel behavior for transport modeling and subsequent planning purposes. The aim of such use is never to re-identify a specific individual and in all cases the data is analyzed in an aggregated, privacy-preserving fashion.</p>
+                    <p lang="sv">Det insamlade resdatat används huvudsakligen för att utvärdera och förbättara MEILI. All resdata kommer att behandlas anonymt och användarnas integritet och säkerhet kommer att behandlas med omsorg och respekt. Den insamlade informationen kommer att användas inom forskning gällande resvanor. Syftet är att vara underlag till vidare analyser och modellering. Syftet är aldrig att identifiera en specifik individ och resdatat analyseras alltid agreggerat för att skydda den enskillde individen. </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="faqHeader"> <p lang="en">Help</p><p lang="sv">Hjälp</p></div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading" style="background-color: #D1DAE2">
+                <h4 class="panel-title">
+                    <a lang="en" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" data-target="#collapse9" href="">Who should I contact if i need further help?</a>
+                    <a lang="sv" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" data-target="#collapse9" href="">Vem ska jag kontakta om jag behöver ytterligare hjälp?</a>
+                </h4>
+            </div>
+            <div id="collapse9" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <p lang="en">You can directly submit issues to MEILI through its contact form that you can access from the "Contact" tab. Should the form be not appropriate for your enquiry feel free to contact the SPOT support team at spot@sweco.se.</p>
+                    <p lang="sv">Du kan alltid lämna synpunkter till MEILI genom kontaktformuläret på hemsidan "Kontakt". Det går också att kontakta SPOT via spot@sweco.se.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        forceLoad();
+    </script>
+
+</div>
+
+</body>
+</html>

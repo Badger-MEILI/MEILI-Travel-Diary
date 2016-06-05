@@ -1,0 +1,21 @@
+This software includes third party open source software components:
+Angular, Bootstrap, D3JS, Intro.js v1.1.1, jQuery JavaScript Library v1.11.2,
+Leaflet, Timepicker Component for Twitter Bootstrap, vis.js.
+
+Each of these software components have their own license.
+
+Please see the headers of the folliwng files:
+../public/javascripts/angular.js
+../public/javascripts/angular.min.js
+../public/javascripts/angular.min1.2.28.js
+../public/javascripts/angular-leaflet-directive.min.js
+../public/javascripts/angular-resource.mi1.2.28n.js
+../public/javascripts/angular-resource.min.js
+../public/javascripts/angular-route.min.js
+../public/javascripts/bootstrap.js
+../public/javascripts/d3.min.js
+../public/javascripts/intro.js
+../public/javascripts/jquery.js
+../public/javascripts/leaflet.js
+../public/javascripts/timepicker.js
+../public/javascripts/vis.js

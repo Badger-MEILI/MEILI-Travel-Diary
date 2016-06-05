@@ -1,0 +1,15 @@
+{
+  "COLOR" : "Farge",
+  "HELLO" : "Hallo",
+  "HELLO_WORLD" : "Hallo verden!",
+  "LANG_MESSAGE":"Välj språk för översättning:",
+  "DESCRIPTION": "Meili är en av asagudarna i den nordiska mytologin. Han var Odens son och mycket tyder på att han var den fornnordiska guden av resor.",
+  "IntroP1":"MEILI är ett halvautomatiskt system för insamling av resdata. Systemet utnyttjar modern mobilteknik och webbaserade geografiska informationssystem (GIS) för att skapa ett smidigt system för kontinuerlig insamling av resdata och en webbsida där insamlad resdata kan korrigeras och kompletteras av användaren. Insamlingen sker med smartphone-appen MEILI Mobility Collector och korrigeringen av insamlad resdata sker på denna webbsida.",
+  "IntroP2":"All insamlade resedata ger en värdefull insikt i resebehov hos befolkningen, något som är ett ovärderligt underlag vid transportplanering.",
+  "IntroP3":"Användningen av MEILI Mobility Collector är frivillig. Systemet ger användaren möjlighet att närsomhelst avbryta insamlandet av data eller radera en insamlad resa. De insamlade uppgifterna kommer endast att analyseras anonymt och användas för forskningsändamål.",
+  "IntroP4":"MEILI Systemet finansieras av Trafikverket och utvecklas av forskare vid KTH med stöd av övriga deltagande parter i MEILI-projektet.",
+  "Time": "Tid",
+  "meilipers":"MEILI - din personliga resdagbok",
+  "startanot":"Börja granska",
+  "now":"nu"
+}

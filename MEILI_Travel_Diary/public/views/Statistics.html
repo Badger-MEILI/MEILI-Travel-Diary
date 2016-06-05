@@ -1,0 +1,66 @@
+<!--
+MEILI Travel Diary - web interface that allows to annotate GPS trajectories
+fused with accelerometer readings into travel diaries
+
+Copyright (C) 2014-2016 Adrian C. Prelipcean - http://adrianprelipcean.github.io/
+ Copyright (C) 2016 adIT AI - https://github.com/adIT-AI
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        body {
+        background-color: #fff;
+    }
+
+    text {
+        fill: black;
+        font: 5px sans-serif;
+        cursor: default;
+    }
+
+    .dot-label text {
+        font-size: 5px;
+    }</style>
+</head>
+
+<body>
+<!--<p lang="en" style="display: none;">This page is in development.</p>
+<p lang="sv">Denna sida är under utveckling.</p>-->
+
+<div id="drawBody">
+    <!--<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="svg" style="display: block"></svg>-->
+    <div id="chart"></div>
+    <script src="../javascripts/graphVis.js"></script>
+
+    <select class="form-control form-control-inline" style="width:200px; display: inline-block" id="selectStatType" onchange="changeLoad()">;
+        <option value="1" selected lang="en">Time spent per mode</option>
+        <!--<option value="1" selected lang="sv">Tid per färdmedel</option>-->
+        <option value="2" lang="en">Number of steps</option>
+        <!--<option value="2" lang="sv">Antal steg</option>-->
+        <option value="3" lang="en">CO2 Emissions</option>
+        <!--<option value="3" lang="sv">CO2-utsläpp</option>-->
+
+        <script>forceLoad()</script>
+    </select>
+
+
+</div>
+</body>
+</html>
