@@ -37,6 +37,7 @@ var users = require('./routes/users');
 var api = require('./routes/api');
 
 var tripEndPoint = require('./routes/apiv2/trips');
+var triplegsEndPoint = require('./routes/apiv2/triplegs');
 
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
@@ -132,6 +133,7 @@ app.use('/api', auth,api);
 
 // only accessible after doing the handshake
 app.use('/apiv2/trips', auth, tripEndPoint);
+app.use('/apiv2/triplegs', auth, triplegsEndPoint);
 
 // default fallback
 app.use('/', routes);
