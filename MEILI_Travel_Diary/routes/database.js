@@ -24,9 +24,11 @@ var path = require('path');
 
 var host = process.env.MEILI_HOST || 'localhost';
 var port = process.env.MEILI_PORT || '5432';
-var dbName = process.env.MEILI_DB_NAME || 'MEILISharable';
+var dbName = process.env.MEILI_DB_NAME || 'SPOT_Gothenburg';
+var userName = 'postgres';
+var password = 'postgres';
 
-var connectionString =  process.env.MEILI_CONNECTION_STRING || 'postgres://postgres:postgres@'+host+':'+port+'/'+dbName;
+var connectionString =  process.env.MEILI_CONNECTION_STRING || 'postgres://'+userName+':'+password+'@'+host+':'+port+'/'+dbName;
 
 // reveal connection string to other components
 module.exports = connectionString;

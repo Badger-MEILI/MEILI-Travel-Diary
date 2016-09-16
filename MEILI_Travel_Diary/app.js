@@ -51,7 +51,7 @@ passport.use(new LocalStrategy(
         var results = [];
 
         //call database for login
-        var prioryQuery = myClient.query("SELECT id FROM user_table where username = '" + username+"' and password='"+password+"' limit 1");
+        var prioryQuery = myClient.query("SELECT login_user as id FROM raw_data.login_user('" + username+"', '"+password+"')");
 
         prioryQuery.on('row', function (row) {
                 // push retrieved id from database

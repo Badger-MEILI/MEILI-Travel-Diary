@@ -165,7 +165,7 @@ router.post('/registerUser', function(req, res) {
     var numberOfRowsReturned = 0;
 
     // Check if the username is already taken
-    var prioryQuery = myClient.query("SELECT id FROM user_table where username = '" + data.username+"'");
+    var prioryQuery = myClient.query("SELECT id FROM raw_data.user_table where username = '" + data.username+"'");
 
         prioryQuery.on('row', function (row) {
             // The user name is already taken
@@ -183,7 +183,7 @@ router.post('/registerUser', function(req, res) {
             } else {
                 // SQL Query > Insert Data
                 // New user name
-                var query = myClient.query("INSERT INTO user_table(username, password, phone_model, phone_os) values($1, $2, $3, $4) RETURNING id",
+                var query = myClient.query("select register_user as id from raw_data.register_user($1, $2, $3, $4)",
                     [data.username, data.password, data.phone_model, data.phone_os]);
 
                 // Stream results back one row at a time
