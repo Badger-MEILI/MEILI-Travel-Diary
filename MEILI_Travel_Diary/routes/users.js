@@ -42,6 +42,7 @@ myClient.connect(function(err){
 router.get('/loggedin', function (req, res) {
     var checkMe=undefined;
     if (req.user!=undefined) checkMe = req.user.userId +", "+req.user.userName;
+    console.log(checkMe);
     res.send(checkMe+"");
 });
 
@@ -90,7 +91,7 @@ router.post('/getUnsegmentedStream', function(req, res){
 router.post('/login', passport.authenticate('local'), function (req, res) {
 
     var user_id = {'userId':req.user.userId};
-
+    console.log(user_id);
     res.send(JSON.stringify(user_id));
 });
 
@@ -117,8 +118,11 @@ router.post('/loginUser', function(req, res) {
     var alreadyExists = false;
     // Grab data from http request
     var data = {username: req.body.username, password:req.body.password};
+    console.log('user not existing');
+    console.log(data);
 
-    var prioryQuery = myClient.query("SELECT id FROM user_table where username = '" + data.username+"' and password='"+data.password+"' limit 1");
+    var prioryQuery = myClient.query("SELECT login_user as id FROM raw_data.login_user( '" + data.username+"' ,'"+data.password+"')");
+    console.log(prioryQuery);
 
         prioryQuery.on('row', function (row) {
             alreadyExists=true;

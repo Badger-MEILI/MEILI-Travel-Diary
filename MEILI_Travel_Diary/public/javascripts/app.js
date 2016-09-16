@@ -298,7 +298,7 @@ app.controller('MapCtrl',function($scope, $rootScope, $http, $location, $anchorS
 
     console.log('trying http post');
 
-    console.log($scope.userId);
+    /*console.log($scope.userId);
 
 
     //REPLACING IT WITH AJAX
@@ -308,17 +308,17 @@ app.controller('MapCtrl',function($scope, $rootScope, $http, $location, $anchorS
         data: {userId:$scope.userId}
         //contentType: 'application/json; charset=utf-8',
         //dataType: "json"
-    });
+    });*/
 
-
-    request.done(function(msg) {
+    initmap($scope.userId);
+    /*request.done(function(msg) {
         console.log(msg);
         initmap(getJson(msg.response), $scope.userId);
     });
 
     request.fail(function(jqXHR, textStatus, error) {
         console.log(error);
-    });
+    });*/
     // Map elem
 
         /*// DOM element where the Timeline will be attached

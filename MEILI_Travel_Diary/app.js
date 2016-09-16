@@ -36,6 +36,8 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 var api = require('./routes/api');
 
+var tripEndPoint = require('./routes/apiv2/trips');
+
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
@@ -59,7 +61,10 @@ passport.use(new LocalStrategy(
             });
 
             prioryQuery.on('end', function(){
-                if (results[0]!=undefined){
+
+                console.log("RESULTS ARE");
+                console.log(results);
+                if (results[0].id!=null && results[0].id!=undefined){
                     //retrieved id successfully
                     done(null, {userId: results[0].id, userName: username});
                 }
@@ -124,6 +129,9 @@ app.use('/users', users);
 
 // only accessible after doing the handshake
 app.use('/api', auth,api);
+
+// only accessible after doing the handshake
+app.use('/apiv2/trips', auth, tripEndPoint);
 
 // default fallback
 app.use('/', routes);

@@ -3,7 +3,7 @@
  fused with accelerometer readings into travel diaries
 
  Copyright (C) 2014-2016 Adrian C. Prelipcean - http://adrianprelipcean.github.io/
- Copyright (C) 2016 Badger AB - https://github.com/Badger-MEILI
+ Copyright (C) 2016 adIT AI - https://github.com/adIT-AI
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU Affero General Public License as
@@ -26,31 +26,12 @@ var days_sv = ['Söndag','Måndag','Tisdag','Onsdag','Torsdag','Fredag','Lördag
 var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
 var map;
-var plotlayers={};
-var correspondingTimeline={};
-var correspondingPolyline={};
-var currentTrip;
-var marker={};
-var newMarker = {};
-var newTransitionMarker={};
-//var fixedTransitionMarker={};
-var fixedTransitionMarkers=[];
-var draggableTransitionMarkers=[];
-var pointLayerArray= [];
-// end date of trip
-var currentTripEndDate;
-// start date of next trip
-var nextTripStartDate;
-var userId;
 
-// purpose of previous trip
-var previousPurpose;
-// place where previous trip stopped
-var previousPlace;
-// end date of previous trip
-var previousTripEndDate;
-// start date of current trip
-var currentTripStartDate;
+var pointLayerArray =[];
+var plotlayers=[];
+var correspondingTimeline = [];
+var correspondingPolyline =[];
+var userId;
 
 var geojsonMarkerOptions = {
     radius: 6,
@@ -92,9 +73,6 @@ var mapMarkerIcon= L.icon({
 });
 
 var serverResponse = {
-    "trips_to_process":"3",
-    "trips":[
-        {
             "tripid": "0",
             "prev_trip_stop": "none",
             "prev_trip_purpose": "none",
@@ -193,555 +171,7 @@ var serverResponse = {
                     ]
                 }
             ]
-        }
-        ,
-        {
-    "tripid": "1",
-    "prev_trip_stop": "2014-10-03 06:51:21",
-    "prev_trip_purpose": "Home",
-    "prev_trip_place": "Home",
-    "next_trip_start": "2014-10-03 12:03:44",
-    "destination_places": [
-        {
-            "db_id": "1",
-            "longitude": "17.9889660095",
-            "latitude": "59.354805672",
-            "name": "Home_foo",
-            "type": "home",
-            "accuracy": "42"
-        },
-        {
-            "db_id": "2",
-            "latitude": "59.3562",
-            "longitude": "17.9889660095",
-            "name": "Work_foo",
-            "type": "work",
-            "accuracy": "40"
-        },
-        {
-            "db_id": "3",
-            "latitude": "59.35606640439245",
-            "longitude": "17.9889660095",
-            "name": "Grocery_foo",
-            "type": "groceries",
-            "accuracy": "3"
-        }
-    ],
-    "purposes": [
-        {
-            "id": "1",
-            "certainty": "70"
-        },
-        {
-            "id": "2",
-            "certainty": "20"
-        },
-        {
-            "id": "3",
-            "certainty": "10"
-        }
-    ],
-    "triplegs": [
-        {
-            "triplegid": "111",
-            "points": [
-                {
-                    "id": "1",
-                    "lat": "17.9839985979",
-                    "lon": "59.354912767",
-                    "time": "2014-10-03 10:07:50"
-                },
-
-                {
-                    "id": "3",
-                    "lat": "17.9867827862",
-                    "lon": "59.3547836972",
-                    "time": "2014-10-03 10:10:00"
-                },
-                {
-                    "id": "4",
-                    "lat": "17.9878771068",
-                    "lon": "59.3548244105",
-                    "time": "2014-10-03 10:10:40"
-                },
-                {
-                    "id": "5",
-                    "lat": "17.9889660095",
-                    "lon": "59.354805672",
-                    "time": "2014-10-03 10:11:21"
-                },
-                {
-                    "id": "6",
-                    "lat": "17.9888086396",
-                    "lon": "59.3543096027",
-                    "time": "2014-10-03 10:12:02"
-                },
-                {
-                    "id": "7",
-                    "lat": "17.9886960091",
-                    "lon": "59.353857706",
-                    "time": "2014-10-03 10:12:42"
-                },
-                {
-                    "id": "8",
-                    "lat": "17.9878205236",
-                    "lon": "59.3530903116",
-                    "time": "2014-10-03 10:13:30"
-                },
-                {
-                    "id": "9",
-                    "lat": "17.9861364471",
-                    "lon": "59.3537643265",
-                    "time": "2014-10-03 10:13:57"
-                },
-                {
-                    "id": "10",
-                    "lat": "17.9873102918",
-                    "lon": "59.3522572747",
-                    "time": "2014-10-03 10:14:19"
-                },
-                {
-                    "id": "11",
-                    "lat": "17.9872301112",
-                    "lon": "59.3518081723",
-                    "time": "2014-10-03 10:14:59"
-                },
-                {
-                    "id": "12",
-                    "lat": "17.9868934222",
-                    "lon": "59.3513875586",
-                    "time": "2014-10-03 10:15:34"
-                },
-                {
-                    "id": "13",
-                    "lat": "17.986831654",
-                    "lon": "59.3509383799",
-                    "time": "2014-10-03 10:16:00"
-                },
-                {
-                    "id": "14",
-                    "lat": "17.986810431",
-                    "lon": "59.350488871",
-                    "time": "2014-10-03 10:16:47"
-                },
-                {
-                    "id": "15",
-                    "lat": "17.9870022603",
-                    "lon": "59.3500280928",
-                    "time": "2014-10-03 10:17:15"
-                }
-            ],
-            "mode": [{"id": "2", "certainty": "10"},
-                {"id": "1", "certainty": "80"},
-                {"id": "3", "certainty": "40"}],
-            "places": [
-                {
-                    "osm_id": "1",
-                    "type": "bus station",
-                    "name": "bus station name",
-                    "lat": "59.3500281750",
-                    "lon": "20",
-                    "chosen_by_user": "false"
-                }
-            ]
-        },
-        {
-            "triplegid": "112",
-            "points": [
-                {
-                    "id": "16",
-                    "lat": "17.9870022603",
-                    "lon": "59.3500280928",
-                    "time": "2014-10-03 10:29:58"
-                },
-                {
-                    "id": "17",
-                    "lat": "18.0247607403",
-                    "lon": "59.332038104",
-                    "time": "2014-10-03 10:30:32"
-                }
-            ],
-            "mode": [{id: "1", "certainty": "10"},
-                {id: "2", "certainty": "5"},
-                {id: "3", "certainty": "5"}],
-            "places": [
-                {}
-            ]
-        },
-        {
-            "triplegid": "113",
-            "points": [
-                {
-                    "id": "17",
-                    "lat": "18.0247607403",
-                    "lon": "59.332038104",
-                    "time": "2014-10-03 10:33:32"
-                },
-                {
-                    "id": "18",
-                    "lat": "18.0238924365",
-                    "lon": "59.3318877995",
-                    "time": "2014-10-03 10:33:42"
-                },
-                {
-                    "id": "19",
-                    "lat": "18.0235373787",
-                    "lon": "59.3314657408",
-                    "time": "2014-10-03 10:33:53"
-                },
-                {
-                    "id": "20",
-                    "lat": "18.0239205757",
-                    "lon": "59.3310021328",
-                    "time": "2014-10-03 10:34:16"
-                },
-                {
-                    "id": "21",
-                    "lat": "18.023431464",
-                    "lon": "59.3305972292",
-                    "time": "2014-10-03 10:34:26"
-                },
-                {
-                    "id": "22",
-                    "lat": "18.0225138118",
-                    "lon": "59.3298535405",
-                    "time": "2014-10-03 10:34:36"
-                },
-                {
-                    "id": "23",
-                    "lat": "18.0221112496",
-                    "lon": "59.3293507907",
-                    "time": "2014-10-03 10:34:43"
-                },
-                {
-                    "id": "24",
-                    "lat": "18.0218154887",
-                    "lon": "59.32888583",
-                    "time": "2014-10-03 10:34:50"
-                },
-                {
-                    "id": "25",
-                    "lat": "18.0213126116",
-                    "lon": "59.3284796408",
-                    "time": "2014-10-03 10:35:02"
-                },
-                {
-                    "id": "26",
-                    "lat": "18.0214707804",
-                    "lon": "59.3280196931",
-                    "time": "2014-10-03 10:35:39"
-                },
-                {
-                    "id": "27",
-                    "lat": "18.0205895315",
-                    "lon": "59.3281201546",
-                    "time": "2014-10-03 10:36:26"
-                },
-                {
-                    "id": "28",
-                    "lat": "18.0197248825",
-                    "lon": "59.3282682933",
-                    "time": "2014-10-03 10:36:58"
-                },
-                {
-                    "id": "29",
-                    "lat": "18.0185444577",
-                    "lon": "59.3282500063",
-                    "time": "2014-10-03 10:37:16"
-                }
-            ],
-            "mode": [{"id": "3", "certainty": "50"},
-                {"id": "2", "certainty": "10"},
-                {"id": "1", "certainty": "5"}],
-            "places": [
-                {}
-            ]
-        }
-    ]
-    },
-        {
-            "tripid": "2",
-            "prev_trip_stop": "2014-10-03 10:37:16",
-            "prev_trip_purpose": "Work",
-            "prev_trip_place": "Sweco",
-            "next_trip_start": "none",
-            "destination_places": [
-                {
-                    "db_id": "1",
-                    "latitude": "46",
-                    "longitude": "24",
-                    "name": "Home_foo",
-                    "type": "home",
-                    "accuracy": "42"
-                },
-                {
-                    "db_id": "2",
-                    "latitude": "46.5",
-                    "longitude": "24.5",
-                    "name": "Work_foo",
-                    "type": "work",
-                    "accuracy": "40"
-                },
-                {
-                    "db_id": "3",
-                    "latitude": "46.7",
-                    "longitude": "24.9",
-                    "name": "Grocery_foo",
-                    "type": "groceries",
-                    "accuracy": "3"
-                }
-            ],
-            "purposes": [
-                {
-                    "id": "1",
-                    "certainty": "70"
-                },
-                {
-                    "id": "2",
-                    "certainty": "20"
-                },
-                {
-                    "id": "3",
-                    "certainty": "10"
-                }
-            ],
-            "triplegs": [
-                {
-                    "triplegid": "114",
-                    "points": [
-                        {
-                            "id": "31",
-                            "lat": "18.0185444577",
-                            "lon": "59.3282500063",
-                            "time": "2014-10-03 12:03:44"
-                        },
-                        {
-                            "id": "32",
-                            "lat": "18.0193347618",
-                            "lon": "59.3282596803",
-                            "time": "2014-10-03 12:03:46"
-                        },
-                        {
-                            "id": "33",
-                            "lat": "18.0200761989",
-                            "lon": "59.3278799634",
-                            "time": "2014-10-03 12:03:59"
-                        },
-                        {
-                            "id": "34",
-                            "lat": "18.0210772389",
-                            "lon": "59.3279633715",
-                            "time": "2014-10-03 12:04:12"
-                        },
-                        {
-                            "id": "35",
-                            "lat": "18.021934137",
-                            "lon": "59.3278360833",
-                            "time": "2014-10-03 12:04:47"
-                        },
-                        {
-                            "id": "36",
-                            "lat": "18.0217093976",
-                            "lon": "59.3281320752",
-                            "time": "2014-10-03 12:06:16"
-                        }
-                    ],
-                    "mode": [{"id": "2", "certainty": "10"},
-                        {"id": "1", "certainty": "80"},
-                        {"id": "3", "certainty": "40"}],
-                    "places": [
-                        {
-                            "osm_id": "1",
-                            "type": "bus station",
-                            "name": "bus station name",
-                            "lat": "40",
-                            "lon": "20",
-                            "chosen_by_user": "false"
-                        }
-                    ]
-                },
-                {
-                    "triplegid": "115",
-                    "points": [
-                        {
-                            "id": "36",
-                            "lat": "18.0217093976",
-                            "lon": "59.3281320752",
-                            "time": "2014-10-03 12:11:16"
-                        },
-                        {
-                            "id": "37",
-                            "lat": "18.0218831303",
-                            "lon": "59.3285968764",
-                            "time": "2014-10-03 12:11:41"
-                        },
-                        {
-                            "id": "38",
-                            "lat": "18.0221538056",
-                            "lon": "59.329041649",
-                            "time": "2014-10-03 12:11:53"
-                        },
-                        {
-                            "id": "39",
-                            "lat": "18.0246129726",
-                            "lon": "59.3317722255",
-                            "time": "2014-10-03 12:12:55"
-                        },
-                        {
-                            "id": "40",
-                            "lat": "18.025445655",
-                            "lon": "59.332079644",
-                            "time": "2014-10-03 12:13:40"
-                        },
-                        {
-                            "id": "41",
-                            "lat": "18.0263071859",
-                            "lon": "59.3319412701",
-                            "time": "2014-10-03 12:13:55"
-                        },
-                        {
-                            "id": "42",
-                            "lat": "18.0272600358",
-                            "lon": "59.3318574578",
-                            "time": "2014-10-03 12:14:07"
-                        },
-                        {
-                            "id": "43",
-                            "lat": "18.0283128191",
-                            "lon": "59.3318790457",
-                            "time": "2014-10-03 12:14:17"
-                        },
-                        {
-                            "id": "44",
-                            "lat": "17.9876413003",
-                            "lon": "59.3494776566",
-                            "time": "2014-10-03 12:26:03"
-                        },
-                        {
-                            "id": "45",
-                            "lat": "17.9868755655",
-                            "lon": "59.3497094455",
-                            "time": "2014-10-03 12:26:20"
-                        },
-                        {
-                            "id": "46",
-                            "lat": "17.9870419695",
-                            "lon": "59.3501570048",
-                            "time": "2014-10-03 12:27:13"
-                        },
-                        {
-                            "id": "47",
-                            "lat": "17.9873762021",
-                            "lon": "59.3505932063",
-                            "time": "2014-10-03 12:27:25"
-                        },
-                        {
-                            "id": "48",
-                            "lat": "17.9878571514",
-                            "lon": "59.3511674262",
-                            "time": "2014-10-03 12:27:39"
-                        }
-                    ],
-                    "mode": [{id: "1", "certainty": "10"},
-                        {id: "2", "certainty": "5"},
-                        {id: "3", "certainty": "5"}],
-                    "places": [
-                        {}
-                    ]
-                },
-                {
-                    "triplegid": "116",
-                    "points": [
-                        {
-                            "id": "48",
-                            "lat": "17.9878571514",
-                            "lon": "59.3511674262",
-                            "time": "2014-10-03 12:28:00"
-                        },
-                        {
-                            "id": "49",
-                            "lat": "17.9873642993",
-                            "lon": "59.3519979298",
-                            "time": "2014-10-03 12:28:24"
-                        },
-                        {
-                            "id": "50",
-                            "lat": "17.9884764638",
-                            "lon": "59.3528613095",
-                            "time": "2014-10-03 12:29:17"
-                        },
-                        {
-                            "id": "51",
-                            "lat": "17.9878986752",
-                            "lon": "59.3533182398",
-                            "time": "2014-10-03 12:30:07"
-                        },
-                        {
-                            "id": "52",
-                            "lat": "17.988571292",
-                            "lon": "59.3540563321",
-                            "time": "2014-10-03 12:30:58"
-                        },
-                        {
-                            "id": "53",
-                            "lat": "17.9886284253",
-                            "lon": "59.3540819389",
-                            "time": "2014-10-03 12:30:59"
-                        },
-                        {
-                            "id": "54",
-                            "lat": "17.9890525463",
-                            "lon": "59.3544865059",
-                            "time": "2014-10-03 12:31:31"
-                        },
-                        {
-                            "id": "55",
-                            "lat": "17.9884326811",
-                            "lon": "59.3548117862",
-                            "time": "2014-10-03 12:32:19"
-                        },
-                        {
-                            "id": "56",
-                            "lat": "17.9875328212",
-                            "lon": "59.3548214678",
-                            "time": "2014-10-03 12:32:51"
-                        },
-                        {
-                            "id": "57",
-                            "lat": "17.9866184293",
-                            "lon": "59.3548424978",
-                            "time": "2014-10-03 12:33:24"
-                        },
-                        {
-                            "id": "58",
-                            "lat": "17.9857037458",
-                            "lon": "59.3549069838",
-                            "time": "2014-10-03 12:33:54"
-                        },
-                        {
-                            "id": "59",
-                            "lat": "17.9848121972",
-                            "lon": "59.3548432403",
-                            "time": "2014-10-03 12:34:28"
-                        },
-                        {
-                            "id": "60",
-                            "lat": "17.9839914855",
-                            "lon": "59.3548093933",
-                            "time": "2014-10-03 12:35:46"
-                        }
-                    ],
-                    "mode": [{"id": "3", "certainty": "50"},
-                        {"id": "2", "certainty": "10"},
-                        {"id": "1", "certainty": "5"}],
-                    "places": [
-                        {}
-                    ]
-                }
-            ]
-        }
-    ]
-};
+        };
 
 /**********************************************************************
  * UTILITIES ****************************************************
@@ -766,8 +196,12 @@ function getTranslation(string, language) {
     loadTranslationFiles(language);
 }*/
 
-function initmap(serverResp, thisUserId) {
+var copyOfTriplegs;
+var copyOfTrip;
 
+function initmap(thisUserId) {
+
+    console.log(thisUserId);
     var injector = angular.element(document).injector();
     var aMsgHandlerService = injector.get('translationService');
 
@@ -780,54 +214,50 @@ function initmap(serverResp, thisUserId) {
         console.log('need login');
     }
 
-    var badge_holder = document.getElementById('badge_holder');
+    userId = thisUserId;
+    generateBadge(thisUserId);
 
-    if (serverResp==null||serverResp==undefined){
+    /*if (serverResp==null||serverResp==undefined){
         //if (getLanguage()=="en")
         alert('Please come back later, there are not enough trips to show you yet');
         //else alert('Kom tillbaka senare. Det finns inte tillräckligt med resor att visa ännu');
-
-        var numberOfTripsBadge = document.getElementById('tripsLeft');
-        numberOfTripsBadge.innerHTML = serverResponse.trips_to_process;
-        badge_holder.style.visibility = "visible";
     }
-    else {
-        badge_holder.style.visibility = "visible";
-        //if (getLanguage()=="en")
-        var assistantHelper = document.getElementById('assistant');
-        /*else
-            var assistantHelper = document.getElementById('assistantSv');*/
-        assistantHelper.style.visibility = "visible";
-        assistantHelper.addEventListener("click", enablingListener);
+    else {*/
+        var nextTripRequest = getNextTripToProcess(thisUserId);
 
-        console.log(badge_holder);
+        nextTripRequest.done(function(msg) {
+            console.log(msg);
 
-        console.log(serverResp);
-    console.log(serverResponse);
-    console.log(thisUserId);
+            var currentTrip = msg.rows[0];
+            if (currentTrip!=undefined){
+            console.log(currentTrip);
+            console.log(currentTrip.trip_id);
+            var getTriplegsRequest =
+                getTriplegsOfTripRequest(currentTrip.trip_id);
 
-    userId = thisUserId;
+            getTriplegsRequest.done(function(msg){
+                console.log(msg);
+                var triplegsOfCurrentTrip = msg.rows[0].pagination_get_triplegs_of_trip;
+                copyOfTriplegs = jQuery.extend(true, [], triplegsOfCurrentTrip);
+                generateMap(thisUserId);
+                generateHTMLElements(currentTrip, triplegsOfCurrentTrip, thisUserId);
 
-    console.log(userId);
+                //if (getLanguage()=="en")
+                var assistantHelper = document.getElementById('assistant');
+                /*else
+                 var assistantHelper = document.getElementById('assistantSv');*/
+                assistantHelper.style.visibility = "visible";
+                assistantHelper.addEventListener("click", enablingListener);
+                enableMapScrolling();
+            });
+            }
+            else {
+                alert('Please come back later, there are not enough trips to show you yet');
+            }
 
-    newMarker.userId = userId;
+        });
 
-    serverResponse = serverResp;
-
-        var numberOfTripsBadge = document.getElementById('tripsLeft');
-        numberOfTripsBadge.innerHTML = serverResponse.trips_to_process;
-
-    enableMapScrolling();
-
-    // set up the map
-    // first un-annotated trip
-    currentTrip = serverResponse.trips[serverResponse.go_to_index-1];
-
-        console.log(currentTrip);
-
-    generateMap();
-    generateHTMLElements(currentTrip);
-    }
+   // }
 }
 
 function enableMapScrolling(){
@@ -860,7 +290,7 @@ function enableMapScrolling(){
  * Populates layers - gets called on new trip only
  */
 
-function generateMap(){
+function generateMap(userId){
     map = new L.Map('map');
 
     map.options.maxZoom = 17;
@@ -914,21 +344,21 @@ function generateMap(){
  * Gets called on each new trip - calls the generation of timeline panels and draws polylines on map
  * @param currentTrip - the trip that will be drawn on the map
  */
-function generateHTMLElements(currentTrip){
-    var tripLegs = currentTrip.triplegs;
-    generateFirstTimelineElement();
+function generateHTMLElements(currentTrip, triplegs, user_id){
+    var tripLegs = triplegs;
+    generateFirstTimelineElement(currentTrip);
     var first = true;
-    for (var i in tripLegs)
+    for (var i=0; i < tripLegs.length; i++)
     {
-        generateTimelineElement(tripLegs[i]);
-        generatePolyline(tripLegs[i], map, i, first);
+        generateTimelineElement(tripLegs[i], (i==(tripLegs.length-1)));
+        generatePolyline(tripLegs[i], map, i, first, (i==(tripLegs.length-1)));
         first = false;
     }
-    generateLastTimelineElement();
+    generateLastTimelineElement(currentTrip);
 
-    $.when(logFrontEndOperation(userId,'the user can interact with his trips')).done(function () {;
+    $.when(logFrontEndOperation(user_id,'the user can interact with his trips')).done(function () {;
         forceLoad();
-        if (previousPurpose==null) showIntroGuide(currentTrip);
+        // if (previousPurpose==null) showIntroGuide(currentTrip, triplegs);
     })
 
 }
@@ -1157,7 +587,7 @@ function checkCurrentTrip(){
         return false;
     }
 
-    var copyOfTriplegs = [];
+    /*var copyOfTriplegs = [];
 
     for (var i in currentTrip.triplegs){
         copyOfTriplegs.push(jQuery.extend(true, {} , currentTrip.triplegs[i]));
@@ -1184,15 +614,15 @@ function checkCurrentTrip(){
         }
 
         )(i);
-        /*(function(cntr) {
+        *//*(function(cntr) {
             // here the value of i was passed into as the argument cntr
             // and will be captured in this function closure so each
             // iteration of the loop can have it's own value
             var request = pushTriplegModification(null,copyOfTriplegs[cntr],"upsert", currentTrip.tripid);
 
-        })(i);*/
+        })(i);*//*
     }
-
+*/
 
     return true;
 }
@@ -1412,7 +842,7 @@ function checkTemporalConsequences(initialTime, endTime, tripleg, prevInitialTim
             //pushUpdates
             tripleg.points[tripleg.points.length-1].time = endTime.toString();
             tripleg.points[0].time = initialTime.toString();
-            updateTransitionPanel(tripleg.triplegid);
+            updateTransitionPanel(tripleg);
             /*console.log(tripleg);*/
         }
         // else do nothing - regular case
@@ -2559,42 +1989,28 @@ function compare(a,b) {
  * @returns {string|string} - the outerHTML of a paragraph that contains the transition time in minutes
  */
 
-function getTransitionTime(triplegid){
+function getTransitionTime(tripleg, isLast){
 
-    /*var returnPar= '<p>Transition time: '+getTransitionTime(tripleg.triplegid)+' <span class="glyphicon glyphicon-edit" style="float: right;"></span></p>';*/
-
-    for (var i=0; i<currentTrip.triplegs.length; i++) {
-        if (currentTrip.triplegs[i].triplegid == triplegid) {
-            console.log(i);
-            console.log(currentTrip.triplegs.length - 1);
-            console.log(currentTrip.triplegs);
-            if (i == currentTrip.triplegs.length - 1) {
-                var endDate = new Date(currentTrip.triplegs[i].points[currentTrip.triplegs[i].points.length - 1].time);
+            if (isLast) {
+                var endDate = new Date(tripleg.points[tripleg.points.length - 1].time);
                 /*var returnPar = '<p>Trip ended: ' + currentTripEndDate.getHours()+':'+currentTripEndDate.getMinutes() + ' <span class="glyphicon glyphicon-edit" style="float: right;"></span></p>';*/
                 var returnPar='';
             }
             else {
-                console.log(currentTrip.triplegs);
-                console.log(i);
-                console.log(i+2);
-                var dateFrom = new Date(currentTrip.triplegs[i].points[currentTrip.triplegs[i].points.length - 1].time);
-                var dateTo = new Date(currentTrip.triplegs[i+2].points[0].time);
+                var dateFrom = new Date(tripleg.points[tripleg.points.length - 1].time);
+                var dateTo = new Date(getNextTripleg(tripleg).points[0].time);
 
-                console.log(dateFrom);
-                console.log(dateTo);
                 var timeDiff = Math.abs(dateTo.getTime() - dateFrom.getTime());
                 console.log(timeDiff);
                 var minutesDiff = Math.ceil(timeDiff / (1000 * 60));
                 console.log(minutesDiff);
 
                 //if (getLanguage()=="en")
-                    var returnPar = '<p id="transitiontime'+triplegid+'">Transfer time: ' + minutesDiff + ' min <span class="glyphicon glyphicon-trash" style="float: right;" onclick="mergeWithNext(\''+triplegid+'\')"></span></p>';
+                    var returnPar = '<p id="transitiontime'+tripleg.triplegid+'">Transfer time: ' + minutesDiff + ' min <span class="glyphicon glyphicon-trash" style="float: right;" onclick="mergeWithNext(\''+tripleg.triplegid+'\')"></span></p>';
                 /*else
                     var returnPar = '<p id="transitiontime'+triplegid+'">Bytestid: ' + minutesDiff + ' minuter <span class="glyphicon glyphicon-trash" style="float: right;" onclick="mergeWithNext(\''+triplegid+'\')"></span></p>';
                 console.log(returnPar);*/
             }
-        }
-    }
     return returnPar;
 }
 
@@ -2604,22 +2020,18 @@ function getTransitionTime(triplegid){
  * @returns {string} - the distance in kilometers as a string
  */
 
-function getDistanceOfTripLeg(triplegid){
+function getDistanceOfTripLeg(tripleg){
     //TODO change this to reflect values in meters too
     var initDist = 0;
     var prevPoint = L.latLng(0,0);
-    for (var i=0; i<currentTrip.triplegs.length; i++) {
-        if (currentTrip.triplegs[i].triplegid == triplegid){
-            for (var j=0;j<currentTrip.triplegs[i].points.length;j++){
-                var derivedPoint = L.latLng(currentTrip.triplegs[i].points[j].lon,currentTrip.triplegs[i].points[j].lat);
+            for (var j=0;j<tripleg.points.length;j++){
+                var derivedPoint = L.latLng(tripleg.points[j].lon,tripleg.points[j].lat);
                 if (prevPoint.lat!=0){
                     initDist = initDist+ derivedPoint.distanceTo(prevPoint);
                 }
                 prevPoint.lat = derivedPoint.lat;
                 prevPoint.lng = derivedPoint.lng;
             }
-        }
-    }
     var distance;
     if (initDist<1000) distance= (Math.round(initDist/100)*100)+' m';
     else distance = Math.round(initDist/1000) +' km';
@@ -3490,56 +2902,49 @@ function getPurposeSelector(purposes){
  * @param triplegid - the id of the tripleg for which the selector is generated
  * @returns {string} - outerHTML of selector
  */
-function getTransitionSelector(triplegid){
-    for (var i=0; i<currentTrip.triplegs.length;i++)
-    {
-
-        if (currentTrip.triplegs[i].triplegid===triplegid) {
-            var needCheck = true;
-            for (var j=0; j<currentTrip.triplegs[i].places.length;j++)
+function getTransitionSelector(tripleg, isLast){
+        var needCheck = true;
+            for (var j=0; j<tripleg.places.length;j++)
             {
-
-                console.log(currentTrip.triplegs[i].places[j].osm_id+" "+currentTrip.triplegs[i].places[j].chosen_by_user+" is " +(currentTrip.triplegs[i].places[j].chosen_by_user=="true"));
-                if (currentTrip.triplegs[i].places[j].chosen_by_user=="true"|| currentTrip.triplegs[i].places[j].chosen_by_user) {
-                    if (currentTrip.triplegs[i].places[j].added_by_user>0)
+                console.log(tripleg.places[j].osm_id+" "+tripleg.places[j].chosen_by_user+" is " +(tripleg.places[j].chosen_by_user=="true"));
+                if (tripleg.places[j].chosen_by_user=="true"|| tripleg.places[j].chosen_by_user) {
+                    if (tripleg.places[j].added_by_user>0)
                     {
-                        drawDynamicTransitionMarker(currentTrip.triplegs[i].places[j].lat, currentTrip.triplegs[i].places[j].lon, currentTrip.triplegs[i].places[j].id);
-                        generateTransitionEditModal(currentTrip.triplegs[i].places[j]);
+                        drawDynamicTransitionMarker(tripleg.places[j].lat, tripleg.places[j].lon, tripleg.places[j].id);
+                        generateTransitionEditModal(tripleg.places[j]);
                     }
                     else
-                    drawFixedTransitionMarker(currentTrip.triplegs[i].places[j].lat, currentTrip.triplegs[i].places[j].lon, currentTrip.triplegs[i].triplegid);
+                    drawFixedTransitionMarker(tripleg.places[j].lat, tripleg.places[j].lon, tripleg.triplegid);
                     needCheck=false;
                 }
             }
 
             if (needCheck)
-            {var html = '<select class="form-control form-control-inline form-need-check" id="transitionSelect'+triplegid+'">';
+            {var html = '<select class="form-control form-control-inline form-need-check" id="transitionSelect'+tripleg.triplegid+'">';
                 html+='<option value="-1" disabled selected lang="en">(Optional) Specify transfer place</option>';
                 //html+='<option value="-1" disabled selected style="display:none;" lang="sv">Lägg till en ny bytespunkt (frivilligt)</option>';
             }
 
             else{
-                var html = '<select class="form-control form-control-inline" id="transitionSelect'+triplegid+'">';
+                var html = '<select class="form-control form-control-inline" id="transitionSelect'+tripleg.triplegid+'">';
             }
 
-            for (var j=0; j<currentTrip.triplegs[i].places.length;j++)
+            for (var j=0; j<tripleg.places.length;j++)
             {
-                var value = currentTrip.triplegs[i].places[j].osm_id;
-                var name = currentTrip.triplegs[i].places[j].name;
+                var value = tripleg.places[j].osm_id;
+                var name = tripleg.places[j].name;
 
-                if (currentTrip.triplegs[i].places[0].name!=undefined) {
+                if (tripleg.places[0].name!=undefined) {
 
                     html += '<option value="' + value + '">' + name + '</option>';
 
                 }
             }
 
-            html+= '<option lang="en" value="100" id ="removableTransitionOption'+triplegid+'">Add a new transfer place</option>';
+            html+= '<option lang="en" value="100" id ="removableTransitionOption'+tripleg.triplegid+'">Add a new transfer place</option>';
             //html+= '<option lang="sv" value="100" id ="removableTransitionOption'+triplegid+'">Lägg till en ny bytespunkt</option>';
 
             html+='</select>';
-        }
-    }
 
     return html;
 }
@@ -3589,19 +2994,17 @@ function getSelector(mode, triplegid){
  * @param triplegid - the id of the tripleg for which the paragraph is generated
  * @returns {string|string} - outerHTML of the paragraph
  */
-function getTransitionPlace(triplegid){
-    for (var i=0; i<currentTrip.triplegs.length; i++) {
-        if (currentTrip.triplegs[i].triplegid == triplegid) {
-            if (i == currentTrip.triplegs.length - 1) {
+function getTransitionPlace(tripleg, isLast){
+
+            if (isLast) {
                 var html = '';;
             }
             else
             {
-                var html = '<p lang="en">Transfer place: '+getTransitionSelector(triplegid)+'</p>';
+                var html = '<p lang="en">Transfer place: '+getTransitionSelector(tripleg, isLast)+'</p>';
                 //html = html+'<p lang="sv">Bytespunkt: '+getTransitionSelector(triplegid)+'</p>';
             }
-        }
-    }
+
     return html;
 }
 
@@ -3640,19 +3043,22 @@ function getTransitionTimeContent(triplegid){
 /**
  * Generates the first timeline element and adds it at the head of the timeline
  */
-function generateFirstTimelineElement(){
+function generateFirstTimelineElement(currentTrip){
     var ul = document.getElementById("timeline");
     var li = document.createElement("li");
     li.id= 'firstTimelineElement';
 
 
-    previousPurpose = getNameOfPurpose(currentTrip.prev_trip_purpose);
-    var previousPurposeSv = getNameOfPurposeSwedish(currentTrip.prev_trip_purpose);
-    var previousPlace = currentTrip.prev_trip_place_name;
+    var previousPurpose = getNameOfPurpose(currentTrip.previous_trip_purpose);
+    var previousPurposeSv = getNameOfPurposeSwedish(currentTrip.previous_trip_purpose);
+    var previousPlace = currentTrip.previous_trip_poi_name;
     // nextActualTrip.prev_trip_place= prevActualTrip.destination_places[0].osm_id;
-    previousTripEndDate = new Date(currentTrip.prev_trip_stop);
-    currentTripStartDate = new Date(currentTrip.triplegs[0].points[0].time);
+    var previousTripEndDate = new Date(parseInt(currentTrip.previous_trip_end_date));
+    var currentTripStartDate = new Date(parseInt(currentTrip.current_trip_start_date));
 
+    console.log(previousPurpose);
+    console.log(previousTripEndDate+" " +currentTrip.previous_trip_end_date);
+    console.log(previousPlace);
     /*console.log(currentTrip.prev_trip_stop);
     console.log(currentTrip.triplegs[0].points[0].time);
     console.log(previousTripEndDate);
@@ -3756,12 +3162,12 @@ function generateFirstTimelineElement(){
 /**
  * Generates the last timeline element and adds it at the tail of the timeline
  */
-function generateLastTimelineElement(){
+function generateLastTimelineElement(currentTrip){
     var ul = document.getElementById("timeline");
     var li = document.createElement("li");
     li.id= 'lastTimelineElement';
 
-    currentTripEndDate = new Date(currentTrip.triplegs[currentTrip.triplegs.length-1].points[currentTrip.triplegs[currentTrip.triplegs.length-1].points.length - 1].time);
+    var currentTripEndDate = new Date(parseInt(currentTrip.current_trip_end_date));
 
     var hours = currentTripEndDate.getHours();
     var minutes = currentTripEndDate.getMinutes();
@@ -3785,10 +3191,10 @@ function generateLastTimelineElement(){
     var places = currentTrip.destination_places;
     var purposes = currentTrip.purposes;
 
-    if (currentTrip.next_trip_start!=null) {
+    if (currentTrip.next_trip_start_date!=null) {
     /* Add ended trip info */
 
-        nextTripStartDate = new Date(currentTrip.next_trip_start);
+        nextTripStartDate = new Date(parseInt(currentTrip.next_trip_start_date));
         var timeDiff = Math.abs(nextTripStartDate.getTime() - currentTripEndDate.getTime());
         var hoursDiff = Math.ceil(timeDiff / (1000 * 60 * 60));
 
@@ -3822,8 +3228,6 @@ function generateLastTimelineElement(){
         thisHtml += '</li>';
     }
     else{
-
-
         thisHtml += '<li class="timeline-inverted">';
         thisHtml += '<div class="timeline-panel" id ="lastTimelinePanel">';
         thisHtml += '<div class="tl-heading">';
@@ -3876,7 +3280,7 @@ function generateLastTimelineElement(){
  * @param triplegid - the id of the tripleg associated to the panel
  * @returns {string} - the panel outerHTML
  */
-function getTransitionPanel(triplegid){
+function getTransitionPanel(tripleg, isLast){
     // Not the last trip leg -> generate panel
 
     var transitionFrom = 'undefined';
@@ -3887,25 +3291,21 @@ function getTransitionPanel(triplegid){
 
     var timeFrom ='';
     var timeTo='';
-    console.log(currentTrip);/*
+    /*
     var actualTriplegs = currentTrip.triplegs;
     console.log(actualTriplegs);*/
 
     var correspondingTransitionId = 0;
 
-    if (triplegid != currentTrip.triplegs[currentTrip.triplegs.length-1].triplegid){
+    if (!isLast){
 
-        for (var i =0; i< currentTrip.triplegs.length;i++){
-            console.log(currentTrip.triplegs[i].triplegid );
-            if (currentTrip.triplegs[i].triplegid == triplegid){
-
-                var currentMode = currentTrip.triplegs[i].mode;
+                var currentMode = tripleg.mode;
                 currentMode.sort(compare);
 
-                var nextMode = currentTrip.triplegs[i+2].mode;
+                var nextMode = getNextTripleg(tripleg).mode;
                 nextMode.sort(compare);
 
-                correspondingTransitionId = currentTrip.triplegs[i+1].triplegid;
+                correspondingTransitionId = getNextPassiveTripleg(tripleg).triplegid;
 
                 if (currentMode[0].certainty >= 50){
                     transitionFrom = getMode(currentMode[0].id);
@@ -3917,17 +3317,18 @@ function getTransitionPanel(triplegid){
                     transitionToSv = getModeSwedish(nextMode[0].id);
                 }
 
-                var dateFrom = new Date(currentTrip.triplegs[i].points[currentTrip.triplegs[i].points.length-1].time);
-                var dateTo = new Date(currentTrip.triplegs[i+2].points[0].time);
+                var dateFrom = new Date(tripleg.points[tripleg.points.length-1].time);
+                var dateTo = new Date(getNextTripleg(tripleg).points[0].time);
+
+                console.log('got next tripleg of '+tripleg.triplegid);
+                console.log(getNextTripleg(tripleg));
 
                 timeFrom = (dateFrom.getHours()<10?'0':'')+dateFrom.getHours()+':'+(dateFrom.getMinutes()<10?'0':'')+dateFrom.getMinutes();
                 timeTo = (dateTo.getHours()<10?'0':'')+dateTo.getHours()+':'+(dateTo.getMinutes()<10?'0':'')+dateTo.getMinutes();
-                console.log(currentTrip); console.log(currentTrip.triplegs);console.log(currentTrip.triplegs[i+2]);
 
                 console.log(timeFrom);
                 console.log(timeTo);
-            }
-        }
+
 
         var transitionPanel= '<li><div class="tldate" id="tldate'+correspondingTransitionId+'">';
         transitionPanel+= '<p lang="en">'+ timeFrom+' - '+timeTo +' - Tranferred from '+ transitionFrom+' to '+transitionTo +'</p>';
@@ -3942,32 +3343,34 @@ function getTransitionPanel(triplegid){
  * Updates the HTML of a transition panel that corresponds to a tripleg
  * @param triplegid - the id of the tripleg associated to the panel
  */
-function updateTransitionPanel(triplegid){
+function updateTransitionPanel(tripleg){
     // ONE UPDATE
 
-    console.log("UPDATING "+triplegid);
+    console.log("UPDATING "+tripleg);
     var nextId = '-1';
     var nextIntermId = '-1';
     var prevIntermId = '-1';
     var prevId = '-1';
 
-    for (var i =0; i< currentTrip.triplegs.length;i++){
-        if (currentTrip.triplegs[i].triplegid == triplegid){
-            if (currentTrip.triplegs[i-2]!=undefined) prevId = currentTrip.triplegs[i-2].triplegid;
-            if (currentTrip.triplegs[i+2]!=undefined) nextId = currentTrip.triplegs[i+2].triplegid;
-            if (currentTrip.triplegs[i+1]!=undefined) nextIntermId = currentTrip.triplegs[i+1].triplegid;
-            if (currentTrip.triplegs[i-1]!=undefined) prevIntermId = currentTrip.triplegs[i-1].triplegid;
-        }
-    }
+
+
+            if (getPrevTripleg(tripleg)!=undefined) prevId = getPrevTripleg(tripleg).triplegid;
+            if (getNextTripleg(tripleg)!=undefined) nextId = getNextTripleg(tripleg).triplegid;
+            if (getNextPassiveTripleg(tripleg)!=undefined) nextIntermId = getNextPassiveTripleg().triplegid;
+            if (getPrevPassiveTripleg(tripleg)!=undefined) prevIntermId = getPrevPassiveTripleg().triplegid;
+
+
 
     var nextPanel = document.getElementById('tldate'+nextIntermId);
     var prevPanel = document.getElementById('tldate'+prevIntermId);
 
-    var currentSelect = document.getElementById('selectbasic'+triplegid);
+    var currentSelect = document.getElementById('selectbasic'+tripleg.triplegid);
     var currentMode= getMode(currentSelect.options[currentSelect.selectedIndex].value);
     var currentModeSv= getModeSwedish(currentSelect.options[currentSelect.selectedIndex].value);
-    var currentModeStart = document.getElementById('timepickerstart'+triplegid).value;
-    var currentModeStop = document.getElementById('timepickerstop'+triplegid).value;
+    var currentModeStart = document.getElementById('timepickerstart'+tripleg.triplegid).value;
+    var currentModeStop = document.getElementById('timepickerstop'+tripleg.triplegid).value;
+
+    console.log(prevId);
 
     if (prevId!='-1') {
         // has previous trip
@@ -4023,6 +3426,7 @@ function updateTransitionPanel(triplegid){
             firstTimeParagraphSv.innerHTML = 'Tid: '+hoursDiff+' timmar';
     }
 
+    console.log(nextId);
     if (nextId!='-1') {
         //has next trip
         var nextSelect = document.getElementById('selectbasic'+nextId);
@@ -4162,7 +3566,7 @@ function pushChangesToHTML(id, tripLegA, tripLegB,tripLegPassive, index){
  * @param tripleg - the tripleg element
  * @returns {string} - outerHTML of the timeline element
  */
-function getTimelineElementContent(tripleg){
+function getTimelineElementContent(tripleg, isLast){
     var thisHtml= '<div class="tl-circ" id="telem_circle'+tripleg.triplegid+'" style="cursor:pointer"><span class="glyphicon glyphicon-search"></span></div>';
 
     thisHtml+='<li>';
@@ -4187,16 +3591,16 @@ function getTimelineElementContent(tripleg){
 
     /*if (tripleg.triplegid!=currentTrip.triplegs[currentTrip.triplegs.length-1].triplegid)*/
     thisHtml+= '<p lang="en" style="font-style:italic" id="addtransition'+tripleg.triplegid+'" onclick="generateTransitionPopup(\''+tripleg.triplegid+'\')">Did we miss a transfer? Click to add it.</p>';// <p lang="sv" style="font-style:italic" id="addtransition'+tripleg.triplegid+'" onclick="generateTransitionPopup(\''+tripleg.triplegid+'\')">Har vi missat ett byte? Klicka för att lägga till.</p>';
-    thisHtml+= '<p lang="en" id="distPar'+tripleg.triplegid+'">Distance:'+getDistanceOfTripLeg(tripleg.triplegid)+'</p>';// <p lang="sv" id="distPar'+tripleg.triplegid+'">Avstånd:'+getDistanceOfTripLeg(tripleg.triplegid)+'</p>';
+    thisHtml+= '<p lang="en" id="distPar'+tripleg.triplegid+'">Distance:'+getDistanceOfTripLeg(tripleg)+'</p>';// <p lang="sv" id="distPar'+tripleg.triplegid+'">Avstånd:'+getDistanceOfTripLeg(tripleg.triplegid)+'</p>';
     thisHtml+= '<div class="input-group bootstrap-timepicker">'
     //if (getLanguage()=="en")
     thisHtml+= 'Stop: <input id="timepickerstop'+tripleg.triplegid+'" type="text" class="input-small"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>';
     /*else
         thisHtml+= 'Avslutning: <input id="timepickerstop'+tripleg.triplegid+'" type="text" class="input-small"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>';
     thisHtml+= '</div>';*/
-    if (tripleg.triplegid!=currentTrip.triplegs[currentTrip.triplegs.length-1].triplegid) thisHtml+= '<hr>';
-    thisHtml+= getTransitionPlace(tripleg.triplegid);
-    thisHtml+= getTransitionTime(tripleg.triplegid);
+    if (!isLast) thisHtml+= '<hr>';
+    thisHtml+= getTransitionPlace(tripleg, isLast);
+    thisHtml+= getTransitionTime(tripleg, isLast);
     thisHtml+= '</div>';
 
     return thisHtml;
@@ -4206,24 +3610,24 @@ function getTimelineElementContent(tripleg){
  * Appends the timeline element of a tripleg to the timeline list and adds its listeners
  * @param tripleg - the tripleg element
  */
-function generateTimelineElement(tripleg){
+function generateTimelineElement(tripleg, isLast){
 
     if (tripleg.type_of_tripleg == 1){
     var ul = document.getElementById("timeline");
     var li = document.createElement("li");
     li.id = "listItem"+tripleg.triplegid;
-    var thisHtml = getTimelineElementContent(tripleg);
+    var thisHtml = getTimelineElementContent(tripleg, isLast);
 
-    thisHtml+=generateModal(tripleg.triplegid);
+    thisHtml+=generateModal(tripleg.triplegid, isLast);
 
-    if(getTransitionPanel(tripleg.triplegid)!=undefined)
-        thisHtml+= getTransitionPanel(tripleg.triplegid);
+    if(getTransitionPanel(tripleg, isLast)!=undefined)
+        thisHtml+= getTransitionPanel(tripleg, isLast);
 
     li.innerHTML = thisHtml;
 
     ul.appendChild(li);
 
-    addTimelineListeners(tripleg);
+    addTimelineListeners(tripleg, isLast);
     }
 
     /*$('#timepickerstart'+tripleg.triplegid).timepicker().on('changeTime.timepicker', function(e){
@@ -4393,7 +3797,7 @@ function transitionTypeEnabler(id){
 /**===================== DESTINATION POI RELATED ==========================*/
 
 function enablingListener(){
-    generateOnDemandGuide(currentTrip);
+    generateOnDemandGuide(copyOfTrip, copyOfTriplegs);
 }
 /**
  * Listener that updates the places array to correspond to the user's choice
@@ -4544,7 +3948,6 @@ function addTimelineListeners(tripleg){
 
     console.log(tripleg.triplegid);
 
-    console.log(currentTrip);
     console.log(tripleg);
     var initialTime = new Date(tripleg.points[0].time);
     var endTime = new Date(tripleg.points[tripleg.points.length-1].time);
@@ -4595,7 +3998,7 @@ function addTimelineListeners(tripleg){
     $("#telem_circle"+tripleg.triplegid).click(function()
     {
         var layer = plotlayers[correspondingPolyline[tripleg.triplegid]];
-        map.fitBounds(layer);
+        map.fitBounds(layer.getBounds());
 
         logFrontEndOperation(userId,'zoomed to layer '+tripleg.triplegid);
         //map.panTo(layer.getBounds().getCenter());
@@ -5707,7 +5110,7 @@ function getPointFormatedDateLong(date) {
  * @param map - the map container
  * @param i - the index of the tripleg within the current trip
  */
-function generatePolyline(tripleg, map, i, first){
+function generatePolyline(tripleg, map, i, first, isLast){
     var polyline = [];
     pointLayerArray[pointLayerArray.length]={};
     pointLayerArray[pointLayerArray.length-1].id = tripleg.triplegid;
@@ -5728,11 +5131,11 @@ function generatePolyline(tripleg, map, i, first){
             drawPoint(tripleg.points[j],map,'regular', tripleg.triplegid);
         }
         else
-        if (currentTrip.triplegs.length==1){
+        if (copyOfTriplegs.length==1){
             // DRAW FIRST AND LAST
             console.log('isnt this the case?');
             if (j==0) drawPoint(tripleg.points[j],map,'start',tripleg.triplegid);
-            if (j==currentTrip.triplegs[i].points.length-1) drawPoint(tripleg.points[j],map,'stop',tripleg.triplegid);
+            if (j==tripleg.points.length-1) drawPoint(tripleg.points[j],map,'stop',tripleg.triplegid);
         }
         else{
             /*// j is last point or first point of the trip leg
@@ -5753,7 +5156,7 @@ function generatePolyline(tripleg, map, i, first){
                     drawPoint(tripleg.points[j],map,'transition',tripleg.triplegid);
                 }
 */
-                if (i==currentTrip.triplegs.length-1 && j==tripleg.points.length-1){
+                if (isLast && j==tripleg.points.length-1){
                     drawPoint(tripleg.points[j],map,'stop',tripleg.triplegid);
                 }
 
@@ -5848,7 +5251,8 @@ function generatePolyline(tripleg, map, i, first){
 
     if (first){
         //var layer = plotlayers[correspondingPolyline[tripleg.triplegid]];
-        map.fitBounds(polylineLayer);
+        console.log(polylineLayer);
+        map.fitBounds(polylineLayer.getBounds());
     }
 }
 
@@ -6839,71 +6243,71 @@ function getPrevTrip(tripid){
     return id;
 }
 
-function getPrevTripleg(triplegid){
+function getPrevTripleg(tripleg){
     var id=0;
 
-    for (var j=0; j < currentTrip.triplegs.length;j++){
-        if (currentTrip.triplegs[j].triplegid==triplegid)
+    for (var j=0; j < copyOfTriplegs.length;j++){
+        if (copyOfTriplegs[j].triplegid==triplegid)
         {
             console.log("GOT ID PREV"+j);
             id=j-2;
         }
     }
-    return currentTrip.triplegs[id];
+    return copyOfTriplegs[id];
 }
 
-function getNextTripleg(triplegid){
+function getNextTripleg(tripleg){
     var id=0;
 
-    for (var j=0; j < currentTrip.triplegs.length;j++){
-        console.log(currentTrip.triplegs[j].triplegid+'=='+triplegid);
-        if (currentTrip.triplegs[j].triplegid==triplegid)
+    console.log(copyOfTriplegs);
+
+    for (var j=0; j < copyOfTriplegs.length;j++){
+        console.log(copyOfTriplegs[j].triplegid+'=='+tripleg.triplegid);
+        if (copyOfTriplegs[j].triplegid==tripleg.triplegid)
         {
             id=j+2;
         }
     }
-    return currentTrip.triplegs[id];
+    return copyOfTriplegs[id];
 }
 
-function getNextPassiveTripleg(triplegid){
+function getNextPassiveTripleg(tripleg){
     var id=0;
 
-    for (var j=0; j < currentTrip.triplegs.length;j++){
-        console.log(currentTrip.triplegs[j].triplegid+'=='+triplegid);
-        if (currentTrip.triplegs[j].triplegid==triplegid)
+    for (var j=0; j < copyOfTriplegs.length;j++){
+
+        if (copyOfTriplegs.triplegid==tripleg.triplegid)
         {
             id=j+1;
         }
     }
-    return currentTrip.triplegs[id];
+    return copyOfTriplegs[id];
 }
 
-function getPrevPassiveTripleg(triplegid){
+function getPrevPassiveTripleg(tripleg){
     var id=0;
 
-    for (var j=0; j < currentTrip.triplegs.length;j++){
-        console.log(currentTrip.triplegs[j].triplegid+'=='+triplegid);
-        console.log(currentTrip.triplegs[j].triplegid==triplegid);
-        if (currentTrip.triplegs[j].triplegid==triplegid)
+    for (var j=0; j < copyOfTriplegs.length;j++){
+        if (copyOfTriplegs[j].triplegid==triplegid)
         {
             id=j-1;
         }
     }
 
-    return currentTrip.triplegs[id];
+    return copyOfTriplegs[id];
 }
 
-function updateDistance(triplegid){
+function updateDistance(tripleg, triplegid){
     if (document.getElementById('distPar'+triplegid)!=null)
     {
-        document.getElementById('distPar'+triplegid).innerHTML=' Distance:'+getDistanceOfTripLeg(triplegid);
+        document.getElementById('distPar'+triplegid).innerHTML=' Distance:'+getDistanceOfTripLeg(tripleg);
     }
     else
     {
         console.log(triplegid);
         console.log(getNextTripleg(triplegid));
         console.log(getPrevTripleg(triplegid));
-        document.getElementById('distPar'+getNextTripleg(triplegid).triplegid).innerHTML =' Distance:'+getDistanceOfTripLeg(getNextTripleg(triplegid).triplegid);
+        document.getElementById('distPar'+getNextTripleg(tripleg).triplegid).innerHTML =' Distance:'+getDistanceOfTripLeg(getNextTripleg(tripleg));
     }
 }
 
@@ -6911,7 +6315,7 @@ function updateDistance(triplegid){
  * Checking whether the trips and triplegs maintain their integrity after modifications / on server request
  */
 function integrityCheck(){
-    for (var j=1; j<serverResponse.trips.length-1;j++){
+     /*for (var j=1; j<serverResponse.trips.length-1;j++){
         // Checking
         var currentTrip = serverResponse.trips[j];
         var prevTrip = serverResponse.trips[j-1];
@@ -6982,7 +6386,8 @@ function integrityCheck(){
                 console.log('FAIL!!! '+currentTripleg.points[0].time+'<='+currentTripleg.points[currentTripleg.points.length-1].time);
 
             //TODO ROLLBACK UNTIL CONSISTENT?????
-        }
 
+        }
     }
+      */
 }
