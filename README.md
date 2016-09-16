@@ -59,7 +59,7 @@ MEILI Travel Diary - web interface that allows to annotate GPS trajectories
  fused with accelerometer readings into travel diaries
 
 Copyright &copy; 2014-2016 Adrian C. Prelipcean - http://adrianprelipcean.github.io/ 
-Copyright &copy; 2016 adIT AI - https://github.com/adIT-AI
+Copyright &copy: 2016 Badger AB - https://github.com/Badger-MEILI
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU Affero General Public License as
