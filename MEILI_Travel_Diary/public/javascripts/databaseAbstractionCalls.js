@@ -37,7 +37,7 @@ function getJson(str) {
  */
 function logFrontEndOperation(user_id, operation){
 
-    console.log('front end log ', operation);
+    /*console.log('front end log ', operation);
         var request = $.ajax({
             url: "/api/insertFrontEndLog",
             type: "POST",
@@ -45,9 +45,11 @@ function logFrontEndOperation(user_id, operation){
                 operation: operation },
             cache: false
         });
+    */
+    //request.done(function(msg) {console.log('inserted front end log')});
 
-    request.done(function(msg) {console.log('inserted front end log')});
-
+    var request = $.ajax({});
+    
     return request;
 }
 
