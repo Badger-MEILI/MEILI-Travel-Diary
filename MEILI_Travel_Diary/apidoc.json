@@ -1,0 +1,20 @@
+{
+  "name": "MEILI Travel Diary API",
+  "version": "0.2.0",
+  "description": "MEILI documentation",
+  "title": "MEILI v2",
+  "url" : "https://github.com/Badger-MEILI/MEILI-Travel-Diary/tree/apiv2",
+  "header": {
+    "title": "MEILI",
+    "filename": "header.md"
+  },
+  "footer": {
+    "title": "Copyright",
+    "filename": "footer.md"
+  },
+  "template": {
+  	"withCompare": true,
+  	"withGenerator": true
+  }
+}
+

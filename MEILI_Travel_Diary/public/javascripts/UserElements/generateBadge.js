@@ -8,7 +8,7 @@
 
     var request = $.ajax({
         url: "/apiv2/trips/getTripsForBadge",
-        type: "POST",
+        type: "GET",
         data: {user_id:user_id},
         cache: false
     });

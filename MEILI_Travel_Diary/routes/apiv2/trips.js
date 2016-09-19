@@ -7,10 +7,18 @@ var reqClient = require('../users');
 var apiClient = reqClient.client;
 var router = express.Router();
 
-// Gets the number of trips left to process for user
-router.post("/getTripsForBadge", function(req,res){
+/**
+ * @api {get} /trips/getTripsForBadge&:user_id Gets the number of trips that the user has to process
+ * @apiName GetTripsForBadge
+ * @apiGroup Trips
+ *
+ * @apiParam {Number} user_id Id of the user that requests the number of available unannotated trips.
+ *
+ * @apiSuccess {String} user_get_badge_trips_info Number of unannotated trips available to the user.
+ */
+router.get("/getTripsForBadge", function(req,res){
     var results = [];
-    var user_id = req.body.user_id;
+    var user_id = req.query.user_id;
     var sqlQuery = "select * from apiv2.user_get_badge_trips_info("+user_id+")";
 
     var logQuery = apiClient.query(sqlQuery);
