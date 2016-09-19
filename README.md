@@ -49,11 +49,11 @@ Want to contribute? Great! See the Todos list for needed improvements. Also, you
  - Look into licensing of images and clipart 
 
 ## Building the API docs 
-First, install apiDocs and then run
 
 ```sh
-cd MEILI-Travel-Diary/
-apidoc -i routes/apiv2/ -o apiDocs/
+$ npm install apidoc -g
+$ cd MEILI-Travel-Diary/
+$ apidoc -i routes/apiv2/ -o apiDocs/
 ```
 
 
