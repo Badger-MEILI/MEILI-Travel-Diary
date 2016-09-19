@@ -37,6 +37,7 @@ function getJson(str) {
  */
 function logFrontEndOperation(user_id, operation){
 
+    // TODO remove all the references to this function and replace with a proper library or drop logging alltogether
     /*console.log('front end log ', operation);
         var request = $.ajax({
             url: "/api/insertFrontEndLog",
@@ -49,7 +50,7 @@ function logFrontEndOperation(user_id, operation){
     //request.done(function(msg) {console.log('inserted front end log')});
 
     var request = $.ajax({});
-    
+
     return request;
 }
 

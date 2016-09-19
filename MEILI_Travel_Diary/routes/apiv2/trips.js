@@ -14,7 +14,7 @@ var router = express.Router();
  *
  * @apiParam {Number} user_id Id of the user that requests the number of available unannotated trips.
  *
- * @apiSuccess {String} user_get_badge_trips_info Number of unannotated trips available to the user.
+ * @apiSuccess {Number} user_get_badge_trips_info Number of unannotated trips available to the user.
  */
 router.get("/getTripsForBadge", function(req,res){
     var results = [];
@@ -29,23 +29,20 @@ router.get("/getTripsForBadge", function(req,res){
     })
 });
 
+
+/**
+ * @api {get} /trips/getLastTripOfUser&:user_id Gets the earliest unannotated trip of the user
+ * @apiName GetLastTripOfUser
+ * @apiGroup Trips
+ *
+ * @apiParam {Number} user_id Id of the user that requests the earliest unannotated trip
+ *
+ * @apiSuccess {Trip} Trip The json representation of a trip without its triplegs
+ */
 router.post("/getLastTripOfUser", function(req,res){
     var results = [];
     var user_id = req.body.user_id;
     var sqlQuery = "select * from apiv2.pagination_get_next_process("+user_id+")";
-
-    var logQuery = apiClient.query(sqlQuery);
-
-    logQuery.on('end', function(row){
-        results.push(row);
-        return res.json(results[0]);
-    })
-});
-
-router.post("/getTriplegsOfTrip", function(req,res){
-    var results = [];
-    var trip_id = req.body.trip_id;
-    var sqlQuery = "select * from apiv2.pagination_get_triplegs_of_trip("+trip_id+")";
 
     var logQuery = apiClient.query(sqlQuery);
 

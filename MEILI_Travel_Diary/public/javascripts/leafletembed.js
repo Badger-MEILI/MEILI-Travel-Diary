@@ -250,12 +250,18 @@ function initmap(thisUserId) {
                 assistantHelper.addEventListener("click", enablingListener);
                 enableMapScrolling();
             });
+
+
+                getTriplegsRequest.fail(function (jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR.responseText);
+                });
             }
             else {
                 alert('Please come back later, there are not enough trips to show you yet');
             }
 
         });
+
 
    // }
 }

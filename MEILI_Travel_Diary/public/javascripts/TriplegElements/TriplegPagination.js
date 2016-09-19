@@ -6,7 +6,7 @@ function getTriplegsOfTripRequest(trip_id){
         console.log('called for '+trip_id);
         var request = $.ajax({
             url: "/apiv2/triplegs/getTriplegsOfTrip",
-            type: "POST",
+            type: "GET",
             data: {trip_id:trip_id},
             cache: false
         });
