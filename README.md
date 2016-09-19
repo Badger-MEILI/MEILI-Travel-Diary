@@ -48,6 +48,15 @@ Want to contribute? Great! See the Todos list for needed improvements. Also, you
  - Remove / improve the in-memory storage of the trips that are being annotated to maintain consistency with the remote database
  - Look into licensing of images and clipart 
 
+## Building the API docs 
+First, install apiDocs and then run
+
+```sh
+cd MEILI-Travel-Diary/
+apidoc -i routes/apiv2/ -o apiDocs/
+```
+
+
 Need help setting up MEILI in production
 ----
 For any inquiries regarding setting up MEILI in production, you can contact the team leader for the MEILI system project (see http://adrianprelipcean.github.io/)
