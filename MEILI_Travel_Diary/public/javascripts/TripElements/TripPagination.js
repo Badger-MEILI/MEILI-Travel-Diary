@@ -5,7 +5,7 @@
 function getNextTripToProcess(user_id){
     var request = $.ajax({
         url: "/apiv2/trips/getLastTripOfUser",
-        type: "POST",
+        type: "GET",
         data: {user_id:user_id},
         cache: false
     });

@@ -228,7 +228,7 @@ function initmap(thisUserId) {
         nextTripRequest.done(function(msg) {
             console.log(msg);
 
-            var currentTrip = msg.rows[0];
+            var currentTrip = msg;
             if (currentTrip!=undefined){
             console.log(currentTrip);
             console.log(currentTrip.trip_id);
@@ -237,7 +237,7 @@ function initmap(thisUserId) {
 
             getTriplegsRequest.done(function(msg){
                 console.log(msg);
-                var triplegsOfCurrentTrip = msg.rows[0].pagination_get_triplegs_of_trip;
+                var triplegsOfCurrentTrip = msg.pagination_get_triplegs_of_trip;
                 copyOfTriplegs = jQuery.extend(true, [], triplegsOfCurrentTrip);
                 generateMap(thisUserId);
                 generateHTMLElements(currentTrip, triplegsOfCurrentTrip, thisUserId);

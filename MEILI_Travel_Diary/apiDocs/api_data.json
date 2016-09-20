@@ -59,6 +59,24 @@
     "title": "Gets the earliest unannotated trip of the user",
     "name": "GetLastTripOfUser",
     "group": "Trips",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": true,
+            "field": "404",
+            "description": "<p>UserIdInvalid The <code>user_id</code> is undefined or null.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": true,
+            "field": "406",
+            "description": "<p>UserCannotAnnotate The user with <code>user_id</code> does not have anny ttrips to annotate.</p>"
+          }
+        ]
+      }
+    },
     "parameter": {
       "fields": {
         "Parameter": [
@@ -95,6 +113,18 @@
     "title": "Gets the number of trips that the user has to process",
     "name": "GetTripsForBadge",
     "group": "Trips",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": true,
+            "field": "404",
+            "description": "<p>UserIdInvalid The <code>user_id</code> is undefined or null.</p>"
+          }
+        ]
+      }
+    },
     "parameter": {
       "fields": {
         "Parameter": [
