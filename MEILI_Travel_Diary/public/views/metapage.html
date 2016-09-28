@@ -25,57 +25,43 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <meta charset="UTF-8">
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script type="text/javascript" src="/javascripts/jquery.js"></script>
-    <script type="text/javascript" language="javascript" src="/javascripts/angular.min.js"></script>
-    <script type="text/javascript" language="javascript" src="/javascripts/angular-resource.min.js"></script>
-    <script type="text/javascript" language="javascript" src="/javascripts/angular-route.min.js"></script>
-    <script type="text/javascript" src="/javascripts/UserElements/generateBadge.js"></script>
-    <script type="text/javascript" src="/javascripts/TriplegElements/TriplegPagination.js"></script>
-    <script type="text/javascript" src="/javascripts/TripElements/TripPagination.js"></script>
 
-    <script type="text/javascript" src="/javascripts/translationOp.js"></script>
-    <script type="text/javascript" src="/javascripts/intro.js"></script>
-    <script type="text/javascript" src="/javascripts/d3.min.js"></script>
+    <!-- External libraries -->
+    <script type="text/javascript" src="/javascripts/lib/jquery.js"></script>
+    <script type="text/javascript" src="/javascripts/lib/angular.min.js"></script>
+    <script type="text/javascript" src="/javascripts/lib/angular-resource.min.js"></script>
+    <script type="text/javascript" src="/javascripts/lib/angular-route.min.js"></script>
 
-    <script type="text/javascript" src="/javascripts/graphVis.js"></script>
+    <script type="text/javascript" src="/javascripts/lib/intro.js"></script>
+    <link   type="text/css"       href="/javascripts/lib/introjs.css" rel="stylesheet"  />
 
-    <!--<script type="text/javascript" language="javascript" src="/javascripts/leaflet.js"></script>
-    <script type="text/javascript" language="javascript" src="/javascripts/angular-leaflet-directive.min.js"></script>-->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.js"></script>
+    <script type="text/javascript" src="/javascripts/lib/d3.min.js"></script>
 
+    <script type="text/javascript" src="/javascripts/lib/vis.js"></script>
+    <link   type="text/css"        href="/stylesheets/lib/vis.css" rel="stylesheet"  />
 
-    <script type="text/javascript" src="/javascripts/TriplegOperations.js"></script>
-    <script type="text/javascript" src="/javascripts/databaseAbstractionCalls.js"></script>
-    <script type="text/javascript" src="/javascripts/leafletembed.js"></script>
-    <script type="text/javascript" src="/javascripts/bootstrap.js"></script>
-    <script type="text/javascript" src="/javascripts/segmenter.js"></script>
+    <script type="text/javascript" src="/javascripts/lib/bootstrap.js"></script>
+    <link   type="text/css"       href="/javascripts/lib/bootstrap.css" rel="stylesheet" />
+    <script type="text/javascript" src="/javascripts/lib/timepicker.js"></script>
+    <link   type="text/css"       href="/javascripts/lib/bootstrap-timepicker.css" rel="stylesheet"  />
 
+    <script type="text/javascript" src="/javascripts/lib/leaflet_1.0.0/leaflet.js"></script>
+    <link   type="text/css"       href="/javascripts/lib/leaflet_1.0.0/leaflet.css" rel="stylesheet" />
 
-    <!--date picker-->
+    <!-- Custom scripts -->
+    <script type="text/javascript" src="/javascripts/src/UserElements/generateBadge.js"></script>
+    <script type="text/javascript" src="/javascripts/src/TriplegElements/TriplegPagination.js"></script>
+    <script type="text/javascript" src="/javascripts/src/TripElements/TripPagination.js"></script>
+    <script type="text/javascript" src="/javascripts/src/translationOp.js"></script>
+    <script type="text/javascript" src="/javascripts/src/graphVis.js"></script>
+    <script type="text/javascript" src="/javascripts/src/TriplegOperations.js"></script>
+    <script type="text/javascript" src="/javascripts/src/databaseAbstractionCalls.js"></script>
+    <script type="text/javascript" src="/javascripts/src/leafletembed.js"></script>
 
-    <script type="text/javascript" src="/javascripts/timepicker.js"></script>
-    <link href="/stylesheets/bootstrap-timepicker.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="/javascripts/src/app.js"></script>
 
-    <!--<script type="text/javascript" src="https://github.com/rendom/bootstrap-3-timepicker/blob/master/js/bootstrap-timepicker.js"></script>
-    <script type="text/javascript" src="http://dev.jtsage.com/cdn/datebox/latest/jqm-datebox.mode.datebox.min.js"></script>
-    <script type="text/javascript" src="http://cdn.jtsage.com/datebox/i18n/jquery.mobile.datebox.i18n.en_US.utf8.js"></script>-->
-
-    <!--end of date picker-->
-
-
-    <script type="text/javascript" language="javascript" src="/javascripts/app.js"></script>
-
-    <link href="/stylesheets/vis.css" rel="stylesheet" type="text/css" />
-    <link href="/stylesheets/bootstrap.css" rel="stylesheet" type="text/css" />
     <link href="/stylesheets/custom_elem.css" rel="stylesheet" type="text/css" />
-    <link href="/stylesheets/introjs.css" rel="stylesheet" type="text/css" />
 
-    <!--
-        <link href="/stylesheets/leaflet.css" rel="stylesheet" type="text/css" />
-    -->
-
-    <script type="text/javascript" language="javascript" src="/javascripts/vis.js"></script>
 
     <title>MEILI</title>
 
@@ -141,7 +127,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <a href="#/map">Trips left<span class="badge" id="tripsLeft">42</span></a></p>
             </ul>
             <script type="text/javascript">
-                forceLoad();
+               // forceLoad();
             </script>
         </div><!-- /.navbar-collapse -->
 
