@@ -219,7 +219,7 @@ router.get("/insertTransitionBetweenTriplegs", function(req,res){
     var from_travel_mode = req.query.from_travel_mode;
     var to_travel_mode =req.query.to_travel_mode;
 
-    if (trip_id == null || trip_id == undefined || trip_id == null || trip_id == undefined ||
+    if (trip_id == null || trip_id == undefined ||
         start_time== null || start_time== undefined || end_time== null || end_time== undefined ||
         from_travel_mode == null || from_travel_mode == undefined || to_travel_mode == null || to_travel_mode== undefined) {
         res.status(500);

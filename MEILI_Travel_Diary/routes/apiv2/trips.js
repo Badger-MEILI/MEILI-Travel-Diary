@@ -183,7 +183,7 @@ router.get("/updateEndTimeOfTrip", function(req,res){
  *
  * @apiParam {Number} trip_id Id of the trip that will be deleted
  *
- * @apiSuccess {Trip} Gets the json representation of the next trip to process for the user that performed the action.
+ * @apiSuccess {Trip} Trip Gets the json representation of the next trip to process for the user that performed the action.
  */
 router.get("/deleteTrip", function(req,res){
     var results = [];
@@ -218,6 +218,53 @@ router.get("/deleteTrip", function(req,res){
 
 // TODO - insert trip
 
+/**
+ * @api {get} /trips/insertPeriodBetweenTrips&:start_time&:end_time&:user_id Inserts a missed non movement period between two trips by splitting the existing affected trip
+ * @apiName InsertPeriodBetweenTris
+ * @apiGroup Trips
+ *
+ * @apiError [500] InvalidInput The parameters <code>user_id</code>, <code>start_time</code> or <code>end_time</code> are undefined, null or of wrong types.
+ * @apiError [500] SQLError SQL error traceback.
+ *
+ * @apiParam {Number} user_id Id of the user who inserts the period between trips
+ * @apiParam {Number} start_time Time at which the non movement period started
+ * @apiParam {Number} end_time Time at which the non movement period ended
+ *
+ * @apiSuccess {Trip} Trip Gets the json representation of the next trip to process for the user that performed the action.
+ */
+router.get("/insertTransitionBetweenTriplegs", function(req,res){
+    var results = [];
+    var user_id = req.query.user_id;
+    var start_time = req.query.start_time;
+    var end_time = req.query.end_time;
+
+    if (user_id == null || user_id == undefined ||
+        start_time== null || start_time== undefined || end_time== null || end_time== undefined ) {
+        res.status(500);
+        res.send("Invalid input parameters");
+        return res;
+    }
+
+    else
+    {
+        var sqlQuery = "select * from apiv2.insert_stationary_trip_for_user($bd$"+ start_time +"$bd$,$bd$"+ end_time +"$bd$,$bd$"+ user_id+"$bd)";
+        var prioryQuery = apiClient.query(sqlQuery);
+
+        prioryQuery.on('row', function (row) {
+            if (row.pagination_get_next_process!=null)
+                results.push(row);
+        });
+
+        prioryQuery.on('error', function(row){
+            res.status(500);
+            res.send(row);
+        });
+
+        prioryQuery.on('end', function () {
+            return res.json(results[0]);
+        });
+    }
+});
 
 // TODO - specify purpose of trip
 
