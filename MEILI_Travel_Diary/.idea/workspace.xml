@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1e2cf684-ae55-4d7a-8e15-763edce44804" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/routes/apiv2/triplegs.js" afterPath="$PROJECT_DIR$/routes/apiv2/triplegs.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/routes/apiv2/trips.js" afterPath="$PROJECT_DIR$/routes/apiv2/trips.js" />
     </list>
     <ignored path="foo.iws" />
@@ -98,21 +99,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="triplegs.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="triplegs.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/routes/apiv2/triplegs.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="5832" max-vertical-offset="6354">
-              <caret line="347" column="23" selection-start-line="347" selection-start-column="23" selection-end-line="347" selection-end-column="23" />
+            <state vertical-scroll-proportion="0.7241379" vertical-offset="5832" max-vertical-offset="6354">
+              <caret line="345" column="35" selection-start-line="345" selection-start-column="35" selection-end-line="345" selection-end-column="35" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="trips.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="trips.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/routes/apiv2/trips.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.7241379" vertical-offset="5238" max-vertical-offset="5760">
-              <caret line="312" column="41" selection-start-line="312" selection-start-column="0" selection-end-line="312" selection-end-column="41" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="5976" max-vertical-offset="6588">
+              <caret line="358" column="33" selection-start-line="358" selection-start-column="33" selection-end-line="358" selection-end-column="33" />
               <folding />
             </state>
           </provider>
@@ -187,8 +188,8 @@
         <option value="$PROJECT_DIR$/public/javascripts/leafletembed.js" />
         <option value="$PROJECT_DIR$/routes/apiv2/pois.js" />
         <option value="$PROJECT_DIR$/app.js" />
-        <option value="$PROJECT_DIR$/routes/apiv2/triplegs.js" />
         <option value="$PROJECT_DIR$/routes/apiv2/trips.js" />
+        <option value="$PROJECT_DIR$/routes/apiv2/triplegs.js" />
       </list>
     </option>
   </component>
@@ -1029,18 +1030,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/routes/apiv2/triplegs.js">
+    <entry file="file://$PROJECT_DIR$/routes/apiv2/trips.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="5832" max-vertical-offset="6354">
-          <caret line="347" column="23" selection-start-line="347" selection-start-column="23" selection-end-line="347" selection-end-column="23" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="5976" max-vertical-offset="6588">
+          <caret line="358" column="33" selection-start-line="358" selection-start-column="33" selection-end-line="358" selection-end-column="33" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/routes/apiv2/trips.js">
+    <entry file="file://$PROJECT_DIR$/routes/apiv2/triplegs.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7241379" vertical-offset="5238" max-vertical-offset="5760">
-          <caret line="312" column="41" selection-start-line="312" selection-start-column="0" selection-end-line="312" selection-end-column="41" />
+        <state vertical-scroll-proportion="0.7241379" vertical-offset="5832" max-vertical-offset="6354">
+          <caret line="345" column="35" selection-start-line="345" selection-start-column="35" selection-end-line="345" selection-end-column="35" />
           <folding />
         </state>
       </provider>

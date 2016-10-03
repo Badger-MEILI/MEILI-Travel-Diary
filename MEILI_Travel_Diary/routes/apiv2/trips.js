@@ -310,6 +310,52 @@ router.get("/updatePurposeOfTrip", function(req,res){
     }
 });
 
-// TODO - specify destination POI of trip
+/**
+ * @api {get} /trips/updateDestinationPoiIdOfTrip&:trip_id&:destination_poi_id Updates the destination poi id of a trip
+ * @apiName UpdateDestinationPoiIdOfTrip
+ * @apiGroup Trips
+ *
+ * @apiError [500] InvalidInput The parameters <code>trip_id</code> or <code>destination_poi_id</code> are undefined, null or of wrong types.
+ * @apiError [500] SQLError SQL error traceback.
+ *
+ * @apiParam {Number} trip_id Id of the trip that will have its destination poi id updated
+ * @apiParam {Number} destination_poi_id The new value for the destination_poi_id
+ *
+ * @apiSuccess {Boolean} Boolean The success state of the operation.
+ */
+router.get("/updateDestinationPoiIdOfTrip", function(req,res){
+    var results = [];
+    var trip_id = req.query.trip_id;
+    var destination_poi_id = req.query.destination_poi_id;
+
+    if (trip_id == null || trip_id == undefined || destination_poi_id == null || destination_poi_id == undefined) {
+        res.status(500);
+        res.send("Invalid input parameters");
+        return res;
+    }
+
+    else
+    {
+        var sqlQuery = "select * from apiv2.update_trip_destination_poi_id($bd$"+destination_poi_id+"$bd$, $bd$"+trip_id+"$bd$)";
+        var prioryQuery = apiClient.query(sqlQuery);
+
+        prioryQuery.on('row', function (row) {
+            results.push(row);
+        });
+
+        prioryQuery.on('error', function(row){
+            res.status(500);
+            res.send(row);
+            // res.send("Request failed with parameters trip_id: "+ trip_id+" and start_time "+new_start_time);
+        });
+
+        prioryQuery.on('end', function () {
+            if (results.length<0) return res.json(false);
+            return res.json(results[0]);
+        });
+    }
+});
+
+// TODO -> confirm annotated trip
 
 module.exports = router;
