@@ -12,7 +12,7 @@ var router = express.Router();
  * @apiName GetTripsForBadge
  * @apiGroup Trips
  *
- * @apiError [404] UserIdInvalid The <code>user_id</code> is undefined or null.
+ * @apiError [500] UserIdInvalid The <code>user_id</code> is undefined or null.
  *
  * @apiParam {Number} user_id Id of the user that requests the number of available unannotated trips.
  *
@@ -23,7 +23,7 @@ router.get("/getTripsForBadge", function(req,res){
     var user_id = req.query.user_id;
 
     if (user_id == null || user_id == undefined) {
-        res.status(404);
+        res.status(500);
         res.send("Invalid user id");
         return res;
     }
@@ -80,5 +80,12 @@ router.get("/getLastTripOfUser", function(req,res){
         })
     }
 });
+
+// TODO - update trip start time
+// TODO - update trip end time
+// TODO - delete trip
+// TODO - insert trip
+// TODO - specify purpose of trip
+// TODO - specify destination POI of trip
 
 module.exports = router;

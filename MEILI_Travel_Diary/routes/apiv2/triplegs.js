@@ -253,4 +253,7 @@ router.get("/insertTransitionBetweenTriplegs", function(req,res){
 //TODO - these are bits of code that are not implemented / tested yet -> move the todo list below when a function is cleared out
 // Any functions that are missing?
 
+// TODO - set travel mode of tripleg
+// TODO - set transition poi of tripleg
+
 module.exports = router;
