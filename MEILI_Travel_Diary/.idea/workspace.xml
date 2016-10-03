@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1e2cf684-ae55-4d7a-8e15-763edce44804" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/routes/apiv2/triplegs.js" afterPath="$PROJECT_DIR$/routes/apiv2/triplegs.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/routes/apiv2/trips.js" afterPath="$PROJECT_DIR$/routes/apiv2/trips.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="foo.iws" />
@@ -99,21 +99,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="triplegs.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="triplegs.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/routes/apiv2/triplegs.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.4827586" vertical-offset="1296" max-vertical-offset="6354">
-              <caret line="86" column="119" selection-start-line="86" selection-start-column="119" selection-end-line="86" selection-end-column="119" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="5832" max-vertical-offset="6354">
+              <caret line="347" column="23" selection-start-line="347" selection-start-column="23" selection-end-line="347" selection-end-column="23" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="trips.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="trips.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/routes/apiv2/trips.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="4410" max-vertical-offset="5022">
-              <caret line="270" column="0" selection-start-line="270" selection-start-column="0" selection-end-line="270" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.82758623" vertical-offset="2358" max-vertical-offset="5022">
+              <caret line="155" column="109" selection-start-line="155" selection-start-column="109" selection-end-line="155" selection-end-column="109" />
               <folding />
             </state>
           </provider>
@@ -188,8 +188,8 @@
         <option value="$PROJECT_DIR$/public/javascripts/leafletembed.js" />
         <option value="$PROJECT_DIR$/routes/apiv2/pois.js" />
         <option value="$PROJECT_DIR$/app.js" />
-        <option value="$PROJECT_DIR$/routes/apiv2/trips.js" />
         <option value="$PROJECT_DIR$/routes/apiv2/triplegs.js" />
+        <option value="$PROJECT_DIR$/routes/apiv2/trips.js" />
       </list>
     </option>
   </component>
@@ -1030,18 +1030,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/routes/apiv2/trips.js">
+    <entry file="file://$PROJECT_DIR$/routes/apiv2/triplegs.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="4410" max-vertical-offset="5022">
-          <caret line="270" column="0" selection-start-line="270" selection-start-column="0" selection-end-line="270" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="5832" max-vertical-offset="6354">
+          <caret line="347" column="23" selection-start-line="347" selection-start-column="23" selection-end-line="347" selection-end-column="23" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/routes/apiv2/triplegs.js">
+    <entry file="file://$PROJECT_DIR$/routes/apiv2/trips.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4827586" vertical-offset="1296" max-vertical-offset="6354">
-          <caret line="86" column="119" selection-start-line="86" selection-start-column="119" selection-end-line="86" selection-end-column="119" />
+        <state vertical-scroll-proportion="0.82758623" vertical-offset="2358" max-vertical-offset="5022">
+          <caret line="155" column="109" selection-start-line="155" selection-start-column="109" selection-end-line="155" selection-end-column="109" />
           <folding />
         </state>
       </provider>

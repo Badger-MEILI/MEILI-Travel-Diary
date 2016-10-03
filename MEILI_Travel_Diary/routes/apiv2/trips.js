@@ -107,7 +107,7 @@ router.get("/updateStartTimeOfTrip", function(req,res){
 
     else
     {
-        var sqlQuery = "select * from apiv2.update_trip_start_time("+trip_id+",$bd$"+new_start_time+"$bd$)";
+        var sqlQuery = "select * from apiv2.update_trip_start_time($bd$"+new_start_time+"$bd$, $bd$"+trip_id+"$bd$)";
         var prioryQuery = apiClient.query(sqlQuery);
 
         prioryQuery.on('row', function (row) {
@@ -153,7 +153,7 @@ router.get("/updateEndTimeOfTrip", function(req,res){
 
     else
     {
-        var sqlQuery = "select * from apiv2.update_trip_end_time("+trip_id+",$bd$"+new_end_time+"$bd$)";
+        var sqlQuery = "select * from apiv2.update_trip_end_time($bd$"+new_end_time+"$bd$,$bd$"+trip_id+"$bd$)";
         var prioryQuery = apiClient.query(sqlQuery);
 
         prioryQuery.on('row', function (row) {
