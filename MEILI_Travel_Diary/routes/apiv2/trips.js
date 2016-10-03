@@ -44,8 +44,8 @@ router.get("/getTripsForBadge", function(req,res){
  * @apiName GetLastTripOfUser
  * @apiGroup Trips
  *
- * @apiError [404] UserIdInvalid The <code>user_id</code> is undefined or null.
- * @apiError [406] UserCannotAnnotate The user with <code>user_id</code> does not have anny ttrips to annotate.
+ * @apiError [500] UserIdInvalid The <code>user_id</code> is undefined or null.
+ * @apiError [500] UserCannotAnnotate The user with <code>user_id</code> does not have any trips to annotate.
  *
  * @apiParam {Number} user_id Id of the user that requests the earliest unannotated trip
  *
@@ -56,7 +56,7 @@ router.get("/getLastTripOfUser", function(req,res){
     var user_id = req.query.user_id;
 
     if (user_id == null || user_id == undefined) {
-        res.status(404);
+        res.status(500);
         res.send("Invalid user id");
         return res;
     }
@@ -73,7 +73,7 @@ router.get("/getLastTripOfUser", function(req,res){
             if (results.length>0)
                 return res.json(results[0]);
             else {
-                res.status(406);
+                res.status(500);
                 res.send("The user does not have any trips to process");
                 return res
             }
@@ -81,11 +81,64 @@ router.get("/getLastTripOfUser", function(req,res){
     }
 });
 
-// TODO - update trip start time
+/**
+ * @api {get} /trips/updateStartTimeOfTrip&:trip_id&:start_time Updates the start time of a trip
+ * @apiName UpdateStartTimeOfTrip
+ * @apiGroup Trips
+ *
+ * @apiError [500] InvalidInput The parameters <code>trip_id</code> or <code>start_time</code> are undefined, null or of wrong types.
+ * @apiError [500] SQLError SQL error traceback.
+ *
+ * @apiParam {Number} trip_id Id of the trip that will have its start date modified.
+ * @apiParam {Number} start_time The new value for the start time of the specified trip
+ *
+ * @apiSuccess {Tripleg[]} Triplegs An array of json objects that represent the triplegs of the trip after update
+ */
+router.get("/updateStartTimeOfTrip", function(req,res){
+    var results = [];
+    var trip_id = req.query.trip_id;
+    var new_start_time = req.query.start_time;
+
+    if (trip_id == null || trip_id == undefined || new_start_time == null || new_start_time == undefined) {
+        res.status(500);
+        res.send("Invalid input parameters");
+        return res;
+    }
+
+    else
+    {
+        var sqlQuery = "select * from apiv2.update_trip_end_time("+trip_id+",$bd$"+new_start_time+"$bd$)";
+        var prioryQuery = apiClient.query(sqlQuery);
+
+        prioryQuery.on('row', function (row) {
+            if (row.pagination_get_triplegs_of_trip!=null)
+                results.push(row);
+        });
+
+        prioryQuery.on('error', function(row){
+            res.status(500);
+            res.send(row);
+            // res.send("Request failed with parameters trip_id: "+ trip_id+" and start_time "+new_start_time);
+        });
+
+        prioryQuery.on('end', function () {
+            return res.json(results[0]);
+        });
+    }
+});
+
 // TODO - update trip end time
+
+
 // TODO - delete trip
+
+
 // TODO - insert trip
+
+
 // TODO - specify purpose of trip
+
+
 // TODO - specify destination POI of trip
 
 module.exports = router;
