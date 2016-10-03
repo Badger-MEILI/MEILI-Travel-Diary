@@ -1,10 +1,67 @@
 /**
  * Created by adi on 2016-10-03.
  */
+
 var express = require('express');
+var reqClient = require('../users');
+var apiClient = reqClient.client;
 var router = express.Router();
 
-// TODO - insert transition POIs
+/**
+ * @api {get} /pois/insertTransportationPoi&:name_&:latitude&:longitude&:declaring_user_id&:transportation_lines&:transportation_types Inserts a new transportation POI declared by a user
+ * @apiName InsertTransportaionPoi
+ * @apiGroup POIs
+ *
+ * @apiError [500] InvalidInput The parameters <code>name_</code>, <code>latitude</code>, <code>longitude</code>, <code>declaring_user_id</code> are undefined, null or of wrong types.
+ * @apiError [500] SQLError SQL error traceback.
+ *
+ * @apiParam {String} name_ Name of the inserted POI
+ * @apiParam {Number} latitude Latitude of the inserted POI
+ * @apiParam {Number} longitude Longitude of the inserted POI
+ * @apiParam {Number} declaring_user_id Id of the user that inserts the POI
+ * @apiParam {Number} transportation_lines(optional) The text representation of transport lines entered by the user
+ * @apiParam {Number} transportation_types(optional) The types of travel modes that are accessible to the station
+ *
+ * @apiSuccess {Id} The id of the inserted transportation POI.
+ */
+router.get("/inserTransportationPoi", function(req,res){
+    var results = [];
+    var name_ = req.query.name_;
+    var latitude = req.query.latitude;
+    var longitude = req.query.longitude;
+    var declaring_user_id = req.query.declaring_user_id;
+    var transportation_lines = (req.query.transportation_lines == undefined) ? "" : req.query.transportation_lines;
+    var transportation_types = (req.query.transportation_types == undefined) ? "" : req.query.transportation_types;
+
+    if (name_ == null || name_ == undefined || latitude == null || latitude== undefined
+        || longitude == null || longitude == undefined || declaring_user_id == null || declaring_user_id== undefined ) {
+        res.status(500);
+        res.send("Invalid input parameters");
+        return res;
+    }
+
+    else
+    {
+        var sqlQuery = "select * from apiv2.insert_transition_poi($bd$"+name_+"$bd$,$bd$"+ latitude+"$bd$,$bd$"+longitude+"$bd$,$bd$"
+            +declaring_user_id+"$bd$,$bd$"+ transportation_lines+"$bd$,$bd$"+transportation_types+"$bd$)";
+
+        var prioryQuery = apiClient.query(sqlQuery);
+
+        prioryQuery.on('row', function (row) {
+            results.push(row);
+        });
+
+        prioryQuery.on('error', function(row){
+            res.status(500);
+            res.send(row);
+        });
+
+        prioryQuery.on('end', function () {
+            return res.json(results[0]);
+        });
+    }
+});
+
 
 // TODO - insert destination POIs
 
