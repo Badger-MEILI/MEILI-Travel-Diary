@@ -600,8 +600,8 @@ function checkCurrentTrip(){
         if (currentTrip.triplegs[i].type_of_tripleg==1){
             currentTrip.triplegs[i].mode.sort(compare);
             // console.log(currentTrip.triplegs[i].mode[0]);
-        if (currentTrip.triplegs[i].mode[0].certainty<=50) {
-            console.log('failed tripleg '+currentTrip.triplegs[i].triplegid+' test '+currentTrip.triplegs[i].mode[0].certainty);
+        if (currentTrip.triplegs[i].mode[0].accuracy<=50) {
+            console.log('failed tripleg '+currentTrip.triplegs[i].triplegid+' test '+currentTrip.triplegs[i].mode[0].accuracy);
             return false;
         }
         }
@@ -896,7 +896,7 @@ function showAndAddDataForModal(tripleg, initialTime, endTime, startBoundary, st
         if (getLanguage()=="en")
             paragraphInform.innerHTML = 'Your modifications will shift the previous tripleg to '+ getPointFormatedDate(new Date(initialTime));
         else
-            paragraphInform.innerHTML = 'Dina justeringar kommer att medföra att din föregående förflyttning justeras till '+ getPointFormatedDate(new Date(initialTime));
+            paragraphInform.innerHTML = 'Dina justeringar kommer att medföra att din föregående förflyttning justeras till '+ getPointFormatedDate(new Date(initialTime));
     }*/
     else
     {
@@ -905,7 +905,7 @@ function showAndAddDataForModal(tripleg, initialTime, endTime, startBoundary, st
         /*if (getLanguage()=="en")
 
         else
-            paragraphInform.innerHTML = 'Dina justeringar kommer att medföra att din nästa förflyttning justeras till '+getPointFormatedDate(new Date(endTime));*/
+            paragraphInform.innerHTML = 'Dina justeringar kommer att medföra att din nästa förflyttning justeras till '+getPointFormatedDate(new Date(endTime));*/
     }
     $('#transitionAlertModal').modal('show');
 }
@@ -958,14 +958,14 @@ function showAndAddDataForLongModal(tripleg, initialTime, endTime, startBoundary
             //if (getLanguage()=="en")
                 paragraphInform.innerHTML = 'Your modifications will shift the previous tripleg to '+ getPointFormatedDate(new Date(initialTime));
             /*else
-                paragraphInform.innerHTML = 'Dina justeringar kommer att medföra att din föregående förflyttning justeras till '+ getPointFormatedDate(new Date(initialTime));*/
+                paragraphInform.innerHTML = 'Dina justeringar kommer att medföra att din föregående förflyttning justeras till '+ getPointFormatedDate(new Date(initialTime));*/
         }
         else if (tripleg.triplegid==startBoundary.triplegid && tripleg.triplegid!=stopBoundary.triplegid)
         {
             //if (getLanguage()=="en")
                 paragraphInform.innerHTML = 'Your modifications will shift the next tripleg to '+ getPointFormatedDate(new Date(endTime));
             /*else
-                paragraphInform.innerHTML = 'Dina justeringar kommer att medföra att din nästa förflyttning justeras till '+ getPointFormatedDate(new Date(endTime));*/
+                paragraphInform.innerHTML = 'Dina justeringar kommer att medföra att din nästa förflyttning justeras till '+ getPointFormatedDate(new Date(endTime));*/
         }
 
 
@@ -976,7 +976,7 @@ function showAndAddDataForLongModal(tripleg, initialTime, endTime, startBoundary
             //if (getLanguage()=="en")
                 paragraphAlert.innerHTML='You will delete the following trip legs:';
             /*else
-                paragraphAlert.innerHTML='Du tar nu bort dessa förflyttningar:';*/
+                paragraphAlert.innerHTML='Du tar nu bort dessa förflyttningar:';*/
         }
 
         console.log(triplegsInside);
@@ -998,7 +998,7 @@ function showAndAddDataForLongModal(tripleg, initialTime, endTime, startBoundary
         //if (getLanguage()=="en")
             paragraphInform.innerHTML = 'You will delete all the other triplegs in the trip';
         /*else
-            paragraphInform.innerHTML = 'Du tar nu bort alla andra förflyttningar inom denna resa';*/
+            paragraphInform.innerHTML = 'Du tar nu bort alla andra förflyttningar inom denna resa';*/
     }
 
     $('#transitionAlertModal').modal('show');
@@ -1517,7 +1517,7 @@ function checkTemporalIntegrityRules(fromDate, toDate, triplegStartDate, tripleg
         //if (getLanguage()=="en")
             alert ('Modifications are allowed only within the current tripleg\'s time frame');
         /*else
-            alert ('Justering är bara tillåten inom ramen för den aktuella förflyttningens tidsperiod');*/
+            alert ('Justering är bara tillåten inom ramen för den aktuella förflyttningens tidsperiod');*/
     }
     else
     {
@@ -1532,7 +1532,7 @@ function checkTemporalIntegrityRules(fromDate, toDate, triplegStartDate, tripleg
             //if (getLanguage()=="en")
                 alert ('Start of the transfer cannot be later than the end of the transfer');
             /*else
-                alert ('Starttiden för bytet kan inte vara senare än sluttiden ');*/
+                alert ('Starttiden för bytet kan inte vara senare än sluttiden ');*/
         }
         else
         {
@@ -1706,7 +1706,7 @@ function splitTripLeg(id, fromDate, toDate, triplegStartDate, triplegEndDate, mo
     if (modeFrom!=undefined)
     {tripLegA.mode[0]={};
     tripLegA.mode[0].id = modeFrom;
-    tripLegA.mode[0].certainty ="100";
+    tripLegA.mode[0].accuracy ="100";
     tripLegA.mode[0].name = getMode(modeFrom);}
     tripLegA.mode = tripLegA.mode.concat(getRestOfModes(modeFrom));
 
@@ -1714,7 +1714,7 @@ function splitTripLeg(id, fromDate, toDate, triplegStartDate, triplegEndDate, mo
     if (modeTo!=undefined){
     tripLegB.mode[0]={};
     tripLegB.mode[0].id = modeTo;
-    tripLegB.mode[0].certainty ="100";
+    tripLegB.mode[0].accuracy ="100";
         tripLegB.mode[0].name = getMode(modeTo);}
     tripLegB.mode = tripLegB.mode.concat(getRestOfModes(modeTo));
 
@@ -1973,11 +1973,11 @@ function comparePurpose(a,b) {
  * @returns {number} - indicator as to where the element's position should be as reported to the other element
  */
 function compare(a,b) {
-    if (a.certainty < b.certainty) {
+    if (a.accuracy < b.accuracy) {
         return 1;
     }
 
-    if (a.certainty > b.certainty)
+    if (a.accuracy > b.accuracy)
     {
         return -1;
     }
@@ -2053,7 +2053,7 @@ function getMode(id){
 
         var newObject = {};
         newObject.id=id;
-        newObject.certainty="0";
+        newObject.accuracy="0";
         if (id == 1) newObject.name = 'Walk'; newObject.name_sv = 'Till fots';
         if (id == 2) newObject.name = 'Bicycle'; newObject.name_sv = 'Cykel';
         if (id == 3) newObject.name = 'Moped / Motorcycle'; newObject.name_sv = 'Moped / Mc';
@@ -2077,7 +2077,7 @@ function getModeSwedish(id){
 
     var newObject = {};
     newObject.id=id;
-    newObject.certainty="0";
+    newObject.accuracy="0";
     if (id == 1) {newObject.name = 'Walk'; newObject.name_sv = 'Till fots';}
     if (id == 2) {newObject.name = 'Bicycle'; newObject.name_sv = 'Cykel';}
     if (id == 3) {newObject.name = 'Moped / Motorcycle'; newObject.name_sv = 'Moped / Mc';}
@@ -2110,7 +2110,7 @@ function getRestOfModes(id){
         if (id!=modesArray[i]){
             var newObject = {};
             newObject.id=modesArray[i];
-            newObject.certainty="0";
+            newObject.accuracy="0";
             if (modesArray[i] == 1) newObject.name = 'Walk'; newObject.name_sv = 'Till fots';
             if (modesArray[i] == 2) newObject.name = 'Bicycle'; newObject.name_sv = 'Cykel';
             if (modesArray[i] == 3) newObject.name = 'Moped / Motorcycle'; newObject.name_sv = 'Moped / Mc';
@@ -2144,7 +2144,7 @@ function getColor(mode){
 
     console.log(mode[0]);
 
-    if (mode[0].certainty<50){
+    if (mode[0].accuracy<50){
         return 'red';
     }
     else {
@@ -2435,11 +2435,11 @@ function generateModal(triplegid){
         html+= '<br>';
 
         html+= '<div class="input-group bootstrap-timepicker">';
-        html+= 'Bytet påbörjades: <input id="timepickerStartTransition'+triplegid+'" type="text" class="input-small"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>';
+        html+= 'Bytet påbörjades: <input id="timepickerStartTransition'+triplegid+'" type="text" class="input-small"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>';
         html+= '</div>';
 
         html+= '<div class="input-group bootstrap-timepicker">';
-        html+= 'Bytet avslutades: <input id="timepickerStopTransition'+triplegid+'" type="text" class="input-small"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>';
+        html+= 'Bytet avslutades: <input id="timepickerStopTransition'+triplegid+'" type="text" class="input-small"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>';
         html+= '</div>';
 
         html+= '<button type="button" class="btn btn-default center-block" style="width:48%; display:inline-block; margin-left:5px" onclick="requestTimeConfirmation(\''+triplegid+'\')">Acceptera</button>';
@@ -2839,7 +2839,7 @@ function getPlaceSelector(places){
         //if (getLanguage()=="en")
             html+='<option value="-1" disabled selected style="display:none;" lang="en">Specify your destination</option>';
         /*else
-            html+='<option value="-1" disabled selected style="display:none;" lang="sv">Ange din målpunkt</option>';*/
+            html+='<option value="-1" disabled selected style="display:none;" lang="sv">Ange din målpunkt</option>';*/
     }
 
     for (var i=0; i<places.length;i++){
@@ -2967,13 +2967,13 @@ function getSelector(mode, triplegid){
     console.log(triplegid);
     console.log(mode);
     mode.sort(compare);
-    var maxVal = mode[0].certainty;
+    var maxVal = mode[0].accuracy;
 
 
     if (maxVal<50) {
         var selector = '<select id="selectbasic'+triplegid+'" name="selectbasic" class="form-control form-need-check">';
         selector+='<option lang="en" value="-1" disabled selected style="display:none;">Specify your travel mode</option>';
-        //selector+='<option lang="sv" value="-1" disabled selected style="display:none;">Ange ditt färdsätt</option>';
+        //selector+='<option lang="sv" value="-1" disabled selected style="display:none;">Ange ditt färdsätt</option>';
         console.log('nomax');
     }
     else
@@ -3022,14 +3022,14 @@ function getTransitionPlace(tripleg, isLast){
  */
 function getTransitionTimeContent(triplegid){
 
-    for (var i=0; i<currentTrip.triplegs.length; i++) {
-        if (currentTrip.triplegs[i].triplegid == triplegid) {
-            if (i == currentTrip.triplegs.length - 1) {
+    for (var i=0; i<copyOfTriplegs.length; i++) {
+        if (copyOfTriplegs[i].triplegid == triplegid) {
+            if (i == copyOfTriplegs.length - 1) {
                 var returnPar='';
             }
             else {
-                var dateFrom = new Date(currentTrip.triplegs[i].points[currentTrip.triplegs[i].points.length - 1].time);
-                var dateTo = new Date(currentTrip.triplegs[i+2].points[0].time);
+                var dateFrom = new Date(copyOfTriplegs[i].points[copyOfTriplegs[i].points.length - 1].time);
+                var dateTo = new Date(copyOfTriplegs[i+2].points[0].time);
                 var timeDiff = Math.abs(dateTo.getTime() - dateFrom.getTime());
                 var minutesDiff = Math.ceil(timeDiff / (1000 * 60));
               //  if (getLanguage()=="en")
@@ -3094,7 +3094,7 @@ function generateFirstTimelineElement(currentTrip){
     if (previousPurpose!=null) {
         /* Add see previous button */
 
-       //thisHtml += '<div class="tldatecontrol"> <p lang="en"><i class="glyphicon glyphicon-arrow-down"></i> Process the next trip <i class="glyphicon glyphicon-arrow-down"></i> </p>';// <p lang="sv"><i class="glyphicon glyphicon-arrow-down"></i> Gå till nästa förflyttning <i class="glyphicon glyphicon-arrow-down"></i> </p>';
+       //thisHtml += '<div class="tldatecontrol"> <p lang="en"><i class="glyphicon glyphicon-arrow-down"></i> Process the next trip <i class="glyphicon glyphicon-arrow-down"></i> </p>';// <p lang="sv"><i class="glyphicon glyphicon-arrow-down"></i> Gå till nästa förflyttning <i class="glyphicon glyphicon-arrow-down"></i> </p>';
 
         thisHtml += '<div class="tldatecontrol" id="seePrevious"> <p lang="en"> <i class="glyphicon glyphicon-arrow-up"></i> See previous trip <i class="glyphicon glyphicon-arrow-up"></i> </p>';// <p lang="sv"><i class="glyphicon glyphicon-arrow-up"></i> Gå tillbaka till den senaste förflyttningen <i class="glyphicon glyphicon-arrow-up"></i> </p>';
         thisHtml += '</div>';
@@ -3229,7 +3229,7 @@ function generateLastTimelineElement(currentTrip){
 
         /* Add process next trip */
         thisHtml += '<li id="processNext">';
-        thisHtml += '<div class="tldatecontrol"> <p lang="en"><i class="glyphicon glyphicon-arrow-down"></i> Process the next trip <i class="glyphicon glyphicon-arrow-down"></i> </p>';// <p lang="sv"><i class="glyphicon glyphicon-arrow-down"></i> Gå till nästa förflyttning <i class="glyphicon glyphicon-arrow-down"></i> </p>';
+        thisHtml += '<div class="tldatecontrol"> <p lang="en"><i class="glyphicon glyphicon-arrow-down"></i> Process the next trip <i class="glyphicon glyphicon-arrow-down"></i> </p>';// <p lang="sv"><i class="glyphicon glyphicon-arrow-down"></i> Gå till nästa förflyttning <i class="glyphicon glyphicon-arrow-down"></i> </p>';
         thisHtml += '</div>';
         thisHtml += '</li>';
     }
@@ -3306,6 +3306,7 @@ function getTransitionPanel(tripleg, isLast){
     if (!isLast){
 
                 var currentMode = tripleg.mode;
+
                 currentMode.sort(compare);
 
                 var nextMode = getNextTripleg(tripleg).mode;
@@ -3313,12 +3314,12 @@ function getTransitionPanel(tripleg, isLast){
 
                 correspondingTransitionId = getNextPassiveTripleg(tripleg).triplegid;
 
-                if (currentMode[0].certainty >= 50){
+                if (currentMode[0].accuracy >= 50){
                     transitionFrom = getMode(currentMode[0].id);
                     transitionFromSv = getModeSwedish(currentMode[0].id);
                 }
 
-                if (nextMode[0].certainty >= 50){
+                if (nextMode[0].accuracy >= 50){
                     transitionTo = getMode(nextMode[0].id);
                     transitionToSv = getModeSwedish(nextMode[0].id);
                 }
@@ -3337,8 +3338,9 @@ function getTransitionPanel(tripleg, isLast){
 
 
         var transitionPanel= '<li><div class="tldate" id="tldate'+correspondingTransitionId+'">';
+        console.log('generated '+'tldate'+correspondingTransitionId);
         transitionPanel+= '<p lang="en">'+ timeFrom+' - '+timeTo +' - Tranferred from '+ transitionFrom+' to '+transitionTo +'</p>';
-   //     transitionPanel+= '<p lang="sv">'+ timeFrom+' - '+timeTo +' - Byte av färdsätt från '+ transitionFromSv+' till '+transitionToSv +'</p>';
+   //     transitionPanel+= '<p lang="sv">'+ timeFrom+' - '+timeTo +' - Byte av färdsätt från '+ transitionFromSv+' till '+transitionToSv +'</p>';
         transitionPanel+= '</div></li>';
     }
 
@@ -3352,7 +3354,7 @@ function getTransitionPanel(tripleg, isLast){
 function updateTransitionPanel(tripleg){
     // ONE UPDATE
 
-    console.log("UPDATING "+tripleg);
+    console.log("UPDATING "+tripleg.triplegid);
     var nextId = '-1';
     var nextIntermId = '-1';
     var prevIntermId = '-1';
@@ -3362,8 +3364,8 @@ function updateTransitionPanel(tripleg){
 
             if (getPrevTripleg(tripleg)!=undefined) prevId = getPrevTripleg(tripleg).triplegid;
             if (getNextTripleg(tripleg)!=undefined) nextId = getNextTripleg(tripleg).triplegid;
-            if (getNextPassiveTripleg(tripleg)!=undefined) nextIntermId = getNextPassiveTripleg().triplegid;
-            if (getPrevPassiveTripleg(tripleg)!=undefined) prevIntermId = getPrevPassiveTripleg().triplegid;
+            if (getNextPassiveTripleg(tripleg)!=undefined) nextIntermId = getNextPassiveTripleg(tripleg).triplegid;
+            if (getPrevPassiveTripleg(tripleg)!=undefined) prevIntermId = getPrevPassiveTripleg(tripleg).triplegid;
 
 
 
@@ -3371,6 +3373,8 @@ function updateTransitionPanel(tripleg){
     var prevPanel = document.getElementById('tldate'+prevIntermId);
 
     var currentSelect = document.getElementById('selectbasic'+tripleg.triplegid);
+    console.log(currentSelect);
+    console.log(tripleg);
     var currentMode= getMode(currentSelect.options[currentSelect.selectedIndex].value);
     var currentModeSv= getModeSwedish(currentSelect.options[currentSelect.selectedIndex].value);
     var currentModeStart = document.getElementById('timepickerstart'+tripleg.triplegid).value;
@@ -3390,7 +3394,7 @@ function updateTransitionPanel(tripleg){
         var prevModeStop = document.getElementById('timepickerstop'+prevId).value;
 
 
-        var transitionPrev = '<p lang="en" style="display:none">'+ prevModeStop+' - '+currentModeStart +' - Transferred from '+ prevMode+' to '+currentMode+'</p>';// +
+        var transitionPrev = '<p lang="en">'+ prevModeStop+' - '+currentModeStart +' - Transferred from '+ prevMode+' to '+currentMode+'</p>';// +
             //' <p lang="sv">'+ prevModeStop+' - '+currentModeStart +' - Byte av färdsätt från '+ prevModeSv+' till '+currentModeSv+'</p>';
         prevPanel.innerHTML=transitionPrev;
 
@@ -3442,9 +3446,9 @@ function updateTransitionPanel(tripleg){
         /*var nextModeStop = document.getElementById('timepickerstop'+nextId).value;*/
         var transitionNext = '<p lang="en">'+ currentModeStop+' - '+nextModeStart+' - Transferred from '+ currentMode+' to '+nextMode+'</p>';// <p lang="sv">'+ currentModeStop+' - '+nextModeStart+' - Byte av färdsätt från '+ currentModeSv+' till '+nextMode+'</p>';
 
-        var returnPar = document.getElementById('transitiontime'+triplegid);
+        var returnPar = document.getElementById('transitiontime'+tripleg.triplegid);
 
-        returnPar.innerHTML = getTransitionTimeContent(triplegid);
+        returnPar.innerHTML = getTransitionTimeContent(tripleg.triplegid);
 
         nextPanel.innerHTML=transitionNext;
     }
@@ -3596,7 +3600,7 @@ function getTimelineElementContent(tripleg, isLast){
     thisHtml+= '</div>';
 
     /*if (tripleg.triplegid!=currentTrip.triplegs[currentTrip.triplegs.length-1].triplegid)*/
-    thisHtml+= '<p lang="en" style="font-style:italic" id="addtransition'+tripleg.triplegid+'" onclick="generateTransitionPopup(\''+tripleg.triplegid+'\')">Did we miss a transfer? Click to add it.</p>';// <p lang="sv" style="font-style:italic" id="addtransition'+tripleg.triplegid+'" onclick="generateTransitionPopup(\''+tripleg.triplegid+'\')">Har vi missat ett byte? Klicka för att lägga till.</p>';
+    thisHtml+= '<p lang="en" style="font-style:italic" id="addtransition'+tripleg.triplegid+'" onclick="generateTransitionPopup(\''+tripleg.triplegid+'\')">Did we miss a transfer? Click to add it.</p>';// <p lang="sv" style="font-style:italic" id="addtransition'+tripleg.triplegid+'" onclick="generateTransitionPopup(\''+tripleg.triplegid+'\')">Har vi missat ett byte? Klicka för att lägga till.</p>';
     thisHtml+= '<p lang="en" id="distPar'+tripleg.triplegid+'">Distance:'+getDistanceOfTripLeg(tripleg)+'</p>';// <p lang="sv" id="distPar'+tripleg.triplegid+'">Avstånd:'+getDistanceOfTripLeg(tripleg.triplegid)+'</p>';
     thisHtml+= '<div class="input-group bootstrap-timepicker">'
     //if (getLanguage()=="en")
@@ -3908,12 +3912,12 @@ function selectOptionListener(){
 
     optionListener.className = optionListener.className.replace( /(?:^|\s)form-need-check(?!\S)/g , ' form-checked' );
 
-    for (var i=0; i<currentTrip.triplegs.length; i++) {
-        if (currentTrip.triplegs[i].triplegid == changedTripLeg) {
-            for (var j=0; j<currentTrip.triplegs[i].mode.length; j++) {
-                if (currentTrip.triplegs[i].mode[j].id == newMode)
+    for (var i=0; i<copyOfTriplegs.length; i++) {
+        if (copyOfTriplegs[i].triplegid == changedTripLeg) {
+            for (var j=0; j<copyOfTriplegs[i].mode.length; j++) {
+                if (copyOfTriplegs[i].mode[j].id == newMode)
                 {
-                    currentTrip.triplegs[i].mode[j].certainty= 100;
+                    copyOfTriplegs[i].mode[j].accuracy= 100;
                     var layer = plotlayers[correspondingPolyline[changedTripLeg]];
 
                     /*document.getElementById('telem'+tripleg.triplegid).style.color = "red";*/
@@ -3922,20 +3926,21 @@ function selectOptionListener(){
                         color: polylineColor
                     });
 
-                    console.log(jQuery.extend(true,{},currentTrip.triplegs[i]));
+                    console.log(jQuery.extend(true,{},copyOfTriplegs[i]));
 
-                    var request = pushTriplegModification(null, currentTrip.triplegs[i],"upsert",currentTrip.tripid);
+                    // TODO CHANGE THIS TO NEW APY
+                    /*var request = pushTriplegModification(null, copyOfTrip.triplegs[i],"upsert",currentTrip.tripid);
                     $.when(request ).done(function (){
                         pushTripModification(null, currentTrip,"upsert", serverResponse.trips[getNextPassiveTrip(currentTrip.tripid)]);
-                    });
+                    });*/
 
-                    updateTransitionPanel(changedTripLeg);
+                    updateTransitionPanel(copyOfTriplegs[i]);
                 }
                 else
-                    currentTrip.triplegs[i].mode[j].certainty= 0;
+                    copyOfTriplegs[i].mode[j].accuracy= 0;
             }
 
-            currentTrip.triplegs[i].triplegid= changedTripLeg;
+            copyOfTriplegs[i].triplegid= changedTripLeg;
             break;
         }
     }
@@ -5050,7 +5055,10 @@ function drawPoint(point,map,type, triplegid){
     if (type == 'transition'){
         console.log(triplegid);
         pointLayer.on('mouseover', function(e){
-            document.getElementById('tldate'+ e.layer.feature.properties.popupContent).style.border = "5px solid #212121";});
+            console.log('tldate'+ e.layer.feature.properties.popupContent);
+            document.getElementById('tldate'+ e.layer.feature.properties.popupContent).style.border = "5px solid #212121";
+        });
+
         pointLayer.on('mouseout', function(e){
             document.getElementById('tldate'+ e.layer.feature.properties.popupContent).style.border = "3px solid #212121";});
     }
@@ -5187,15 +5195,15 @@ function generatePolyline(tripleg, map, i, first, isLast){
         if (tripleg.points == null){
             tripleg.points =[];
 
-            console.log(getNextPassiveTripleg(tripleg.triplegid));
+            console.log(getNextPassiveTripleg(tripleg));
 
-            console.log(getPrevPassiveTripleg(tripleg.triplegid));
+            console.log(getPrevPassiveTripleg(tripleg));
 
             console.log(currentTrip.triplegs);
 
             // if (currentTrip.triplegs[getPrevPassiveTripleg(tripleg.triplegid)]!=undefined)
-                tripleg.points.push(jQuery.extend(true,{},getPrevPassiveTripleg(tripleg.triplegid).points[getPrevPassiveTripleg(tripleg.triplegid).points.length-1]))
-                tripleg.points.push(jQuery.extend(true,{},getNextPassiveTripleg(tripleg.triplegid).points[0]));
+                tripleg.points.push(jQuery.extend(true,{},getPrevPassiveTripleg(tripleg).points[getPrevPassiveTripleg(tripleg).points.length-1]))
+                tripleg.points.push(jQuery.extend(true,{},getNextPassiveTripleg(tripleg).points[0]));
 
             // tripleg.points[0] = tripleg.from_time;
         }
@@ -5905,7 +5913,7 @@ function splitTrip(id, fromDate, toDate, mode) {
     tripLegA.mode = [];
     tripLegA.mode[0] = {};
     tripLegA.mode[0].id = mode;
-    tripLegA.mode[0].certainty = "100";
+    tripLegA.mode[0].accuracy = "100";
     tripLegA.mode = tripLegA.mode.concat(getRestOfModes(mode));
 
     // the first geometry of B should be same as the last one of A
@@ -5926,7 +5934,7 @@ function splitTrip(id, fromDate, toDate, mode) {
     tripLegB.mode = [];
     tripLegB.mode[0] = {};
     tripLegB.mode[0].id = mode;
-    tripLegB.mode[0].certainty = "100";
+    tripLegB.mode[0].accuracy = "100";
     tripLegB.mode = tripLegB.mode.concat(getRestOfModes(mode));
 
     tripLegB.places = [];
@@ -6253,7 +6261,7 @@ function getPrevTripleg(tripleg){
     var id=0;
 
     for (var j=0; j < copyOfTriplegs.length;j++){
-        if (copyOfTriplegs[j].triplegid==triplegid)
+        if (copyOfTriplegs[j].triplegid==tripleg.triplegid)
         {
             console.log("GOT ID PREV"+j);
             id=j-2;
@@ -6265,10 +6273,7 @@ function getPrevTripleg(tripleg){
 function getNextTripleg(tripleg){
     var id=0;
 
-    console.log(copyOfTriplegs);
-
     for (var j=0; j < copyOfTriplegs.length;j++){
-        console.log(copyOfTriplegs[j].triplegid+'=='+tripleg.triplegid);
         if (copyOfTriplegs[j].triplegid==tripleg.triplegid)
         {
             id=j+2;
@@ -6281,8 +6286,7 @@ function getNextPassiveTripleg(tripleg){
     var id=0;
 
     for (var j=0; j < copyOfTriplegs.length;j++){
-
-        if (copyOfTriplegs.triplegid==tripleg.triplegid)
+        if (copyOfTriplegs[j].triplegid==tripleg.triplegid)
         {
             id=j+1;
         }
@@ -6294,7 +6298,7 @@ function getPrevPassiveTripleg(tripleg){
     var id=0;
 
     for (var j=0; j < copyOfTriplegs.length;j++){
-        if (copyOfTriplegs[j].triplegid==triplegid)
+        if (copyOfTriplegs[j].triplegid==tripleg.triplegid)
         {
             id=j-1;
         }

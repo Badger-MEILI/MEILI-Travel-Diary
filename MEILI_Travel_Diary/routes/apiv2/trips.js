@@ -12,7 +12,7 @@ var router = express.Router();
  * @apiName GetTripsForBadge
  * @apiGroup Trips
  *
- * @apiError [404] UserIdInvalid The <code>user_id</code> is undefined or null.
+ * @apiError [500] UserIdInvalid The <code>user_id</code> is undefined or null.
  *
  * @apiParam {Number} user_id Id of the user that requests the number of available unannotated trips.
  *
@@ -23,7 +23,7 @@ router.get("/getTripsForBadge", function(req,res){
     var user_id = req.query.user_id;
 
     if (user_id == null || user_id == undefined) {
-        res.status(404);
+        res.status(500);
         res.send("Invalid user id");
         return res;
     }
@@ -44,8 +44,8 @@ router.get("/getTripsForBadge", function(req,res){
  * @apiName GetLastTripOfUser
  * @apiGroup Trips
  *
- * @apiError [404] UserIdInvalid The <code>user_id</code> is undefined or null.
- * @apiError [406] UserCannotAnnotate The user with <code>user_id</code> does not have anny ttrips to annotate.
+ * @apiError [500] UserIdInvalid The <code>user_id</code> is undefined or null.
+ * @apiError [500] UserCannotAnnotate The user with <code>user_id</code> does not have any trips to annotate.
  *
  * @apiParam {Number} user_id Id of the user that requests the earliest unannotated trip
  *
@@ -56,7 +56,7 @@ router.get("/getLastTripOfUser", function(req,res){
     var user_id = req.query.user_id;
 
     if (user_id == null || user_id == undefined) {
-        res.status(404);
+        res.status(500);
         res.send("Invalid user id");
         return res;
     }
@@ -73,12 +73,289 @@ router.get("/getLastTripOfUser", function(req,res){
             if (results.length>0)
                 return res.json(results[0]);
             else {
-                res.status(406);
+                res.status(500);
                 res.send("The user does not have any trips to process");
                 return res
             }
         })
     }
 });
+
+/**
+ * @api {get} /trips/updateStartTimeOfTrip&:trip_id&:start_time Updates the start time of a trip
+ * @apiName UpdateStartTimeOfTrip
+ * @apiGroup Trips
+ *
+ * @apiError [500] InvalidInput The parameters <code>trip_id</code> or <code>start_time</code> are undefined, null or of wrong types.
+ * @apiError [500] SQLError SQL error traceback.
+ *
+ * @apiParam {Number} trip_id Id of the trip that will have its start date modified.
+ * @apiParam {Number} start_time The new value for the start time of the specified trip
+ *
+ * @apiSuccess {Tripleg[]} Triplegs An array of json objects that represent the triplegs of the trip after update
+ */
+router.get("/updateStartTimeOfTrip", function(req,res){
+    var results = [];
+    var trip_id = req.query.trip_id;
+    var new_start_time = req.query.start_time;
+
+    if (trip_id == null || trip_id == undefined || new_start_time == null || new_start_time == undefined) {
+        res.status(500);
+        res.send("Invalid input parameters");
+        return res;
+    }
+
+    else
+    {
+        var sqlQuery = "select * from apiv2.update_trip_start_time($bd$"+new_start_time+"$bd$, $bd$"+trip_id+"$bd$)";
+        var prioryQuery = apiClient.query(sqlQuery);
+
+        prioryQuery.on('row', function (row) {
+            if (row.pagination_get_triplegs_of_trip!=null)
+                results.push(row);
+        });
+
+        prioryQuery.on('error', function(row){
+            res.status(500);
+            res.send(row);
+            // res.send("Request failed with parameters trip_id: "+ trip_id+" and start_time "+new_start_time);
+        });
+
+        prioryQuery.on('end', function () {
+            return res.json(results[0]);
+        });
+    }
+});
+
+/**
+ * @api {get} /trips/updateEndTimeOfTrip&:trip_id&:end_time Updates the end time of a trip
+ * @apiName UpdateEndTimeOfTrip
+ * @apiGroup Trips
+ *
+ * @apiError [500] InvalidInput The parameters <code>trip_id</code> or <code>end_time</code> are undefined, null or of wrong types.
+ * @apiError [500] SQLError SQL error traceback.
+ *
+ * @apiParam {Number} trip_id Id of the trip that will have its end time modified.
+ * @apiParam {Number} end_time The new value for the end time of the specified trip
+ *
+ * @apiSuccess {Tripleg[]} Triplegs An array of json objects that represent the triplegs of the trip after update
+ */
+router.get("/updateEndTimeOfTrip", function(req,res){
+    var results = [];
+    var trip_id = req.query.trip_id;
+    var new_end_time = req.query.end_time;
+
+    if (trip_id == null || trip_id == undefined || new_end_time == null || new_end_time == undefined) {
+        res.status(500);
+        res.send("Invalid input parameters");
+        return res;
+    }
+
+    else
+    {
+        var sqlQuery = "select * from apiv2.update_trip_end_time($bd$"+new_end_time+"$bd$,$bd$"+trip_id+"$bd$)";
+        var prioryQuery = apiClient.query(sqlQuery);
+
+        prioryQuery.on('row', function (row) {
+            if (row.pagination_get_triplegs_of_trip!=null)
+                results.push(row);
+        });
+
+        prioryQuery.on('error', function(row){
+            res.status(500);
+            res.send(row);
+            // res.send("Request failed with parameters trip_id: "+ trip_id+" and start_time "+new_start_time);
+        });
+
+        prioryQuery.on('end', function () {
+            return res.json(results[0]);
+        });
+    }
+});
+
+/**
+ * @api {get} /trips/deleteTrip&:trip_id Deletes a trip
+ * @apiName DeleteTrip
+ * @apiGroup Trips
+ *
+ * @apiError [500] InvalidInput The parameter <code>trip_id</code> is undefined, null or of a wrong type.
+ * @apiError [500] SQLError SQL error traceback.
+ *
+ * @apiParam {Number} trip_id Id of the trip that will be deleted
+ *
+ * @apiSuccess {Trip} Trip Gets the json representation of the next trip to process for the user that performed the action.
+ */
+router.get("/deleteTrip", function(req,res){
+    var results = [];
+    var trip_id = req.query.trip_id;
+
+    if (trip_id == null || trip_id == undefined ) {
+        res.status(500);
+        res.send("Invalid input parameters");
+        return res;
+    }
+
+    else
+    {
+        var sqlQuery = "select * from apiv2.delete_trip($bd$"+trip_id+"$bd$)";
+        var prioryQuery = apiClient.query(sqlQuery);
+
+        prioryQuery.on('row', function (row) {
+            if (row.pagination_get_next_process!=null)
+                results.push(row);
+        });
+
+        prioryQuery.on('error', function(row){
+            res.status(500);
+            res.send(row);
+        });
+
+        prioryQuery.on('end', function () {
+            return res.json(results[0]);
+        });
+    }
+});
+
+/**
+ * @api {get} /trips/insertPeriodBetweenTrips&:start_time&:end_time&:user_id Inserts a missed non movement period between two trips by splitting the existing affected trip
+ * @apiName InsertPeriodBetweenTris
+ * @apiGroup Trips
+ *
+ * @apiError [500] InvalidInput The parameters <code>user_id</code>, <code>start_time</code> or <code>end_time</code> are undefined, null or of wrong types.
+ * @apiError [500] SQLError SQL error traceback.
+ *
+ * @apiParam {Number} user_id Id of the user who inserts the period between trips
+ * @apiParam {Number} start_time Time at which the non movement period started
+ * @apiParam {Number} end_time Time at which the non movement period ended
+ *
+ * @apiSuccess {Trip} Trip Gets the json representation of the next trip to process for the user that performed the action.
+ */
+router.get("/insertTransitionBetweenTriplegs", function(req,res){
+    var results = [];
+    var user_id = req.query.user_id;
+    var start_time = req.query.start_time;
+    var end_time = req.query.end_time;
+
+    if (user_id == null || user_id == undefined ||
+        start_time== null || start_time== undefined || end_time== null || end_time== undefined ) {
+        res.status(500);
+        res.send("Invalid input parameters");
+        return res;
+    }
+
+    else
+    {
+        var sqlQuery = "select * from apiv2.insert_stationary_trip_for_user($bd$"+ start_time +"$bd$,$bd$"+ end_time +"$bd$,$bd$"+ user_id+"$bd)";
+        var prioryQuery = apiClient.query(sqlQuery);
+
+        prioryQuery.on('row', function (row) {
+            if (row.pagination_get_next_process!=null)
+                results.push(row);
+        });
+
+        prioryQuery.on('error', function(row){
+            res.status(500);
+            res.send(row);
+        });
+
+        prioryQuery.on('end', function () {
+            return res.json(results[0]);
+        });
+    }
+});
+
+/**
+ * @api {get} /trips/updatePurposeOfTrip&:trip_id&:purpose_id Updates the purpose of a trip
+ * @apiName UpdatePurposeOfTrip
+ * @apiGroup Trips
+ *
+ * @apiError [500] InvalidInput The parameters <code>trip_id</code> or <code>purpose_id</code> are undefined, null or of wrong types.
+ * @apiError [500] SQLError SQL error traceback.
+ *
+ * @apiParam {Number} trip_id Id of the trip that will have its purpose updated
+ * @apiParam {Number} purpose_id The new value for the purpose_id
+ *
+ * @apiSuccess {Boolean} Boolean The success state of the operation.
+ */
+router.get("/updatePurposeOfTrip", function(req,res){
+    var results = [];
+    var trip_id = req.query.trip_id;
+    var purpose_id = req.query.purpose_id;
+
+    if (trip_id == null || trip_id == undefined || purpose_id == null || purpose_id== undefined) {
+        res.status(500);
+        res.send("Invalid input parameters");
+        return res;
+    }
+
+    else
+    {
+        var sqlQuery = "select * from apiv2.update_trip_purpose($bd$"+purpose_id+"$bd$, $bd$"+trip_id+"$bd$)";
+        var prioryQuery = apiClient.query(sqlQuery);
+
+        prioryQuery.on('row', function (row) {
+            results.push(row);
+        });
+
+        prioryQuery.on('error', function(row){
+            res.status(500);
+            res.send(row);
+            // res.send("Request failed with parameters trip_id: "+ trip_id+" and start_time "+new_start_time);
+        });
+
+        prioryQuery.on('end', function () {
+            if (results.length<0) return res.json(false);
+            return res.json(results[0]);
+        });
+    }
+});
+
+/**
+ * @api {get} /trips/updateDestinationPoiIdOfTrip&:trip_id&:destination_poi_id Updates the destination poi id of a trip
+ * @apiName UpdateDestinationPoiIdOfTrip
+ * @apiGroup Trips
+ *
+ * @apiError [500] InvalidInput The parameters <code>trip_id</code> or <code>destination_poi_id</code> are undefined, null or of wrong types.
+ * @apiError [500] SQLError SQL error traceback.
+ *
+ * @apiParam {Number} trip_id Id of the trip that will have its destination poi id updated
+ * @apiParam {Number} destination_poi_id The new value for the destination_poi_id
+ *
+ * @apiSuccess {Boolean} Boolean The success state of the operation.
+ */
+router.get("/updateDestinationPoiIdOfTrip", function(req,res){
+    var results = [];
+    var trip_id = req.query.trip_id;
+    var destination_poi_id = req.query.destination_poi_id;
+
+    if (trip_id == null || trip_id == undefined || destination_poi_id == null || destination_poi_id == undefined) {
+        res.status(500);
+        res.send("Invalid input parameters");
+        return res;
+    }
+
+    else
+    {
+        var sqlQuery = "select * from apiv2.update_trip_destination_poi_id($bd$"+destination_poi_id+"$bd$, $bd$"+trip_id+"$bd$)";
+        var prioryQuery = apiClient.query(sqlQuery);
+
+        prioryQuery.on('row', function (row) {
+            results.push(row);
+        });
+
+        prioryQuery.on('error', function(row){
+            res.status(500);
+            res.send(row);
+            // res.send("Request failed with parameters trip_id: "+ trip_id+" and start_time "+new_start_time);
+        });
+
+        prioryQuery.on('end', function () {
+            if (results.length<0) return res.json(false);
+            return res.json(results[0]);
+        });
+    }
+});
+
+// TODO -> confirm annotated trip
 
 module.exports = router;
