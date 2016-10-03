@@ -283,6 +283,54 @@ define({ "api": [
   },
   {
     "type": "get",
+    "url": "/trips/deleteTrip&:trip_id",
+    "title": "Deletes a trip",
+    "name": "DeleteTrip",
+    "group": "Trips",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": true,
+            "field": "500",
+            "description": "<p>InvalidInput The parameter <code>trip_id</code> is undefined, null or of a wrong type.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "trip_id",
+            "description": "<p>Id of the trip that will be deleted</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Trip",
+            "optional": false,
+            "field": "Trip",
+            "description": "<p>Gets the json representation of the next trip to process for the user that performed the action.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "routes/apiv2/trips.js",
+    "groupTitle": "Trips"
+  },
+  {
+    "type": "get",
     "url": "/trips/getLastTripOfUser&:user_id",
     "title": "Gets the earliest unannotated trip of the user",
     "name": "GetLastTripOfUser",
@@ -293,14 +341,8 @@ define({ "api": [
           {
             "group": "Error 4xx",
             "optional": true,
-            "field": "404",
+            "field": "500",
             "description": "<p>UserIdInvalid The <code>user_id</code> is undefined or null.</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "optional": true,
-            "field": "406",
-            "description": "<p>UserCannotAnnotate The user with <code>user_id</code> does not have anny ttrips to annotate.</p>"
           }
         ]
       }
@@ -347,7 +389,7 @@ define({ "api": [
           {
             "group": "Error 4xx",
             "optional": true,
-            "field": "404",
+            "field": "500",
             "description": "<p>UserIdInvalid The <code>user_id</code> is undefined or null.</p>"
           }
         ]
@@ -375,6 +417,178 @@ define({ "api": [
             "optional": false,
             "field": "user_get_badge_trips_info",
             "description": "<p>Number of unannotated trips available to the user.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "routes/apiv2/trips.js",
+    "groupTitle": "Trips"
+  },
+  {
+    "type": "get",
+    "url": "/trips/insertPeriodBetweenTrips&:start_time&:end_time&:user_id",
+    "title": "Inserts a missed non movement period between two trips by splitting the existing affected trip",
+    "name": "InsertPeriodBetweenTris",
+    "group": "Trips",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": true,
+            "field": "500",
+            "description": "<p>InvalidInput The parameters <code>user_id</code>, <code>start_time</code> or <code>end_time</code> are undefined, null or of wrong types.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>Id of the user who inserts the period between trips</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "start_time",
+            "description": "<p>Time at which the non movement period started</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "end_time",
+            "description": "<p>Time at which the non movement period ended</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Trip",
+            "optional": false,
+            "field": "Trip",
+            "description": "<p>Gets the json representation of the next trip to process for the user that performed the action.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "routes/apiv2/trips.js",
+    "groupTitle": "Trips"
+  },
+  {
+    "type": "get",
+    "url": "/trips/updateEndTimeOfTrip&:trip_id&:end_time",
+    "title": "Updates the end time of a trip",
+    "name": "UpdateEndTimeOfTrip",
+    "group": "Trips",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": true,
+            "field": "500",
+            "description": "<p>InvalidInput The parameters <code>trip_id</code> or <code>end_time</code> are undefined, null or of wrong types.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "trip_id",
+            "description": "<p>Id of the trip that will have its end time modified.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "end_time",
+            "description": "<p>The new value for the end time of the specified trip</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Tripleg[]",
+            "optional": false,
+            "field": "Triplegs",
+            "description": "<p>An array of json objects that represent the triplegs of the trip after update</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "routes/apiv2/trips.js",
+    "groupTitle": "Trips"
+  },
+  {
+    "type": "get",
+    "url": "/trips/updateStartTimeOfTrip&:trip_id&:start_time",
+    "title": "Updates the start time of a trip",
+    "name": "UpdateStartTimeOfTrip",
+    "group": "Trips",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": true,
+            "field": "500",
+            "description": "<p>InvalidInput The parameters <code>trip_id</code> or <code>start_time</code> are undefined, null or of wrong types.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "trip_id",
+            "description": "<p>Id of the trip that will have its start date modified.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "start_time",
+            "description": "<p>The new value for the start time of the specified trip</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Tripleg[]",
+            "optional": false,
+            "field": "Triplegs",
+            "description": "<p>An array of json objects that represent the triplegs of the trip after update</p>"
           }
         ]
       }
