@@ -356,6 +356,49 @@ router.get("/updateDestinationPoiIdOfTrip", function(req,res){
     }
 });
 
-// TODO -> confirm annotated trip
+
+/**
+ * @api {get} /trips/confirmAnnotationOfTrip&:trip_id& Confirms the annotations of a trip, which moves the user to the next unannotated trip
+ * @apiName ConfirmAnnotationOfTrip
+ * @apiGroup Trips
+ *
+ * @apiError [500] InvalidInput The parameter <code>trip_id</code> is undefined, null or of wrong types.
+ * @apiError [500] SQLError SQL error traceback.
+ *
+ * @apiParam {Number} trip_id Id of the trip whose annotations are confirmed
+ *
+ * @apiSuccess {Trip} Trip The json representation of a trip without its triplegs
+ */
+router.get("/confirmAnnotationOfTrip", function(req,res){
+    var results = [];
+    var trip_id = req.query.trip_id;
+
+    if (trip_id == null || trip_id == undefined) {
+        res.status(500);
+        res.send("Invalid input parameters");
+        return res;
+    }
+
+    else
+    {
+        var sqlQuery = "select * from apiv2.confirm_annotation_of_trip_get_next($bd$"+trip_id+"$bd$)";
+        var prioryQuery = apiClient.query(sqlQuery);
+
+        prioryQuery.on('row', function (row) {
+            results.push(row);
+        });
+
+        prioryQuery.on('error', function(row){
+            res.status(500);
+            res.send(row);
+            // res.send("Request failed with parameters trip_id: "+ trip_id+" and start_time "+new_start_time);
+        });
+
+        prioryQuery.on('end', function () {
+            if (results.length<0) return res.json(false);
+            return res.json(results[0]);
+        });
+    }
+});
 
 module.exports = router;
