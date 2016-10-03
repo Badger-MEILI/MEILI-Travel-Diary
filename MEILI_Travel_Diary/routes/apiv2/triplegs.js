@@ -84,7 +84,7 @@ router.get("/updateStartTimeOfTripleg", function(req,res){
 
     else
     {
-        var sqlQuery = "select * from apiv2.update_tripleg_start_time("+tripleg_id+",$bd$"+new_start_time+"$bd$)";
+        var sqlQuery = "select * from apiv2.update_tripleg_start_time($bd$"+new_start_time+"$bd$,$bd$"+tripleg_id+"$bd$)";
         var prioryQuery = apiClient.query(sqlQuery);
 
         prioryQuery.on('row', function (row) {
@@ -131,7 +131,7 @@ router.get("/updateEndTimeOfTripleg", function(req,res){
 
     else
     {
-        var sqlQuery = "select * from apiv2.update_tripleg_end_time("+tripleg_id+",$bd$"+new_end_time+"$bd$)";
+        var sqlQuery = "select * from apiv2.update_tripleg_end_time($bd$"+new_end_time+"$bd$,$bd$"+tripleg_id+"$bd$)";
         var prioryQuery = apiClient.query(sqlQuery);
 
         prioryQuery.on('row', function (row) {
