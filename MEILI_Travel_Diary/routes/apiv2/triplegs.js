@@ -195,8 +195,6 @@ router.get("/deleteTripleg", function(req,res){
     }
 });
 
-//TODO - these are bits of code that are not implemented / tested yet -> move the todo list below when a function is cleared out
-
 /**
  * @api {get} /triplegs/insertTransitionBetweenTriplegs&:start_time&:end_time&:from_travel_mode&:to_travel_mode&:trip_id Inserts a missed transition between two triplegs by splitting the existing affected tripleg
  * @apiName InsertTransitionBetweenTriplegs
@@ -250,5 +248,9 @@ router.get("/insertTransitionBetweenTriplegs", function(req,res){
         });
     }
 });
+
+
+//TODO - these are bits of code that are not implemented / tested yet -> move the todo list below when a function is cleared out
+// Any functions that are missing?
 
 module.exports = router;
