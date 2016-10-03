@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="1e2cf684-ae55-4d7a-8e15-763edce44804" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/routes/apiv2/trips.js" afterPath="$PROJECT_DIR$/routes/apiv2/trips.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="foo.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -111,8 +112,8 @@
       <file leaf-file-name="trips.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/routes/apiv2/trips.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.89906543" vertical-offset="2309" max-vertical-offset="3474">
-              <caret line="155" column="59" selection-start-line="155" selection-start-column="59" selection-end-line="155" selection-end-column="59" />
+            <state vertical-scroll-proportion="0.63925236" vertical-offset="3474" max-vertical-offset="4230">
+              <caret line="212" column="27" selection-start-line="212" selection-start-column="27" selection-end-line="212" selection-end-column="27" />
               <folding />
             </state>
           </provider>
@@ -1039,8 +1040,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/routes/apiv2/trips.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.89906543" vertical-offset="2309" max-vertical-offset="3474">
-          <caret line="155" column="59" selection-start-line="155" selection-start-column="59" selection-end-line="155" selection-end-column="59" />
+        <state vertical-scroll-proportion="0.63925236" vertical-offset="3474" max-vertical-offset="4230">
+          <caret line="212" column="27" selection-start-line="212" selection-start-column="27" selection-end-line="212" selection-end-column="27" />
           <folding />
         </state>
       </provider>

@@ -173,9 +173,48 @@ router.get("/updateEndTimeOfTrip", function(req,res){
     }
 });
 
+/**
+ * @api {get} /trips/deleteTrip&:trip_id Deletes a trip
+ * @apiName DeleteTrip
+ * @apiGroup Trips
+ *
+ * @apiError [500] InvalidInput The parameter <code>trip_id</code> is undefined, null or of a wrong type.
+ * @apiError [500] SQLError SQL error traceback.
+ *
+ * @apiParam {Number} trip_id Id of the trip that will be deleted
+ *
+ * @apiSuccess {Trip} Gets the json representation of the next trip to process for the user that performed the action.
+ */
+router.get("/deleteTrip", function(req,res){
+    var results = [];
+    var trip_id = req.query.trip_id;
 
-// TODO - delete trip
+    if (trip_id == null || trip_id == undefined ) {
+        res.status(500);
+        res.send("Invalid input parameters");
+        return res;
+    }
 
+    else
+    {
+        var sqlQuery = "select * from apiv2.delete_trip($bd$"+trip_id+"$bd$)";
+        var prioryQuery = apiClient.query(sqlQuery);
+
+        prioryQuery.on('row', function (row) {
+            if (row.pagination_get_next_process!=null)
+                results.push(row);
+        });
+
+        prioryQuery.on('error', function(row){
+            res.status(500);
+            res.send(row);
+        });
+
+        prioryQuery.on('end', function () {
+            return res.json(results[0]);
+        });
+    }
+});
 
 // TODO - insert trip
 
