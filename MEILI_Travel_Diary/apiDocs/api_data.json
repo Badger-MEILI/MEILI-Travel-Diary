@@ -1,6 +1,158 @@
 [
   {
     "type": "get",
+    "url": "/pois/insertDestinationPoi&:name_&:latitude&:longitude&:declaring_user_id",
+    "title": "Inserts a new destination POI declared by a user",
+    "name": "InsertDestinationPoi",
+    "group": "POIs",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": true,
+            "field": "500",
+            "description": "<p>InvalidInput The parameters <code>name_</code>, <code>latitude</code>, <code>longitude</code>, <code>declaring_user_id</code> are undefined, null or of wrong types.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "name_",
+            "description": "<p>Name of the inserted POI</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "latitude",
+            "description": "<p>Latitude of the inserted POI</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "longitude",
+            "description": "<p>Longitude of the inserted POI</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "declaring_user_id",
+            "description": "<p>Id of the user that inserts the POI</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Id",
+            "optional": false,
+            "field": "The",
+            "description": "<p>id of the inserted destination POI.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "routes/apiv2/pois.js",
+    "groupTitle": "POIs"
+  },
+  {
+    "type": "get",
+    "url": "/pois/insertTransportationPoi&:name_&:latitude&:longitude&:declaring_user_id&:transportation_lines&:transportation_types",
+    "title": "Inserts a new transportation POI declared by a user",
+    "name": "InsertTransportationPoi",
+    "group": "POIs",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": true,
+            "field": "500",
+            "description": "<p>InvalidInput The parameters <code>name_</code>, <code>latitude</code>, <code>longitude</code>, <code>declaring_user_id</code> are undefined, null or of wrong types.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "name_",
+            "description": "<p>Name of the inserted POI</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "latitude",
+            "description": "<p>Latitude of the inserted POI</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "longitude",
+            "description": "<p>Longitude of the inserted POI</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "declaring_user_id",
+            "description": "<p>Id of the user that inserts the POI</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "transportation_lines",
+            "description": "<p>(optional) The text representation of transport lines entered by the user</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "transportation_types",
+            "description": "<p>(optional) The types of travel modes that are accessible to the station</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Id",
+            "optional": false,
+            "field": "The",
+            "description": "<p>id of the inserted transportation POI.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "routes/apiv2/pois.js",
+    "groupTitle": "POIs"
+  },
+  {
+    "type": "get",
     "url": "/triplegs/deleteTripleg&:tripleg_id",
     "title": "Deletes the tripleg specified by id",
     "name": "DeleteTripleg",
@@ -390,6 +542,54 @@
     "version": "0.0.0",
     "filename": "routes/apiv2/triplegs.js",
     "groupTitle": "Triplegs"
+  },
+  {
+    "type": "get",
+    "url": "/trips/confirmAnnotationOfTrip&:trip_id&",
+    "title": "Confirms the annotations of a trip, which moves the user to the next unannotated trip",
+    "name": "ConfirmAnnotationOfTrip",
+    "group": "Trips",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": true,
+            "field": "500",
+            "description": "<p>InvalidInput The parameter <code>trip_id</code> is undefined, null or of wrong types.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "trip_id",
+            "description": "<p>Id of the trip whose annotations are confirmed</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Trip",
+            "optional": false,
+            "field": "Trip",
+            "description": "<p>The json representation of a trip without its triplegs</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "routes/apiv2/trips.js",
+    "groupTitle": "Trips"
   },
   {
     "type": "get",
