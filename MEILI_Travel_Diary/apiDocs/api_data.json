@@ -283,6 +283,116 @@
   },
   {
     "type": "get",
+    "url": "/triplegs/updateTransitionPoiIdOfTripleg&:tripleg_id&:transition_poi_id",
+    "title": "Updates the travel mode of a tripleg",
+    "name": "UpdateTransitionPoiIdOfTripleg",
+    "group": "Triplegs",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": true,
+            "field": "500",
+            "description": "<p>InvalidInput The parameters <code>tripleg_id</code> or <code>transition_poi_id</code> are undefined, null or of wrong types.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "tripleg_id",
+            "description": "<p>Id of the tripleg that will have its travel mode updated</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "transition_poi_id",
+            "description": "<p>The new value for the transition poi id of the specified tripleg</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "Boolean",
+            "description": "<p>Returns whether the operation was successfull or not.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "routes/apiv2/triplegs.js",
+    "groupTitle": "Triplegs"
+  },
+  {
+    "type": "get",
+    "url": "/triplegs/updateTravelModeOfTripleg&:tripleg_id&:travel_mode",
+    "title": "Updates the travel mode of a tripleg",
+    "name": "UpdateTravelModeOfTripleg",
+    "group": "Triplegs",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": true,
+            "field": "500",
+            "description": "<p>InvalidInput The parameters <code>tripleg_id</code> or <code>travel_mode</code> are undefined, null or of wrong types.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "tripleg_id",
+            "description": "<p>Id of the tripleg that will have its travel mode updated</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "travel_mode",
+            "description": "<p>The new value for the travel mode of the specified tripleg</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "Boolean",
+            "description": "<p>Returns whether the operation was successfull or not.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "routes/apiv2/triplegs.js",
+    "groupTitle": "Triplegs"
+  },
+  {
+    "type": "get",
     "url": "/trips/deleteTrip&:trip_id",
     "title": "Deletes a trip",
     "name": "DeleteTrip",
@@ -489,6 +599,61 @@
   },
   {
     "type": "get",
+    "url": "/trips/updateDestinationPoiIdOfTrip&:trip_id&:destination_poi_id",
+    "title": "Updates the destination poi id of a trip",
+    "name": "UpdateDestinationPoiIdOfTrip",
+    "group": "Trips",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": true,
+            "field": "500",
+            "description": "<p>InvalidInput The parameters <code>trip_id</code> or <code>destination_poi_id</code> are undefined, null or of wrong types.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "trip_id",
+            "description": "<p>Id of the trip that will have its destination poi id updated</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "destination_poi_id",
+            "description": "<p>The new value for the destination_poi_id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "Boolean",
+            "description": "<p>The success state of the operation.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "routes/apiv2/trips.js",
+    "groupTitle": "Trips"
+  },
+  {
+    "type": "get",
     "url": "/trips/updateEndTimeOfTrip&:trip_id&:end_time",
     "title": "Updates the end time of a trip",
     "name": "UpdateEndTimeOfTrip",
@@ -534,6 +699,61 @@
             "optional": false,
             "field": "Triplegs",
             "description": "<p>An array of json objects that represent the triplegs of the trip after update</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "routes/apiv2/trips.js",
+    "groupTitle": "Trips"
+  },
+  {
+    "type": "get",
+    "url": "/trips/updatePurposeOfTrip&:trip_id&:purpose_id",
+    "title": "Updates the purpose of a trip",
+    "name": "UpdatePurposeOfTrip",
+    "group": "Trips",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": true,
+            "field": "500",
+            "description": "<p>InvalidInput The parameters <code>trip_id</code> or <code>purpose_id</code> are undefined, null or of wrong types.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "trip_id",
+            "description": "<p>Id of the trip that will have its purpose updated</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "purpose_id",
+            "description": "<p>The new value for the purpose_id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "Boolean",
+            "description": "<p>The success state of the operation.</p>"
           }
         ]
       }
