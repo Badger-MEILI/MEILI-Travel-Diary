@@ -896,7 +896,7 @@ function showAndAddDataForModal(tripleg, initialTime, endTime, startBoundary, st
         if (getLanguage()=="en")
             paragraphInform.innerHTML = 'Your modifications will shift the previous tripleg to '+ getPointFormatedDate(new Date(initialTime));
         else
-            paragraphInform.innerHTML = 'Dina justeringar kommer att medföra att din föregående förflyttning justeras till '+ getPointFormatedDate(new Date(initialTime));
+            paragraphInform.innerHTML = 'Dina justeringar kommer att medföra att din föregående förflyttning justeras till '+ getPointFormatedDate(new Date(initialTime));
     }*/
     else
     {
@@ -905,7 +905,7 @@ function showAndAddDataForModal(tripleg, initialTime, endTime, startBoundary, st
         /*if (getLanguage()=="en")
 
         else
-            paragraphInform.innerHTML = 'Dina justeringar kommer att medföra att din nästa förflyttning justeras till '+getPointFormatedDate(new Date(endTime));*/
+            paragraphInform.innerHTML = 'Dina justeringar kommer att medföra att din nästa förflyttning justeras till '+getPointFormatedDate(new Date(endTime));*/
     }
     $('#transitionAlertModal').modal('show');
 }
@@ -958,14 +958,14 @@ function showAndAddDataForLongModal(tripleg, initialTime, endTime, startBoundary
             //if (getLanguage()=="en")
                 paragraphInform.innerHTML = 'Your modifications will shift the previous tripleg to '+ getPointFormatedDate(new Date(initialTime));
             /*else
-                paragraphInform.innerHTML = 'Dina justeringar kommer att medföra att din föregående förflyttning justeras till '+ getPointFormatedDate(new Date(initialTime));*/
+                paragraphInform.innerHTML = 'Dina justeringar kommer att medföra att din föregående förflyttning justeras till '+ getPointFormatedDate(new Date(initialTime));*/
         }
         else if (tripleg.triplegid==startBoundary.triplegid && tripleg.triplegid!=stopBoundary.triplegid)
         {
             //if (getLanguage()=="en")
                 paragraphInform.innerHTML = 'Your modifications will shift the next tripleg to '+ getPointFormatedDate(new Date(endTime));
             /*else
-                paragraphInform.innerHTML = 'Dina justeringar kommer att medföra att din nästa förflyttning justeras till '+ getPointFormatedDate(new Date(endTime));*/
+                paragraphInform.innerHTML = 'Dina justeringar kommer att medföra att din nästa förflyttning justeras till '+ getPointFormatedDate(new Date(endTime));*/
         }
 
 
@@ -976,7 +976,7 @@ function showAndAddDataForLongModal(tripleg, initialTime, endTime, startBoundary
             //if (getLanguage()=="en")
                 paragraphAlert.innerHTML='You will delete the following trip legs:';
             /*else
-                paragraphAlert.innerHTML='Du tar nu bort dessa förflyttningar:';*/
+                paragraphAlert.innerHTML='Du tar nu bort dessa förflyttningar:';*/
         }
 
         console.log(triplegsInside);
@@ -998,7 +998,7 @@ function showAndAddDataForLongModal(tripleg, initialTime, endTime, startBoundary
         //if (getLanguage()=="en")
             paragraphInform.innerHTML = 'You will delete all the other triplegs in the trip';
         /*else
-            paragraphInform.innerHTML = 'Du tar nu bort alla andra förflyttningar inom denna resa';*/
+            paragraphInform.innerHTML = 'Du tar nu bort alla andra förflyttningar inom denna resa';*/
     }
 
     $('#transitionAlertModal').modal('show');
@@ -1517,7 +1517,7 @@ function checkTemporalIntegrityRules(fromDate, toDate, triplegStartDate, tripleg
         //if (getLanguage()=="en")
             alert ('Modifications are allowed only within the current tripleg\'s time frame');
         /*else
-            alert ('Justering är bara tillåten inom ramen för den aktuella förflyttningens tidsperiod');*/
+            alert ('Justering är bara tillåten inom ramen för den aktuella förflyttningens tidsperiod');*/
     }
     else
     {
@@ -1532,7 +1532,7 @@ function checkTemporalIntegrityRules(fromDate, toDate, triplegStartDate, tripleg
             //if (getLanguage()=="en")
                 alert ('Start of the transfer cannot be later than the end of the transfer');
             /*else
-                alert ('Starttiden för bytet kan inte vara senare än sluttiden ');*/
+                alert ('Starttiden för bytet kan inte vara senare än sluttiden ');*/
         }
         else
         {
@@ -2435,11 +2435,11 @@ function generateModal(triplegid){
         html+= '<br>';
 
         html+= '<div class="input-group bootstrap-timepicker">';
-        html+= 'Bytet påbörjades: <input id="timepickerStartTransition'+triplegid+'" type="text" class="input-small"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>';
+        html+= 'Bytet påbörjades: <input id="timepickerStartTransition'+triplegid+'" type="text" class="input-small"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>';
         html+= '</div>';
 
         html+= '<div class="input-group bootstrap-timepicker">';
-        html+= 'Bytet avslutades: <input id="timepickerStopTransition'+triplegid+'" type="text" class="input-small"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>';
+        html+= 'Bytet avslutades: <input id="timepickerStopTransition'+triplegid+'" type="text" class="input-small"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>';
         html+= '</div>';
 
         html+= '<button type="button" class="btn btn-default center-block" style="width:48%; display:inline-block; margin-left:5px" onclick="requestTimeConfirmation(\''+triplegid+'\')">Acceptera</button>';
@@ -2839,7 +2839,7 @@ function getPlaceSelector(places){
         //if (getLanguage()=="en")
             html+='<option value="-1" disabled selected style="display:none;" lang="en">Specify your destination</option>';
         /*else
-            html+='<option value="-1" disabled selected style="display:none;" lang="sv">Ange din målpunkt</option>';*/
+            html+='<option value="-1" disabled selected style="display:none;" lang="sv">Ange din målpunkt</option>';*/
     }
 
     for (var i=0; i<places.length;i++){
@@ -2973,7 +2973,7 @@ function getSelector(mode, triplegid){
     if (maxVal<50) {
         var selector = '<select id="selectbasic'+triplegid+'" name="selectbasic" class="form-control form-need-check">';
         selector+='<option lang="en" value="-1" disabled selected style="display:none;">Specify your travel mode</option>';
-        //selector+='<option lang="sv" value="-1" disabled selected style="display:none;">Ange ditt färdsätt</option>';
+        //selector+='<option lang="sv" value="-1" disabled selected style="display:none;">Ange ditt färdsätt</option>';
         console.log('nomax');
     }
     else
@@ -3094,7 +3094,7 @@ function generateFirstTimelineElement(currentTrip){
     if (previousPurpose!=null) {
         /* Add see previous button */
 
-       //thisHtml += '<div class="tldatecontrol"> <p lang="en"><i class="glyphicon glyphicon-arrow-down"></i> Process the next trip <i class="glyphicon glyphicon-arrow-down"></i> </p>';// <p lang="sv"><i class="glyphicon glyphicon-arrow-down"></i> Gå till nästa förflyttning <i class="glyphicon glyphicon-arrow-down"></i> </p>';
+       //thisHtml += '<div class="tldatecontrol"> <p lang="en"><i class="glyphicon glyphicon-arrow-down"></i> Process the next trip <i class="glyphicon glyphicon-arrow-down"></i> </p>';// <p lang="sv"><i class="glyphicon glyphicon-arrow-down"></i> Gå till nästa förflyttning <i class="glyphicon glyphicon-arrow-down"></i> </p>';
 
         thisHtml += '<div class="tldatecontrol" id="seePrevious"> <p lang="en"> <i class="glyphicon glyphicon-arrow-up"></i> See previous trip <i class="glyphicon glyphicon-arrow-up"></i> </p>';// <p lang="sv"><i class="glyphicon glyphicon-arrow-up"></i> Gå tillbaka till den senaste förflyttningen <i class="glyphicon glyphicon-arrow-up"></i> </p>';
         thisHtml += '</div>';
@@ -3229,7 +3229,7 @@ function generateLastTimelineElement(currentTrip){
 
         /* Add process next trip */
         thisHtml += '<li id="processNext">';
-        thisHtml += '<div class="tldatecontrol"> <p lang="en"><i class="glyphicon glyphicon-arrow-down"></i> Process the next trip <i class="glyphicon glyphicon-arrow-down"></i> </p>';// <p lang="sv"><i class="glyphicon glyphicon-arrow-down"></i> Gå till nästa förflyttning <i class="glyphicon glyphicon-arrow-down"></i> </p>';
+        thisHtml += '<div class="tldatecontrol"> <p lang="en"><i class="glyphicon glyphicon-arrow-down"></i> Process the next trip <i class="glyphicon glyphicon-arrow-down"></i> </p>';// <p lang="sv"><i class="glyphicon glyphicon-arrow-down"></i> Gå till nästa förflyttning <i class="glyphicon glyphicon-arrow-down"></i> </p>';
         thisHtml += '</div>';
         thisHtml += '</li>';
     }
@@ -3340,7 +3340,7 @@ function getTransitionPanel(tripleg, isLast){
         var transitionPanel= '<li><div class="tldate" id="tldate'+correspondingTransitionId+'">';
         console.log('generated '+'tldate'+correspondingTransitionId);
         transitionPanel+= '<p lang="en">'+ timeFrom+' - '+timeTo +' - Tranferred from '+ transitionFrom+' to '+transitionTo +'</p>';
-   //     transitionPanel+= '<p lang="sv">'+ timeFrom+' - '+timeTo +' - Byte av färdsätt från '+ transitionFromSv+' till '+transitionToSv +'</p>';
+   //     transitionPanel+= '<p lang="sv">'+ timeFrom+' - '+timeTo +' - Byte av färdsätt från '+ transitionFromSv+' till '+transitionToSv +'</p>';
         transitionPanel+= '</div></li>';
     }
 
@@ -3600,7 +3600,7 @@ function getTimelineElementContent(tripleg, isLast){
     thisHtml+= '</div>';
 
     /*if (tripleg.triplegid!=currentTrip.triplegs[currentTrip.triplegs.length-1].triplegid)*/
-    thisHtml+= '<p lang="en" style="font-style:italic" id="addtransition'+tripleg.triplegid+'" onclick="generateTransitionPopup(\''+tripleg.triplegid+'\')">Did we miss a transfer? Click to add it.</p>';// <p lang="sv" style="font-style:italic" id="addtransition'+tripleg.triplegid+'" onclick="generateTransitionPopup(\''+tripleg.triplegid+'\')">Har vi missat ett byte? Klicka för att lägga till.</p>';
+    thisHtml+= '<p lang="en" style="font-style:italic" id="addtransition'+tripleg.triplegid+'" onclick="generateTransitionPopup(\''+tripleg.triplegid+'\')">Did we miss a transfer? Click to add it.</p>';// <p lang="sv" style="font-style:italic" id="addtransition'+tripleg.triplegid+'" onclick="generateTransitionPopup(\''+tripleg.triplegid+'\')">Har vi missat ett byte? Klicka för att lägga till.</p>';
     thisHtml+= '<p lang="en" id="distPar'+tripleg.triplegid+'">Distance:'+getDistanceOfTripLeg(tripleg)+'</p>';// <p lang="sv" id="distPar'+tripleg.triplegid+'">Avstånd:'+getDistanceOfTripLeg(tripleg.triplegid)+'</p>';
     thisHtml+= '<div class="input-group bootstrap-timepicker">'
     //if (getLanguage()=="en")

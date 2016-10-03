@@ -1,0 +1,18 @@
+version: '2'
+services:
+  controller:
+    build: ./controller
+    depends_on:
+      - db
+    volumes:
+      - ./controller/TestData:/testdata
+    command: ./wait-for-it db:5432 -- pg_restore -i -h db -U postgres -d SPOT_Gothenburg -v /testdata/basic_testable.backup
+  db:
+    image: mdillon/postgis:9.3
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: SPOT_Gothenburg
+      POSTGRES_PASSWORD: 
+      PGDATA: /tmp/meili
+    ports:
+      - "5432:5432"
