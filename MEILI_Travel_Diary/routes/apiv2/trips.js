@@ -107,7 +107,7 @@ router.get("/updateStartTimeOfTrip", function(req,res){
 
     else
     {
-        var sqlQuery = "select * from apiv2.update_trip_end_time("+trip_id+",$bd$"+new_start_time+"$bd$)";
+        var sqlQuery = "select * from apiv2.update_trip_start_time("+trip_id+",$bd$"+new_start_time+"$bd$)";
         var prioryQuery = apiClient.query(sqlQuery);
 
         prioryQuery.on('row', function (row) {
@@ -127,7 +127,51 @@ router.get("/updateStartTimeOfTrip", function(req,res){
     }
 });
 
-// TODO - update trip end time
+/**
+ * @api {get} /trips/updateEndTimeOfTrip&:trip_id&:end_time Updates the end time of a trip
+ * @apiName UpdateEndTimeOfTrip
+ * @apiGroup Trips
+ *
+ * @apiError [500] InvalidInput The parameters <code>trip_id</code> or <code>end_time</code> are undefined, null or of wrong types.
+ * @apiError [500] SQLError SQL error traceback.
+ *
+ * @apiParam {Number} trip_id Id of the trip that will have its end time modified.
+ * @apiParam {Number} end_time The new value for the end time of the specified trip
+ *
+ * @apiSuccess {Tripleg[]} Triplegs An array of json objects that represent the triplegs of the trip after update
+ */
+router.get("/updateEndTimeOfTrip", function(req,res){
+    var results = [];
+    var trip_id = req.query.trip_id;
+    var new_end_time = req.query.end_time;
+
+    if (trip_id == null || trip_id == undefined || new_end_time == null || new_end_time == undefined) {
+        res.status(500);
+        res.send("Invalid input parameters");
+        return res;
+    }
+
+    else
+    {
+        var sqlQuery = "select * from apiv2.update_trip_end_time("+trip_id+",$bd$"+new_end_time+"$bd$)";
+        var prioryQuery = apiClient.query(sqlQuery);
+
+        prioryQuery.on('row', function (row) {
+            if (row.pagination_get_triplegs_of_trip!=null)
+                results.push(row);
+        });
+
+        prioryQuery.on('error', function(row){
+            res.status(500);
+            res.send(row);
+            // res.send("Request failed with parameters trip_id: "+ trip_id+" and start_time "+new_start_time);
+        });
+
+        prioryQuery.on('end', function () {
+            return res.json(results[0]);
+        });
+    }
+});
 
 
 // TODO - delete trip
