@@ -1,6 +1,54 @@
 define({ "api": [
   {
     "type": "get",
+    "url": "/triplegs/deleteTripleg&:tripleg_id",
+    "title": "Deletes the tripleg specified by id",
+    "name": "DeleteTripleg",
+    "group": "Triplegs",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": true,
+            "field": "500",
+            "description": "<p>OnlyTriplegIn Trip The only tripleg of a trip cannot be deleted. If you want to delete the tripleg, call the trip deletion endpoint</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "tripleg_id",
+            "description": "<p>Id of the tripleg that will be deleted</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Tripleg[]",
+            "optional": false,
+            "field": "Triplegs",
+            "description": "<p>An array of json objects that represent the triplegs of the trip after deletion</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "routes/apiv2/triplegs.js",
+    "groupTitle": "Triplegs"
+  },
+  {
+    "type": "get",
     "url": "/triplegs/getTriplegsOfTrip&:trip_id",
     "title": "Gets the triplegs of a given trip",
     "name": "GetTriplegsOfTrip",
@@ -11,14 +59,8 @@ define({ "api": [
           {
             "group": "Error 4xx",
             "optional": true,
-            "field": "404",
+            "field": "500",
             "description": "<p>TripIdInvalid The <code>trip_id</code> is undefined or null.</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "optional": true,
-            "field": "406",
-            "description": "<p>TripIdNotFound The <code>trip_id</code> does not exist.</p>"
           }
         ]
       }
@@ -45,6 +87,192 @@ define({ "api": [
             "optional": false,
             "field": "Triplegs",
             "description": "<p>An array of json objects that represent the triplegs</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "routes/apiv2/triplegs.js",
+    "groupTitle": "Triplegs"
+  },
+  {
+    "type": "get",
+    "url": "/triplegs/insertTransitionBetweenTriplegs&:start_time&:end_time&:from_travel_mode&:to_travel_mode&:trip_id",
+    "title": "Inserts a missed transition between two triplegs by splitting the existing affected tripleg",
+    "name": "InsertTransitionBetweenTriplegs",
+    "group": "Triplegs",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": true,
+            "field": "500",
+            "description": "<p>InvalidInput The parameters <code>tripleg_id</code> is undefined, null or of wrong types.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "trip_id",
+            "description": "<p>Id of the trip where the transition will be inserted</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "start_time",
+            "description": "<p>Time at which the transition started</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "end_time",
+            "description": "<p>Time at which the transition ended</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "from_travel_mode",
+            "description": "<p>The travel mode from which the user changed</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "to_travel_mode",
+            "description": "<p>The travel mode to which the user changed</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Tripleg[]",
+            "optional": false,
+            "field": "Triplegs",
+            "description": "<p>An array of json objects that represent the triplegs of the trip after the insertion of the transition tripleg</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "routes/apiv2/triplegs.js",
+    "groupTitle": "Triplegs"
+  },
+  {
+    "type": "get",
+    "url": "/triplegs/updateEndTimeOfTripleg&:tripleg_id&:end_time",
+    "title": "Updates the end time of a tripleg",
+    "name": "UpdateEndTimeOfTripleg",
+    "group": "Triplegs",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": true,
+            "field": "500",
+            "description": "<p>InvalidInput The parameters <code>tripleg_id</code> or <code>end_time</code> are undefined, null or of wrong types.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "tripleg_id",
+            "description": "<p>Id of the tripleg that will have its end date modified.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "end_time",
+            "description": "<p>The new value for the end time of the specified tripleg</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Tripleg[]",
+            "optional": false,
+            "field": "Triplegs",
+            "description": "<p>An array of json objects that represent the triplegs of the trip after update</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "routes/apiv2/triplegs.js",
+    "groupTitle": "Triplegs"
+  },
+  {
+    "type": "get",
+    "url": "/triplegs/updateStartTimeOfTripleg&:tripleg_id&:start_time",
+    "title": "Updates the start time of a tripleg",
+    "name": "UpdateStartTimeOfTripleg",
+    "group": "Triplegs",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": true,
+            "field": "500",
+            "description": "<p>InvalidInput The parameters <code>tripleg_id</code> or <code>start_time</code> are undefined, null or of wrong types.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "tripleg_id",
+            "description": "<p>Id of the tripleg that will have its start date modified.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "start_time",
+            "description": "<p>The new value for the start time of the specified tripleg</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Tripleg[]",
+            "optional": false,
+            "field": "Triplegs",
+            "description": "<p>An array of json objects that represent the triplegs of the trip after update</p>"
           }
         ]
       }
