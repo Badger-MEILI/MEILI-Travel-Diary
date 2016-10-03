@@ -9,7 +9,7 @@ var router = express.Router();
 
 /**
  * @api {get} /pois/insertTransportationPoi&:name_&:latitude&:longitude&:declaring_user_id&:transportation_lines&:transportation_types Inserts a new transportation POI declared by a user
- * @apiName InsertTransportaionPoi
+ * @apiName InsertTransportationPoi
  * @apiGroup POIs
  *
  * @apiError [500] InvalidInput The parameters <code>name_</code>, <code>latitude</code>, <code>longitude</code>, <code>declaring_user_id</code> are undefined, null or of wrong types.
@@ -24,7 +24,7 @@ var router = express.Router();
  *
  * @apiSuccess {Id} The id of the inserted transportation POI.
  */
-router.get("/inserTransportationPoi", function(req,res){
+router.get("/insertTransportationPoi", function(req,res){
     var results = [];
     var name_ = req.query.name_;
     var latitude = req.query.latitude;
@@ -63,6 +63,55 @@ router.get("/inserTransportationPoi", function(req,res){
 });
 
 
-// TODO - insert destination POIs
+/**
+ * @api {get} /pois/insertDestinationPoi&:name_&:latitude&:longitude&:declaring_user_id Inserts a new destination POI declared by a user
+ * @apiName InsertDestinationPoi
+ * @apiGroup POIs
+ *
+ * @apiError [500] InvalidInput The parameters <code>name_</code>, <code>latitude</code>, <code>longitude</code>, <code>declaring_user_id</code> are undefined, null or of wrong types.
+ * @apiError [500] SQLError SQL error traceback.
+ *
+ * @apiParam {String} name_ Name of the inserted POI
+ * @apiParam {Number} latitude Latitude of the inserted POI
+ * @apiParam {Number} longitude Longitude of the inserted POI
+ * @apiParam {Number} declaring_user_id Id of the user that inserts the POI
+ *
+ * @apiSuccess {Id} The id of the inserted destination POI.
+ */
+router.get("/insertDestinationPoi", function(req,res){
+    var results = [];
+    var name_ = req.query.name_;
+    var latitude = req.query.latitude;
+    var longitude = req.query.longitude;
+    var declaring_user_id = req.query.declaring_user_id;
+
+    if (name_ == null || name_ == undefined || latitude == null || latitude== undefined
+        || longitude == null || longitude == undefined || declaring_user_id == null || declaring_user_id== undefined ) {
+        res.status(500);
+        res.send("Invalid input parameters");
+        return res;
+    }
+
+    else
+    {
+        var sqlQuery = "select * from apiv2.insert_destination_poi($bd$"+name_+"$bd$,$bd$"+ latitude+"$bd$,$bd$"+longitude+"$bd$,$bd$"
+            +declaring_user_id+"$bd$)";
+
+        var prioryQuery = apiClient.query(sqlQuery);
+
+        prioryQuery.on('row', function (row) {
+            results.push(row);
+        });
+
+        prioryQuery.on('error', function(row){
+            res.status(500);
+            res.send(row);
+        });
+
+        prioryQuery.on('end', function () {
+            return res.json(results[0]);
+        });
+    }
+});
 
 module.exports = router;
