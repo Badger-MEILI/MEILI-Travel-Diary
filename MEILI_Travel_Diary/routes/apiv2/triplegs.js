@@ -250,10 +250,99 @@ router.get("/insertTransitionBetweenTriplegs", function(req,res){
 });
 
 
+/**
+ * @api {get} /triplegs/updateTravelModeOfTripleg&:tripleg_id&:travel_mode Updates the travel mode of a tripleg
+ * @apiName UpdateTravelModeOfTripleg
+ * @apiGroup Triplegs
+ *
+ * @apiError [500] InvalidInput The parameters <code>tripleg_id</code> or <code>travel_mode</code> are undefined, null or of wrong types.
+ * @apiError [500] SQLError SQL error traceback.
+ *
+ * @apiParam {Number} tripleg_id Id of the tripleg that will have its travel mode updated
+ * @apiParam {Number} travel_mode The new value for the travel mode of the specified tripleg
+ *
+ * @apiSuccess {Boolean} Boolean Returns whether the operation was successfull or not.
+ */
+router.get("/updateTravelModeOfTripleg", function(req,res){
+    var results = [];
+    var tripleg_id = req.query.tripleg_id;
+    var travel_mode = req.query.travel_mode;
+
+    if (tripleg_id == null || tripleg_id == undefined || travel_mode == null || travel_mode == undefined) {
+        res.status(500);
+        res.send("Invalid input parameters");
+        return res;
+    }
+
+    else
+    {
+        var sqlQuery = "select * from apiv2.update_tripleg_travel_mode($bd$"+travel_mode+"$bd$,$bd$"+tripleg_id+"$bd$)";
+        var prioryQuery = apiClient.query(sqlQuery);
+
+        prioryQuery.on('row', function (row) {
+                results.push(row);
+        });
+
+        prioryQuery.on('error', function(row){
+            res.status(500);
+            res.send(row);
+            // res.send("Request failed with parameters tripleg_id: "+ tripleg_id+" and start_time "+new_end_time);
+        });
+
+        prioryQuery.on('end', function () {
+            if (results.length<1) return res.json(false);
+            return res.json(results[0]);
+        });
+    }
+});
+
+/**
+ * @api {get} /triplegs/updateTransitionPoiIdOfTripleg&:tripleg_id&:transition_poi_id Updates the travel mode of a tripleg
+ * @apiName UpdateTransitionPoiIdOfTripleg
+ * @apiGroup Triplegs
+ *
+ * @apiError [500] InvalidInput The parameters <code>tripleg_id</code> or <code>transition_poi_id</code> are undefined, null or of wrong types.
+ * @apiError [500] SQLError SQL error traceback.
+ *
+ * @apiParam {Number} tripleg_id Id of the tripleg that will have its travel mode updated
+ * @apiParam {Number} transition_poi_id The new value for the transition poi id of the specified tripleg
+ *
+ * @apiSuccess {Boolean} Boolean Returns whether the operation was successfull or not.
+ */
+router.get("/updateTravelModeOfTripleg", function(req,res){
+    var results = [];
+    var tripleg_id = req.query.tripleg_id;
+    var transition_poi_id = req.query.transition_poi_id;
+
+    if (tripleg_id == null || tripleg_id == undefined || transition_poi_id == null || transition_poi_id== undefined) {
+        res.status(500);
+        res.send("Invalid input parameters");
+        return res;
+    }
+
+    else
+    {
+        var sqlQuery = "select * from apiv2.update_tripleg_transition_poi_id($bd$"+transition_poi_id+"$bd$,$bd$"+tripleg_id+"$bd$)";
+        var prioryQuery = apiClient.query(sqlQuery);
+
+        prioryQuery.on('row', function (row) {
+            results.push(row);
+        });
+
+        prioryQuery.on('error', function(row){
+            res.status(500);
+            res.send(row);
+            // res.send("Request failed with parameters tripleg_id: "+ tripleg_id+" and start_time "+new_end_time);
+        });
+
+        prioryQuery.on('end', function () {
+            if (results.length<1) return res.json(false);
+            return res.json(results[0]);
+        });
+    }
+});
+
 //TODO - these are bits of code that are not implemented / tested yet -> move the todo list below when a function is cleared out
 // Any functions that are missing?
-
-// TODO - set travel mode of tripleg
-// TODO - set transition poi of tripleg
 
 module.exports = router;
