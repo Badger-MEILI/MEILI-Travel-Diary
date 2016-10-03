@@ -216,8 +216,6 @@ router.get("/deleteTrip", function(req,res){
     }
 });
 
-// TODO - insert trip
-
 /**
  * @api {get} /trips/insertPeriodBetweenTrips&:start_time&:end_time&:user_id Inserts a missed non movement period between two trips by splitting the existing affected trip
  * @apiName InsertPeriodBetweenTris
@@ -266,8 +264,51 @@ router.get("/insertTransitionBetweenTriplegs", function(req,res){
     }
 });
 
-// TODO - specify purpose of trip
+/**
+ * @api {get} /trips/updatePurposeOfTrip&:trip_id&:purpose_id Updates the purpose of a trip
+ * @apiName UpdatePurposeOfTrip
+ * @apiGroup Trips
+ *
+ * @apiError [500] InvalidInput The parameters <code>trip_id</code> or <code>purpose_id</code> are undefined, null or of wrong types.
+ * @apiError [500] SQLError SQL error traceback.
+ *
+ * @apiParam {Number} trip_id Id of the trip that will have its purpose updated
+ * @apiParam {Number} purpose_id The new value for the purpose_id
+ *
+ * @apiSuccess {Boolean} Boolean The success state of the operation.
+ */
+router.get("/updatePurposeOfTrip", function(req,res){
+    var results = [];
+    var trip_id = req.query.trip_id;
+    var purpose_id = req.query.purpose_id;
 
+    if (trip_id == null || trip_id == undefined || purpose_id == null || purpose_id== undefined) {
+        res.status(500);
+        res.send("Invalid input parameters");
+        return res;
+    }
+
+    else
+    {
+        var sqlQuery = "select * from apiv2.update_trip_purpose($bd$"+purpose_id+"$bd$, $bd$"+trip_id+"$bd$)";
+        var prioryQuery = apiClient.query(sqlQuery);
+
+        prioryQuery.on('row', function (row) {
+            results.push(row);
+        });
+
+        prioryQuery.on('error', function(row){
+            res.status(500);
+            res.send(row);
+            // res.send("Request failed with parameters trip_id: "+ trip_id+" and start_time "+new_start_time);
+        });
+
+        prioryQuery.on('end', function () {
+            if (results.length<0) return res.json(false);
+            return res.json(results[0]);
+        });
+    }
+});
 
 // TODO - specify destination POI of trip
 
