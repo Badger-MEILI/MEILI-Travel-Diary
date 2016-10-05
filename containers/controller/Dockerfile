@@ -6,8 +6,8 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys B97B0AFCAA1A47F044F
 # Add PostgreSQL's repository.
 RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main" > /etc/apt/sources.list.d/pgdg.list
 
-RUN apt-get update
-RUN apt-get install -y postgresql-client-9.2
-RUN apt-get install -y curl
+RUN apt-get update && \
+    apt-get install -y postgresql-client-9.2 curl git-core
 
 ADD ./wait-for-it.sh /wait-for-it
+ADD ./init.sh /init
