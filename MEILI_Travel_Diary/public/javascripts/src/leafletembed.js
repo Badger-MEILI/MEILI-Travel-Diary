@@ -181,6 +181,7 @@ var serverResponse = {
 var debug       = Debug(CONFIG);
 var trips       = Trips(CONFIG);
 var triplegs    = Triplegs(CONFIG);
+var map         = Map();
 
 
 /**=============IMMEDIATE ACTIONS====================================*/
@@ -222,7 +223,7 @@ function initmap(thisUserId) {
           currentTrip.triplegs = triplegsOfCurrentTrip;
           copyOfTriplegs = jQuery.extend(true, [], triplegsOfCurrentTrip);
 
-          generateMap(thisUserId);
+          map.init(CONFIG.map, thisUserId);
           generateHTMLElements(currentTrip, triplegsOfCurrentTrip, thisUserId);
 
           var assistantHelper = document.getElementById('assistant');
@@ -262,59 +263,7 @@ function enableMapScrolling(){
     });
 }
 
-/**
- * Populates layers - gets called on new trip only
- */
 
-function generateMap(userId){
-    map = new L.Map('map');
-
-    map.options.maxZoom = 17;
-
-
-    //TODO CUSTOM CODE WILL BE CHANGED
-    map.setView(new L.LatLng(59.340893391583855, 18.00436019897461),12);
-
-    // create the tile layer with correct attribution
-    var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-    var osmAttrib='Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
-    var osm = new L.TileLayer(osmUrl, {minZoom: 2, maxZoom: 24, attribution: osmAttrib});
-
-    var Esri_WorldImagery = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-        attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
-    });
-
-    var CartoDB_DarkMatter = L.tileLayer('http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
-        subdomains: 'abcd',
-        minZoom: 0,
-        maxZoom: 18
-    });
-    var Stamen_TonerHybrid = L.tileLayer('http://{s}.tile.stamen.com/toner-hybrid/{z}/{x}/{y}.png', {
-        attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-        subdomains: 'abcd',
-        minZoom: 0,
-        maxZoom: 20
-    });
-
-    var baseMaps = {
-        "OSM": osm,
-        "ESRI": Esri_WorldImagery,
-        "nightmode":CartoDB_DarkMatter
-    };
-
-    var overlayMaps = {
-        "Roads": Stamen_TonerHybrid
-    };
-
-    map.addLayer(osm);
-
-    integrityCheck();
-
-    logFrontEndOperation(userId,'the map is drawn');
-
-    L.control.layers(baseMaps, overlayMaps).addTo(map);
-}
 
 /**
  * Gets called on each new trip - calls the generation of timeline panels and draws polylines on map
