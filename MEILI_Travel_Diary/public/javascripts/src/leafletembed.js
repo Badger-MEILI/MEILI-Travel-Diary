@@ -177,93 +177,63 @@ var serverResponse = {
  * UTILITIES ****************************************************
  *********************************************************************/
 
+
+var debug       = Debug(CONFIG);
+var trips       = Trips(CONFIG);
+var triplegs    = Triplegs(CONFIG);
+
+
 /**=============IMMEDIATE ACTIONS====================================*/
 
 
 /**
  * Called once the webpage is loaded
  */
-/*
-var holderOfStrings=[];
-
-function loadTranslationFiles(language){
-    $.getJSON('../Translation/translation_' + language + '.json', function(json) {
-        console.log(json); // this will show the info it in firebug console
-    });
-}
-
-function getTranslation(string, language) {
-    loadTranslationFiles(language);
-}*/
 
 var copyOfTriplegs;
 var copyOfTrip;
 
 function initmap(thisUserId) {
 
-    console.log(thisUserId);
-    var injector = angular.element(document).injector();
-    var aMsgHandlerService = injector.get('translationService');
+  var injector = angular.element(document).injector();
+  var aMsgHandlerService = injector.get('translationService');
 
-    var $rootScope = injector.get('$rootScope');
-
-    console.log(aMsgHandlerService);
+  var $rootScope = injector.get('$rootScope');
 
 
-    if (thisUserId==undefined){
-        console.log('need login');
-    }
+  if (thisUserId==undefined){
+      console.log('need login');
+  }
 
-    userId = thisUserId;
-    generateBadge(thisUserId);
+  userId = thisUserId;
+  trips.getNumberOfTrips(thisUserId)
+    .done(function(result) {
+      document.getElementById('tripsLeft').innerHTML = result.rows[0].user_get_badge_trips_info;
+      document.getElementById('badge_holder').style.visibility = "visible";
+  });
 
-    /*if (serverResp==null||serverResp==undefined){
-        //if (getLanguage()=="en")
-        alert('Please come back later, there are not enough trips to show you yet');
-        //else alert('Kom tillbaka senare. Det finns inte tillräckligt med resor att visa ännu');
-    }
-    else {*/
-        var nextTripRequest = getNextTripToProcess(thisUserId);
+  trips.getLast(thisUserId)
+    .done(function(trip) {
+      currentTrip = trip;
 
-        nextTripRequest.done(function(msg) {
-            console.log(msg);
+      triplegs.get(currentTrip.trip_id)
+        .done(function(result) {
+          var triplegsOfCurrentTrip = result.pagination_get_triplegs_of_trip;
+          currentTrip.triplegs = triplegsOfCurrentTrip;
+          copyOfTriplegs = jQuery.extend(true, [], triplegsOfCurrentTrip);
 
-            var currentTrip = msg;
-            if (currentTrip!=undefined){
-            console.log(currentTrip);
-            console.log(currentTrip.trip_id);
-            var getTriplegsRequest =
-                getTriplegsOfTripRequest(currentTrip.trip_id);
+          generateMap(thisUserId);
+          generateHTMLElements(currentTrip, triplegsOfCurrentTrip, thisUserId);
 
-            getTriplegsRequest.done(function(msg){
-                console.log(msg);
-                var triplegsOfCurrentTrip = msg.pagination_get_triplegs_of_trip;
-                copyOfTriplegs = jQuery.extend(true, [], triplegsOfCurrentTrip);
-                generateMap(thisUserId);
-                generateHTMLElements(currentTrip, triplegsOfCurrentTrip, thisUserId);
-
-                //if (getLanguage()=="en")
-                var assistantHelper = document.getElementById('assistant');
-                /*else
-                 var assistantHelper = document.getElementById('assistantSv');*/
-                assistantHelper.style.visibility = "visible";
-                assistantHelper.addEventListener("click", enablingListener);
-                enableMapScrolling();
-            });
-
-
-                getTriplegsRequest.fail(function (jqXHR, textStatus, errorThrown) {
-                    console.log(jqXHR.responseText);
-                });
-            }
-            else {
-                alert('Please come back later, there are not enough trips to show you yet');
-            }
-
-        });
-
-
-   // }
+          var assistantHelper = document.getElementById('assistant');
+          assistantHelper.style.visibility = "visible";
+          assistantHelper.addEventListener("click", enablingListener);
+          enableMapScrolling();
+      });
+    })
+    .fail(function() {
+      alert('Please come back later, there are not enough trips to show you yet');
+    });
 }
 
 function enableMapScrolling(){
@@ -592,43 +562,6 @@ function checkCurrentTrip(){
         console.log('failed destination places test '+ (currentTrip.destination_places[0].accuracy<=50));
         return false;
     }
-
-    /*var copyOfTriplegs = [];
-
-    for (var i in currentTrip.triplegs){
-        copyOfTriplegs.push(jQuery.extend(true, {} , currentTrip.triplegs[i]));
-        if (currentTrip.triplegs[i].type_of_tripleg==1){
-            currentTrip.triplegs[i].mode.sort(compare);
-            // console.log(currentTrip.triplegs[i].mode[0]);
-        if (currentTrip.triplegs[i].mode[0].accuracy<=50) {
-            console.log('failed tripleg '+currentTrip.triplegs[i].triplegid+' test '+currentTrip.triplegs[i].mode[0].accuracy);
-            return false;
-        }
-        }
-    }
-
-
-    var i;
-    var j = copyOfTriplegs.length;
-    console.log(copyOfTriplegs);
-    console.log('number of trips needed '+j);
-    for (i = 0; i < j; i++) {
-
-        (function(){
-            pushTriplegModification(null,copyOfTriplegs[i],"upsert", currentTrip.tripid);
-            console.log('just pushed '+copyOfTriplegs[i].triplegid);
-        }
-
-        )(i);
-        *//*(function(cntr) {
-            // here the value of i was passed into as the argument cntr
-            // and will be captured in this function closure so each
-            // iteration of the loop can have it's own value
-            var request = pushTriplegModification(null,copyOfTriplegs[cntr],"upsert", currentTrip.tripid);
-
-        })(i);*//*
-    }
-*/
 
     return true;
 }
@@ -1087,14 +1020,7 @@ function showAndAddDataForLongModalV2(tripleg, startTime, endTime, startBoundary
         console.log(stopBoundary);
         if (startBoundary.triplegid==undefined) paragraphInform.innerHTML = 'The modified tripleg will shift its next trip leg to '+ getPointFormatedDate(new Date(endTime));
         if (stopBoundary.triplegid==undefined) paragraphInform.innerHTML = 'The modified tripleg will shift its previous trip leg to '+ getPointFormatedDate(new Date(startTime));
-        /*if (tripleg.triplegid!=startBoundary.triplegid && tripleg.triplegid!=stopBoundary.triplegid)
-            paragraphInform.innerHTML = 'You will insert a new trip leg that will shift its previous trip leg to '+tripleg.points[0].time+ ' and its next trip leg to '+tripleg.points[tripleg.points.length-1].time;
-        else
-        if (tripleg.triplegid!=startBoundary.triplegid && tripleg.triplegid==stopBoundary.triplegid)
-            paragraphInform.innerHTML = 'You will insert a new trip leg that will shift its previous trip leg to '+initialTime;
-        else if (tripleg.triplegid==startBoundary.triplegid && tripleg.triplegid!=stopBoundary.triplegid)
-            paragraphInform.innerHTML = 'You will insert a new trip leg that will shift its next trip leg to '+endTime;
-        */
+
 
         console.log(triplegsInside);
         if (triplegsInside.length!=0)
@@ -1183,166 +1109,7 @@ function performChanges(data){
     ul.innerHTML="";
 
     generateHTMLElements(currentTrip);
-  /*  console.log(data);
-
-    console.log("performing changes");
-
-    var originalTripleg = $('#transitionAlertModal').data('originalTripleg');
-    var backedupTripleg= $('#transitionAlertModal').data('modifiedTripleg');
-    var stopBoundary = $('#transitionAlertModal').data('stopBoundary');
-    var startBoundary = $('#transitionAlertModal').data('startBoundary');
-
-    var newStartTime = $('#transitionAlertModal').data('newStartTime');
-    var newEndTime = $('#transitionAlertModal').data('newEndTime');
-
-    var triplegsInside = $('#transitionAlertModal').data('triplegsInside');
-
-    console.log(stopBoundary);
-
-    *//*if (startBoundary.triplegid==modifiedTripleg) {
-        console.log('modifying all to the right');
-        //add all to the end of startBoundary (go through all trips inside ASCENDING AND stopBoundary) until reaching proposed endTime and then split stopBoundary
-
-        if (triplegsInside != null) {
-            console.log('triplegs inside not null');
-            for (var i = 0; i < triplegsInside.length; i++) {
-                console.log("TRIPLEG");
-                for (var j = 0; j < triplegsInside[i].points.length; j++) {
-                    startBoundary.points.push(triplegsInside[i].points[j]);
-                    console.log("Point");
-                }
-            }
-        }
-        else {
-            console.log('triplegs inside is null');
-        }
-
-        for (var x = 0; x < stopBoundary.points.length; x++) {
-
-            var compareDate = new Date(stopBoundary.points[x].time);
-            var proposedDate = new Date(proposedEndTime);
-
-            console.log("compare date " + compareDate);
-            console.log("proposed date " + proposedDate);
-
-            if (compareDate <= proposedDate) {
-                startBoundary.points.push(stopBoundary.points[x]);
-
-                console.log("length before splice " + stopBoundary.points.length);
-                stopBoundary.points.splice(x, 1);
-                console.log("length after splice " + stopBoundary.points.length);
-
-                //console.log(stopBoundary.points);
-                console.log("x is " + x);
-                x--;
-            }
-
-            console.log("x " + x);
-
-        }
-
-        if (stopBoundary.points.length != 0) {
-
-        var point = new Object();
-
-        point.id = stopBoundary.points[0].id;
-        point.lat = stopBoundary.points[0].lat;
-        point.lon = stopBoundary.points[0].lon;
-        point.time = proposedEndTime;
-
-        startBoundary.points.push(point);
-        stopBoundary.points[0].time = proposedEndTime;
-        }
-    *//**//*startBoundary.points[startBoundary.points.length-1].time = proposedEndTime;*//**//*
-
-        console.log(startBoundary);
-        console.log(stopBoundary);
-    }
-    else
-    {
-        console.log('modifying all to the left');
-        //add all to the beginning of stopBoundary (go through all trips inside DESCENDING AND startBoundary) until reaching proposed initialTime and then split startBoundary
-
-        if (triplegsInside!=null){
-            for (var i=triplegsInside.length-1;i>=0;i--){
-                for (var j=triplegsInside[i].points.length-1; j>=0;j--){
-                    stopBoundary.points.unshift(triplegsInside[i].points[j]);
-                }
-            }
-        }
-
-
-        for (var x=startBoundary.points.length-1; x>=0; x--){
-
-            var compareDate = new Date(startBoundary.points[x].time);
-            var proposedDate = new Date(proposedInitialTime);
-
-
-            if (compareDate>=proposedDate){
-                console.log('inside');
-                stopBoundary.points.unshift(startBoundary.points[x]);
-                startBoundary.points.splice(x,1);
-            }
-        }
-
-        var point = new Object();
-
-        console.log(startBoundary);
-        point.id = startBoundary.points[startBoundary.points.length-1].id;
-        point.lat = startBoundary.points[startBoundary.points.length-1].lat;
-        point.lon = startBoundary.points[startBoundary.points.length-1].lon;
-        point.time = proposedInitialTime;
-
-        stopBoundary.points.unshift(point);
-
-        startBoundary.points[startBoundary.points.length-1].time = proposedInitialTime;
-        *//**//*stopBoundary.points[0].time = proposedInitialTime;*//**//*
-
-        console.log(startBoundary);
-        console.log(stopBoundary);
-    }*//*
-
-
-        for (var i in triplegsInside) {
-            console.log("removing tripleg " + triplegsInside[i].triplegid);
-            removeTripleg(triplegsInside[i].triplegid);
-        }
-    *//*
-    else {
-        for (var i in triplegsInside) {
-            console.log("removing tripleg " + triplegsInside[i].triplegid);
-            removeTripleg(triplegsInside[i].triplegid);
-        }
-    }*//*
-
-
-
-    if (startBoundary.triplegid!=undefined || jQuery.isEmptyObject(startBoundary)){
-        // only start modification
-        addPointsWithinTriplegsToTriplegBefore(startBoundary, triplegsInside, originalTripleg.triplegid);
-        movePointsBeforeBoundary(startBoundary, newStartTime, originalTripleg.triplegid);
-      //  console.log(startBoundary);
-        if (startBoundary.points.length>1)
-            updateRemoveRedraw(startBoundary);
-        // else implies that it is the only trip
-        else updateTransitionPanel(currentTrip.triplegs[0].triplegid);
-    }
-
-    if (stopBoundary.triplegid!=undefined || jQuery.isEmptyObject(stopBoundary)){
-        addPointsWithinTriplegsToTriplegAfter(stopBoundary, triplegsInside, originalTripleg.triplegid);
-        movePointsAfterBoundary(stopBoundary, newEndTime, originalTripleg.triplegid);
-    //    console.log(stopBoundary);
-        if (stopBoundary.points.length>1)
-        updateRemoveRedraw(stopBoundary);
-        // else implies that it is the only trip
-        else {
-            //updateRemoveRedraw(currentTrip.triplegs[0]);
-            updateTransitionPanel(currentTrip.triplegs[0].triplegid);
-        }
-    }
-*/
-    //console.log(currentTrip);
-
+ 
     $('#transitionAlertModal').data('triplegId',null);
     $('#transitionAlertModal').data('prevInitialTime',null);
     $('#transitionAlertModal').data('prevEndTime',null);
@@ -1367,52 +1134,6 @@ function performChanges(data){
         console.log('done with frontend log');
     }));
 
-    /*console.log(data);
-    console.log(data.formerStart);
-    console.log(data.formerEnd);
-
-
-    console.log(currentTrip);
-
-    console.log('CANCELLING DATA');
-    var triplegId = $('#transitionAlertModal').data('triplegId');
-
-    $('#transitionAlertModal').modal('hide');
-
-    for (var i in currentTrip.triplegs)
-    {
-        if (triplegId==currentTrip.triplegs[i].triplegid){
-
-            currentTrip.triplegs[i].points[0].time = data.formerStart;
-            currentTrip.triplegs[i].points[currentTrip.triplegs[i].points.length-1].time=data.formerEnd;
-
-            console.log('found trip');
-            var prevEnd = new Date(currentTrip.triplegs[i].points[currentTrip.triplegs[i].points.length-1].time);
-            var prevInit = new Date(currentTrip.triplegs[i].points[0].time);
-            console.log(prevEnd);
-            console.log(prevInit);
-            $('#timepickerstop'+triplegId).timepicker('setTime',prevEnd.getHours()+":"+prevEnd.getMinutes());
-            $('#timepickerstart'+triplegId).timepicker('setTime',prevInit.getHours()+":"+prevInit.getMinutes());
-
-            movePointsToTempArray(currentTrip.triplegs[i], null, data.formerStart, data.formerEnd, data.formerEnd);
-            movePointsToTempArray(currentTrip.triplegs[i], data.formerStart, data.formerStart, null, data.formerEnd);
-
-            //updateRemoveRedraw(currentTrip.triplegs[i]);
-
-            console.log(currentTrip);
-           *//*if (i==currentTrip.triplegs.length-1) currentTripEndDate = prevEnd;*//*
-        }
-    }
-
-
-    $('#transitionAlertModal').data('triplegId',null);
-    $('#transitionAlertModal').data('prevInitialTime',null);
-    $('#transitionAlertModal').data('prevEndTime',null);
-    $('#transitionAlertModal').data('startBoundary',null);
-    $('#transitionAlertModal').data('stopBoundary',null);
-    $('#transitionAlertModal').data('triplegsInside',null);
-    $('#transitionAlertModal').data('formerStart', null);
-    $('#transitionAlertModal').data('formerEnd',null);*/
 }
 
 /**
@@ -1455,9 +1176,6 @@ function getBoundaries(initialTime, endTime){
         var triplegStartTime = new Date(currentTrip.triplegs[i].points[0].time);
         var triplegEndTime = new Date (currentTrip.triplegs[i].points[currentTrip.triplegs[i].points.length-1].time);
 
-    //    console.log(triplegStartTime);
-    //    console.log(triplegEndTime);
-
         if (triplegStartTime.getTime()<=initialTime.getTime() && triplegEndTime.getTime()<=endTime.getTime() && triplegEndTime.getTime()>=initialTime.getTime())
         {
 
@@ -1469,8 +1187,6 @@ function getBoundaries(initialTime, endTime){
             boundaries[0] = currentTrip.triplegs[i];
             firstID = parseInt(i);
         }
-
-  //      console.log(triplegStartTime+" >= "+ initialTime+ " and "+ triplegEndTime+" >= "+endTime+" and "+triplegStartTime+" <= "+endTime);
 
         if (triplegStartTime.getTime()>=initialTime.getTime() && triplegEndTime.getTime()>=endTime.getTime() && triplegStartTime.getTime()<=endTime.getTime())
         {
@@ -1484,11 +1200,8 @@ function getBoundaries(initialTime, endTime){
             boundaries[1] = currentTrip.triplegs[i];
         }
 
-        /*   if (triplegStartTime.getTime()==initialTime.getTime()&&triplegEndTime.getTime()==endTime.getTime()) currentTripleg=currentTrip.triplegs[i];*/
     }
 
-   // if (boundaries[0]==undefined) boundaries[0]=currentTripleg;
-   //  if (boundaries[1]==undefined) boundaries[1]=currentTripleg;
 
     if ((firstID != -1) || (secondID!=-1)) {
         if (firstID == -1) boundaries[0] = currentTrip.triplegs[secondID - 1];
@@ -1514,10 +1227,7 @@ function checkTemporalIntegrityRules(fromDate, toDate, triplegStartDate, tripleg
         /*OUTSIDE OF THE CURRENT TRIP's TIME FRAME*/
         $('#timepickerStartTransition'+id).timepicker('setTime',triplegStartDate.getHours()+":"+triplegStartDate.getMinutes());
         $('#timepickerStopTransition'+id).timepicker('setTime',triplegEndDate.getHours()+":"+triplegEndDate.getMinutes());
-        //if (getLanguage()=="en")
-            alert ('Modifications are allowed only within the current tripleg\'s time frame');
-        /*else
-            alert ('Justering är bara tillåten inom ramen för den aktuella förflyttningens tidsperiod');*/
+        alert ('Modifications are allowed only within the current tripleg\'s time frame');
     }
     else
     {
@@ -1529,10 +1239,7 @@ function checkTemporalIntegrityRules(fromDate, toDate, triplegStartDate, tripleg
             $('#timepickerStopTransition').timepicker('setTime',triplegEndDate.getHours()+":"+triplegEndDate.getMinutes());
             fromDate=triplegStartDate;
             toDate=triplegEndDate;
-            //if (getLanguage()=="en")
-                alert ('Start of the transfer cannot be later than the end of the transfer');
-            /*else
-                alert ('Starttiden för bytet kan inte vara senare än sluttiden ');*/
+            alert ('Start of the transfer cannot be later than the end of the transfer');
         }
         else
         {
@@ -2242,7 +1949,6 @@ function pDistance(x, y, x1, y1, x2, y2) {
  */
 function generateModal(triplegid){
 
-    //if (getLanguage()=="en"){
     var html = '<div id="transitionModal'+triplegid+'" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">';
     html+= '<div class="modal-dialog modal-sm">';
     html+= '<div class="modal-content">';
@@ -2255,12 +1961,10 @@ function generateModal(triplegid){
     html+= '</select>';
 
     html+= '<div id="stationInfo'+triplegid+'" style="display:none">';
-    // html+= '<div class="input-group-addon">';
+
     html+= '<input type="text" class="form-controlV2" style="display:inline-block; width:49%; margin-right:5px;" placeholder="Name" aria-describedby="basic-addon1" id="transitionName'+triplegid+'">';
-    //html+= '</div>';
-    // html+= '<div class="input-group-addon">';
+
     html+= '<input type="text" class="form-controlV2" style="display:inline-block; width:49%;" placeholder="Lines: e.g.:1,2,5" aria-describedby="basic-addon1" id="transitionLines'+triplegid+'">';
-    //html+= '</div>';
 
     html+= '<form role="form" id="checkboxForm'+triplegid+'">';
     html+= '<div class="checkbox" style="display: inline-block; width:30%;">';
@@ -2275,7 +1979,6 @@ function generateModal(triplegid){
     html+= '</form>';
     html+= '</div>';
 
-   // html+= '<br>';
     html+= '<button id="transitionButton'+triplegid+'" type="button" class="btn btn-default" style="width:48%; display:inline-block; margin-left:5px" data-dismiss="modal" onclick="transitionMarker(this.id)">Draw</button>';
     html+= '<button type="button" class="btn btn-default" style="width:48%; display:inline-block;" data-dismiss="modal" ">Cancel</button>';
     html+= '</div>';
@@ -2344,111 +2047,7 @@ function generateModal(triplegid){
     html+= '</div>';
     html+= '</div>';
     html+= '</div>';
-    //}
-    /*else
-    {
-        var html = '<div id="transitionModal'+triplegid+'" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">';
-        html+= '<div class="modal-dialog modal-sm">';
-        html+= '<div class="modal-content">';
-        html+= '<h4>Ny bytespunkt</h4>';
 
-        html+= '<p style="display:inline; border-bottom: 0px;">Typ av bytespunkt:: </p>';
-        html+= '<select class="form-control form-control-inline" id="transitionType'+triplegid+'" style="display: inline-block; border: 0px; width:190px; color:black; font-size:15;" onchange="transitionTypeEnabler(this.id)">';
-        html+= '<option value="1">Parkeringsplats</option>';
-        html+= '<option value="2">Station/hållplats</option>';
-        html+= '</select>';
-
-        html+= '<div id="stationInfo'+triplegid+'" style="display:none">';
-        // html+= '<div class="input-group-addon">';
-        html+= '<input type="text" class="form-controlV2" style="display:inline-block; width:49%; margin-right:5px;" placeholder="Namn" aria-describedby="basic-addon1" id="transitionName'+triplegid+'">';
-        //html+= '</div>';
-        // html+= '<div class="input-group-addon">';
-        html+= '<input type="text" class="form-controlV2" style="display:inline-block; width:49%;" placeholder="Lines: e.g.:1,2,5" aria-describedby="basic-addon1" id="transitionLines'+triplegid+'">';
-        //html+= '</div>';
-
-        html+= '<form role="form" id="checkboxForm'+triplegid+'">';
-        html+= '<div class="checkbox" style="display: inline-block; width:30%;">';
-        html+= '<label><input type="checkbox" value="1">Buss</label>';
-        html+= '</div>';
-        html+= '<div class="checkbox" style="display: inline-block; width:30%;">';
-        html+= '<label><input type="checkbox" value="2">Spårvagn</label>';
-        html+= '</div>';
-        html+= '<div class="checkbox" style="display: inline-block; width:30%;">';
-        html+= '<label><input type="checkbox" value="3">Tunnelbana</label>';
-        html+= '</div>';
-        html+= '</form>';
-        html+= '</div>';
-
-        // html+= '<br>';
-        html+= '<button id="transitionButton'+triplegid+'" type="button" class="btn btn-default" style="width:48%; display:inline-block; margin-left:5px" data-dismiss="modal" onclick="transitionMarker(this.id)">Rita</button>';
-        html+= '<button type="button" class="btn btn-default" style="width:48%; display:inline-block;" data-dismiss="modal" ">Avbryt</button>';
-        html+= '</div>';
-        html+= '</div>';
-        html+= '</div>';
-
-        *//**
-         * SECOND MODAL
-         * @type {string}
-         *//*
-        html+= '<div id="transitionChoiceModal'+triplegid+'" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">';
-        html+= '<div class="modal-dialog modal-sm" style="width:350px">';
-        html+= '<div class="modal-content">';
-        html+= '<h4 style="border-bottom: 2px solid #c25b4e;padding-bottom: 3px;">Lägg till en ny bytespunkt</h4>';
-
-        html+= '<p style="display:inline-block; border-bottom: 0px; text-align: left; width:60%;">Från färdsätt: </p>';
-        html+= '<select id="selectFrom'+triplegid+'" style="display: inline-block" class="form-controlV2">';
-        html+= '<option value="1">'+getModeSwedish(1)+'</option>';
-        html+= '<option value="2">'+getModeSwedish(2)+'</option>';
-        html+= '<option value="3">'+getModeSwedish(3)+'</option>';
-        html+= '<option value="4">'+getModeSwedish(4)+'</option>';
-        html+= '<option value="5">'+getModeSwedish(5)+'</option>';
-        html+= '<option value="6">'+getModeSwedish(6)+'</option>';
-        html+= '<option value="7">'+getModeSwedish(7)+'</option>';
-        html+= '<option value="8">'+getModeSwedish(8)+'</option>';
-        html+= '<option value="9">'+getModeSwedish(9)+'</option>';
-        html+= '<option value="10">'+getModeSwedish(10)+'</option>';
-        html+= '<option value="11">'+getModeSwedish(11)+'</option>';
-        html+= '<option value="12">'+getModeSwedish(12)+'</option>';
-        html+= '<option value="13">'+getModeSwedish(13)+'</option>';
-        html+= '<option value="14">'+getModeSwedish(14)+'</option>';
-        html+= '<option value="15">'+getModeSwedish(15)+'</option>';
-        html+= '</select>';
-        html+= '<br>';
-        html+= '<p style="display:inline-block; border-bottom: 0px; text-align: left; width:60%;">Till färdsätt: : </p>';
-        html+= '<select id="selectTo'+triplegid+'" style="display: inline-block" class="form-controlV2">';
-        html+= '<option value="1">'+getModeSwedish(1)+'</option>';
-        html+= '<option value="2">'+getModeSwedish(2)+'</option>';
-        html+= '<option value="3">'+getModeSwedish(3)+'</option>';
-        html+= '<option value="4">'+getModeSwedish(4)+'</option>';
-        html+= '<option value="5">'+getModeSwedish(5)+'</option>';
-        html+= '<option value="6">'+getModeSwedish(6)+'</option>';
-        html+= '<option value="7">'+getModeSwedish(7)+'</option>';
-        html+= '<option value="8">'+getModeSwedish(8)+'</option>';
-        html+= '<option value="9">'+getModeSwedish(9)+'</option>';
-        html+= '<option value="10">'+getModeSwedish(10)+'</option>';
-        html+= '<option value="11">'+getModeSwedish(11)+'</option>';
-        html+= '<option value="12">'+getModeSwedish(12)+'</option>';
-        html+= '<option value="13">'+getModeSwedish(13)+'</option>';
-        html+= '<option value="14">'+getModeSwedish(14)+'</option>';
-        html+= '<option value="15">'+getModeSwedish(15)+'</option>';
-        html+= '</select>';
-        html+= '<br>';
-
-        html+= '<div class="input-group bootstrap-timepicker">';
-        html+= 'Bytet påbörjades: <input id="timepickerStartTransition'+triplegid+'" type="text" class="input-small"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>';
-        html+= '</div>';
-
-        html+= '<div class="input-group bootstrap-timepicker">';
-        html+= 'Bytet avslutades: <input id="timepickerStopTransition'+triplegid+'" type="text" class="input-small"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>';
-        html+= '</div>';
-
-        html+= '<button type="button" class="btn btn-default center-block" style="width:48%; display:inline-block; margin-left:5px" onclick="requestTimeConfirmation(\''+triplegid+'\')">Acceptera</button>';
-        html+= '<button type="button" class="btn btn-default center-block" data-dismiss="modal" style="width:48%; display:inline-block;">Avbryt</button>';
-
-        html+= '</div>';
-        html+= '</div>';
-        html+= '</div>';
-    }*/
 
     return html;
 }
@@ -2496,12 +2095,9 @@ function generateTransitionEditModal(place){
     }
 
 
-    //html+= '<div class="input-group-addon">';
     html+= '<input type="text" class="form-controlV2" style="display:inline-block; width:49%; margin-right:5px;" value="'+place.name+'" aria-describedby="basic-addon1" id="transferName'+place.osm_id+'">';
-    //html+= '</div>';
-    //html+= '<div class="input-group-addon">';
+
     html+= '<input type="text" class="form-controlV2" style="display:inline-block; width:49%;" value="'+place.transport_lines+'" aria-describedby="basic-addon1" id="transferLines'+place.osm_id+'">';
-    //html+= '</div>';
 
     if (place.transport_types==undefined) place.transport_types ="";
     var arrayOfTypes = place.transport_types.split(",");
@@ -2539,79 +2135,6 @@ function generateTransitionEditModal(place){
     html+= '</div>';
     html+= '</div>';
     html+= '</div>';
-    //}
-    /*else {
-        var html = '<div id="transitionEditModal'+place.id+'" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">';
-        html+= '<div class="modal-dialog modal-sm">';
-        html+= '<div class="modal-content">';
-        html+= '<h4>Ändra befintlig bytespunkt</h4>';
-
-        html+= '<p style="display:inline; border-bottom: 0px;">Transfer type: </p>';
-        html+= '<select id="transferType'+place.osm_id+'"  class="form-controlV2"  onchange="transitionEditTypeEnabler(this.id)" style="display: inline-block; border: 0px; width:190px; color:black; font-size:15;">';
-        if (place.type=="Parking Place"){
-            html+= '<option value="1" selected>Parkeringsplats</option>';
-            html+= '<option value="2">Station/hållplats</option>';
-        }
-        else{
-            html+= '<option value="1">Parkeringsplats</option>';
-            html+= '<option value="2" selected>Station/hållplats</option>';
-        }
-        html+= '</select>';
-
-
-        if (place.type=="Parking Place"){
-            html+= '<div id="stationTransferInfo'+place.osm_id+'" style="display:none">';
-        }
-        else
-        {
-            html+= '<div id="stationTransferInfo'+place.osm_id+'">';
-        }
-
-
-        //html+= '<div class="input-group-addon">';
-        html+= '<input type="text" class="form-controlV2" style="display:inline-block; width:49%; margin-right:5px;" value="'+place.name+'" aria-describedby="basic-addon1" id="transferName'+place.osm_id+'">';
-        //html+= '</div>';
-        //html+= '<div class="input-group-addon">';
-        html+= '<input type="text" class="form-controlV2" style="display:inline-block; width:49%;" value="'+place.transport_lines+'" aria-describedby="basic-addon1" id="transferLines'+place.osm_id+'">';
-        //html+= '</div>';
-
-        if (place.transport_types==undefined) place.transport_types ="";
-        var arrayOfTypes = place.transport_types.split(",");
-
-        html+= '<form role="form" id="checkboxTransferForm'+place.osm_id+'">';
-        html+= '<div class="checkbox" style="display: inline-block; width:30%;">';
-
-        var skip = false;
-        for (var j in arrayOfTypes) if (arrayOfTypes[j]=="1") {html+= '<label><input type="checkbox" value="1" checked>Buss</label>'; skip=true;}
-
-        if (!skip) html+= '<label><input type="checkbox" value="1">Buss</label>';
-
-        html+= '</div>';
-        html+= '<div class="checkbox" style="display: inline-block; width:30%;">';
-
-        skip = false;
-        for (var j in arrayOfTypes) if (arrayOfTypes[j]=="2") {html+= '<label><input type="checkbox" value="2" checked>Spårvagn</label>';skip=true;}
-
-        if (!skip) html+= '<label><input type="checkbox" value="2">Spårvagn</label>';
-
-        html+= '</div>';
-        html+= '<div class="checkbox" style="display: inline-block; width:30%;">';
-
-        skip = false;
-        for (var j in arrayOfTypes) if (arrayOfTypes[j]=="3") {html+= '<label><input type="checkbox" value="3" checked>Tunnelbana</label>';skip=true;}
-
-        if(!skip) html+= '<label><input type="checkbox" value="3">Tunnelbana</label>';
-        html+= '</div>';
-        html+= '</form>';
-        html+= '</div>';
-
-        html+= '<br>';
-        html+= '<button id="transferAcceptButton'+place.osm_id+'" type="button" class="btn btn-default" style="width:48%; display:inline-block; margin-left:5px" data-dismiss="modal" onclick="acceptTransitionEditChanges($(\'#transitionEditModal'+place.id+'\').data())">Acceptera</button>';
-        html+= '<button id="transferCancelButton'+place.osm_id+'" type="button" class="btn btn-default" style="width:48%; display:inline-block; " data-dismiss="modal" onclick="cancelTransitionEditChanges()">Avbryt</button>';
-        html+= '</div>';
-        html+= '</div>';
-        html+= '</div>';
-    }*/
     // attaching the newly generated modal to the other models
     document.getElementById("poiModal").outerHTML+= html;
     $('#transitionEditModal'+place.id).data('transferPlace',place);
@@ -2720,51 +2243,13 @@ function generatePOIEditModal(poi){
     html+= '<div class="input-group-addon">';
     html+= '<input type="text" class="form-control" value="'+poi.name+'" aria-describedby="basic-addon1" id="poiEditName">'
     html+= '</div>'
-    /*html+= '<p style="display:inline">Please select type of POI: </p>';
-    html+= '<select id="selectEditBox" style="display: inline">';
-    if (poi.type=="home") html+= '<option value="1" selected>Home</option>'
-    else html+= '<option value="1">Home</option>';
-    if (poi.type=="work") html+= '<option value="2" selected>Work</option>';
-    else html+= '<option value="2">Work</option>';
-    if (poi.type=="other") html+= '<option value="3" selected >Other</option>';
-    else  html+= '<option value="3">Other</option>';
-    html+= '</select>';
-    html+= '<br>';*/
-
     html+= '<button type="button" class="btn btn-default center-block " data-dismiss="modal" onclick="acceptPOIEditChanges($(\'#poiEditModal'+poi.osm_id+'\').data())">Accept</button>';
     html+= '<button type="button" class="btn btn-default center-block" data-dismiss="modal" onclick="cancelPOIEditChanges()">Cancel</button>';
 
     html+= '</div>';
     html+= '</div>';
     html+= '</div>';
-    /*}
-    else {
-        var html = '<div id="poiEditModal'+poi.osm_id+'" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">';
-
-        html+= '<div class="modal-dialog modal-sm">';
-        html+= '<div class="modal-content">';
-        html+= '<h4>Ändra befintlig målpunkt</h4>';
-        html+= '<div class="input-group-addon">';
-        html+= '<input type="text" class="form-control" value="'+poi.name+'" aria-describedby="basic-addon1" id="poiEditName">'
-        html+= '</div>'
-        *//*html+= '<p style="display:inline">Please select type of POI: </p>';
-         html+= '<select id="selectEditBox" style="display: inline">';
-         if (poi.type=="home") html+= '<option value="1" selected>Home</option>'
-         else html+= '<option value="1">Home</option>';
-         if (poi.type=="work") html+= '<option value="2" selected>Work</option>';
-         else html+= '<option value="2">Work</option>';
-         if (poi.type=="other") html+= '<option value="3" selected >Other</option>';
-         else  html+= '<option value="3">Other</option>';
-         html+= '</select>';
-         html+= '<br>';*//*
-
-        html+= '<button type="button" class="btn btn-default center-block " data-dismiss="modal" onclick="acceptPOIEditChanges($(\'#poiEditModal'+poi.osm_id+'\').data())">Acceptera</button>';
-        html+= '<button type="button" class="btn btn-default center-block" data-dismiss="modal" onclick="cancelPOIEditChanges()">Avbryt</button>';
-
-        html+= '</div>';
-        html+= '</div>';
-        html+= '</div>';
-    }*/
+   
 
     console.log('generated #poiEditModal'+poi.osm_id);
 
@@ -2782,14 +2267,6 @@ function acceptPOIEditChanges(data){
     var newPOI = jQuery.extend(true,{},data.newPOI);
 
     var insertedName = document.getElementById("poiEditName");
-
-    /*var selectPoiType = document.getElementById('selectEditBox');
-
-    var option = document.createElement("option");
-    option.text=insertedName.value;
-    option.value = 0;
-
-    newMarker.name = insertedName.value;*/
 
     newMarker.type = "undefined type";
 
@@ -2836,10 +2313,8 @@ function getPlaceSelector(places){
     }
     else{
         var html = '<select class="form-control form-control-inline form-need-check" id="placeSelect">';
-        //if (getLanguage()=="en")
             html+='<option value="-1" disabled selected style="display:none;" lang="en">Specify your destination</option>';
-        /*else
-            html+='<option value="-1" disabled selected style="display:none;" lang="sv">Ange din målpunkt</option>';*/
+
     }
 
     for (var i=0; i<places.length;i++){
@@ -2851,7 +2326,6 @@ function getPlaceSelector(places){
     }
 
     html+='<option value="100" id="removableoption" lang="en">Add new destination place</option>';
-   // html+='<option value="100" id="removableoption" lang="sv">Lägg till ny målpunkt</option>';
 
     html+='</select>';
 
@@ -2879,22 +2353,15 @@ function getPurposeSelector(purposes){
     }
     else{
         var html = '<select class="form-control form-control-inline form-need-check" id="purposeSelect">';
-        //if (getLanguage()=="en")
             html+='<option value="-1" lang="en" disabled selected style="display:none;">Specify your trip\'s purpose</option>';
-        /*else
-            html+='<option value="-1" lang="sv" disabled selected style="display:none;">Ange ärendet för resan</option>';*/
+
     }
 
     for (var i=0; i<purposes.length;i++){
         var purpose_name = getNameOfPurpose(purposes[i].id);
         var purpose_name_sv = getNameOfPurposeSwedish(purposes[i].id);
-        //if (getLanguage()=="en") {
         html+= '<option value="'+purposes[i].id+'" lang="en">'+purpose_name+'</option>';
-           // html+= '<option value="'+purposes[i].id+'" lang="sv">'+purpose_name_sv+'</option>';}
-        /*else {
-            html+= '<option value="'+purposes[i].id+'" lang="sv">'+purpose_name_sv+'</option>';
-            html+= '<option value="'+purposes[i].id+'" lang="en">'+purpose_name+'</option>';
-        }*/
+
     }
 
     html+='</select>';
@@ -2928,7 +2395,6 @@ function getTransitionSelector(tripleg, isLast){
             if (needCheck)
             {var html = '<select class="form-control form-control-inline form-need-check" id="transitionSelect'+tripleg.triplegid+'">';
                 html+='<option value="-1" disabled selected lang="en">(Optional) Specify transfer place</option>';
-                //html+='<option value="-1" disabled selected style="display:none;" lang="sv">Lägg till en ny bytespunkt (frivilligt)</option>';
             }
 
             else{
@@ -2948,7 +2414,6 @@ function getTransitionSelector(tripleg, isLast){
             }
 
             html+= '<option lang="en" value="100" id ="removableTransitionOption'+tripleg.triplegid+'">Add a new transfer place</option>';
-            //html+= '<option lang="sv" value="100" id ="removableTransitionOption'+triplegid+'">Lägg till en ny bytespunkt</option>';
 
             html+='</select>';
 
@@ -2973,7 +2438,6 @@ function getSelector(mode, triplegid){
     if (maxVal<50) {
         var selector = '<select id="selectbasic'+triplegid+'" name="selectbasic" class="form-control form-need-check">';
         selector+='<option lang="en" value="-1" disabled selected style="display:none;">Specify your travel mode</option>';
-        //selector+='<option lang="sv" value="-1" disabled selected style="display:none;">Ange ditt färdsätt</option>';
         console.log('nomax');
     }
     else
@@ -2985,8 +2449,6 @@ function getSelector(mode, triplegid){
     for (var i in mode)
     {
         selected = getMode(mode[i].id);
-     //   var selectedSv = getModeSwedish(mode[i].id);
-       // selector+= '<option lang="sv" value="'+mode[i].id+'">'+selectedSv+'</option>';
         selector+= '<option lang="en" value="'+mode[i].id+'">'+selected+'</option>';
     }
 
@@ -3032,11 +2494,8 @@ function getTransitionTimeContent(triplegid){
                 var dateTo = new Date(copyOfTriplegs[i+2].points[0].time);
                 var timeDiff = Math.abs(dateTo.getTime() - dateFrom.getTime());
                 var minutesDiff = Math.ceil(timeDiff / (1000 * 60));
-              //  if (getLanguage()=="en")
+
                 var returnPar = 'Transfer time: ' + minutesDiff + ' min <span class="glyphicon glyphicon-trash" style="float: right;" onclick="mergeWithNext(\''+triplegid+'\')"></span>';
-                /*else
-                    var returnPar = 'Restid: ' + minutesDiff + ' minuter <span class="glyphicon glyphicon-trash" style="float: right;" onclick="mergeWithNext(\''+triplegid+'\')"></span>';*/
-            console.log("Transition time content");
             }
         }
     }
@@ -3058,35 +2517,22 @@ function generateFirstTimelineElement(currentTrip){
     var previousPurpose = getNameOfPurpose(currentTrip.previous_trip_purpose);
     var previousPurposeSv = getNameOfPurposeSwedish(currentTrip.previous_trip_purpose);
     var previousPlace = currentTrip.previous_trip_poi_name;
-    // nextActualTrip.prev_trip_place= prevActualTrip.destination_places[0].osm_id;
     var previousTripEndDate = new Date(parseInt(currentTrip.previous_trip_end_date));
     var currentTripStartDate = new Date(parseInt(currentTrip.current_trip_start_date));
 
     console.log(previousPurpose);
     console.log(previousTripEndDate+" " +currentTrip.previous_trip_end_date);
     console.log(previousPlace);
-    /*console.log(currentTrip.prev_trip_stop);
-    console.log(currentTrip.triplegs[0].points[0].time);
-    console.log(previousTripEndDate);
-    console.log(currentTripStartDate);
 
-    console.log(currentTrip);
-    console.log(previousPurpose);*/
 
     var timeDiff = Math.abs(currentTripStartDate.getTime() - previousTripEndDate.getTime());
     var htmlToAddTime=''
     if ((timeDiff/1000*60)<60){
-        //if (getLanguage()=="en")
         htmlToAddTime =Math.ceil(timeDiff/1000*60)+' minutes';
-        /*else
-            htmlToAddTime =Math.ceil(timeDiff/1000*60)+' minuter';*/
     }
     else
     {
-      //  if (getLanguage()=="en")
         htmlToAddTime= Math.ceil(timeDiff / (1000 * 60 * 60))+' hours';
-        /*else
-            htmlToAddTime= Math.ceil(timeDiff / (1000 * 60 * 60))+' timmar';*/
     }
 
     var thisHtml = '<li>';
@@ -3094,13 +2540,9 @@ function generateFirstTimelineElement(currentTrip){
     if (previousPurpose!=null) {
         /* Add see previous button */
 
-       //thisHtml += '<div class="tldatecontrol"> <p lang="en"><i class="glyphicon glyphicon-arrow-down"></i> Process the next trip <i class="glyphicon glyphicon-arrow-down"></i> </p>';// <p lang="sv"><i class="glyphicon glyphicon-arrow-down"></i> Gå till nästa förflyttning <i class="glyphicon glyphicon-arrow-down"></i> </p>';
-
         thisHtml += '<div class="tldatecontrol" id="seePrevious"> <p lang="en"> <i class="glyphicon glyphicon-arrow-up"></i> See previous trip <i class="glyphicon glyphicon-arrow-up"></i> </p>';// <p lang="sv"><i class="glyphicon glyphicon-arrow-up"></i> Gå tillbaka till den senaste förflyttningen <i class="glyphicon glyphicon-arrow-up"></i> </p>';
         thisHtml += '</div>';
         thisHtml += '</li>';
-
-        // var previousTripEndDateLocal = new Date(previousTripEndDate).format("Y-m-d");
 
         var previousTripEndDateLocal = days[new Date(previousTripEndDate).getDay()]+", "+new Date(previousTripEndDate).format("Y-m-d");
         var previousTripEndDateLocalSv = days_sv[new Date(previousTripEndDate).getDay()]+", "+new Date(previousTripEndDate).format("Y-m-d");
@@ -3118,22 +2560,20 @@ function generateFirstTimelineElement(currentTrip){
         thisHtml += '<div class="timeline-panel" id ="firstTimelinePanel">';
         thisHtml += '<div class="tl-heading">';
         thisHtml += '<h4 lang="en">Time spent at '+previousPlace+'</h4>';
-        //thisHtml += '<h4 lang="sv">Vistelsetid vid målpunkt: '+previousPlace+'</h4>';
 
         thisHtml += '<p id="tldatefirstparagraph"><small class="text-muted"><i class="glyphicon glyphicon-time"></i> '+(previousTripEndDate.getHours()<10?'0':'')+previousTripEndDate.getHours()+':'+(previousTripEndDate.getMinutes()<10?'0':'')+previousTripEndDate.getMinutes()+' - '+(currentTripStartDate.getHours()<10?'0':'')+currentTripStartDate.getHours()+':'+(currentTripStartDate.getMinutes()<10?'0':'')+currentTripStartDate.getMinutes()+'</small></p>';
         thisHtml += '</div>';
         thisHtml += '<div class="tl-body">';
-        thisHtml += '<p lang="en">Place: '+previousPlace+'</p>';//<p lang="sv">Plats: '+previousPlace+'</p>';
-        thisHtml += '<p lang="en">Purpose: '+previousPurpose+'</p>';// <p lang="sv">Ärende: '+previousPurposeSv+'</p>';
-        thisHtml += '<p lang="en" id="firsttimeend">Time: '+htmlToAddTime+'</p>';// <p lang="Sv" id="firsttimeendsv">Tid: '+htmlToAddTime+'</p>';
+        thisHtml += '<p lang="en">Place: '+previousPlace+'</p>';
+        thisHtml += '<p lang="en">Purpose: '+previousPurpose+'</p>';
+        thisHtml += '<p lang="en" id="firsttimeend">Time: '+htmlToAddTime+'</p>';
         thisHtml += '</div>';
         thisHtml += '</div>';
         thisHtml += '</li>';
     }
     else{
         thisHtml += '<li>';
-        thisHtml += '<div class="tldate" id ="firstTimelinePanel"> <p lang="en">This is where you started using MEILI</p>' /*+
-                                                                    '<p lang="sv">Det här är där du började använda MEILI</p>';*/
+        thisHtml += '<div class="tldate" id ="firstTimelinePanel"> <p lang="en">This is where you started using MEILI</p>' 
 
         thisHtml += '</div>';
         thisHtml += '</li>';
@@ -3146,7 +2586,6 @@ function generateFirstTimelineElement(currentTrip){
     thisHtml+='<li>';
     thisHtml+='<div class="tldate" id="tldatefirst" style="width:330px"><p lang="en" id="tldatefirstassociatedparagraph"><span class="glyphicon glyphicon-flag"></span>('+currentTripStartDateLocal  +') '+currentTripStartHour+' - Started trip</p>';// <p id="tldatefirstassociatedparagraphsv" lang="sv"><span class="glyphicon glyphicon-flag"></span>('+currentTripStartDateLocalSv  +') '+currentTripStartHour+' - Påbörjade förflyttning</p>';
     thisHtml+='<p lang="en"><i>Is this a fake trip? Click <span class="glyphicon glyphicon-trash" onclick="deleteTripModal()"></span> to delete.</i></p>';
-    //thisHtml+= '<p lang="sv"><i>Är det här en verklig förflyttning? Klicka <span class="glyphicon glyphicon-trash" onclick="deleteTripModal()"></span> för att ta bort.</i></p>';
     thisHtml+='</div>';
     thisHtml+='</li>';
 
@@ -3190,9 +2629,7 @@ function generateLastTimelineElement(currentTrip){
 
     var thisHtml = '<li><div class="tldate" id="tldatelast" style="width: 350px;">';
     thisHtml += '<p id="tldatelastassociatedparagraph" lang="en"> <span class="glyphicon glyphicon-flag"> </span>('+currentTripEndDateLocal  +') '+currentTripEndDateHour+' - Ended trip</p>';
-    //thisHtml += '<p id="tldatelastassociatedparagraphsv" lang="sv"> <span class="glyphicon glyphicon-flag"> </span>('+currentTripEndDateLocalSv  +') '+currentTripEndDateHour+' - Avslutade resa</p>';
     thisHtml += '<p lang="en"><i> Is this a fake stop? Click <span class="glyphicon glyphicon-share-alt" onclick="mergeTripModal()"> </span> to merge with next trip.</i></p>';
-    //thisHtml += '<p lang="sv"><i> Är det här ett korrekt stopp? Klicka <span class="glyphicon glyphicon-share-alt" onclick="mergeTripModal()"> </span> för att sammanfoga med nästa förflyttning.</i></p>';
     thisHtml += '</div></li>';
     var places = currentTrip.destination_places;
     var purposes = currentTrip.purposes;
@@ -3209,20 +2646,13 @@ function generateLastTimelineElement(currentTrip){
         thisHtml += '<li class="timeline-inverted">';
         thisHtml += '<div class="timeline-panel"  id ="lastTimelinePanel">';
         thisHtml += '<div class="tl-heading">';
-        thisHtml += '<h4 lang="en">End of trip</h4>';// <h4 lang="sv">Förflyttningens målpunkt</h4>';
+        thisHtml += '<h4 lang="en">End of trip</h4>';
         thisHtml += '<p id="tldatelastparagraph"><small class="text-muted"><i class="glyphicon glyphicon-time"></i> '+(currentTripEndDate.getHours()<10?'0':'')+currentTripEndDate.getHours()+':'+(currentTripEndDate.getMinutes()<10?'0':'')+currentTripEndDate.getMinutes()+' - '+(nextTripStartDate.getHours()<10?'0':'')+nextTripStartDate.getHours()+':'+(nextTripStartDate.getMinutes()<10?'0':'')+nextTripStartDate.getMinutes()+'</small></p>';
         thisHtml += '</div>';
         thisHtml += '<div class="tl-body">';
-        //if (getLanguage()=="en")
             thisHtml += '<p lang="en">Place: '+getPlaceSelector(places)+'</p>';
-        /*else
-            thisHtml += '<p lang="sv">Plats: '+getPlaceSelector(places)+'</p>';*/
-
-        //if (getLanguage()=="en")
-            thisHtml += '<p lang="en">Purpose: '+getPurposeSelector(purposes)+'</p>';
-        /*else
-            thisHtml+= '<p lang="sv">Ärende: '+getPurposeSelector(purposes)+'</p>';*/
-        thisHtml += '<p lang="en" id="lasttimeend">Time: '+hoursDiff+' hours</p>';// <p lang="sv" id="lasttimeendsv">Tid: '+hoursDiff+' timmar</p>';
+              thisHtml += '<p lang="en">Purpose: '+getPurposeSelector(purposes)+'</p>';
+           thisHtml += '<p lang="en" id="lasttimeend">Time: '+hoursDiff+' hours</p>';
         thisHtml += '</div>';
         thisHtml += '</div>';
         thisHtml += '</li>';
@@ -3237,27 +2667,18 @@ function generateLastTimelineElement(currentTrip){
         thisHtml += '<li class="timeline-inverted">';
         thisHtml += '<div class="timeline-panel" id ="lastTimelinePanel">';
         thisHtml += '<div class="tl-heading">';
-        thisHtml += '<h4 lang="en">End of the trip</h4>';// <h4 lang="sv">Förflyttningens målpunkt</h4>';
+        thisHtml += '<h4 lang="en">End of the trip</h4>';
         thisHtml += '<p id="tldatelastparagraph"><small class="text-muted"><i class="glyphicon glyphicon-time"></i> '+(currentTripEndDate.getHours()<10?'0':'')+currentTripEndDate.getHours()+':'+(currentTripEndDate.getMinutes()<10?'0':'')+currentTripEndDate.getMinutes()+'</small></p>';
         thisHtml += '</div>';
         thisHtml += '<div class="tl-body">';
-
-        //if (getLanguage()=="en")
-            thisHtml += '<p lang="en">Place: '+getPlaceSelector(places)+'</p>';
-        /*else
-            thisHtml += '<p lang="sv">Plats: '+getPlaceSelector(places)+'</p>';*/
-
-        //if (getLanguage()=="en")
-            thisHtml += '<p lang="en">Purpose: '+getPurposeSelector(purposes)+'</p>';
-        /*else
-            thisHtml+= '<p lang="sv">Ärende: '+getPurposeSelector(purposes)+'</p>';*/
-
-        thisHtml += '</div>';
+           thisHtml += '<p lang="en">Place: '+getPlaceSelector(places)+'</p>';
+              thisHtml += '<p lang="en">Purpose: '+getPurposeSelector(purposes)+'</p>';
+          thisHtml += '</div>';
         thisHtml += '</div>';
         thisHtml += '</li>';
 
         thisHtml += '<li><div class="tldate">';
-        thisHtml += '<p lang="en"> These are all the trip data available now</p>';// <p lang="sv"> Detta är all resdata som finns tillgänglig nu</p>';
+        thisHtml += '<p lang="en"> These are all the trip data available now</p>';
         thisHtml += '</div></li>';
     }
 
@@ -3297,9 +2718,6 @@ function getTransitionPanel(tripleg, isLast){
 
     var timeFrom ='';
     var timeTo='';
-    /*
-    var actualTriplegs = currentTrip.triplegs;
-    console.log(actualTriplegs);*/
 
     var correspondingTransitionId = 0;
 
@@ -3340,8 +2758,7 @@ function getTransitionPanel(tripleg, isLast){
         var transitionPanel= '<li><div class="tldate" id="tldate'+correspondingTransitionId+'">';
         console.log('generated '+'tldate'+correspondingTransitionId);
         transitionPanel+= '<p lang="en">'+ timeFrom+' - '+timeTo +' - Tranferred from '+ transitionFrom+' to '+transitionTo +'</p>';
-   //     transitionPanel+= '<p lang="sv">'+ timeFrom+' - '+timeTo +' - Byte av färdsätt från '+ transitionFromSv+' till '+transitionToSv +'</p>';
-        transitionPanel+= '</div></li>';
+          transitionPanel+= '</div></li>';
     }
 
     return transitionPanel;
@@ -3389,13 +2806,10 @@ function updateTransitionPanel(tripleg){
         var prevMode = getMode(prevSelect.options[prevSelect.selectedIndex].value);
         var prevModeSv = getModeSwedish(prevSelect.options[prevSelect.selectedIndex].value);
 
-        console.log(prevMode);
-        /*var prevModeStart = document.getElementById('timepickerstart'+prevId).value;*/
-        var prevModeStop = document.getElementById('timepickerstop'+prevId).value;
+         var prevModeStop = document.getElementById('timepickerstop'+prevId).value;
 
 
         var transitionPrev = '<p lang="en">'+ prevModeStop+' - '+currentModeStart +' - Transferred from '+ prevMode+' to '+currentMode+'</p>';// +
-            //' <p lang="sv">'+ prevModeStop+' - '+currentModeStart +' - Byte av färdsätt från '+ prevModeSv+' till '+currentModeSv+'</p>';
         prevPanel.innerHTML=transitionPrev;
 
         var returnPar = document.getElementById('transitiontime'+prevId);
@@ -3416,9 +2830,6 @@ function updateTransitionPanel(tripleg){
 
         var firstPanel = document.getElementById('tldatefirstassociatedparagraph');
         firstPanel.innerHTML='<span class="glyphicon glyphicon-flag"></span><p lang="en">('+currentTripStartDateLocalSv +') '+currentTripStartHour+' - Started trip </p>';// <p lang="sv">('+currentTripStartDateLocalSv +') '+currentTripStartHour+" - Påbörjade förflyttning</p>";
-
-      //  var firstPanelSv = document.getElementById('tldatefirstassociatedparagraph');
-        //firstPanelSv.innerHTML = '<span class="glyphicon glyphicon-flag"></span><p lang="sv">('+currentTripStartDateLocalSv +') '+currentTripStartHour+' - Started trip </p> <p lang="sv">('+currentTripStartDateLocalSv +') '+currentTripStartHour+" - Påbörjade förflyttning</p>";
 
         var firstParagraph= document.getElementById('tldatefirstparagraph');
         if (firstParagraph!=undefined)
@@ -3442,9 +2853,7 @@ function updateTransitionPanel(tripleg){
         var nextSelect = document.getElementById('selectbasic'+nextId);
         var nextMode = nextSelect.options[nextSelect.selectedIndex].text;
         var nextModeStart = document.getElementById('timepickerstart'+nextId).value;
-        console.log(nextModeStart);
-        /*var nextModeStop = document.getElementById('timepickerstop'+nextId).value;*/
-        var transitionNext = '<p lang="en">'+ currentModeStop+' - '+nextModeStart+' - Transferred from '+ currentMode+' to '+nextMode+'</p>';// <p lang="sv">'+ currentModeStop+' - '+nextModeStart+' - Byte av färdsätt från '+ currentModeSv+' till '+nextMode+'</p>';
+         var transitionNext = '<p lang="en">'+ currentModeStop+' - '+nextModeStart+' - Transferred from '+ currentMode+' to '+nextMode+'</p>';// <p lang="sv">'+ currentModeStop+' - '+nextModeStart+' - Byte av färdsätt från '+ currentModeSv+' till '+nextMode+'</p>';
 
         var returnPar = document.getElementById('transitiontime'+tripleg.triplegid);
 
@@ -3460,10 +2869,7 @@ function updateTransitionPanel(tripleg){
 
         var nextTrip = new Date(nextTripStartDate);
         var lastPanel = document.getElementById('tldatelastassociatedparagraph');
-  //      var lastPanelSv = document.getElementById('tldatelastassociatedparagraph');
-
-        lastPanel.innerHTML='<span class="glyphicon glyphicon-flag"></span>'+currentModeStop+" - Ended trip";
-//        lastPanelSv.innerHTML='<span class="glyphicon glyphicon-flag"></span>'+currentModeStop+" - Avslutade resa";
+         lastPanel.innerHTML='<span class="glyphicon glyphicon-flag"></span>'+currentModeStop+" - Ended trip";
 
         var lastParagraph= document.getElementById('tldatelastparagraph');
         if (lastParagraph!=undefined)
@@ -3477,13 +2883,8 @@ function updateTransitionPanel(tripleg){
         }
 
         var lastTimeParagraph= document.getElementById('lasttimeend');
-        //var lastTimeParagraphSv= document.getElementById('lasttimeendsv');
-
         if (lastTimeParagraph!=undefined)
         lastTimeParagraph.innerHTML = 'Time: '+hoursDiff+' hours';
-
-        /*if (lastTimeParagraphSv!=undefined)
-            lastTimeParagraphSv.innerHTML = 'Tid: '+hoursDiff+' timmar';*/
     }
 
     forceLoad();
@@ -3503,9 +2904,7 @@ function pushChangesToHTML(id, tripLegA, tripLegB,tripLegPassive, index){
     var liCircle = document.getElementById('telem_circle'+id);
     var liPanel = document.getElementById('tldate'+id);
 
-    /*console.log(li.index());*/
-
-    var replacedTrip = currentTrip.triplegs[index];
+   var replacedTrip = currentTrip.triplegs[index];
 
     currentTrip.triplegs.splice(index,1,tripLegA, tripLegPassive, tripLegB);
 
@@ -3540,10 +2939,6 @@ function pushChangesToHTML(id, tripLegA, tripLegB,tripLegPassive, index){
     ul.insertBefore(elemB, li);
     elemB.parentNode.insertBefore(elemA, elemB);
 
-/*
-    li.parentNode.style.borderBottom=0;
-*/
-
     li.remove();
 
     if (liPanel!=null)
@@ -3554,8 +2949,6 @@ function pushChangesToHTML(id, tripLegA, tripLegB,tripLegPassive, index){
         liCircle.remove();
 
     }
-
-    /*ul.insertBefore(htmlTriplegA,htmlTriplegB);*/
 
     addTimelineListeners(tripLegA);
     addTimelineListeners(tripLegB);
@@ -3590,24 +2983,15 @@ function getTimelineElementContent(tripleg, isLast){
 
     thisHtml+= '<br>';
     thisHtml+= '<div class="input-group bootstrap-timepicker">';
-    //if (getLanguage()=="en"){
-        thisHtml+= 'Start: <input id="timepickerstart'+tripleg.triplegid+'" type="text" class="input-small"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>';
-    /*}
-    else{
-        thisHtml+= 'Början: <input id="timepickerstart'+tripleg.triplegid+'" type="text" class="input-small"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>';
-    }*/
+    thisHtml+= 'Start: <input id="timepickerstart'+tripleg.triplegid+'" type="text" class="input-small"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>';
+
 
     thisHtml+= '</div>';
 
-    /*if (tripleg.triplegid!=currentTrip.triplegs[currentTrip.triplegs.length-1].triplegid)*/
     thisHtml+= '<p lang="en" style="font-style:italic" id="addtransition'+tripleg.triplegid+'" onclick="generateTransitionPopup(\''+tripleg.triplegid+'\')">Did we miss a transfer? Click to add it.</p>';// <p lang="sv" style="font-style:italic" id="addtransition'+tripleg.triplegid+'" onclick="generateTransitionPopup(\''+tripleg.triplegid+'\')">Har vi missat ett byte? Klicka för att lägga till.</p>';
     thisHtml+= '<p lang="en" id="distPar'+tripleg.triplegid+'">Distance:'+getDistanceOfTripLeg(tripleg)+'</p>';// <p lang="sv" id="distPar'+tripleg.triplegid+'">Avstånd:'+getDistanceOfTripLeg(tripleg.triplegid)+'</p>';
     thisHtml+= '<div class="input-group bootstrap-timepicker">'
-    //if (getLanguage()=="en")
     thisHtml+= 'Stop: <input id="timepickerstop'+tripleg.triplegid+'" type="text" class="input-small"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>';
-    /*else
-        thisHtml+= 'Avslutning: <input id="timepickerstop'+tripleg.triplegid+'" type="text" class="input-small"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>';
-    thisHtml+= '</div>';*/
     if (!isLast) thisHtml+= '<hr>';
     thisHtml+= getTransitionPlace(tripleg, isLast);
     thisHtml+= getTransitionTime(tripleg, isLast);
@@ -3639,14 +3023,6 @@ function generateTimelineElement(tripleg, isLast){
 
     addTimelineListeners(tripleg, isLast);
     }
-
-    /*$('#timepickerstart'+tripleg.triplegid).timepicker().on('changeTime.timepicker', function(e){
-     console.log('checking for integrity');
-     });
-
-     $('#timepickerstop'+tripleg.triplegid).timepicker().on('changeTime.timepicker', function (e){
-     console.log('checking for integrity');
-     });*/
 }
 
 /**
@@ -3721,10 +3097,6 @@ function generateTransitionPopup(id){
     $('#transitionChoiceModal'+id).data('toTime',toTime);
 
 
-    /* $('#transitionChoiceModal'+id).on('hide', function(){
-
-     });*/
-
     $('#transitionChoiceModal'+id).modal('show');
 }
 
@@ -3756,10 +3128,6 @@ function transitionSelectListener(){
                         if (changedValue == currentTrip.triplegs[i].places[j].osm_id)
                         {
                             currentTrip.triplegs[i].places[j].chosen_by_user=true;
-                            console.log(currentTrip.triplegs[i].places[j]);
-                            console.log(changedTripLeg);
-
-                            // console.log(currentTrip.triplegs[i].places[j]);
 
                             if (currentTrip.triplegs[i].places[j].added_by_user<0)
                             drawFixedTransitionMarker(currentTrip.triplegs[i].places[j].lat, currentTrip.triplegs[i].places[j].lon,changedTripLeg);
@@ -3824,8 +3192,6 @@ function placeSelectListener(){
 
     for (var i=0; i<currentTrip.destination_places.length;i++)
     {
-        //console.log(currentTrip.destination_places[i]);
-        //console.log(currentTrip.destination_places[i].db_id+' and '+thisValue);
         if (currentTrip.destination_places[i].db_id == thisValue){
             console.log('got here');
             currentTrip.destination_places[i].accuracy=100;
@@ -3903,7 +3269,6 @@ function selectOptionListener(){
     var changedTripLeg = this.id.substring(11,this.id.length);
 
     var request = logFrontEndOperation(userId,'selected new mode '+newMode+' of tripleg '+changedTripLeg);
-    // request.data = {newMode: newMode, optionListener:optionListener, changedTripleg:changedTripLeg};
     $.when(request.done(function(){
 
     /**
@@ -3920,7 +3285,6 @@ function selectOptionListener(){
                     copyOfTriplegs[i].mode[j].accuracy= 100;
                     var layer = plotlayers[correspondingPolyline[changedTripLeg]];
 
-                    /*document.getElementById('telem'+tripleg.triplegid).style.color = "red";*/
                     var polylineColor = getColorById(newMode);
                     layer.setStyle({
                         color: polylineColor
@@ -3929,10 +3293,6 @@ function selectOptionListener(){
                     console.log(jQuery.extend(true,{},copyOfTriplegs[i]));
 
                     // TODO CHANGE THIS TO NEW APY
-                    /*var request = pushTriplegModification(null, copyOfTrip.triplegs[i],"upsert",currentTrip.tripid);
-                    $.when(request ).done(function (){
-                        pushTripModification(null, currentTrip,"upsert", serverResponse.trips[getNextPassiveTrip(currentTrip.tripid)]);
-                    });*/
 
                     updateTransitionPanel(copyOfTriplegs[i]);
                 }
@@ -3979,7 +3339,6 @@ function addTimelineListeners(tripleg){
     {
         var layer = plotlayers[correspondingPolyline[tripleg.triplegid]];
 
-        /*document.getElementById('telem'+tripleg.triplegid).style.color = "blue";*/
         layer.setStyle({
             opacity:1
         });
@@ -3993,9 +3352,6 @@ function addTimelineListeners(tripleg){
     $("#telem"+tripleg.triplegid).mouseout(function()
     {
         var layer = plotlayers[correspondingPolyline[tripleg.triplegid]];
-
-        /*document.getElementById('telem'+tripleg.triplegid).style.color = "red";*/
-
         layer.setStyle({
             opacity:0.6
         });
@@ -4012,16 +3368,6 @@ function addTimelineListeners(tripleg){
         map.fitBounds(layer.getBounds());
 
         logFrontEndOperation(userId,'zoomed to layer '+tripleg.triplegid);
-        //map.panTo(layer.getBounds().getCenter());
-
-
-        /* layer.setStyle({
-         weight: 5,
-         color: 'black',
-         dashArray: '',
-         fillOpacity: 0.7
-         });*/
-
     });
 
     /**
@@ -4047,59 +3393,39 @@ function addTimelineListeners(tripleg){
     });
 
     $('#timepickerstart'+tripleg.triplegid).timepicker().on('hide.timepicker', function(e) {
-       if(true){
 
-           console.log(tripleg);
-           initialTime = tripleg.points[0].time;
-           endTime =  tripleg.points[tripleg.points.length-1].time;
-           var initialTimeDate = new Date(tripleg.points[0].time);
-           var endTimeDate =  new Date(tripleg.points[tripleg.points.length-1].time);
+      var initialTime = tripleg.points[0].time;
+      var endTime = tripleg.points[tripleg.points.length-1].time;
+      var initialTimeDate = new Date(tripleg.points[0].time);
 
-           var tempTime = new Date(initialTime);
-           var prevInitialTime = initialTime;
-           var prevEndTime = endTime;
-           console.log(tempTime);
-           console.log(endTime);
-           tempTime.setMinutes(e.time.minutes);
-           tempTime.setHours(e.time.hours);
-           console.log(tripleg);
-           tempTime = tempTime.getTime();
+      var newTime = new Date(initialTime);
+      newTime.setMinutes(e.time.minutes);
+      newTime.setHours(e.time.hours);
+      newTime = newTime.getTime();
 
-           logFrontEndOperation(userId,'changed timepicker start value of tripleg '+tripleg.triplegid+' to '+ tempTime);
+      //logFrontEndOperation(userId,'changed timepicker start value of tripleg '+tripleg.triplegid+' to '+ newTime);
 
-           /**
-            * CONSEQUENCE 0 - Start time sooner than end time
-            */
+      /**
+      * CONSEQUENCE 0 - Start time sooner than end time
+      */
 
-           console.log(tempTime+'<'+endTime+' ' +(tempTime<endTime));
+      if (initialTime < newTime && newTime < endTime)
+      {
+        /**
+        * CONSEQUENCE 1 - Within the trip's time frame
+        * a) if it is the first trip leg, the currentTripStartDate can be changed , but not before the end of last trip
+        * b) if it is the last trip leg, the currentTripEndDate can be changed, but not after the beginning of next trip
+        */
 
-           if (tempTime<endTime)
-           {
-               /**
-                * CONSEQUENCE 1 - Within the trip's time frame
-                * a) if it is the first trip leg, the currentTripStartDate can be changed , but not before the end of last trip
-                * b) if it is the last trip leg, the currentTripEndDate can be changed, but not after the beginning of next trip
-                */
-
-               console.log("Checking if start time is within the current trip "+ tempTime+" later than "+previousTripEndDate.getTime());
-               console.log("Checking if start time is within the current trip "+ tempTime+" earlier than "+nextTripStartDate.getTime());
-
-               try {
-               updateTimeOfTripleg(currentTrip, tripleg, tempTime, null, previousTripEndDate.getTime(), nextTripStartDate.getTime());
-                   logFrontEndOperation(userId, 'update start time of tripleg to '+tempTime);
-               }
-               catch (exception){
-                logError(userId, exception, serverResponse);
-               }
-           }
-           else {
-               //if (getLanguage()=="en")
-               alert('Trip\'s start time cannot be later than the trip\'s end time');
-               /*else
-               alert('Förflyttningens starttid kan inte vara senare än sluttiden');*/
-               $('#timepickerstart'+tripleg.triplegid).timepicker('setTime',initialTimeDate.getHours()+":"+initialTimeDate.getMinutes());
-           }
-       }
+        triplegCtrl.updateStartTime(tripleg.triplegid, newTime)
+          .done(function(triplegs) {
+            debugger;
+          });
+      }
+      else {
+        alert('Trip\'s start time cannot be later than the trip\'s end time');
+        $(e.target).timepicker('setTime', initialTimeDate.getHours()+":"+initialTimeDate.getMinutes());
+      }
 
     });
 
@@ -4168,18 +3494,15 @@ function addTimelineListeners(tripleg){
                 else if(isNaN(previousTripEndDate.getTime())) fooTest2=true;
 
                 if (!fooTest1&&!fooTest2)
-                {//if (getLanguage()=="en")
+                {
                     alert('Operations are only allowed within the current trip time frame');
-                   /* else
-                    alert('Ändringar kan bara göras inom tidsperioden för denna förflyttning');*/
+
                 $('#timepickerstop'+tripleg.triplegid).timepicker('setTime',endTimeDate.getHours()+":"+endTimeDate.getMinutes());}
             }
         }
         else{
             if (getLanguage()=="en")
             alert('Trip\'s end time cannot be sooner than trip\'s start time');
-            /*else
-                alert('Förflyttningens sluttid kan inte vara tidigare än starttiden');*/
             $('#timepickerstop'+tripleg.triplegid).timepicker('setTime',endTime.getHours()+":"+endTime.getMinutes());
         }
 
@@ -4340,8 +3663,6 @@ function drawTransitionMarker(latlon, poiId){
     newTransitionMarker.lon = latlon.lng;
     console.log(newTransitionMarker);
 
-    /*map.removeLayer(marker);
-    for (var i in fixedTransitionMarker)*/
     if (fixedTransitionMarkers[poiId]!=undefined)
         map.removeLayer(fixedTransitionMarkers[poiId]);
 
@@ -4397,22 +3718,12 @@ function drawDynamicTransitionMarker(lat,lon,tripleg){
         map.removeLayer(fixedTransitionMarkers[tripleg]);
 
     var latlon = new L.latLng(lat,lon);
-    /*
 
-     console.log(key+' '+lat+','+lon);
-     console.log(fixedTransitionMarker[key]);
-
-     if (fixedTransitionMarker[key]!=undefined)
-     {
-     console.log('removed layer');
-     map.removeLayer(fixedTransitionMarker[key]);
-     }*/
 
     fixedTransitionMarkers[tripleg] = new L.marker(latlon, {id:tripleg, icon:transitionIcon, draggable:true});
 
     fixedTransitionMarkers[tripleg].on('click', function(event){
         console.log(this);
-        /*console.log('transitionEditModal'+tripleg.triplegid);*/
         $('#transitionEditModal'+this.options.id).modal('show');
     });
     map.addLayer(fixedTransitionMarkers[tripleg]);
@@ -4431,16 +3742,6 @@ function drawFixedTransitionMarker(lat, lon,key){
         map.removeLayer(fixedTransitionMarkers[key]);
 
     var latlon = new L.latLng(lat,lon);
-    /*
-
-    console.log(key+' '+lat+','+lon);
-    console.log(fixedTransitionMarker[key]);
-
-    if (fixedTransitionMarker[key]!=undefined)
-    {
-        console.log('removed layer');
-        map.removeLayer(fixedTransitionMarker[key]);
-    }*/
 
     fixedTransitionMarkers[key] = new L.marker(latlon, {id:key, icon:transitionIcon});
 
@@ -4556,10 +3857,7 @@ function transitionMarker(id){
     console.log(fixedTransitionMarkers);
 
     if (fixedTransitionMarkers[strippedId]!=undefined) map.removeLayer(fixedTransitionMarkers[strippedId]);
-    /*map.removeLayer(marker);
-    for (var i in fixedTransitionMarker)
 
-*/
 
 
     newTransitionMarker.id = strippedId;
@@ -4579,8 +3877,7 @@ function transitionMarker(id){
 
     newTransitionMarker.transport_types = checkboxesChecked.toString();
 
-    /*console.log(newTransitionMarker);
-*/
+
     selectOption.add(option,0);
     selectOption.selectedIndex=0;
 
@@ -4588,16 +3885,6 @@ function transitionMarker(id){
 
 
     addTransitionPOIListener(strippedId);
-
-
-    /*
-
-     newMarker.name = insertedName.value;
-     newMarker.type = getNameOfPurpose(selectPoiType.selectedIndex);
-
-     // for map marker https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678111-map-marker-128.png
-     // for transition marker http://upload.wikimedia.org/math/b/9/e/b9ece18c950afbfa6b0fdbfa4ff731d3.png
-     */
 }
 
 
@@ -4618,9 +3905,7 @@ function POIMarker(){
 
     if (insertedName.value==='')
     {
-        //if (getLanguage()=="en")
         alert('Insert a name');
-        //else alert('Lägg till ett namn');
     }
     else{
 
@@ -4629,8 +3914,6 @@ function POIMarker(){
         // insert element in original array
 
         var selectOption = document.getElementById('placeSelect');
-
-        // var selectPoiType = document.getElementById('selectBox');
 
         var hideObject = document.getElementById('removableoption');
         hideObject.style.display="none";
@@ -4642,13 +3925,10 @@ function POIMarker(){
         selectOption.add(option,0);
         selectOption.selectedIndex=0;
 
-        // console.log(selectPoiType[selectPoiType.selectedIndex].value);
         newMarker.name = insertedName.value;
         newMarker.type = 'not defined';
         newMarker.userId = userId;
 
-
-        // console.log(newMarker);
 
         // for map marker https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678111-map-marker-128.png
         // for transition marker http://upload.wikimedia.org/math/b/9/e/b9ece18c950afbfa6b0fdbfa4ff731d3.png
@@ -4683,8 +3963,6 @@ function POIListener(e){
  */
 function drawPOIMarker(latlon){
 
-    /*console.log(latlon);*/
-
     newMarker.latitude = latlon.lat;
     newMarker.longitude = latlon.lng;
 
@@ -4696,7 +3974,6 @@ function drawPOIMarker(latlon){
     marker.on('dragend', function(event){
         marker = event.target;
         var position = marker.getLatLng();
-        /*alert(position);*/
         console.log(marker);
         marker.setLatLng(position,{id:1,draggable:true}).bindPopup(position).update();
         newMarker.latitude = position.lat;
@@ -4714,12 +3991,6 @@ function drawPOIMarker(latlon){
 
 function drawPOIMarkerLL(lat,lon, poi){
 
-    /*console.log(latlon);*/
-
-    console.log(lat);
-    console.log(lon);
-    //console.log(addedByUser);
-
     if (marker!=undefined)
 
     map.removeLayer(marker);
@@ -4735,8 +4006,6 @@ function drawPOIMarkerLL(lat,lon, poi){
         marker.on('dragend', function(event){
             marker = event.target;
             var position = marker.getLatLng();
-            /*alert(position);*/
-            console.log(marker);
             marker.setLatLng(position,{id:1,draggable:true}).bindPopup(position).update();
             newMarker.latitude = position.lat;
             newMarker.longitude = position.lng;
@@ -4779,9 +4048,6 @@ function insertedNewPoiMarker(){
 
     operationPOI(newMarker, "insert");
 
-   // var latLon = new L.LatLng(newDestination.latitude, newDestination.longitude);
-
-    // console.log(latLon);
 }
 
 function insertedNewPoiMarkerAfterCall(){
@@ -4966,24 +4232,17 @@ function drawPoint(point,map,type, triplegid){
                 scrollTop: $('#lastTimelineElement').offset().top-60
             }, 'slow');
             document.getElementById('stopPoint').checked = true;
-            /*document.getElementById('stopPointSv').checked = true;*/
             if (currentTrip.next_trip_start == null) {
                 document.getElementById('deletePoint').disabled = true;
-                /*document.getElementById('deletePointSv').disabled = true;*/
                 document.getElementById('transitionPoint').disabled = true;
-                /*document.getElementById('transitionPointSv').disabled = true;*/
                 document.getElementById('regularPoint').disabled = true;
-                /*document.getElementById('regularPointSv').disabled = true;*/
             }
             else{
                 var nextTime = currentTrip.next_trip_start;
                 var thisTime = new Date(currentTrip.triplegs[currentTrip.triplegs.length-1].points[currentTrip.triplegs[currentTrip.triplegs.length-1].points.length-1].time);
                 document.getElementById('timeOfStopPeriod').innerHTML='Period: '+ getPointFormatedDate(thisTime)+" - "+getPointFormatedDate(new Date(nextTime));
                 document.getElementById('isStop').checked =true;
-                /*document.getElementById('isStopSv').checked =true;*/
-                //$('#selectedStopPeriodModal').data('point',point);
                 $('#selectedStopPeriodModal').data('tripid',currentTrip.tripid);
-                //$('#selectedStopPeriodModal').data('oldType',type);
                 $('#selectedStopPeriodModal').modal('show');
             }
         }
@@ -4997,34 +4256,23 @@ function drawPoint(point,map,type, triplegid){
             var timeOfPoint = new Date(point.time);
         console.log('triplegid '+triplegid+' type '+type+' '+point.time);
 
-            //if (getLanguage()=="en")
                 document.getElementById('timeOfPoint').innerHTML='Time: '+getPointFormatedDateLong(timeOfPoint);
-            /*else
-                document.getElementById('timeOfPoint').innerHTML='Tid: '+getPointFormatedDateLongSv(timeOfPoint);*/
-            document.getElementById('deletePoint').disabled=false;
-            /*document.getElementById('deletePointSv').disabled=false;*/
-            document.getElementById('transitionPoint').disabled=false;
-            /*document.getElementById('transitionPointSv').disabled=false;*/
-            document.getElementById('stopPoint').disabled=false;
-            /*document.getElementById('stopPointSv').disabled=false;*/
-
-
+              document.getElementById('deletePoint').disabled=false;
+              document.getElementById('transitionPoint').disabled=false;
+             document.getElementById('stopPoint').disabled=false;
+     
         if (type=='start'||type=='stop'){
             document.getElementById('deletePoint').disabled=true;
-            /*document.getElementById('deletePointSv').disabled=true;*/
         }
         else{
             document.getElementById('deletePoint').disabled=false;
-            /*document.getElementById('deletePointSv').disabled=false;*/
         }
 
         if (type=='transition') {
             document.getElementById('transitionPoint').checked=true;
-            /*document.getElementById('transitionPointSv').checked=true;*/
         }
         if (type=='regular'||type=='start') {
             document.getElementById('regularPoint').checked=true;
-            /*document.getElementById('regularPointSv').checked=true;*/
         }
 
         $('#selectedPointModal').modal('show');
@@ -5034,7 +4282,6 @@ function drawPoint(point,map,type, triplegid){
             for (var j in currentTrip.triplegs) if (currentTrip.triplegs[j].triplegid==triplegid) nextTime = currentTrip.triplegs[j].points[currentTrip.triplegs[j].points.length-1].time;
             document.getElementById('timeOfPeriod').innerHTML='Period: '+getPointFormatedDate(new Date(point.time))+" - "+getPointFormatedDate(new Date(nextTime));
             document.getElementById('isTransition').checked =true;
-            /*document.getElementById('isTransitionSv').checked =true;*/
             $('#selectedTransitionPeriodModal').data('point',point);
             $('#selectedTransitionPeriodModal').data('triplegid',triplegid);
             $('#selectedTransitionPeriodModal').data('oldType',type);
@@ -5085,7 +4332,6 @@ function getPointFormatedDate(date){
 function getPointFormatedDateLongSv(date) {
 
     var currentTripStartDateLocal = days_sv[new Date(date).getDay()]+", "+new Date(date).format("Y-m-d");
-    // var currentTripStartHour = new Date(currentTripStartDate).format("H:i");
 
     var hours = date.getHours();
     var minutes = date.getMinutes();
@@ -5103,7 +4349,6 @@ function getPointFormatedDateLongSv(date) {
 function getPointFormatedDateLong(date) {
 
     var currentTripStartDateLocal = days[new Date(date).getDay()]+", "+new Date(date).format("Y-m-d");
-    // var currentTripStartHour = new Date(currentTripStartDate).format("H:i");
 
     var hours = date.getHours();
     var minutes = date.getMinutes();
@@ -5152,34 +4397,16 @@ function generatePolyline(tripleg, map, i, first, isLast){
             if (j==tripleg.points.length-1) drawPoint(tripleg.points[j],map,'stop',tripleg.triplegid);
         }
         else{
-            /*// j is last point or first point of the trip leg
-            if (i!=currentTrip.triplegs.length-1 && i!=0){
-                // i is not the last or first trip leg -> draw transition
-                if(j!=0)
-                drawPoint(tripleg.points[j],map,'transition',tripleg.triplegid);
-            }
-            else*/{
+
                 if (i==0 && j==0){
                     //first trip first icon
                     drawPoint(tripleg.points[j],map,'start',tripleg.triplegid);
                 }
 
-                /*else
-                if (i==0 && j==tripleg.points.length-1){
-                    //first trip first icon
-                    drawPoint(tripleg.points[j],map,'transition',tripleg.triplegid);
-                }
-*/
                 if (isLast && j==tripleg.points.length-1){
                     drawPoint(tripleg.points[j],map,'stop',tripleg.triplegid);
                 }
 
-                /*if (currentTrip.triplegs.length==2){
-                    if (i==0 && j==tripleg.points.length-1){
-                        drawPoint(tripleg.points[j],map,'transition',tripleg.triplegid);
-                    }
-                }*/
-            }
         }
 
     }
@@ -5201,11 +4428,9 @@ function generatePolyline(tripleg, map, i, first, isLast){
 
             console.log(currentTrip.triplegs);
 
-            // if (currentTrip.triplegs[getPrevPassiveTripleg(tripleg.triplegid)]!=undefined)
-                tripleg.points.push(jQuery.extend(true,{},getPrevPassiveTripleg(tripleg).points[getPrevPassiveTripleg(tripleg).points.length-1]))
+                 tripleg.points.push(jQuery.extend(true,{},getPrevPassiveTripleg(tripleg).points[getPrevPassiveTripleg(tripleg).points.length-1]))
                 tripleg.points.push(jQuery.extend(true,{},getNextPassiveTripleg(tripleg).points[0]));
 
-            // tripleg.points[0] = tripleg.from_time;
         }
         for (var j in tripleg.points) {
 
@@ -5216,26 +4441,11 @@ function generatePolyline(tripleg, map, i, first, isLast){
             }
         }
 
-        /*if (tripleg.points.length==1) { getPrevPassiveTripleg(tripleg.triplegid).points.push(getNextPassiveTripleg(tripleg.triplegid).points[0]);
-                                        redrawOnly(getPrevPassiveTripleg(tripleg.triplegid));}*/
-
             var polylineColor = 'black';
             var polylineLayer = L.polyline(polyline, {color: polylineColor, weight:8, opacity:0.6, dashArray:'20,15'}).addTo(map);
 
     }
-    /*if (tripleg.type_of_tripleg==1) {
-        polylineColor = getColor(tripleg.mode);
-        polylineLayer = L.polyline(polyline, {color: polylineColor, weight:8, opacity:0.6}).addTo(map);
-    }
-    else*/
 
-    console.log(tripleg);
-    console.log(pointLayerArray);
-    console.log(polylineColor);
-
-
-
-    //polylineLayer.id = tripleg.triplegid;
 
     plotlayers[polylineLayer._leaflet_id] = polylineLayer;
 
@@ -5264,7 +4474,6 @@ function generatePolyline(tripleg, map, i, first, isLast){
     }
 
     if (first){
-        //var layer = plotlayers[correspondingPolyline[tripleg.triplegid]];
         console.log(polylineLayer);
         map.fitBounds(polylineLayer.getBounds());
     }
@@ -5277,32 +4486,19 @@ function addPointToPolyline(e) {
 
     var newPointLatLng = e.latlng;
 
-//    console.log(e);
-//    console.log(e.target);
-
     var prevLatLng = e.target._latlngs[0];
     var nextLatLng = e.target._latlngs[1];
-
-//   console.log(prevLatLng);
-//    console.log(nextLatLng);
-
-    //get corresponding points from the trip leg
-//   console.log(correspondingTimeline[layer._leaflet_id]);
 
     for (var i in currentTrip.triplegs){
         if (currentTrip.triplegs[i].triplegid==correspondingTimeline[layer._leaflet_id])
         {
-          //  console.log("Before calling function");
-          //  console.log(currentTrip.triplegs[i]);
-            try {
+             try {
                 logFrontEndOperation(userId,'add point to tripleg');
                 addPointToTripleg(newPointLatLng, currentTrip.triplegs[i], correspondingTimeline[layer._leaflet_id]);
             }
             catch(exception) {
                 logError(userId, exception, serverResponse);
             }
-          //  console.log("After calling function");
-          //  console.log(currentTrip.triplegs[i]);
 
             }
         }
@@ -5314,8 +4510,7 @@ function updateAddTriplegGeometry(triplegid,oldLat,oldLon,newLat,newLon){
         if (currentTrip.triplegs[i].triplegid==triplegid){
             for (var j in currentTrip.triplegs[i].points){
                 if (currentTrip.triplegs[i].points[j].lat == oldLat && currentTrip.triplegs[i].points[j].lon == oldLon){
-                    //currentTrip.triplegs[i].points[j].lat = newLat;
-                    //currentTrip.triplegs[i].points[j].lon = newLon;
+
 
                     var updateObject = {};
                     updateObject.updatedPoint= currentTrip.triplegs[i].points[j];
@@ -5342,7 +4537,6 @@ function updateRemoveTriplegGeometry(triplegid,lat,lon){
             for (var j in currentTrip.triplegs[i].points){
                 if (currentTrip.triplegs[i].points[j].lat == lat && currentTrip.triplegs[i].points[j].lon == lon){
                     var updateObject = {};
-                    //updateObject.updatedPoint = currentTrip.triplegs[i].points[j];
 
                     try {
                         updateTripleg(currentTrip.triplegs[i], "deletePoint", j);
@@ -5372,7 +4566,6 @@ function mergeTripleg(triplegid){
     $('#transitionDeleteModal').modal('hide');
 
     console.log('merging tripleg '+triplegid);
-   // console.log(currentTrip);
 
     console.log(triplegid);
 
@@ -5403,33 +4596,13 @@ function mergeTripleg(triplegid){
             }
 
             for (var j in passiveTriplegToMerge.points){
-                //if (!removeFirst){
                 var point = jQuery.extend(true,{}, passiveTriplegToMerge.points[j]);
-                /*point.id = currentTrip.triplegs[i+2].points[j].id;
-                point.lat = currentTrip.triplegs[i+2].points[j].lat;
-                point.lon = currentTrip.triplegs[i+2].points[j].lon;
-                point.time = currentTrip.triplegs[i+2].points[j].time;*/
-                triplegThatStays.points.push(point);
-                //}
-                //removeFirst=false;
-                /*console.log(currentTrip.triplegs[i+1].points[parseInt(j-1)]);
-                if (currentTrip.triplegs[i+1].points[parseInt(j-1)]!=undefined){
-                    if (currentTrip.triplegs[i+1].points[j].time!=currentTrip.triplegs[i+1].points[j-1].time) currentTrip.triplegs[i].points.push(point);
-                }
-                else
-                {
-                    currentTrip.triplegs[i].points.push(point);
-                }*/
+                   triplegThatStays.points.push(point);
                 console.log(currentTrip.triplegs[i].points);
             }
 
             for (var j in neighborTriplegToMerge.points){
-                //if (!removeFirst){
                 var point = jQuery.extend(true,{}, neighborTriplegToMerge.points[j]);
-                /*point.id = currentTrip.triplegs[i+2].points[j].id;
-                 point.lat = currentTrip.triplegs[i+2].points[j].lat;
-                 point.lon = currentTrip.triplegs[i+2].points[j].lon;
-                 point.time = currentTrip.triplegs[i+2].points[j].time;*/
                 triplegThatStays.points.push(point);
             }
         }
@@ -5496,9 +4669,6 @@ function mergeTripleg(triplegid){
     catch (exception){
         logError(userId,exception,serverResponse);
     }
-/*    updatePolyline(triplegid);
-    updateTransitionPanel(triplegid);
-    updateDistance(triplegid);*/
 
 }
 
@@ -5595,8 +4765,6 @@ function cancelPeriodModal(){
 function makeChangesStopPeriodModal(){
 
     logFrontEndOperation(userId,'making changes stop period');
-  //  var oldType =$('#selectedTransitionPeriodModal').data('oldType');
-  //  var point = $('#selectedTransitionPeriodModal').data('point');
     var tripid = $('#selectedStopPeriodModal').data('tripid');
 
     console.log(tripid);
@@ -5623,9 +4791,7 @@ function cancelStopPeriodModal(){
     logFrontEndOperation(userId,'canceling changes stop period');
     $('#selectedStopPeriodModal').modal('hide');
 
-    //$('#selectedTransitionPeriodModal').data('point',null);
     $('#selectedStopPeriodModal').data('tripid',null);
-    //$('#selectedTransitionPeriodModal').data('oldType',null);
 
 }
 
@@ -5638,11 +4804,11 @@ function makeChangesPointModal(){
     var point = $('#selectedPointModal').data('point');
     var triplegid = $('#selectedPointModal').data('triplegid');
 
-    var regularChecked = document.getElementById("regularPoint").checked; //|| document.getElementById("regularPointSv").checked ;
-    var transitionChecked = document.getElementById("transitionPoint").checked ;//|| document.getElementById("transitionPointSv").checked;
-    var stopChecked = document.getElementById("stopPoint").checked ;//|| document.getElementById("stopPointSv").checked;
-    var startChecked = document.getElementById("startPoint").checked;// || document.getElementById("startPointSv").checked;
-    var deleteChecked = document.getElementById("deletePoint").checked; // || document.getElementById("deletePointSv").checked;
+    var regularChecked = document.getElementById("regularPoint").checked;
+    var transitionChecked = document.getElementById("transitionPoint").checked ;
+    var stopChecked = document.getElementById("stopPoint").checked ;
+    var startChecked = document.getElementById("startPoint").checked;
+    var deleteChecked = document.getElementById("deletePoint").checked;
 
     if (oldType=='transition' && transitionChecked)
     {
@@ -5672,7 +4838,6 @@ function makeChangesPointModal(){
                 //DONE
 
                 mergeTripleg(triplegid);
-               // updateRemoveTriplegGeometry(triplegid,point.lat,point.lon);
                 $('#selectedPointModal').modal('hide');
             }
         }
@@ -5717,7 +4882,6 @@ function makeChangesPointModal(){
                 catch (exception){
                     logError(userId,exception,serverResponse);
                 }
-                /*insertTransitionAtPoint();*/
             }
             $('#selectedPointModal').modal('hide');
         }
@@ -5766,17 +4930,13 @@ function makeChangesPointModal(){
                 catch (exception){
                     logError(userId,exception,serverResponse);
                 }
-             //   console.log(currentTrip.triplegs);
             }
         }
 
         if (startChecked){
             logFrontEndOperation(userId, 'changing point types from '+oldType+' to start');
             var fromTime = point.time;
-            //var toTime = currentTrip.triplegs[currentTrip.triplegs.length-1].points[currentTrip.triplegs[currentTrip.triplegs.length-1].points.length-1].time);
-
-            console.log(fromTime);
-            //console.log(toTime);
+      
 
             console.log(jQuery.extend(true,{}, currentTrip));
 
@@ -5791,7 +4951,6 @@ function makeChangesPointModal(){
                 }
 
             }
-            // $('#transitionChoiceModal'+id).data('fromTime',fromTime);
             $('#selectedPointModal').modal('hide');
 
         }
@@ -5874,20 +5033,7 @@ function splitTrip(id, fromDate, toDate, mode) {
                 }
 
                 if (currentTrip.triplegs[i].points[j].time >= toDate) {
-                    /* if (!pushed){
-
-                     var point = new Object();
-
-                     point.id = tripLegA.points[tripLegA.points.length-1].id;
-                     point.lat = tripLegA.points[tripLegA.points.length-1].lat;
-                     point.lon = tripLegA.points[tripLegA.points.length-1].lon;
-                     point.time = toDate;
-
-                     tripLegB.points.push(point);
-
-                     pushed =  true;
-                     }*/
-
+ 
                     var point = new Object();
 
                     point.id = currentTrip.triplegs[i].points[j].id;
@@ -5940,9 +5086,6 @@ function splitTrip(id, fromDate, toDate, mode) {
     tripLegB.places = [];
     tripLegB.places[0] = {};
 
-    /*  sanitize(tripLegA);
-     sanitize(tripLegB);
-     */
 
     //triplegA becomes the last tripleg of current trip
 
@@ -5954,11 +5097,7 @@ function splitTrip(id, fromDate, toDate, mode) {
 
         pushTriplegModificationReplace(currentTrip.triplegs[tripLegIndex], tripLegA, currentTrip.tripid, tripLegB);
 
-        // pushTriplegModification(null, currentTrip.triplegs[tripLegIndex], "delete", currentTrip.tripid);
-        // pushTriplegModification(null, tripLegA, "upsert", currentTrip.tripid);
-        // pushTriplegModification(null, tripLegB, "upsert", currentTrip.tripid);
-
-        console.log(jQuery.extend(true, {}, tripLegB));
+    console.log(jQuery.extend(true, {}, tripLegB));
 
         currentTrip.triplegs.splice(tripLegIndex, 1, tripLegA, tripLegB);
         console.log(jQuery.extend(true, {}, currentTrip));
@@ -5966,9 +5105,7 @@ function splitTrip(id, fromDate, toDate, mode) {
     }
     else {
         console.log("deleting tripleg " + tripLegIndex + " and replacing it with " + tripLegA.triplegid);
-        //pushTriplegModification(null, currentTrip.triplegs[tripLegIndex], "delete", currentTrip.tripid);
-        //pushTriplegModification(null, tripLegA, "upsert",currentTrip.tripid);
-
+  
         pushTriplegModificationReplace(currentTrip.triplegs[tripLegIndex], tripLegA, currentTrip.tripid);
 
         currentTrip.triplegs.splice(tripLegIndex, 1, tripLegA);
@@ -6044,15 +5181,12 @@ function continueWithRequest(tripLegA,tripLegB){
             upsertRequest2 = pushTripModification(oldVersionOfCurrentTrip,newTrip,"upsert", newPassiveTrip);
         });
     }
-//    currentTrip.next_trip_start
     newPassiveTrip.triplegs[0].points[0] = newTrip.triplegs[0].points[0];
 
     serverResponse.trips.splice(tripIndex,0,newPassiveTrip, newTrip);
     serverResponse.trips_to_process++;
     console.log(jQuery.extend(true,{},serverResponse));
 
-
-    // pushTripModification(oldVersionOfCurrentTrip,newTrip,"upsert");
 
     console.log(serverResponse);
 
@@ -6127,9 +5261,7 @@ function mergeTrips(id){
     catch (exception){
         logError(userId,exception,serverResponse);
     }
-    /* currentTrip.triplegs[currentTrip.triplegs.length-1].places=[];
-    currentTrip.triplegs[currentTrip.triplegs.length-1].places[0]={};*/
-
+ 
     }));
 }
 
@@ -6149,9 +5281,6 @@ function mergeTripsContinue(oldVersionOfCurrentTrip, tripIndex){
         console.log(jQuery.extend(true, {}, serverResponse));
         console.log("deletion candidates " + serverResponse.trips[tripIndex - 1].tripid + " , " + serverResponse.trips[tripIndex].tripid);
         console.log("update candidates " + currentTrip.tripid);
-
-        /*for (var i in serverResponse.trips[tripIndex-1].triplegs) pushTriplegModification(null,serverResponse.trips[tripIndex-1].triplegs[i],"delete",currentTrip.tripid);
-         for (var i in serverResponse.trips[tripIndex].triplegs) pushTriplegModification(null,serverResponse.trips[tripIndex].triplegs[i],"delete",currentTrip.tripid);for (var i in serverResponse.trips[tripIndex-1].triplegs) pushTriplegModification(null,serverResponse.trips[tripIndex-1].triplegs[i],"delete",currentTrip.tripid);*/
 
         // delete next passive
         console.log('delete ' + serverResponse.trips[tripIndex - 1].tripid);
@@ -6175,8 +5304,6 @@ function mergeTripsContinue(oldVersionOfCurrentTrip, tripIndex){
 
                 ul.innerHTML = "";
 
-
-                // generateHTMLElements(currentTrip);
 
                 console.log(currentTrip);
 
@@ -6325,79 +5452,5 @@ function updateDistance(tripleg, triplegid){
  * Checking whether the trips and triplegs maintain their integrity after modifications / on server request
  */
 function integrityCheck(){
-     /*for (var j=1; j<serverResponse.trips.length-1;j++){
-        // Checking
-        var currentTrip = serverResponse.trips[j];
-        var prevTrip = serverResponse.trips[j-1];
-        var nextTrip = serverResponse.trips[j+1];
-        console.log('checking for time constraints for trip '+currentTrip.tripid);
 
-        if (currentTrip.triplegs[0].points[0].time==prevTrip.triplegs[prevTrip.triplegs.length-1].points[prevTrip.triplegs[prevTrip.triplegs.length-1].points.length-1].time)
-            console.log('PASSED time constraint previous')
-        else
-            console.log('FAIL!!! '+currentTrip.triplegs[0].points[0].time+'=='+prevTrip.triplegs[prevTrip.triplegs.length-1].points[prevTrip.triplegs[prevTrip.triplegs.length-1].points.length-1].time);
-
-        if (currentTrip.triplegs[currentTrip.triplegs.length-1].points[currentTrip.triplegs[currentTrip.triplegs.length-1].points.length-1].time==nextTrip.triplegs[0].points[0].time)
-            console.log('PASSED time constraint next')
-        else
-            console.log('FAIL!!! '+currentTrip.triplegs[currentTrip.triplegs.length-1].points[currentTrip.triplegs[currentTrip.triplegs.length-1].points.length-1].time+'=='+nextTrip.triplegs[0].points[0].time);
-
-        console.log('checking for type of trips constraints for trip '+currentTrip.tripid);
-
-        if (currentTrip.type_of_trip!=prevTrip.type_of_trip)
-            console.log('PASSED prev type of trip')
-        else
-            console.log('FAIL!!! '+currentTrip.type_of_trip+'<>'+prevTrip.type_of_trip);
-
-        if (currentTrip.type_of_trip!=nextTrip.type_of_trip)
-            console.log('PASSED next type of trip')
-        else
-            console.log('FAIL!!! '+currentTrip.type_of_trip+'<>'+nextTrip.type_of_trip);
-
-        console.log('checking for start and end time for trip '+currentTrip.tripid);
-        if (currentTrip.triplegs[0].points[0].time<=currentTrip.triplegs[currentTrip.triplegs.length-1].points[currentTrip.triplegs[currentTrip.triplegs.length-1].points.length-1].time)
-            console.log('PASSED start and end time of trip')
-        else
-            console.log('FAIL!!! '+currentTrip.triplegs[0].points[0].time+'<='+currentTrip.triplegs[currentTrip.triplegs.length-1].points[currentTrip.triplegs[currentTrip.triplegs.length-1].points.length-1].time);
-
-        console.log('checking for triplegs constraints for trip '+currentTrip.tripid);
-
-        for (var i=1; i<currentTrip.triplegs.length-1; i++){
-            var currentTripleg = currentTrip.triplegs[i];
-            var prevTripleg = currentTrip.triplegs[i-1];
-            var nextTripleg = currentTrip.triplegs[i+1];
-
-            console.log('checking for time constraints for tripleg '+currentTripleg.triplegid);
-            if (currentTripleg.points[0].time==prevTripleg.points[prevTripleg.points.length-1].time)
-                console.log('time constraint passed');
-            else
-                console.log("FAIL!!! "+currentTripleg.points[0].time+'=='+prevTripleg.points[prevTripleg.points.length-1].time);
-
-            if (currentTripleg.points[currentTripleg.points.length-1].time==nextTripleg.points[0].time)
-                console.log('second time constraint passed');
-            else
-                console.log("FAIL!!! "+currentTripleg.points[currentTripleg.points.length-1].time+'=='+nextTripleg.points[0].time);
-            console.log('checking for type of triplegs constraints for tripleg '+currentTripleg.triplegid);
-
-            if (currentTripleg.type_of_tripleg!=prevTripleg.type_of_tripleg)
-                console.log('prev tripleg type passed');
-            else
-                console.log('FAIL!!! '+currentTripleg.type_of_tripleg+'<>'+prevTripleg.type_of_tripleg);
-
-            if (currentTripleg.type_of_tripleg!=nextTripleg.type_of_tripleg)
-                console.log('next tripleg type passed');
-            else
-                console.log('FAIL!!! '+currentTripleg.type_of_tripleg+'<>'+nextTripleg.type_of_tripleg);
-
-            console.log('checking for start and end time for tripleg '+currentTripleg.triplegid);
-            if (currentTripleg.points[0].time<=currentTripleg.points[currentTripleg.points.length-1].time)
-                console.log('start and end time passed');
-            else
-                console.log('FAIL!!! '+currentTripleg.points[0].time+'<='+currentTripleg.points[currentTripleg.points.length-1].time);
-
-            //TODO ROLLBACK UNTIL CONSISTENT?????
-
-        }
-    }
-      */
 }
