@@ -3,7 +3,7 @@ services:
   controller:
     build: ./controller
     environment:
-      POSTGRES_DB: MEILI_TESTS
+      POSTGRES_DB: SPOT_Gothenburg
     depends_on:
       - db
     volumes:
@@ -13,7 +13,7 @@ services:
     build: ./db
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_DB: MEILI_TESTS
+      POSTGRES_DB: SPOT_Gothenburg
       POSTGRES_PASSWORD: 
       PGDATA: /tmp/meili
     ports:
