@@ -22,6 +22,26 @@ var Api = function(config) {
         return request.get(url(mainPaths.trips, 'getTripsForBadge'), { user_id: userId });
       },
 
+      updateStartTime: function(tripId, startTime) {
+        return request.get(
+          url(mainPaths.trips, 'updateStartTimeOfTrip'),
+          {
+            trip_id: tripId,
+            start_time: startTime
+          }
+        );
+      },
+
+      updateEndTime: function(triplegId, endTime) {
+        return request.get(
+          url(mainPaths.trips, 'updateEndTimeOfTrip'),
+          {
+            tripleg_id: triplegId,
+            end_time: endTime
+          }
+        );
+      },
+
       create: function() {},
       update: function() {},
       delete: function() {}
@@ -47,6 +67,17 @@ var Api = function(config) {
           }
         );
       },
+
+      updateEndTime: function(triplegId, endTime) {
+        return request.get(
+          url(mainPaths.triplegs, 'updateEndTimeOfTripleg'),
+          {
+            tripleg_id: triplegId,
+            end_time: endTime
+          }
+        );
+      },
+
       delete: function() {}
     }
   }
