@@ -179,8 +179,7 @@ var serverResponse = {
 
 
 var log         = Log(CONFIG);
-var trips       = Trips(CONFIG);
-var triplegs    = Triplegs(CONFIG);
+var api         = Api(CONFIG);
 var map         = Map();
 
 
@@ -207,23 +206,24 @@ function initmap(thisUserId) {
   }
 
   userId = thisUserId;
-  trips.getNumberOfTrips(thisUserId)
+  api.trips.getNumberOfTrips(thisUserId)
     .done(function(result) {
       document.getElementById('tripsLeft').innerHTML = result.rows[0].user_get_badge_trips_info;
       document.getElementById('badge_holder').style.visibility = "visible";
   });
 
-  trips.getLast(thisUserId)
+  api.trips.getLast(thisUserId)
     .done(function(trip) {
       currentTrip = trip;
 
-      triplegs.get(currentTrip.trip_id)
+      api.triplegs.get(currentTrip.trip_id)
         .done(function(result) {
           var triplegsOfCurrentTrip = result.pagination_get_triplegs_of_trip;
           currentTrip.triplegs = triplegsOfCurrentTrip;
           copyOfTriplegs = jQuery.extend(true, [], triplegsOfCurrentTrip);
 
           map.init(CONFIG.map, thisUserId);
+
           generateHTMLElements(currentTrip, triplegsOfCurrentTrip, thisUserId);
 
           var assistantHelper = document.getElementById('assistant');
@@ -281,7 +281,7 @@ function generateHTMLElements(currentTrip, triplegs, user_id){
     }
     generateLastTimelineElement(currentTrip);
 
-    $.when(logFrontEndOperation(user_id,'the user can interact with his trips')).done(function () {;
+    $.when(log.info(user_id,'the user can interact with his trips')).done(function () {;
         forceLoad();
         // if (previousPurpose==null) showIntroGuide(currentTrip, triplegs);
     })
@@ -357,15 +357,6 @@ function updateRemoveRedraw(tripleg){
     var liCircle = document.getElementById('telem_circle'+tripleg.triplegid);
     var liPanel = document.getElementById('tldate'+tripleg.triplegid);
 
-    /*console.log(liMeta);
-    console.log(liMeta.childNodes);
-
-        console.log('telem' + tripleg.triplegid);
-        console.log(liMeta);
-        console.log(li);
-        console.log(liPanel);
-*/
-
         if (liCircle != null) {
 
             liCircle.remove();
@@ -376,7 +367,6 @@ function updateRemoveRedraw(tripleg){
 
         if (liPanel != null) {
             liPanel.remove();
-            /*if (liPanel.parentNode != null) liPanel.parentNode.remove();*/
         }
 
 
@@ -391,28 +381,6 @@ function updateRemoveRedraw(tripleg){
     liMeta.innerHTML = html;
     liMeta.id = 'listItem'+tripleg.triplegid;
 
-/*    console.log(li.childNodes);
-    console.log(liMeta.childNodes);
-    for (var j=1; j<liMeta.childNodes.length; j++) {
-        if (liMeta.childNodes[j] != undefined) {
-            //console.log(liMeta.childNodes[1]);
-            liMeta.childNodes[j].outerHTML = "";
-        }
-    }
-
-    var skipFirstNode = true;
-    for (var j=1; j<li.childNodes.length; j++) {
-        if (li.childNodes[j] != undefined) {
-            if (li.childNodes[j].nodeName=="li")
-                if (!skipFirstNode){
-                    li.childNodes[j].outerHTML = "";
-                }
-            skipFirstNode=false;
-            //console.log(liMeta.childNodes[1]);
-        }
-    }
-*/
-    // console.log(html);
 
     addTimelineListeners(tripleg);
 
@@ -523,7 +491,7 @@ function checkCurrentTrip(){
 function nextFunction(){
 
 
-        $.when(logFrontEndOperation(userId, 'getNextTrip Before Response').done(function() {
+        $.when(log.info(userId, 'getNextTrip Before Response').done(function() {
             try{
                 if (checkCurrentTrip()){
                 window.scroll(0, 0);
@@ -572,7 +540,7 @@ function nextFunction(){
 function nextFunctionAfterResponse(clusteredStartPoint ){
 
 
-        $.when(logFrontEndOperation(userId,'getNext After Response').done(function(){
+        $.when(log.info(userId,'getNext After Response').done(function(){
             try {
             var clusteredEndPoint = clusterEndPoint(currentTrip);
 
@@ -615,7 +583,7 @@ function nextFunctionAfterResponse(clusteredStartPoint ){
  */
 function previousFunction(){
 
-        $.when(logFrontEndOperation(userId,'getPrevious Before Response').done(function(){
+        $.when(log.info(userId,'getPrevious Before Response').done(function(){
             try {
 
         var ul = document.getElementById("timeline");
@@ -637,7 +605,7 @@ function previousFunction(){
 function previousFunctionAfterAnswer(){
 
 
-        $.when(logFrontEndOperation(userId, 'getPrevious After Answer').done(function(){
+        $.when(log.info(userId, 'getPrevious After Answer').done(function(){
             try{
             var tripIndex = getPrevTrip(currentTrip.tripid);
 
@@ -1006,7 +974,7 @@ function showAndAddDataForLongModalV2(tripleg, startTime, endTime, startBoundary
 
 function performChanges(data){
 
-    $.when(logFrontEndOperation(userId, 'performing all changes on the transition').done(function(){
+    $.when(log.info(userId, 'performing all changes on the transition').done(function(){
 
     var backupTrip = $('#transitionAlertModal').data('backupTrip');
 
@@ -1079,7 +1047,7 @@ function performChanges(data){
  */
     function cancelAllChanges(data){
 
-    $.when(logFrontEndOperation(userId, 'cancel tripleg changes').done(function(){
+    $.when(log.info(userId, 'cancel tripleg changes').done(function(){
         console.log('done with frontend log');
     }));
 
@@ -1417,19 +1385,19 @@ function splitTripLeg(id, fromDate, toDate, triplegStartDate, triplegEndDate, mo
 }
 
 function deleteTripModal(){
-    $.when(logFrontEndOperation(userId,'clicked on delete trip glyphicon').done(function(){
+    $.when(log.info(userId,'clicked on delete trip glyphicon').done(function(){
     $('#deleteTripModal').modal('show');
     }));
 }
 
 function mergeTripModal(){
-    $.when(logFrontEndOperation(userId,'clicked on merge trips glyphicon').done(function(){
+    $.when(log.info(userId,'clicked on merge trips glyphicon').done(function(){
     $('#mergeTripModal').modal('show');
     }));
 }
 function deleteTrip(){
 
-    $.when(logFrontEndOperation(userId,'decided to delete trip').done(function(){
+    $.when(log.info(userId,'decided to delete trip').done(function(){
 
     var prevTrip = serverResponse.trips[getPrevPassiveTrip(currentTrip.tripid)];
 
@@ -3047,7 +3015,7 @@ function transitionSelectListener(){
     this.className = this.className.replace( /(?:^|\s)form-need-check(?!\S)/g , ' form-checked' );
     var changedTripLeg = this.id.substring(16,this.id.length);
     var changedValue = this.value;
-    $.when(logFrontEndOperation(userId, 'chose a new transition point with value '+this.value).done(function(){
+    $.when(log.info(userId, 'chose a new transition point with value '+this.value).done(function(){
 
         if (changedValue == 100) {
             $('#transitionModal'+changedTripLeg).modal('show');
@@ -3117,7 +3085,7 @@ function placeSelectListener(){
 
     var thisValue = this.value;
 
-    $.when(logFrontEndOperation(userId,'selected new place').done(function(){
+    $.when(log.info(userId,'selected new place').done(function(){
 
      console.log(thisValue);
 
@@ -3172,7 +3140,7 @@ function purposeSelectListener(){
 
     var thisValue = this.value;
 
-    $.when(logFrontEndOperation(userId,'selected new purpose').done(function(){
+    $.when(log.info(userId,'selected new purpose').done(function(){
         for (var i=0; i<currentTrip.purposes.length;i++)
             {
                 console.log(currentTrip.purposes[i].id +'=='+ this.value+' is '+(currentTrip.purposes[i].id == thisValue));
@@ -3199,7 +3167,7 @@ function selectOptionListener(){
     var optionListener = this;
     var changedTripLeg = this.id.substring(11,this.id.length);
 
-    var request = logFrontEndOperation(userId,'selected new mode '+newMode+' of tripleg '+changedTripLeg);
+    var request = log.info(userId,'selected new mode '+newMode+' of tripleg '+changedTripLeg);
     $.when(request.done(function(){
 
     /**
@@ -3298,7 +3266,7 @@ function addTimelineListeners(tripleg){
         var layer = plotlayers[correspondingPolyline[tripleg.triplegid]];
         map.fitBounds(layer.getBounds());
 
-        logFrontEndOperation(userId,'zoomed to layer '+tripleg.triplegid);
+        log.info(userId,'zoomed to layer '+tripleg.triplegid);
     });
 
     /**
@@ -3334,7 +3302,7 @@ function addTimelineListeners(tripleg){
       newTime.setHours(e.time.hours);
       newTime = newTime.getTime();
 
-      //logFrontEndOperation(userId,'changed timepicker start value of tripleg '+tripleg.triplegid+' to '+ newTime);
+      //log.info(userId,'changed timepicker start value of tripleg '+tripleg.triplegid+' to '+ newTime);
 
       /**
       * CONSEQUENCE 0 - Start time sooner than end time
@@ -3347,8 +3315,8 @@ function addTimelineListeners(tripleg){
         * a) if it is the first trip leg, the currentTripStartDate can be changed , but not before the end of last trip
         * b) if it is the last trip leg, the currentTripEndDate can be changed, but not after the beginning of next trip
         */
-
-        triplegs.updateStartTime(tripleg.triplegid, newTime)
+        debugger;
+        api.triplegs.updateStartTime(tripleg.triplegid, newTime)
           .done(function(triplegs) {
             debugger;
           });
@@ -3382,7 +3350,7 @@ function addTimelineListeners(tripleg){
 
         tempTime = tempTime.getTime();
 
-        logFrontEndOperation(userId,'changed timepicker stop value of tripleg '+tripleg.triplegid+' to '+ tempTime);
+        log.info(userId,'changed timepicker stop value of tripleg '+tripleg.triplegid+' to '+ tempTime);
 
         /**
          * CONSEQUENCE 0 - Start time sooner than end time
@@ -3402,7 +3370,7 @@ function addTimelineListeners(tripleg){
             console.log("Checking if end time is within the current trip "+ tempTime+" earlier than "+nextTripStartDate.getTime());
 
             try {
-                logFrontEndOperation(userId,'update end time of tripleg to '+tempTime);
+                log.info(userId,'update end time of tripleg to '+tempTime);
 
                 updateTimeOfTripleg(currentTrip, tripleg, null, tempTime, previousTripEndDate.getTime(), nextTripStartDate.getTime());
             }
@@ -3732,7 +3700,7 @@ function updatedNewTransitionMarker(poiId){
  */
 function addTransitionPOIListener(strippedId){
 
-    logFrontEndOperation(userId,'drawing transition point');
+    log.info(userId,'drawing transition point');
     var listeningFunction = function(e) {
         console.log(e);
         console.log(strippedId);
@@ -3829,7 +3797,7 @@ function transitionMarker(id){
 function POIMarker(){
     // change selected element
 
-    logFrontEndOperation(userId, 'new POI');
+    log.info(userId, 'new POI');
 
     var insertedName = document.getElementById("poiName");
     console.log(insertedName);
@@ -3871,7 +3839,7 @@ function POIMarker(){
 }
 
 function cancelPOIMarker(){
-    logFrontEndOperation(userId, 'cancelled adding a new POI');
+    log.info(userId, 'cancelled adding a new POI');
     document.getElementById("placeSelect").innerHTML = getPlaceSelector(currentTrip.destination_places);
     $("#placeSelect").removeClass("form-checked");
     $("#placeSelect").addClass("form-need-check");
@@ -3882,7 +3850,7 @@ function cancelPOIMarker(){
  * @constructor
  */
 function POIListener(e){
-    logFrontEndOperation(userId,'drawing POI point');
+    log.info(userId,'drawing POI point');
     drawPOIMarker(e.latlng);
     map.off("click", POIListener);
     document.getElementById("map").style.cursor = "default";
@@ -4423,7 +4391,7 @@ function addPointToPolyline(e) {
         if (currentTrip.triplegs[i].triplegid==correspondingTimeline[layer._leaflet_id])
         {
              try {
-                logFrontEndOperation(userId,'add point to tripleg');
+                log.info(userId,'add point to tripleg');
                 addPointToTripleg(newPointLatLng, currentTrip.triplegs[i], correspondingTimeline[layer._leaflet_id]);
             }
             catch(exception) {
@@ -4484,7 +4452,7 @@ function updateRemoveTriplegGeometry(triplegid,lat,lon){
 }
 
 function mergeWithNext(triplegid){
-    logFrontEndOperation(userId,'called delete tripleg glyphicon');
+    log.info(userId,'called delete tripleg glyphicon');
     $('#transitionDeleteModal').data('triplegid',triplegid);
     $('#transitionDeleteModal').modal('show');
     console.log(triplegid);
@@ -4492,7 +4460,7 @@ function mergeWithNext(triplegid){
 
 function mergeTripleg(triplegid){
 
-    logFrontEndOperation(userId,'decided to merge triplegs');
+    log.info(userId,'decided to merge triplegs');
     $('#transitionDeleteModal').modal('hide');
 
     console.log('merging tripleg '+triplegid);
@@ -4642,12 +4610,12 @@ function mergeTriplegWithPrevious(triplegid){
 }
 
 function cancelDeletion(){
-    logFrontEndOperation(userId,'decided to cancel tripleg merge');
+    log.info(userId,'decided to cancel tripleg merge');
     $('#transitionDeleteModal').modal('hide');
 }
 
 function cancelPointModal(){
-    logFrontEndOperation(userId, 'decided to cancel point change');
+    log.info(userId, 'decided to cancel point change');
     $('#selectedPointModal').data('point',null);
     $('#selectedPointModal').data('triplegid',null);
     $('#selectedPointModal').data('oldType',null);
@@ -4657,7 +4625,7 @@ function cancelPointModal(){
 
 function makeChangesPeriodModal(){
 
-    logFrontEndOperation(userId, 'decided to merge tripleg periods');
+    log.info(userId, 'decided to merge tripleg periods');
     var oldType =$('#selectedTransitionPeriodModal').data('oldType');
     var point = $('#selectedTransitionPeriodModal').data('point');
     var triplegid = $('#selectedTransitionPeriodModal').data('triplegid');
@@ -4683,7 +4651,7 @@ function makeChangesPeriodModal(){
 }
 
 function cancelPeriodModal(){
-    logFrontEndOperation(userId,'decided to cancel tripleg period change');
+    log.info(userId,'decided to cancel tripleg period change');
     $('#selectedTransitionPeriodModal').modal('hide');
 
     $('#selectedTransitionPeriodModal').data('point',null);
@@ -4694,7 +4662,7 @@ function cancelPeriodModal(){
 
 function makeChangesStopPeriodModal(){
 
-    logFrontEndOperation(userId,'making changes stop period');
+    log.info(userId,'making changes stop period');
     var tripid = $('#selectedStopPeriodModal').data('tripid');
 
     console.log(tripid);
@@ -4718,7 +4686,7 @@ function makeChangesStopPeriodModal(){
 }
 
 function cancelStopPeriodModal(){
-    logFrontEndOperation(userId,'canceling changes stop period');
+    log.info(userId,'canceling changes stop period');
     $('#selectedStopPeriodModal').modal('hide');
 
     $('#selectedStopPeriodModal').data('tripid',null);
@@ -4728,7 +4696,7 @@ function cancelStopPeriodModal(){
 
 function makeChangesPointModal(){
 
-    logFrontEndOperation(userId,'decided to change point type');
+    log.info(userId,'decided to change point type');
 
     var oldType =$('#selectedPointModal').data('oldType');
     var point = $('#selectedPointModal').data('point');
@@ -4756,7 +4724,7 @@ function makeChangesPointModal(){
     }
         else{
         if (deleteChecked){
-            logFrontEndOperation(userId, 'changing point types from '+oldType+' to deleted');
+            log.info(userId, 'changing point types from '+oldType+' to deleted');
             if (oldType=='regular') {
                 //DONE
                 updateRemoveTriplegGeometry(triplegid,point.lat,point.lon);
@@ -4773,7 +4741,7 @@ function makeChangesPointModal(){
         }
 
         if (transitionChecked){
-            logFrontEndOperation(userId, 'changing point types from '+oldType+' to transition');
+            log.info(userId, 'changing point types from '+oldType+' to transition');
             var id = triplegid;
             var fromDate;
             var toDate;
@@ -4816,7 +4784,7 @@ function makeChangesPointModal(){
             $('#selectedPointModal').modal('hide');
         }
         if(stopChecked){
-            logFrontEndOperation(userId, 'changing point types from '+oldType+' to check');
+            log.info(userId, 'changing point types from '+oldType+' to check');
             var id = triplegid;
             var fromDate;
             var toDate;
@@ -4864,7 +4832,7 @@ function makeChangesPointModal(){
         }
 
         if (startChecked){
-            logFrontEndOperation(userId, 'changing point types from '+oldType+' to start');
+            log.info(userId, 'changing point types from '+oldType+' to start');
             var fromTime = point.time;
       
 
@@ -4874,7 +4842,7 @@ function makeChangesPointModal(){
             for (var j in currentTrip.triplegs) if (currentTrip.triplegs[j].triplegid == triplegid) {
                 try{
                     updateTimeOfTripleg(currentTrip, currentTrip.triplegs[j], fromTime, null, previousTripEndDate.getTime(), nextTripStartDate.getTime());
-                    logFrontEndOperation(userId, 'update time of tripleg '+currentTrip.triplegs[j].triplegid);
+                    log.info(userId, 'update time of tripleg '+currentTrip.triplegs[j].triplegid);
                 }
                 catch (exception){
                     log.error(userId, exception, serverResponse);
@@ -4886,7 +4854,7 @@ function makeChangesPointModal(){
         }
 
         if(regularChecked){
-            logFrontEndOperation(userId, 'changing point types from '+oldType+' to regular');
+            log.info(userId, 'changing point types from '+oldType+' to regular');
             if (oldType=='transition') {
                 //DONE
                 try{
@@ -5133,7 +5101,7 @@ function continueWithRequest(tripLegA,tripLegB){
 }
 
 function mergeTrips(id){
-    $.when(logFrontEndOperation(userId, 'decided to merge trips').done(function(){
+    $.when(log.info(userId, 'decided to merge trips').done(function(){
 
     try {
       console.log(jQuery.extend(true,{},serverResponse));

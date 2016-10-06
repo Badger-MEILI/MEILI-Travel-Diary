@@ -6,6 +6,9 @@ var Log = function(config) {
         console.debug( Array.prototype.slice.call(arguments) );
       }
     },
+    info: function() {
+      console.info( Array.prototype.slice.call(arguments) );
+    },
     error: function() {
       console.error( Array.prototype.slice.call(arguments) );
     }
