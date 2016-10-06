@@ -24,7 +24,7 @@ var path = require('path');
 
 var host = process.env.MEILI_HOST || 'localhost';
 var port = process.env.MEILI_PORT || '5432';
-var dbName = process.env.MEILI_DB_NAME || 'SPOT_Gothenburg';
+var dbName = process.env.MEILI_DB_NAME || 'MEILI_TESTS';
 var userName = 'postgres';
 var password = 'postgres';
 
