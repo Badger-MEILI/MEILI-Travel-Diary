@@ -178,7 +178,7 @@ var serverResponse = {
  *********************************************************************/
 
 
-var debug       = Debug(CONFIG);
+var log         = Log(CONFIG);
 var trips       = Trips(CONFIG);
 var triplegs    = Triplegs(CONFIG);
 var map         = Map();
@@ -564,7 +564,7 @@ function nextFunction(){
                 }
     }
     catch (exception){
-        logError(userId,exception,serverResponse);
+        log.error(userId,exception,serverResponse);
     }
         }));
 }
@@ -605,7 +605,7 @@ function nextFunctionAfterResponse(clusteredStartPoint ){
             generateHTMLElements(currentTrip);
     }
     catch (exception){
-        logError(userId, exception,serverResponse);
+        log.error(userId, exception,serverResponse);
     }
         }));
 }
@@ -629,7 +629,7 @@ function previousFunction(){
 
     }
     catch(exception){
-        logError(userId,exception,serverResponse);
+        log.error(userId,exception,serverResponse);
     }
         }));
 }
@@ -677,7 +677,7 @@ function previousFunctionAfterAnswer(){
     }
     catch (exception){
         console.log('caught exception');
-        logError(userId,exception,serverResponse);
+        log.error(userId,exception,serverResponse);
     }
         }));
 }
@@ -1036,7 +1036,7 @@ function performChanges(data){
             else pushTriplegModification(null, currentTrip.triplegs[i], 'upsert', currentTrip.tripid);
             }
             catch (exception){
-                logError(userId,exception,serverResponse);
+                log.error(userId,exception,serverResponse);
             }
         }
     }
@@ -1045,7 +1045,7 @@ function performChanges(data){
         pushTripModification(currentTrip, backupTrip, "update");
     }
     catch (exception){
-        logError(userId,exception,serverResponse);
+        log.error(userId,exception,serverResponse);
     }
 
     currentTrip = backupTrip;
@@ -3407,7 +3407,7 @@ function addTimelineListeners(tripleg){
                 updateTimeOfTripleg(currentTrip, tripleg, null, tempTime, previousTripEndDate.getTime(), nextTripStartDate.getTime());
             }
             catch (exception){
-                logError(userId, exception, serverResponse);
+                log.error(userId, exception, serverResponse);
             }
 
             if (tempTime>previousTripEndDate && tempTime<nextTripStartDate)
@@ -4082,7 +4082,6 @@ function drawPoint(point,map,type, triplegid){
     };
 
     if (type=='regular'){
-        console.log(point.addedByUser);
         if (point.addedByUser!=undefined)
         {
             console.log('passed undefined filter');
@@ -4428,7 +4427,7 @@ function addPointToPolyline(e) {
                 addPointToTripleg(newPointLatLng, currentTrip.triplegs[i], correspondingTimeline[layer._leaflet_id]);
             }
             catch(exception) {
-                logError(userId, exception, serverResponse);
+                log.error(userId, exception, serverResponse);
             }
 
             }
@@ -4452,7 +4451,7 @@ function updateAddTriplegGeometry(triplegid,oldLat,oldLon,newLat,newLon){
                     updateTripleg(currentTrip.triplegs[i], "updatePointGeometry", updateObject);
                     }
                     catch (exception) {
-                        logError(userId, exception ,serverResponse);
+                        log.error(userId, exception ,serverResponse);
                     }
                     updatePolyline(triplegid);
                 }
@@ -4473,7 +4472,7 @@ function updateRemoveTriplegGeometry(triplegid,lat,lon){
                         updateTripleg(currentTrip.triplegs[i], "deletePoint", j);
                     }
                     catch (exception) {
-                            logError(userId, exception ,serverResponse);
+                            log.error(userId, exception ,serverResponse);
                         }
 
                     updatePolyline(triplegid);
@@ -4551,7 +4550,7 @@ function mergeTripleg(triplegid){
         pushTriplegModification(null, neighborTriplegToMerge, 'delete', currentTrip.tripid);
     }
     catch (exception){
-        logError(userId,exception,serverResponse);
+        log.error(userId,exception,serverResponse);
     }
 
     passiveTriplegToMerge.points=[];
@@ -4560,7 +4559,7 @@ function mergeTripleg(triplegid){
         redrawOnly(passiveTriplegToMerge);
     }
     catch (exception){
-        logError(userId,exception,serverResponse);
+        log.error(userId,exception,serverResponse);
     }
 
 
@@ -4576,7 +4575,7 @@ function mergeTripleg(triplegid){
             j--;
             console.log("Removed "+passiveTriplegToMerge.triplegid);}
             catch (exception){
-                logError(userId,exception,serverResponse);
+                log.error(userId,exception,serverResponse);
             }
         }
         if (currentTrip.triplegs[j].triplegid == neighborTriplegToMerge.triplegid){
@@ -4586,7 +4585,7 @@ function mergeTripleg(triplegid){
             console.log("Removed "+neighborTriplegToMerge.triplegid);
             j--;}
             catch (exception){
-                logError(userId,exception,serverResponse);
+                log.error(userId,exception,serverResponse);
             }
         }
     }
@@ -4598,7 +4597,7 @@ function mergeTripleg(triplegid){
         pushTriplegModification(null, triplegThatStays, 'upsert', currentTrip.tripid);
     }
     catch (exception){
-        logError(userId,exception,serverResponse);
+        log.error(userId,exception,serverResponse);
     }
 
 }
@@ -4672,7 +4671,7 @@ function makeChangesPeriodModal(){
         try{
         mergeTripleg(triplegid);}
         catch (exception){
-            logError(userId,exception,serverResponse);
+            log.error(userId,exception,serverResponse);
         }
     }
 
@@ -4707,7 +4706,7 @@ function makeChangesStopPeriodModal(){
         try{
         mergeTrips(tripid);}
         catch (exception){
-            logError(userId,exception,serverResponse);
+            log.error(userId,exception,serverResponse);
         }
     }
 
@@ -4803,7 +4802,7 @@ function makeChangesPointModal(){
                 try{
                 splitTripLeg(id, fromDate, fromDate, triplegStartDate, triplegEndDate, modeFrom, modeTo); }
                 catch (exception){
-                    logError(userId,exception,serverResponse);
+                    log.error(userId,exception,serverResponse);
                 }
              //   splitTripLeg
             }
@@ -4811,7 +4810,7 @@ function makeChangesPointModal(){
                 try {mergeTrips();
                 forceLoad();}
                 catch (exception){
-                    logError(userId,exception,serverResponse);
+                    log.error(userId,exception,serverResponse);
                 }
             }
             $('#selectedPointModal').modal('hide');
@@ -4850,7 +4849,7 @@ function makeChangesPointModal(){
                 console.log('callsing split trip');
                 try{splitTrip(triplegid, fromDate,toDate,modeFrom);}
                 catch (exception){
-                    logError(userId,exception,serverResponse);
+                    log.error(userId,exception,serverResponse);
                 }
             }
 
@@ -4859,7 +4858,7 @@ function makeChangesPointModal(){
 
                 try{splitTrip(triplegid, fromDate,toDate,modeFrom);}
                 catch (exception){
-                    logError(userId,exception,serverResponse);
+                    log.error(userId,exception,serverResponse);
                 }
             }
         }
@@ -4878,7 +4877,7 @@ function makeChangesPointModal(){
                     logFrontEndOperation(userId, 'update time of tripleg '+currentTrip.triplegs[j].triplegid);
                 }
                 catch (exception){
-                    logError(userId, exception, serverResponse);
+                    log.error(userId, exception, serverResponse);
                 }
 
             }
@@ -4894,7 +4893,7 @@ function makeChangesPointModal(){
                     mergeTripleg(triplegid);
                 }
                 catch (exception){
-                    logError(userId,exception,serverResponse);
+                    log.error(userId,exception,serverResponse);
                 }
                 $('#selectedPointModal').modal('hide');
 
@@ -4904,7 +4903,7 @@ function makeChangesPointModal(){
                     mergeTrips(triplegid);
                 }
                 catch (exception){
-                    logError(userId,exception,serverResponse);
+                    log.error(userId,exception,serverResponse);
                 }
             }
         }
@@ -5190,7 +5189,7 @@ function mergeTrips(id){
 
     }
     catch (exception){
-        logError(userId,exception,serverResponse);
+        log.error(userId,exception,serverResponse);
     }
  
     }));
@@ -5254,7 +5253,7 @@ function mergeTripsContinue(oldVersionOfCurrentTrip, tripIndex){
         $('#selectedPointModal').modal('hide');
     }
     catch (exception){
-        logError(userId,exception,serverResponse);
+        log.error(userId,exception,serverResponse);
     }
 }
 

@@ -6,7 +6,7 @@ var Map = function() {
    * Populates layers - gets called on new trip only
    */
     init: function(mapConfig, userId) {
-      debug.log(userId, 'the map is drawn');
+      log.debug(userId, 'the map is drawn');
 
       map = new L.Map('map', mapConfig.options);
 

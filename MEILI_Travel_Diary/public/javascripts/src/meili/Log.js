@@ -1,9 +1,9 @@
 
-var Debug = function(config) {
+var Log = function(config) {
   return {
-    log: function() {
+    debug: function() {
       if(config.debug) {
-        console.log( Array.prototype.slice.call(arguments) );
+        console.debug( Array.prototype.slice.call(arguments) );
       }
     },
     error: function() {

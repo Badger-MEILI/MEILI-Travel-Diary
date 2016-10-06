@@ -1,4 +1,6 @@
 var CONFIG = {
+  debug: true,
+
   api_url: '/apiv2',
 
   map: {

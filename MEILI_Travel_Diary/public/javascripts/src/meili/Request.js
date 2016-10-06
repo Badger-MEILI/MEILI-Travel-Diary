@@ -3,19 +3,19 @@ var Request = function(config) {
 
   var doRequest = function(options) {
     var dfd = $.Deferred();
-    debug.log('Sending', options.method, 'request to', options.url)
+    log.debug('Sending', options.method, 'request to', options.url)
     $.ajax(options)
     .done(function(result) {
       if(result) {
         dfd.resolve(result);
       } else {
-        debug.error('XHR NO DATA');
+        log.error('XHR NO DATA');
         dfd.reject();
       }
     })
     .fail(function(jqXHR, textStatus, errorThrown) {
       // !TODO handle error and tell user
-      debug.error('XHR FAIL', textStatus);
+      log.error('XHR FAIL', textStatus);
       dfd.reject(textStatus);
     });
     return dfd.promise();
