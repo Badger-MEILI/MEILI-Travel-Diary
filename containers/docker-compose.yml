@@ -2,6 +2,8 @@ version: '2'
 services:
   controller:
     build: ./controller
+    environment:
+      POSTGRES_DB: MEILI_TESTS
     depends_on:
       - db
     volumes:
@@ -11,7 +13,7 @@ services:
     build: ./db
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_DB: SPOT_Gothenburg
+      POSTGRES_DB: MEILI_TESTS
       POSTGRES_PASSWORD: 
       PGDATA: /tmp/meili
     ports:
