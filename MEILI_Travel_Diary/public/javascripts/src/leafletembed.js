@@ -1546,7 +1546,8 @@ function deleteTrip(){
  * @param id - the id of the purpose
  * @returns {string} - the name associated with the id
  */
-function getNameOfPurpose(id){
+// TODO - This should be retrieved from the database
+/*function getNameOfPurpose(id){
 
     var newObject = {};
 
@@ -1586,7 +1587,7 @@ function getNameOfPurposeSwedish(id){
     if (id == 13) {newObject.name = 'Other (incl. walk/travel without specific purpose)'; newObject.name_sv = 'Annat/övrigt (inkl. resa utan ärende)';}
 
     return newObject.name_sv;
-}
+}*/
 
 /**
  * Compares two objects by a custom field - used for sort operations on arrays of objects
@@ -1617,7 +1618,7 @@ function comparePurpose(a,b) {
     if (a.accuracy > b.accuracy)
         return -1;
 
-    if (getNameOfPurpose(a.id) > getNameOfPurpose(b.id))
+    if (a.name  > b.name)
     return 1;
     else return -1;
 }
@@ -1699,12 +1700,13 @@ function getDistanceOfTripLeg(tripleg){
     else distance = Math.round(initDist/1000) +' km';
     return distance;
 }
-
-/**
+/*
+*//**
  * Maps a mode id to a mode name
  * @param id - id of the mode
  * @returns {string} - name of mode associated to id
  */
+/* TODO - this should only be retrieved from the server
 function getMode(id){
 
         var newObject = {};
@@ -1751,7 +1753,7 @@ function getModeSwedish(id){
     if (id == 15) {newObject.name = 'Other'; newObject.name_sv = 'Övrigt';}
 
     return newObject.name_sv;
-}
+}*/
 
 /**
  * Generates a foo array that contains all modes besides one, with a certainty of 0
@@ -1945,40 +1947,22 @@ function generateModal(triplegid){
 
     html+= '<p style="display:inline-block; border-bottom: 0px; text-align: left; width:60%;">From mode of transportation: </p>';
     html+= '<select id="selectFrom'+triplegid+'" style="display: inline-block" class="form-controlV2">';
-    html+= '<option value="1">'+getMode(1)+'</option>';
-    html+= '<option value="2">'+getMode(2)+'</option>';
-    html+= '<option value="3">'+getMode(3)+'</option>';
-    html+= '<option value="4">'+getMode(4)+'</option>';
-    html+= '<option value="5">'+getMode(5)+'</option>';
-    html+= '<option value="6">'+getMode(6)+'</option>';
-    html+= '<option value="7">'+getMode(7)+'</option>';
-    html+= '<option value="8">'+getMode(8)+'</option>';
-    html+= '<option value="9">'+getMode(9)+'</option>';
-    html+= '<option value="10">'+getMode(10)+'</option>';
-    html+= '<option value="11">'+getMode(11)+'</option>';
-    html+= '<option value="12">'+getMode(12)+'</option>';
-    html+= '<option value="13">'+getMode(13)+'</option>';
-    html+= '<option value="14">'+getMode(14)+'</option>';
-    html+= '<option value="15">'+getMode(15)+'</option>';
+    for (var i in copyOfTriplegs[0].mode.length)
+    {
+        //   var selectedSv = getModeSwedish(mode[i].id);
+        // selector+= '<option lang="sv" value="'+mode[i].id+'">'+selectedSv+'</option>';
+        html+= '<option lang="en" value="'+copyOfTriplegs[0].mode[i].id+'">'+copyOfTriplegs[0].mode[i].name+'</option>';
+    }
     html+= '</select>';
     html+= '<br>';
     html+= '<p style="display:inline-block; border-bottom: 0px; text-align: left; width:60%;">To mode of transportation: </p>';
     html+= '<select id="selectTo'+triplegid+'" style="display: inline-block" class="form-controlV2">';
-    html+= '<option value="1">'+getMode(1)+'</option>';
-    html+= '<option value="2">'+getMode(2)+'</option>';
-    html+= '<option value="3">'+getMode(3)+'</option>';
-    html+= '<option value="4">'+getMode(4)+'</option>';
-    html+= '<option value="5">'+getMode(5)+'</option>';
-    html+= '<option value="6">'+getMode(6)+'</option>';
-    html+= '<option value="7">'+getMode(7)+'</option>';
-    html+= '<option value="8">'+getMode(8)+'</option>';
-    html+= '<option value="9">'+getMode(9)+'</option>';
-    html+= '<option value="10">'+getMode(10)+'</option>';
-    html+= '<option value="11">'+getMode(11)+'</option>';
-    html+= '<option value="12">'+getMode(12)+'</option>';
-    html+= '<option value="13">'+getMode(13)+'</option>';
-    html+= '<option value="14">'+getMode(14)+'</option>';
-    html+= '<option value="15">'+getMode(15)+'</option>';
+    for (var i in copyOfTriplegs[0].mode.length)
+    {
+        //   var selectedSv = getModeSwedish(mode[i].id);
+        // selector+= '<option lang="sv" value="'+mode[i].id+'">'+selectedSv+'</option>';
+        html+= '<option lang="en" value="'+copyOfTriplegs[0].mode[i].id+'">'+copyOfTriplegs[0].mode[i].name+'</option>';
+    }
     html+= '</select>';
     html+= '<br>';
 
@@ -2307,8 +2291,7 @@ function getPurposeSelector(purposes){
     }
 
     for (var i=0; i<purposes.length;i++){
-        var purpose_name = getNameOfPurpose(purposes[i].id);
-        var purpose_name_sv = getNameOfPurposeSwedish(purposes[i].id);
+        var purpose_name = purposes[i].name;
         html+= '<option value="'+purposes[i].id+'" lang="en">'+purpose_name+'</option>';
 
     }
@@ -2397,7 +2380,7 @@ function getSelector(mode, triplegid){
 
     for (var i in mode)
     {
-        selected = getMode(mode[i].id);
+        selected = mode[i].name;
         selector+= '<option lang="en" value="'+mode[i].id+'">'+selected+'</option>';
     }
 
@@ -2463,8 +2446,7 @@ function generateFirstTimelineElement(currentTrip){
     li.id= 'firstTimelineElement';
 
 
-    var previousPurpose = getNameOfPurpose(currentTrip.previous_trip_purpose);
-    var previousPurposeSv = getNameOfPurposeSwedish(currentTrip.previous_trip_purpose);
+    var previousPurpose = currentTrip.previous_trip_purpose;
     var previousPlace = currentTrip.previous_trip_poi_name;
     var previousTripEndDate = new Date(parseInt(currentTrip.previous_trip_end_date));
     var currentTripStartDate = new Date(parseInt(currentTrip.current_trip_start_date));
@@ -3366,7 +3348,7 @@ function addTimelineListeners(tripleg){
         * b) if it is the last trip leg, the currentTripEndDate can be changed, but not after the beginning of next trip
         */
 
-        triplegCtrl.updateStartTime(tripleg.triplegid, newTime)
+        triplegs.updateStartTime(tripleg.triplegid, newTime)
           .done(function(triplegs) {
             debugger;
           });
