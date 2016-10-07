@@ -914,63 +914,6 @@ function showShortModal(backupTrip,trip,backupTripleg, tripleg, startBoundary, s
     $('#transitionAlertModal').modal('show');
 }
 
-function showAndAddDataForLongModalV2(tripleg, startTime, endTime, startBoundary, stopBoundary, triplegsInside, triplegStartDate, triplegEndDate){
-    console.log('long modal');
-    $('#transitionAlertModal').data('triplegId',tripleg.triplegid);
-    $('#transitionAlertModal').data('prevInitialTime',startTime);
-    $('#transitionAlertModal').data('prevEndTime',endTime);
-    $('#transitionAlertModal').data('startBoundary',startBoundary);
-    $('#transitionAlertModal').data('stopBoundary',stopBoundary);
-    $('#transitionAlertModal').data('triplegsInside',triplegsInside);
-    $('#transitionAlertModal').data('formerStart',triplegStartDate);
-    $('#transitionAlertModal').data('formerEnd',triplegEndDate);
-
-    var ul = document.getElementById('modalList');
-    var paragraphInform = document.getElementById('transitionParagraphInform');
-    var paragraphAlert = document.getElementById('transitionParagraphAlert');
-
-    ul.innerHTML='';
-    paragraphAlert.innerHTML='';
-    paragraphInform.innerHTML='';
-    paragraphAlert.style.display='none';
-    ul.style.display = 'none';
-
-    if (startBoundary.triplegid != stopBoundary.triplegid || triplegsInside.length!=currentTrip.triplegs.length-1) //overwrites a tripleg
-    {
-        console.log(startBoundary);
-        console.log(stopBoundary);
-        if (startBoundary.triplegid==undefined) paragraphInform.innerHTML = 'The modified tripleg will shift its next trip leg to '+ getPointFormatedDate(new Date(endTime));
-        if (stopBoundary.triplegid==undefined) paragraphInform.innerHTML = 'The modified tripleg will shift its previous trip leg to '+ getPointFormatedDate(new Date(startTime));
-
-
-        console.log(triplegsInside);
-        if (triplegsInside.length!=0)
-        {
-            paragraphAlert.style.display='inline';
-            ul.style.display = 'inline';
-            paragraphAlert.innerHTML='You will delete the following trip legs:';
-        }
-
-        console.log(triplegsInside);
-
-        for (var i in triplegsInside)
-        {
-            triplegsInside[i].mode.sort(compare);
-            var li = document.createElement("li");
-            li.innerHTML = '<li>The tripleg travelled by '+getMode(triplegsInside[i].mode[0].id)+' from '+ getPointFormatedDate(new Date(triplegsInside[i].points[0].time))+' to '+ getPointFormatedDate(new Date(triplegsInside[i].points[triplegsInside[i].points.length-1].time))+'</li>';
-            ul.appendChild(li);
-        }
-
-    }
-    else
-    {
-        paragraphInform.innerHTML = 'You will delete all the other trip legs in the trip';
-    }
-
-    $('#transitionAlertModal').modal('show');
-
-}
-
 /**
  * Function called when the user accepts the consequences of his changes
  * @param data

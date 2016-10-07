@@ -369,12 +369,7 @@ function updateTimeOfTripleg(trip, tripleg, newStartTime, newEndTime, prevTripEn
         console.log("Number of trips inside " + triplegsInside.length);
         //console.log(stopBoundary);
         if (stopBoundary.triplegid != undefined || jQuery.isEmptyObject(stopBoundary)) {
-            /*if (triplegsInside.length != 0) {
-                // showAndAddDataForLongModalV2(tripleg, triplegStartDate, newEndTime, startBoundary, stopBoundary, triplegsInside, triplegStartDate, triplegEndDate);
-            }
-            else {
-                //showAndAddDataForModal(tripleg, triplegStartDate, newEndTime, startBoundary, stopBoundary, triplegStartDate, triplegEndDate)
-            }*/
+            //OLD commented code removed
         }
         else {
             // TODO Move points between trips
