@@ -20,7 +20,7 @@ var Timeline = function(options) {
     newTime.setHours(e.time.hours);
     newTime = newTime.getTime();
 
-    //log.info(userId,'changed timepicker start value of tripleg '+tripleg.triplegid+' to '+ newTime);
+    log.info(userId,'changed timepicker start value of tripleg '+tripleg.triplegid+' to '+ newTime);
 
     /**
     * CONSEQUENCE 0 - Start time sooner than end time
@@ -34,7 +34,7 @@ var Timeline = function(options) {
         if(tripleg.isFirst) {
            api.trips.updateStartTime(tripId, newTime)
             .done(function(triplegs) {
-              debugger;
+              currentTrip.updateTriplegs(triplegs);
             })
             .fail(function (){
                $(e.target).timepicker('setTime', initialTimeDate.getHours()+":"+initialTimeDate.getMinutes());
@@ -42,7 +42,7 @@ var Timeline = function(options) {
         } else {
           api.triplegs.updateStartTime(tripleg.triplegid, newTime)
             .done(function(triplegs) {
-              debugger;
+              currentTrip.updateTriplegs(triplegs);
             })
             .fail(function (){
                 $(e.target).timepicker('setTime', initialTimeDate.getHours()+":"+initialTimeDate.getMinutes());

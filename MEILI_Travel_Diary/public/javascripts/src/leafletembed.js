@@ -222,6 +222,11 @@ function initmap(thisUserId) {
         .done(function(result) {
           var triplegsOfCurrentTrip = result.pagination_get_triplegs_of_trip;
           currentTrip = Trip(trip, triplegsOfCurrentTrip);
+          // TODO move me
+          currentTrip.on('triplegs-update', function(triplegs) {
+            generateHTMLElements(currentTrip, thisUserId);
+          });
+
           copyOfTriplegs = jQuery.extend(true, [], triplegsOfCurrentTrip);
 
           ui.map.init(CONFIG.map, thisUserId);
