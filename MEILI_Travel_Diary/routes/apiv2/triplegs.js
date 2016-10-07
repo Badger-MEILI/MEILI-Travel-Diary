@@ -22,7 +22,8 @@ var router = express.Router();
  * @apiSuccess {Tripleg[]} Triplegs An array of json objects that represent the triplegs
  */
 router.get("/getTriplegsOfTrip", function(req,res){
-    var results = [];
+    var results = {};
+    results.triplegs = [];
     var trip_id = req.query.trip_id;
 
     if (trip_id == null || trip_id == undefined) {
@@ -37,7 +38,7 @@ router.get("/getTriplegsOfTrip", function(req,res){
         var prioryQuery = apiClient.query(sqlQuery);
 
         prioryQuery.on('row', function (row) {
-                results.push(row);
+                results. triplegs = row.pagination_get_triplegs_of_trip;
         });
 
         prioryQuery.on('error', function (row) {
@@ -46,8 +47,8 @@ router.get("/getTriplegsOfTrip", function(req,res){
         });
 
         prioryQuery.on('end', function () {
-            if (results.length>0)
-            return res.json(results[0]);
+            if (results.triplegs.length>0)
+            return res.json(results);
             else {
                 res.status(500);
                 res.send("Trip id does not exist");
@@ -71,7 +72,8 @@ router.get("/getTriplegsOfTrip", function(req,res){
  * @apiSuccess {Tripleg[]} Triplegs An array of json objects that represent the triplegs of the trip after update
  */
 router.get("/updateStartTimeOfTripleg", function(req,res){
-    var results = [];
+    var results = {};
+    results.triplegs = [];
     var tripleg_id = req.query.tripleg_id;
     var new_start_time = req.query.start_time;
 
@@ -87,7 +89,7 @@ router.get("/updateStartTimeOfTripleg", function(req,res){
         var prioryQuery = apiClient.query(sqlQuery);
 
         prioryQuery.on('row', function (row) {
-                results.push(row);
+                results.triplegs = row.update_tripleg_start_time;
         });
 
         prioryQuery.on('error', function(row){
@@ -97,7 +99,7 @@ router.get("/updateStartTimeOfTripleg", function(req,res){
         });
 
         prioryQuery.on('end', function () {
-            return res.json(results[0]);
+            return res.json(results);
         });
     }
 });
@@ -117,7 +119,8 @@ router.get("/updateStartTimeOfTripleg", function(req,res){
  * @apiSuccess {Tripleg[]} Triplegs An array of json objects that represent the triplegs of the trip after update
  */
 router.get("/updateEndTimeOfTripleg", function(req,res){
-    var results = [];
+    var results = {};
+    results.triplegs = []
     var tripleg_id = req.query.tripleg_id;
     var new_end_time = req.query.end_time;
 
@@ -133,7 +136,7 @@ router.get("/updateEndTimeOfTripleg", function(req,res){
         var prioryQuery = apiClient.query(sqlQuery);
 
         prioryQuery.on('row', function (row) {
-                results.push(row);
+                results.triplegs = row.update_tripleg_end_time;
         });
 
         prioryQuery.on('error', function(row){
@@ -143,7 +146,7 @@ router.get("/updateEndTimeOfTripleg", function(req,res){
         });
 
         prioryQuery.on('end', function () {
-            return res.json(results[0]);
+            return res.json(results);
         });
     }
 });
@@ -162,7 +165,8 @@ router.get("/updateEndTimeOfTripleg", function(req,res){
  * @apiSuccess {Tripleg[]} Triplegs An array of json objects that represent the triplegs of the trip after deletion
  */
 router.get("/deleteTripleg", function(req,res){
-    var results = [];
+    var results = {};
+    results.triplegs = [];
     var tripleg_id = req.query.tripleg_id;
 
     if (tripleg_id == null || tripleg_id == undefined) {
@@ -177,7 +181,7 @@ router.get("/deleteTripleg", function(req,res){
         var prioryQuery = apiClient.query(sqlQuery);
 
         prioryQuery.on('row', function (row) {
-                results.push(row);
+                results.triplegs = row.delete_tripleg;
         });
 
         prioryQuery.on('error', function(row){
@@ -186,7 +190,7 @@ router.get("/deleteTripleg", function(req,res){
         });
 
         prioryQuery.on('end', function () {
-                return res.json(results[0]);
+                return res.json(results);
         });
     }
 });
@@ -208,7 +212,8 @@ router.get("/deleteTripleg", function(req,res){
  * @apiSuccess {Tripleg[]} Triplegs An array of json objects that represent the triplegs of the trip after the insertion of the transition tripleg
  */
 router.get("/insertTransitionBetweenTriplegs", function(req,res){
-    var results = [];
+    var results = {};
+    results.triplegs = [];
     var trip_id = req.query.trip_id;
     var start_time = req.query.start_time;
     var end_time = req.query.end_time;
@@ -230,7 +235,7 @@ router.get("/insertTransitionBetweenTriplegs", function(req,res){
         var prioryQuery = apiClient.query(sqlQuery);
 
         prioryQuery.on('row', function (row) {
-                results.push(row);
+                results.triplegs = row.insert_stationary_tripleg_period_in_trip;
         });
 
         prioryQuery.on('error', function(row){
@@ -239,7 +244,7 @@ router.get("/insertTransitionBetweenTriplegs", function(req,res){
         });
 
         prioryQuery.on('end', function () {
-            return res.json(results[0]);
+            return res.json(results);
         });
     }
 });
@@ -259,7 +264,8 @@ router.get("/insertTransitionBetweenTriplegs", function(req,res){
  * @apiSuccess {Boolean} Boolean Returns whether the operation was successfull or not.
  */
 router.get("/updateTravelModeOfTripleg", function(req,res){
-    var results = [];
+    var results = {};
+    results.status = {};
     var tripleg_id = req.query.tripleg_id;
     var travel_mode = req.query.travel_mode;
 
@@ -275,7 +281,7 @@ router.get("/updateTravelModeOfTripleg", function(req,res){
         var prioryQuery = apiClient.query(sqlQuery);
 
         prioryQuery.on('row', function (row) {
-                results.push(row);
+                results.status = row.update_tripleg_travel_mode;
         });
 
         prioryQuery.on('error', function(row){
@@ -285,8 +291,7 @@ router.get("/updateTravelModeOfTripleg", function(req,res){
         });
 
         prioryQuery.on('end', function () {
-            if (results.length<1) return res.json(false);
-            return res.json(results[0]);
+            return res.json(results);
         });
     }
 });
@@ -305,7 +310,8 @@ router.get("/updateTravelModeOfTripleg", function(req,res){
  * @apiSuccess {Boolean} Boolean Returns whether the operation was successfull or not.
  */
 router.get("/updateTravelModeOfTripleg", function(req,res){
-    var results = [];
+    var results = {};
+    results.status = {};
     var tripleg_id = req.query.tripleg_id;
     var transition_poi_id = req.query.transition_poi_id;
 
@@ -321,7 +327,7 @@ router.get("/updateTravelModeOfTripleg", function(req,res){
         var prioryQuery = apiClient.query(sqlQuery);
 
         prioryQuery.on('row', function (row) {
-            results.push(row);
+            results.status = row.update_tripleg_transition_poi_id;
         });
 
         prioryQuery.on('error', function(row){
@@ -331,8 +337,7 @@ router.get("/updateTravelModeOfTripleg", function(req,res){
         });
 
         prioryQuery.on('end', function () {
-            if (results.length<1) return res.json(false);
-            return res.json(results[0]);
+            return res.json(results);
         });
     }
 });
