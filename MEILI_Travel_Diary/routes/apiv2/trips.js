@@ -95,7 +95,8 @@ router.get("/getLastTripOfUser", function(req,res){
  * @apiSuccess {Tripleg[]} Triplegs An array of json objects that represent the triplegs of the trip after update
  */
 router.get("/updateStartTimeOfTrip", function(req,res){
-    var results = [];
+    var results = {};
+    results.triplegs = [];
     var trip_id = req.query.trip_id;
     var new_start_time = req.query.start_time;
 
@@ -111,7 +112,7 @@ router.get("/updateStartTimeOfTrip", function(req,res){
         var prioryQuery = apiClient.query(sqlQuery);
 
         prioryQuery.on('row', function (row) {
-            results.push(row);
+            results.triplegs = row.update_trip_start_time;
         });
 
         prioryQuery.on('error', function(row){
@@ -121,7 +122,7 @@ router.get("/updateStartTimeOfTrip", function(req,res){
         });
 
         prioryQuery.on('end', function () {
-            return res.json(results[0]);
+            return res.json(results);
         });
     }
 });
