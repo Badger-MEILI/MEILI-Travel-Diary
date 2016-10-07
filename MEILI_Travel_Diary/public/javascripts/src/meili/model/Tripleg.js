@@ -15,7 +15,7 @@ var Tripleg = function(tripleg) {
             ':' +
             (triplegDate.getMinutes() < 10 ? '0' : '') + triplegDate.getMinutes()
   }
-  return $.extend({
+  return Emitter($.extend({
     getStartTime: function(formatted) {
       var startTime = new Date(getFirstPoint().time);
       return formatted ? formatDate(startTime) : startTime;
@@ -25,5 +25,5 @@ var Tripleg = function(tripleg) {
       var endTime = new Date(getLastPoint().time);
       return formatted ? formatDate(endTime) : endTime;
     }
-  }, tripleg)
+  }, tripleg))
 };

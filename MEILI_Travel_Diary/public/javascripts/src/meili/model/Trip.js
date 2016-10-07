@@ -24,9 +24,15 @@ var Trip = function(trip, triplegs) {
     return null;
   }
 
-  return $.extend({
+  return Emitter($.extend({
 
+    events: [],
     triplegs: triplegs,
+
+    updateTriplegs: function(newTriplegs) {
+      triplegs = newTriplegs.update_trip_start_time;
+      this.emit('triplegs-update', triplegs);
+    },
 
     getTriplegById: function(triplegId) {
       return getTripleg(triplegId);
@@ -46,7 +52,12 @@ var Trip = function(trip, triplegs) {
 
     getNextPassiveTripleg: function(tripleg) {
       return getTripleg(tripleg.triplegid, +1);
+    },
+
+    // Actions
+    on: function(type, listener) {
+      this.events.push(name, callback);
     }
 
-  }, trip);
+  }, trip));
 };
