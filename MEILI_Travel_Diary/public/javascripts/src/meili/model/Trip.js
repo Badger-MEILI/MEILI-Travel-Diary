@@ -30,7 +30,7 @@ var Trip = function(trip, triplegs) {
     triplegs: triplegs,
 
     updateTriplegs: function(newTriplegs) {
-      triplegs = newTriplegs.update_trip_start_time;
+      triplegs = newTriplegs;
       this.emit('triplegs-update', triplegs);
     },
 

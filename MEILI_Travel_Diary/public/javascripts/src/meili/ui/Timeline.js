@@ -26,6 +26,10 @@ var Timeline = function(options) {
     * CONSEQUENCE 0 - Start time sooner than end time
     */
 
+    function resetTimePicker(target, time) {
+      $(target).timepicker('setTime', initialTimeDate.getHours()+":"+initialTimeDate.getMinutes());
+    }
+
     if ($target.hasClass('start')) {
         // New time should be allowed outside of the bounds of start time and end time
         // -> operations on the first and last triplegs point to trip api endpoints, other on tripleg api endpoints
@@ -33,19 +37,19 @@ var Timeline = function(options) {
         // !TODO fix separation of first and last in a better way
         if(tripleg.isFirst) {
            api.trips.updateStartTime(tripId, newTime)
-            .done(function(triplegs) {
-              currentTrip.updateTriplegs(triplegs);
+            .done(function(result) {
+              currentTrip.updateTriplegs(result.triplegs);
             })
-            .fail(function (){
-               $(e.target).timepicker('setTime', initialTimeDate.getHours()+":"+initialTimeDate.getMinutes());
+            .fail(function() {
+              resetTimePicker(e.target, initialTimeDate);
             });
         } else {
           api.triplegs.updateStartTime(tripleg.triplegid, newTime)
-            .done(function(triplegs) {
-              currentTrip.updateTriplegs(triplegs);
+            .done(function(result) {
+              currentTrip.updateTriplegs(result.triplegs);
             })
-            .fail(function (){
-                $(e.target).timepicker('setTime', initialTimeDate.getHours()+":"+initialTimeDate.getMinutes());
+            .fail(function() {
+              resetTimePicker(e.target, initialTimeDate);
             });
         }
 
@@ -54,13 +58,19 @@ var Timeline = function(options) {
         // -> operations on the first and last triplegs point to trip api endpoints, other on tripleg api endpoints
         if(tripleg.isLast) {
            api.trips.updateEndTime(tripId, newTime)
-            .done(function(triplegs) {
-              debugger;
+            .done(function(result) {
+              currentTrip.updateTriplegs(result.triplegs);
+            })
+            .fail(function() {
+              resetTimePicker(e.target, initialTimeDate);
             });
         } else {
           api.triplegs.updateEndTime(tripleg.triplegid, newTime)
             .done(function(triplegs) {
-              debugger;
+              currentTrip.updateTriplegs(result.triplegs);
+            })
+            .fail(function() {
+              resetTimePicker(e.target, initialTimeDate);
             });
         }
     }
