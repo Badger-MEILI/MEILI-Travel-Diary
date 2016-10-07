@@ -83,23 +83,23 @@ var Timeline = function(options) {
    * @param triplegid - the id of the tripleg with which the modes are associated with
    * @returns {string} - outerHTML of the mode selector
    */
-  function getSelector(mode, triplegid){
-    //  mode.sort(compare);
-      var maxVal = mode[0].accuracy;
+  function getModeSelector(tripleg){
+      var maxVal = tripleg.mode[0].accuracy;
       var classes = 'form-control';
       var options = [];
 
-      if (maxVal<50) {
-          classes += ' form-need-check';
-          options.push('<option lang="en" value="-1" disabled selected style="display:none;">Specify your travel mode</option>');
+      if(maxVal<50) {
+        classes += ' form-need-check';
+        options.push('<option lang="en" value="-1" disabled selected style="display:none;">Specify your travel mode</option>');
       }
 
-      for (var i in mode) {
-          options.push('<option lang="en" value="' + mode[i].id + '">' + mode[i].name + '</option>');
+      for (var i = 0; i < tripleg.mode.length; i++) {
+        var mode = tripleg.mode[i];
+        options.push('<option lang="en" value="' + mode.id + '">' + mode.name + '</option>');
       }
 
       var selector = [
-        '<select id="selectbasic' + triplegid + '" name="selectbasic" class="' + classes + '">',
+        '<select id="selectmode_' + tripleg.getId() + '" name="selectmode" class="' + classes + '">',
           options.join(''),
         '</select>'
       ].join('');
@@ -120,7 +120,7 @@ var Timeline = function(options) {
       thisHtml+= '<div class="timeline-panel" id="telem'+triplegId+'">';
       thisHtml+= '<div class="tl-heading">';
       thisHtml+= '<h4>';
-      thisHtml+= getSelector(tripleg.mode, triplegId);
+      thisHtml+= getModeSelector(tripleg);
       thisHtml+= '</h4>';
       thisHtml+= '</div>';
       thisHtml+= '<div class="tl-body">';
@@ -156,17 +156,19 @@ var Timeline = function(options) {
       if (transitionSelectOption!=null)
           transitionSelectOption.onchange = transitionSelectListener;
 
-      console.log(tripleg.triplegid);
-
-      console.log(tripleg);
-      var initialTime = new Date(tripleg.points[0].time);
-      var endTime = new Date(tripleg.points[tripleg.points.length-1].time);
-      console.log(initialTime);
-      console.log(endTime);
-
-      var selectOption = document.getElementById('selectbasic'+tripleg.triplegid);
-      console.warn('add a listener');
-      //selectOption.onchange = selectOptionListener;
+      $(('selectmode_'+tripleg.triplegid)).on('change', function(e) {
+        var triplegId = $(e.target).attr('id').split('_')[1];
+        api.triplegs.updateMode(triplegId, this.value)
+          .done(function() {
+            currentTrip.getTriplegById(tripleg.triplegid).updateMode(this.value);
+            log.debug('tripleg mode succefully updated');
+          })
+          .fail(function() {
+            var msg = 'failed to set mode on tripleg';
+            alert(msg);
+            log.error(msg);
+          });
+      });
 
       /********************************************
        * Adding listeners to the timeline elements*
@@ -213,14 +215,11 @@ var Timeline = function(options) {
        * Initialize time pickers
        */
 
-      var initialTime = new Date(tripleg.points[0].time);
-      var endTime = new Date(tripleg.points[tripleg.points.length-1].time);
-
       $('#timepickerstart_'+tripleg.triplegid).timepicker({
           minuteStep: 1,
           showMeridian: false,
           disableMousewheel:false,
-          defaultTime:(initialTime.getHours()<10?'0':'')+initialTime.getHours()+":"+(initialTime.getMinutes()<10?'0':'')+initialTime.getMinutes()
+          defaultTime: tripleg.getStartTime(true)
       }).on('hide.timepicker', onTimeSet);
 
 
@@ -228,7 +227,7 @@ var Timeline = function(options) {
           minuteStep: 1,
           showMeridian: false,
           disableMousewheel:false,
-          defaultTime: (endTime.getHours()<10?'0':'') +endTime.getHours()+":"+(endTime.getMinutes()<10?'0':'')+endTime.getMinutes()
+          defaultTime: tripleg.getEndTime(true)
       }).on('hide.timepicker', onTimeSet);
 
 

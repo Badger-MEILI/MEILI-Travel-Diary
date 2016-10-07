@@ -6,13 +6,13 @@ var Tripleg = Tripleg || function(tripleg) {
         return 1;
     }
 
-    if (a.accuracy > b.accuracy)
-    {
+    if (a.accuracy > b.accuracy) {
         return -1;
     }
 
-    if (a.name> b.name)
-    return 1;
+    if (a.name > b.name) {
+      return 1;
+    }
 
     return -1;
   });
@@ -42,11 +42,11 @@ var Tripleg = Tripleg || function(tripleg) {
 
 Tripleg.prototype = {
     getFirstPoint: function() {
-      return tripleg.points[0];
+      return this.points[0];
     },
 
     getLastPoint: function() {
-      return tripleg.points[tripleg.points.length-1];
+      return this.points[this.points.length-1];
     },
 
     formatDate: function(triplegDate) {
@@ -60,13 +60,13 @@ Tripleg.prototype = {
     },
 
     getStartTime: function(formatted) {
-      var startTime = new Date(getFirstPoint().time);
-      return formatted ? formatDate(startTime) : startTime;
+      var startTime = new Date(this.getFirstPoint().time);
+      return formatted ? this.formatDate(startTime) : startTime;
     },
 
     getEndTime: function(formatted) {
-      var endTime = new Date(getLastPoint().time);
-      return formatted ? formatDate(endTime) : endTime;
+      var endTime = new Date(this.getLastPoint().time);
+      return formatted ? this.formatDate(endTime) : endTime;
     },
 
     /**

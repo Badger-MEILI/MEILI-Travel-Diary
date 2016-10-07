@@ -339,7 +339,6 @@ app.controller('MapCtrl',function($scope, $rootScope, $http, $location, $anchorS
       });
 
     function renderTrip(trip) {
-      debugger;
       $('#timeline').html('');
       ui.timeline.generateFirstElement(trip);
       for (var i=0; i < trip.triplegs.length; i++) {

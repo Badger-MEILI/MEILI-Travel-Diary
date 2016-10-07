@@ -78,6 +78,16 @@ var Api = function(config) {
         );
       },
 
+      updateMode: function(triplegId, travelMode) {
+        return request.get(
+          url(mainPaths.triplegs, 'updateTravelModeOfTripleg'),
+          {
+            tripleg_id: triplegId,
+            travel_mode: travelMode
+          }
+        );
+      },
+
       delete: function() {}
     }
   }
