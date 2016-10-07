@@ -27,32 +27,32 @@ var Timeline = function(options) {
     */
 
     if ($target.hasClass('start')) {
-      if(initialTime < newTime && newTime < endTime) {
-        /**
-        * CONSEQUENCE 1 - Within the trip's time frame
-        * a) if it is the first trip leg, the currentTripStartDate can be changed , but not before the end of last trip
-        * b) if it is the last trip leg, the currentTripEndDate can be changed, but not after the beginning of next trip
-        */
+        // New time should be allowed outside of the bounds of start time and end time
+        // -> operations on the first and last triplegs point to trip api endpoints, other on tripleg api endpoints
 
         // !TODO fix separation of first and last in a better way
         if(tripleg.isFirst) {
            api.trips.updateStartTime(tripId, newTime)
             .done(function(triplegs) {
               debugger;
+            })
+            .fail(function (){
+               $(e.target).timepicker('setTime', initialTimeDate.getHours()+":"+initialTimeDate.getMinutes());
             });
         } else {
           api.triplegs.updateStartTime(tripleg.triplegid, newTime)
             .done(function(triplegs) {
               debugger;
+            })
+            .fail(function (){
+                $(e.target).timepicker('setTime', initialTimeDate.getHours()+":"+initialTimeDate.getMinutes());
             });
         }
-      } else {
-        alert('Trip\'s start time cannot be later than the trip\'s end time');
-        $(e.target).timepicker('setTime', initialTimeDate.getHours()+":"+initialTimeDate.getMinutes());
-      }
+
     } else if($target.hasClass('end')) {
-      if(initialTime < newTime && newTime < endTime) {
-        if(tripleg.isFirst) {
+        // New time should be allowed outside of the bounds of start time and end time
+        // -> operations on the first and last triplegs point to trip api endpoints, other on tripleg api endpoints
+        if(tripleg.isLast) {
            api.trips.updateEndTime(tripId, newTime)
             .done(function(triplegs) {
               debugger;
@@ -63,10 +63,6 @@ var Timeline = function(options) {
               debugger;
             });
         }
-      } else {
-        alert('Trip\'s end time cannot be later than the trip\'s end time');
-        $(e.target).timepicker('setTime', initialTimeDate.getHours()+":"+initialTimeDate.getMinutes());
-      }
     }
     e.preventDefault();
   }

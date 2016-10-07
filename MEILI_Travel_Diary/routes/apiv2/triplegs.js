@@ -37,7 +37,6 @@ router.get("/getTriplegsOfTrip", function(req,res){
         var prioryQuery = apiClient.query(sqlQuery);
 
         prioryQuery.on('row', function (row) {
-            if (row.pagination_get_triplegs_of_trip!=null)
                 results.push(row);
         });
 
@@ -88,7 +87,6 @@ router.get("/updateStartTimeOfTripleg", function(req,res){
         var prioryQuery = apiClient.query(sqlQuery);
 
         prioryQuery.on('row', function (row) {
-            if (row.pagination_get_triplegs_of_trip!=null)
                 results.push(row);
         });
 
@@ -135,7 +133,6 @@ router.get("/updateEndTimeOfTripleg", function(req,res){
         var prioryQuery = apiClient.query(sqlQuery);
 
         prioryQuery.on('row', function (row) {
-            if (row.pagination_get_triplegs_of_trip!=null)
                 results.push(row);
         });
 
@@ -180,7 +177,6 @@ router.get("/deleteTripleg", function(req,res){
         var prioryQuery = apiClient.query(sqlQuery);
 
         prioryQuery.on('row', function (row) {
-            if (row.pagination_get_triplegs_of_trip!=null)
                 results.push(row);
         });
 
@@ -234,7 +230,6 @@ router.get("/insertTransitionBetweenTriplegs", function(req,res){
         var prioryQuery = apiClient.query(sqlQuery);
 
         prioryQuery.on('row', function (row) {
-            if (row.pagination_get_triplegs_of_trip!=null)
                 results.push(row);
         });
 
