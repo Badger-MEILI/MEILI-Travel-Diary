@@ -1,21 +1,64 @@
 
-var Tripleg = function(tripleg) {
-  var tripleg = tripleg;
+var Tripleg = Tripleg || function(tripleg) {
 
-  function getFirstPoint() {
-    return tripleg.points[0];
-  }
+  tripleg.mode = tripleg.mode.sort(function(a,b) {
+    if (a.accuracy < b.accuracy) {
+        return 1;
+    }
 
-  function getLastPoint() {
-    return tripleg.points[tripleg.points.length-1];
-  }
+    if (a.accuracy > b.accuracy)
+    {
+        return -1;
+    }
 
-  function formatDate(triplegDate) {
-    return (triplegDate.getHours() < 10 ? '0' : '') + triplegDate.getHours() +
-            ':' +
-            (triplegDate.getMinutes() < 10 ? '0' : '') + triplegDate.getMinutes()
-  }
-  return Emitter($.extend({
+    if (a.name> b.name)
+    return 1;
+
+    return -1;
+  });
+
+  this.colors = {
+    1: 'rgb(31,120,180)',
+    2:  'rgb(106,61,154)',
+    3:  'rgb(240,2,127)',
+    4:  'rgb(128,0,0)',
+    5:  'rgb(128,128,0)',
+    6:  'rgb(0,128,0)',
+    7:  'rgb(128,0,128)',
+    8:  'rgb(0,128,128)',
+    9:  'rgb(0,0,128)',
+    10: 'rgb(102,205,170)',
+    11: 'rgb(0,255,255)',
+    12: 'rgb(25,25,112)',
+    13: 'rgb(138,43,226)',
+    14: 'rgb(218,112,214)',
+    15: 'rgb(244,164,96)'
+  };
+
+  Emitter($.extend(this, tripleg));
+
+  return this;
+};
+
+Tripleg.prototype = {
+    getFirstPoint: function() {
+      return tripleg.points[0];
+    },
+
+    getLastPoint: function() {
+      return tripleg.points[tripleg.points.length-1];
+    },
+
+    formatDate: function(triplegDate) {
+      return (triplegDate.getHours() < 10 ? '0' : '') + triplegDate.getHours() +
+              ':' +
+              (triplegDate.getMinutes() < 10 ? '0' : '') + triplegDate.getMinutes()
+    },
+
+    getId: function() {
+      return this.triplegid;
+    },
+
     getStartTime: function(formatted) {
       var startTime = new Date(getFirstPoint().time);
       return formatted ? formatDate(startTime) : startTime;
@@ -24,6 +67,125 @@ var Tripleg = function(tripleg) {
     getEndTime: function(formatted) {
       var endTime = new Date(getLastPoint().time);
       return formatted ? formatDate(endTime) : endTime;
+    },
+
+    /**
+     * Computes the distance in kilometers of a tripleg and returns it as a string
+     * @param triplegid - the id of the tripleg for which the distance has to be computed
+     * @returns {string} - the distance in kilometers as a string
+     */
+
+    getDistance: function() {
+      //TODO change this to reflect values in meters too
+      var initDist = 0;
+      var prevPoint = L.latLng(0,0);
+      for (var i=0; i < this.points.length; i++){
+        var derivedPoint = L.latLng(this.points[i].lon, this.points[i].lat);
+        if (prevPoint.lat != 0){
+          initDist = initDist+ derivedPoint.distanceTo(prevPoint);
+        }
+        prevPoint.lat = derivedPoint.lat;
+        prevPoint.lng = derivedPoint.lng;
+      }
+      var distance;
+      if(initDist < 1000) {
+        distance = (Math.round(initDist/100)*100)+' m';
+      } else {
+        distance = Math.round(initDist/1000) +' km';
+      }
+      return distance;
+    },
+
+    /**
+     * Computes the transition time to the next tripleg element
+     * @param triplegid - the id of the tripleg from which the transition time will be computed
+     * @returns {string|string} - the outerHTML of a paragraph that contains the transition time in minutes
+     */
+    getTransitionTime: function() {
+      if(this.isLast) {
+        return;
+      } else {
+        var dateFrom = this.getStartTime();
+        var dateTo = this.getEndTime();
+
+        var timeDiff = Math.abs(dateTo.getTime() - dateFrom.getTime());
+        var minutesDiff = Math.ceil(timeDiff / (1000 * 60));
+        return minutesDiff;
+      }
+    },
+
+    getColor: function() {
+      var color = 'black'
+      if (this.mode[0].accuracy < 50){
+        color = 'red';
+      } else {
+        _color = this.colors[mode[0].id];
+        color = _color ? _color : color;
+      }
+      return color;
+    },
+
+    generatePolyline: function() {
+      var polyline = [];
+      var polylineStyle;
+
+      if(this.type_of_tripleg == 1) {
+        // ACTIVE TRIPLEG
+        polylineStyle = { color: this.getColor(this.mode), weight: 8, opacity: 0.6 };
+      } else {
+        // PASSIVE TRIPLEGS
+        if(this.points == null) {
+          this.points = [];
+          this.points.push(jQuery.extend(true,{},this.getPrevPassive().getLastPoint()))
+          this.points.push(jQuery.extend(true,{},this.getNextPassive().getFirstPoint()));
+        }
+        polylineStyle = { color: 'black', weight: 8, opacity: 0.6, dashArray: '20,15' };
+      }
+
+      for (var j = 0; j < this.points.length; j++) {
+        var pointType = 'regular';
+        if(this.type_of_tripleg == 1) {
+          // ACTIVE TRIPLEG
+          if(this.isFirst && j === 0) {
+            pointType = 'start';
+          } else if(this.isLast && j === this.points.length-1) {
+            pointType = 'stop';
+          }
+        } else {
+          // PASSIVE TRIPLEGS
+          pointType = 'transition';
+        }
+        var derivedPoint = L.latLng(this.points[j].lat, this.points[j].lon);
+        polyline.push(derivedPoint);
+        console.warn('drap points?')
+        //drawPoint(tripleg.points[j], map, pointType, tripleg.getId());
+      }
+
+      var polylineLayer = L.polyline(polyline, polylineStyle);
+
+      /**
+       * DESKTOP ONLY EVENTS
+       */
+      console.warn('add events?');
+/*
+      if(this.type_of_tripleg == 1) {
+        // ACTIVE TRIPLEG
+        polylineLayer.on('mouseover', highlightFeature);
+        polylineLayer.on('mouseout', resetHighlight);
+        polylineLayer.on('click', scrollToTimeline);
+        polylineLayer.on('dblclick', addPointToPolyline);
+      } else {
+        // PASSIVE TRIPLEG
+        polylineLayer.on('mouseover', highlightPassiveFeature);
+        polylineLayer.on('mouseout', resetPassiveHighlight);
+        polylineLayer.on('click', scrollToPassiveTimeline);
+      }
+*/
+      // Store references
+      polylineLayer.this = this;
+      this.polylineLayer = polylineLayer;
+
+      return polylineLayer;
+
     }
-  }, tripleg))
 };

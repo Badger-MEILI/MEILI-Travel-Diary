@@ -1,63 +1,61 @@
 
-var Trip = function(trip, triplegs) {
+var Trip = Trip || function(trip, triplegs) {
+  Emitter($.extend(this, trip));
 
-  if(triplegs && triplegs.length > 0) {
-    triplegs[0].isFirst = true;
-    triplegs[triplegs.length-1].isLast = true;
-  } else {
-    triplegs = [];
-  }
+  this.updateTriplegs(triplegs);
 
-  var trip = trip;
-  var triplegs = triplegs;
+  return this;
+};
 
-  function getTripleg(id, indexDiff) {
+Trip.prototype = {
+
+  getId: function() {
+    return this.trip_id;
+  },
+
+  updateTriplegs: function(newTriplegs) {
+    if(newTriplegs && newTriplegs.length > 0) {
+      newTriplegs[0].isFirst = true;
+      newTriplegs[newTriplegs.length-1].isLast = true;
+    }
+    for (var i = 0; i < newTriplegs.length; i++) {
+      newTriplegs[i] = new Tripleg(newTriplegs[i]);
+    };
+    this.triplegs = newTriplegs;
+    this.emit('triplegs-update', this.triplegs);
+    return this.triplegs;
+  },
+
+  getTriplegById: function(triplegId) {
+    return this._getTripleg(triplegId);
+  },
+
+  getPrevTripleg: function(tripleg) {
+    return this._getTripleg(tripleg.triplegid, -2);
+  },
+
+  getNextTripleg: function(tripleg) {
+    return this._getTripleg(tripleg.triplegid, +2);
+  },
+
+  getPrevPassiveTripleg: function(tripleg) {
+    return this._getTripleg(tripleg.triplegid, -1);
+  },
+
+  getNextPassiveTripleg: function(tripleg) {
+    return this._getTripleg(tripleg.triplegid, +1);
+  },
+
+  _getTripleg: function(id, indexDiff) {
     indexDiff = indexDiff ? indexDiff : 0;
-    for (var i = 0; i < triplegs.length; i++) {
-      if(triplegs[i].triplegid == id) {
-        var tripleg = triplegs[i + indexDiff];
+    for (var i = 0; i < this.triplegs.length; i++) {
+      if(this.triplegs[i].triplegid == id) {
+        var tripleg = this.triplegs[i + indexDiff];
         // If tripleg with diff is undefined try returning current
-        tripleg = tripleg ? tripleg : triplegs[i];
-        return Tripleg(tripleg);
+        tripleg = tripleg ? tripleg : this.triplegs[i];
+        return tripleg;
       }
     }
     return null;
   }
-
-  return Emitter($.extend({
-
-    events: [],
-    triplegs: triplegs,
-
-    updateTriplegs: function(newTriplegs) {
-      triplegs = newTriplegs;
-      this.emit('triplegs-update', triplegs);
-    },
-
-    getTriplegById: function(triplegId) {
-      return getTripleg(triplegId);
-    },
-
-    getPrevTripleg: function(tripleg) {
-      return getTripleg(tripleg.triplegid, -2);
-    },
-
-    getNextTripleg: function(tripleg) {
-      return getTripleg(tripleg.triplegid, +2);
-    },
-
-    getPrevPassiveTripleg: function(tripleg) {
-      return getTripleg(tripleg.triplegid, -1);
-    },
-
-    getNextPassiveTripleg: function(tripleg) {
-      return getTripleg(tripleg.triplegid, +1);
-    },
-
-    // Actions
-    on: function(type, listener) {
-      this.events.push(name, callback);
-    }
-
-  }, trip));
 };

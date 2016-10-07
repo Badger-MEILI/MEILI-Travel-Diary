@@ -220,7 +220,7 @@ function initmap(thisUserId) {
       api.triplegs.get(trip.trip_id)
         .done(function(result) {
           var triplegsOfCurrentTrip = result.triplegs;
-          currentTrip = Trip(trip, triplegsOfCurrentTrip);
+          currentTrip = new Trip(trip, triplegsOfCurrentTrip);
           // TODO move me
           currentTrip.on('triplegs-update', function(triplegs) {
             generateHTMLElements(currentTrip, thisUserId);
@@ -275,14 +275,20 @@ function enableMapScrolling(){
  * Gets called on each new trip - calls the generation of timeline panels and draws polylines on map
  * @param currentTrip - the trip that will be drawn on the map
  */
-function generateHTMLElements(currentTrip, user_id){
+function generateHTMLElements(currentTrip, user_id) {
+    $('#timeline').html('');
     ui.timeline.generateFirstElement(currentTrip);
     for (var i=0; i < currentTrip.triplegs.length; i++) {
       var tripleg = currentTrip.triplegs[i];
       var isFirst = (i === 0);
       var isLast  = (i === (currentTrip.triplegs.length-1));
       ui.timeline.generateElement(currentTrip.trip_id, tripleg, isFirst, isLast);
-      generatePolyline(tripleg, map, i, isFirst, isLast);
+
+      tripleg.polylineLayer = generatePolyline(tripleg, map, isFirst, isLast);
+      tripleg.polylineLayer.addTo(map).bringToBack();
+      if (isFirst){
+          map.fitBounds(tripleg.polylineLayer.getBounds());
+      }
     }
     ui.timeline.generateLastElement(currentTrip);
 
@@ -2453,7 +2459,7 @@ function highlightFeature(e) {
         opacity: 1
     });
 
-    setTimelineHover(correspondingTimeline[layer._leaflet_id]);
+    setTimelineHover(layer.tripleg.getId());
 
     if (!L.Browser.ie && !L.Browser.opera) {
         layer.bringToBack();
@@ -2471,7 +2477,7 @@ function resetHighlight(e) {
         opacity: 0.6
     });
 
-    cancelTimelineHover(correspondingTimeline[layer._leaflet_id]);
+    cancelTimelineHover(layer.tripleg.getId());
 
     if (!L.Browser.ie && !L.Browser.opera) {
         layer.bringToBack();
@@ -2487,7 +2493,7 @@ function scrollToTimeline(e) {
     var layer = e.target;
 
     $('html, body').animate({
-        scrollTop: $('#telem'+correspondingTimeline[layer._leaflet_id]).offset().top-60
+        scrollTop: $('#telem'+layer.tripleg.getId()).offset().top-60
     }, 'slow');
 
 }
@@ -3243,9 +3249,6 @@ function drawPoint(point,map,type, triplegid){
     }
 
 
-    pointLayerArray[pointLayerArray.length-1].listOfPoints.push(pointLayer);
-
-
 }
 
 function getPointFormatedDate(date){
@@ -3299,15 +3302,10 @@ function getPointFormatedDateLong(date) {
  * Generates a polyline of a tripleg
  * @param tripleg - the tripleg that contains the polyline
  * @param map - the map container
- * @param i - the index of the tripleg within the current trip
  */
-function generatePolyline(tripleg, map, i, isFirst, isLast){
+function generatePolyline(tripleg, map, isFirst, isLast){
   var polyline = [];
   var polylineStyle;
-
-  pointLayerArray[pointLayerArray.length]={};
-  pointLayerArray[pointLayerArray.length-1].id = tripleg.triplegid;
-  pointLayerArray[pointLayerArray.length-1].listOfPoints=[];
 
   if(tripleg.type_of_tripleg == 1) {
     // ACTIVE TRIPLEG
@@ -3337,19 +3335,10 @@ function generatePolyline(tripleg, map, i, isFirst, isLast){
     }
     var derivedPoint = L.latLng(tripleg.points[j].lat, tripleg.points[j].lon);
     polyline.push(derivedPoint);
-    drawPoint(tripleg.points[j], map, pointType, tripleg.triplegid);
+    drawPoint(tripleg.points[j], map, pointType, tripleg.getId());
   }
 
-  var polylineLayer = L.polyline(polyline, polylineStyle).addTo(map);
-
-  plotlayers[polylineLayer._leaflet_id] = polylineLayer;
-
-  correspondingTimeline[polylineLayer._leaflet_id] = tripleg.triplegid;
-  correspondingPolyline[tripleg.triplegid] = polylineLayer._leaflet_id;
-
-  map.addLayer(polylineLayer);
-  polylineLayer.bringToBack();
-
+  var polylineLayer = L.polyline(polyline, polylineStyle);
 
   /**
    * DESKTOP ONLY EVENTS
@@ -3367,10 +3356,9 @@ function generatePolyline(tripleg, map, i, isFirst, isLast){
     polylineLayer.on('mouseout', resetPassiveHighlight);
     polylineLayer.on('click', scrollToPassiveTimeline);
   }
+  polylineLayer.tripleg = tripleg;
+  return polylineLayer;
 
-  if (isFirst){
-      map.fitBounds(polylineLayer.getBounds());
-  }
 }
 
 

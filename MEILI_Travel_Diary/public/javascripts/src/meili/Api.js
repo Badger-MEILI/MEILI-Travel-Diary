@@ -18,7 +18,7 @@ var Api = function(config) {
         return request.get(url(mainPaths.trips, 'getLastTripOfUser'), { user_id: userId });
       },
 
-      getNumberOfTrips: function() {
+      getNumberOfTrips: function(userId) {
         return request.get(url(mainPaths.trips, 'getTripsForBadge'), { user_id: userId });
       },
 
