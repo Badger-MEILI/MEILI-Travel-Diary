@@ -52,7 +52,7 @@ router.get("/getTripsForBadge", function(req,res){
  * @apiSuccess {Trip} Trip The json representation of a trip without its triplegs
  */
 router.get("/getLastTripOfUser", function(req,res){
-    var results = [];
+    var results = {};
     var user_id = req.query.user_id;
 
     if (user_id == null || user_id == undefined) {
@@ -66,12 +66,15 @@ router.get("/getLastTripOfUser", function(req,res){
         var logQuery = apiClient.query(sqlQuery);
 
         logQuery.on('row', function(row){
-            results.push(row);
+            results = row;
         });
 
         logQuery.on('end', function(){
-            if (results.length>0)
-                return res.json(results[0]);
+            // check if it is empty
+            if (!(Object.keys(results).length === 0 && results.constructor === Object))
+            {
+                return res.json(results);
+            }
             else {
                 res.status(500);
                 res.send("The user does not have any trips to process");
@@ -118,7 +121,6 @@ router.get("/updateStartTimeOfTrip", function(req,res){
         prioryQuery.on('error', function(row){
             res.status(500);
             res.send(row);
-            // res.send("Request failed with parameters trip_id: "+ trip_id+" and start_time "+new_start_time);
         });
 
         prioryQuery.on('end', function () {
@@ -141,7 +143,8 @@ router.get("/updateStartTimeOfTrip", function(req,res){
  * @apiSuccess {Tripleg[]} Triplegs An array of json objects that represent the triplegs of the trip after update
  */
 router.get("/updateEndTimeOfTrip", function(req,res){
-    var results = [];
+    var results = {};
+    results.triplegs = [];
     var trip_id = req.query.trip_id;
     var new_end_time = req.query.end_time;
 
@@ -157,50 +160,7 @@ router.get("/updateEndTimeOfTrip", function(req,res){
         var prioryQuery = apiClient.query(sqlQuery);
 
         prioryQuery.on('row', function (row) {
-                results.push(row);
-        });
-
-        prioryQuery.on('error', function(row){
-            res.status(500);
-            res.send(row);
-            // res.send("Request failed with parameters trip_id: "+ trip_id+" and start_time "+new_start_time);
-        });
-
-        prioryQuery.on('end', function () {
-            return res.json(results[0]);
-        });
-    }
-});
-
-/**
- * @api {get} /trips/deleteTrip&:trip_id Deletes a trip
- * @apiName DeleteTrip
- * @apiGroup Trips
- *
- * @apiError [500] InvalidInput The parameter <code>trip_id</code> is undefined, null or of a wrong type.
- * @apiError [500] SQLError SQL error traceback.
- *
- * @apiParam {Number} trip_id Id of the trip that will be deleted
- *
- * @apiSuccess {Trip} Trip Gets the json representation of the next trip to process for the user that performed the action.
- */
-router.get("/deleteTrip", function(req,res){
-    var results = [];
-    var trip_id = req.query.trip_id;
-
-    if (trip_id == null || trip_id == undefined ) {
-        res.status(500);
-        res.send("Invalid input parameters");
-        return res;
-    }
-
-    else
-    {
-        var sqlQuery = "select * from apiv2.delete_trip($bd$"+trip_id+"$bd$)";
-        var prioryQuery = apiClient.query(sqlQuery);
-
-        prioryQuery.on('row', function (row) {
-                results.push(row);
+            results.triplegs = row.update_trip_end_time;
         });
 
         prioryQuery.on('error', function(row){
@@ -209,7 +169,7 @@ router.get("/deleteTrip", function(req,res){
         });
 
         prioryQuery.on('end', function () {
-            return res.json(results[0]);
+            return res.json(results);
         });
     }
 });
@@ -229,7 +189,8 @@ router.get("/deleteTrip", function(req,res){
  * @apiSuccess {Trip} Trip Gets the json representation of the next trip to process for the user that performed the action.
  */
 router.get("/insertTransitionBetweenTriplegs", function(req,res){
-    var results = [];
+    var results = {};
+    results.trip = [];
     var user_id = req.query.user_id;
     var start_time = req.query.start_time;
     var end_time = req.query.end_time;
@@ -247,7 +208,7 @@ router.get("/insertTransitionBetweenTriplegs", function(req,res){
         var prioryQuery = apiClient.query(sqlQuery);
 
         prioryQuery.on('row', function (row) {
-                results.push(row);
+                results.trip = row.insert_stationary_trip_for_user;
         });
 
         prioryQuery.on('error', function(row){
@@ -256,7 +217,7 @@ router.get("/insertTransitionBetweenTriplegs", function(req,res){
         });
 
         prioryQuery.on('end', function () {
-            return res.json(results[0]);
+            return res.json(results);
         });
     }
 });
@@ -275,7 +236,8 @@ router.get("/insertTransitionBetweenTriplegs", function(req,res){
  * @apiSuccess {Boolean} Boolean The success state of the operation.
  */
 router.get("/updatePurposeOfTrip", function(req,res){
-    var results = [];
+    var results = {};
+    results.status = {};
     var trip_id = req.query.trip_id;
     var purpose_id = req.query.purpose_id;
 
@@ -291,18 +253,16 @@ router.get("/updatePurposeOfTrip", function(req,res){
         var prioryQuery = apiClient.query(sqlQuery);
 
         prioryQuery.on('row', function (row) {
-            results.push(row);
+            results.status = row.update_trip_purpose;
         });
 
         prioryQuery.on('error', function(row){
             res.status(500);
             res.send(row);
-            // res.send("Request failed with parameters trip_id: "+ trip_id+" and start_time "+new_start_time);
         });
 
         prioryQuery.on('end', function () {
-            if (results.length<0) return res.json(false);
-            return res.json(results[0]);
+            return res.json(results);
         });
     }
 });
@@ -321,7 +281,8 @@ router.get("/updatePurposeOfTrip", function(req,res){
  * @apiSuccess {Boolean} Boolean The success state of the operation.
  */
 router.get("/updateDestinationPoiIdOfTrip", function(req,res){
-    var results = [];
+    var results = {};
+    results.status = {};
     var trip_id = req.query.trip_id;
     var destination_poi_id = req.query.destination_poi_id;
 
@@ -337,22 +298,61 @@ router.get("/updateDestinationPoiIdOfTrip", function(req,res){
         var prioryQuery = apiClient.query(sqlQuery);
 
         prioryQuery.on('row', function (row) {
-            results.push(row);
+            results.status = row.update_trip_destination_poi_id;
         });
 
         prioryQuery.on('error', function(row){
             res.status(500);
             res.send(row);
-            // res.send("Request failed with parameters trip_id: "+ trip_id+" and start_time "+new_start_time);
         });
 
         prioryQuery.on('end', function () {
-            if (results.length<0) return res.json(false);
-            return res.json(results[0]);
+            return res.json(results);
         });
     }
 });
 
+/**
+ * @api {get} /trips/deleteTrip&:trip_id Deletes a trip
+ * @apiName DeleteTrip
+ * @apiGroup Trips
+ *
+ * @apiError [500] InvalidInput The parameter <code>trip_id</code> is undefined, null or of a wrong type.
+ * @apiError [500] SQLError SQL error traceback.
+ *
+ * @apiParam {Number} trip_id Id of the trip that will be deleted
+ *
+ * @apiSuccess {Trip} Trip Gets the json representation of the next trip to process for the user that performed the action.
+ */
+router.get("/deleteTrip", function(req,res){
+    var results = {};
+    var trip_id = req.query.trip_id;
+
+    if (trip_id == null || trip_id == undefined ) {
+        res.status(500);
+        res.send("Invalid input parameters");
+        return res;
+    }
+
+    else
+    {
+        var sqlQuery = "select * from apiv2.delete_trip($bd$"+trip_id+"$bd$)";
+        var prioryQuery = apiClient.query(sqlQuery);
+
+        prioryQuery.on('row', function (row) {
+            results = row;
+        });
+
+        prioryQuery.on('error', function(row){
+            res.status(500);
+            res.send(row);
+        });
+
+        prioryQuery.on('end', function () {
+            return res.json(results);
+        });
+    }
+});
 
 /**
  * @api {get} /trips/confirmAnnotationOfTrip&:trip_id& Confirms the annotations of a trip, which moves the user to the next unannotated trip
@@ -367,7 +367,7 @@ router.get("/updateDestinationPoiIdOfTrip", function(req,res){
  * @apiSuccess {Trip} Trip The json representation of a trip without its triplegs
  */
 router.get("/confirmAnnotationOfTrip", function(req,res){
-    var results = [];
+    var results = {};
     var trip_id = req.query.trip_id;
 
     if (trip_id == null || trip_id == undefined) {
@@ -382,18 +382,16 @@ router.get("/confirmAnnotationOfTrip", function(req,res){
         var prioryQuery = apiClient.query(sqlQuery);
 
         prioryQuery.on('row', function (row) {
-            results.push(row);
+            results = row;
         });
 
         prioryQuery.on('error', function(row){
             res.status(500);
             res.send(row);
-            // res.send("Request failed with parameters trip_id: "+ trip_id+" and start_time "+new_start_time);
         });
 
         prioryQuery.on('end', function () {
-            if (results.length<0) return res.json(false);
-            return res.json(results[0]);
+            return res.json(results);
         });
     }
 });
