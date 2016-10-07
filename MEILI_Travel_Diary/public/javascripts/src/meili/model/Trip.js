@@ -16,7 +16,9 @@ var Trip = function(trip, triplegs) {
     for (var i = 0; i < triplegs.length; i++) {
       if(triplegs[i].triplegid == id) {
         var tripleg = triplegs[i + indexDiff];
-        return tripleg ? tripleg : triplegs[i];
+        // If tripleg with diff is undefined try returning current
+        tripleg = tripleg ? tripleg : triplegs[i];
+        return Tripleg(tripleg);
       }
     }
     return null;

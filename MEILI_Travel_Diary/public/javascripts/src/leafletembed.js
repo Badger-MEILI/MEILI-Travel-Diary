@@ -1187,202 +1187,6 @@ function requestTimeConfirmation(id){
         splitTripLeg(id, new Date(fromDate).getTime(), new Date(toDate).getTime(), triplegStartDate, triplegEndDate, modeFrom, modeTo);
 }
 
-/**
- * Splits a tripleg into two based on the temporal frame specified by a user
- * @param id - id of the tripleg to be split
- * @param fromDate - proposed end time
- * @param toDate - proposed initial time
- * @param triplegStartDate - the start time of the trip leg
- * @param triplegEndDate - the end time of the trip leg
- * @param modeFrom - mode of the first tripleg
- * @param modeTo - mode of the second tripleg
- */
-function splitTripLeg(id, fromDate, toDate, triplegStartDate, triplegEndDate, modeFrom, modeTo){
-
-    // Splitting previous tripleg into two trip legs -> CAUTION : MIGHT HAVE NO POINTS IN BETWEEN TO DRAW A LINE
-
-
-    console.log(fromDate);
-    console.log(toDate);
-    console.log(modeFrom);
-    console.log(modeTo);
-
-
-    var tripLegA ={};
-    tripLegA.triplegid=id+'a';
-    tripLegA.points=[];
-    tripLegA.places=[];
-
-
-    var tripLegPassive ={};
-    tripLegPassive.triplegid=id+'p';
-    tripLegPassive.points=[];
-    tripLegPassive.places=[];
-
-
-    var tripLegB ={};
-    tripLegB.triplegid=id+'b';
-    tripLegB.points=[];
-    tripLegB.places=[];
-
-    var pushed=false;
-    var tripLegIndex=0;
-
-    console.log(currentTrip);
-    for (var i=0; i<currentTrip.triplegs.length;i++){
-        if (currentTrip.triplegs[i].triplegid ==id){
-            tripLegIndex=i;
-            for (var j=0; j<currentTrip.triplegs[i].points.length;j++){
-
-                console.log(new Date(currentTrip.triplegs[i].points[j].time).format("Y-m-d H:i:s")+'<='+fromDate+' is '+(new Date(currentTrip.triplegs[i].points[j].time)<=fromDate));
-
-                if (currentTrip.triplegs[i].points[j].time <=fromDate)
-                {
-                    var point = new Object();
-
-                    point.id = currentTrip.triplegs[i].points[j].id;
-                    point.lat = currentTrip.triplegs[i].points[j].lat;
-                    point.lon = currentTrip.triplegs[i].points[j].lon;
-                    point.time = currentTrip.triplegs[i].points[j].time;
-
-                    tripLegA.points.push(point);
-                }
-
-                if (currentTrip.triplegs[i].points[j].time>=fromDate &&currentTrip.triplegs[i].points[j].time<=toDate){
-                    var point = new Object();
-
-                    point.id = currentTrip.triplegs[i].points[j].id;
-                    point.lat = currentTrip.triplegs[i].points[j].lat;
-                    point.lon = currentTrip.triplegs[i].points[j].lon;
-                    point.time = currentTrip.triplegs[i].points[j].time;
-                    tripLegPassive.points.push(point);
-                }
-
-                 console.log(new Date(currentTrip.triplegs[i].points[j].time).format("Y-m-d H:i:s")+'>='+toDate+' is '+(new Date(currentTrip.triplegs[i].points[j].time).format("Y-m-d H:i:s")>=toDate));
-
-
-                if (currentTrip.triplegs[i].points[j].time>=toDate){
-
-                     if (!pushed){
-                        // the last geometry of A will be the first geometry of B with the timestamp of tpdate
-
-
-                        var point = new Object();
-
-                         if (tripLegPassive.points.length!=0){
-                        point.id = tripLegPassive.points[tripLegPassive.points.length-1].id;
-                        point.lat = tripLegPassive.points[tripLegPassive.points.length-1].lat;
-                        point.lon = tripLegPassive.points[tripLegPassive.points.length-1].lon;
-                        }else {
-                             point.id = tripLegA.points[tripLegA.points.length-1].id;
-                             point.lat = tripLegA.points[tripLegA.points.length-1].lat;
-                             point.lon = tripLegA.points[tripLegA.points.length-1].lon;
-                         }
-
-                        // TODO CONTIUNE FROM HERE
-                        point.time = toDate;
-
-                        tripLegB.points.push(point);
-
-                        pushed =  true;
-                    }
-
-                    var point = new Object();
-
-                    point.id = currentTrip.triplegs[i].points[j].id;
-                    point.lat = currentTrip.triplegs[i].points[j].lat;
-                    point.lon = currentTrip.triplegs[i].points[j].lon;
-                    point.time = currentTrip.triplegs[i].points[j].time;
-
-                    tripLegB.points.push(point);
-                }
-            }
-        }
-    }
-
-    tripLegA.defined_by_user = currentTrip.triplegs[tripLegIndex].defined_by_user;
-
-        console.log(fromDate);
-    console.log(toDate);
-    // the last geometry of A will have the timestamp of fromData
-    // tripLegA.points[tripLegA.points.length-1].time = fromDate;
-
-    tripLegPassive.places = [];
-    tripLegPassive.places[0] ={};
-    tripLegPassive.mode = [];
-    tripLegPassive.mode[0]={};
-
-    tripLegA.points[tripLegA.points.length-1].time = fromDate;
-
-
-    /*if (tripLegA.points[tripLegA.points.length-1].id != tripLegB.points[0].id){
-        tripLegPassive.points[0] = tripLegA.points[tripLegA.length-1];
-        tripLegPassive.points[1] = tripLegB.points[0];
-    }
-    else */
-
-//    if (tripLegPassive.points.length==0) tripLegPassive.points[0] = tripLegB.points[0];
-
-    tripLegA.places = [];
-    tripLegA.places[0] ={};
-
-    tripLegA.mode = [];
-    if (modeFrom!=undefined)
-    {tripLegA.mode[0]={};
-    tripLegA.mode[0].id = modeFrom;
-    tripLegA.mode[0].accuracy ="100";
-    tripLegA.mode[0].name = getMode(modeFrom);}
-    tripLegA.mode = tripLegA.mode.concat(getRestOfModes(modeFrom));
-
-    tripLegB.mode = [];
-    if (modeTo!=undefined){
-    tripLegB.mode[0]={};
-    tripLegB.mode[0].id = modeTo;
-    tripLegB.mode[0].accuracy ="100";
-        tripLegB.mode[0].name = getMode(modeTo);}
-    tripLegB.mode = tripLegB.mode.concat(getRestOfModes(modeTo));
-
-    tripLegB.places = [];
-    tripLegB.places[0] ={};
-
-    tripLegA.type_of_tripleg = 1;
-    tripLegB.type_of_tripleg = 1;
-    tripLegPassive.type_of_tripleg = 0;
-
-    // TODO PUSH TRIPLEG CHANGE
-
-    console.log(tripLegA);
-    console.log(tripLegB);
-    console.log(tripLegPassive);
-
-    tripLegA.defined_by_user=undefined;
-    tripLegB.defined_by_user=undefined;
-    tripLegPassive.defined_by_user=undefined;
-
-
-    if (tripLegPassive.points.length==0){
-        tripLegPassive.points.push(tripLegA.points[tripLegA.points.length-1], tripLegB.points[0]);
-    }
-    var deleteTripleg = {};
-    deleteTripleg.triplegid = id;
-
-    console.log('deleting trip '+id);
-    var requestPre = pushTriplegModification(null,deleteTripleg,'delete',currentTrip.triplegid);
-
-    $.when(requestPre).done(function () {
-        var request1 = pushTriplegModification(null, tripLegA, 'upsert', currentTrip.tripid);
-        $.when(request1).done(function () {
-            var request2 = pushTriplegModification(null, tripLegPassive, 'upsert', currentTrip.tripid);
-            $.when(request2).done(function () {
-                var request3 = pushTriplegModification(null, tripLegB, 'upsert', currentTrip.tripid);
-                $.when(request3).done(function () {
-                    pushTripModification(null, currentTrip, 'upsert');
-                    pushChangesToHTML(id, tripLegA, tripLegB, tripLegPassive, tripLegIndex);
-                });
-            });
-        });
-    });
-}
 
 function deleteTripModal(){
     $.when(log.info(userId,'clicked on delete trip glyphicon').done(function(){
@@ -1395,167 +1199,7 @@ function mergeTripModal(){
     $('#mergeTripModal').modal('show');
     }));
 }
-function deleteTrip(){
 
-    $.when(log.info(userId,'decided to delete trip').done(function(){
-
-    var prevTrip = serverResponse.trips[getPrevPassiveTrip(currentTrip.tripid)];
-
-    var nextTrip = serverResponse.trips[getNextPassiveTrip(currentTrip.tripid)];
-        nextTrip.type_of_trip = 0;
-    var nextActualTrip = serverResponse.trips[getNextTrip(currentTrip.tripid)];
-    var prevActualTrip = serverResponse.trips[getPrevTrip(currentTrip.tripid)];
-
-    if (prevTrip!=undefined){
-        prevTrip.type_of_trip = 0;
-    for (var i=0; i<currentTrip.triplegs.length;i++){
-        for (var j=0; j<currentTrip.triplegs[i].points.length;j++){
-            prevTrip.triplegs[0].points.push(currentTrip.triplegs[i].points[j]);
-        }
-    }
-
-    for (var i=0; i<nextTrip.triplegs[0].points.length;i++){
-        prevTrip.triplegs[0].points.push(nextTrip.triplegs[0].points[i]);
-    }
-
-        console.log(prevActualTrip);
-
-        nextActualTrip.prev_trip_stop = prevTrip.triplegs[0].points[0].time;
-        nextActualTrip.prev_trip_purpose = prevActualTrip.purposes[0].id;
-        nextActualTrip.prev_trip_place= prevActualTrip.destination_places[0].osm_id;
-        nextActualTrip.prev_trip_place_name = prevActualTrip.destination_places[0].name;
-
-        prevActualTrip.next_trip_start = nextActualTrip.triplegs[0].points[0].time;
-
-        serverResponse.trips.splice(getPrevPassiveTrip(currentTrip.tripid),3,prevTrip);
-        // request 1 - delete main trip
-        var request1 = pushTripModification(null, currentTrip, "delete");
-
-        $.when(request1).done(function (){
-            // request 2 - delete next passive trip
-            var request2 = pushTripModification(null, nextTrip,"delete");
-            $.when(request2).done(function (){
-                // request 3 - update prev passive
-                var request3 = pushTripModification(null, prevTrip,"upsert");
-                $.when(request3).done(function (){
-                    // request 4 - update prev trip next trip prev attributes
-                   var request4 = pushTripModification(null, prevActualTrip, "upsert");
-                    $.when(request4).done(function (){
-                        // request 5 - update next trip prev trip next attributes
-                        var request5 = pushTripModification(null, nextActualTrip, "upsert");
-                        $.when(request5).done(function (){
-                            var request6 = getNextTripAndAttachToResponse(serverResponse,userId);
-                        })
-                    });
-                });
-            });
-        });
-
-
-    }
-
-    else {
-        // TODO THIS HAS TO BE DISABLED FOR THE LAST TRIP
-
-        // FIRST TRIP ONLY
-
-        // request 1 - delete main trip
-        // request 2 - delete next passive
-        // request 3 - update next trip prev attributes
-        serverResponse.trips.splice(getNextPassiveTrip(currentTrip.tripid)-1,2);
-
-        nextActualTrip.prev_trip_place = null;
-        nextActualTrip.prev_trip_place_name = "";
-        nextActualTrip.prev_trip_purpose = null;
-        nextActualTrip.prev_trip_stop = null;
-
-        map.remove();
-        generateMap();
-
-        var ul = document.getElementById("timeline");
-        ul.innerHTML="";
-
-        currentTrip = nextActualTrip;
-
-        generateHTMLElements(currentTrip);
-
-        var request1 = pushTripModification(null, currentTrip, "delete");
-
-        $.when(request1).done(function (){
-            // request 2 - delete next passive trip
-            var request2 = pushTripModification(null, nextTrip,"delete");
-            $.when(request2).done(function (){
-                 // request 5 - update next trip prev trip next attributes
-                 var request5 = pushTripModification(null, nextActualTrip, "upsert");
-            });
-        });
-    }
-
-
-
-    serverResponse.trips_to_process--;
-
-    var numberOfTripsBadge = document.getElementById('tripsLeft');
-    numberOfTripsBadge.innerHTML = serverResponse.trips_to_process;
-
-    currentTrip = nextActualTrip;
-
-    console.log(serverResponse);
-    console.log(currentTrip);
-
-
-    }));
-}
-
-/**===================OTHER=============*/
-
-/**
- * Maps the id to the name of the purpose
- * @param id - the id of the purpose
- * @returns {string} - the name associated with the id
- */
-// TODO - This should be retrieved from the database
-/*function getNameOfPurpose(id){
-
-    var newObject = {};
-
-    if (id == 1) newObject.name = 'Travel to work'; newObject.name_sv = 'Resa till arbete';
-    if (id == 2) newObject.name = 'Travel to school'; newObject.name_sv = 'Resa till skola';
-    if (id == 3) newObject.name = 'Business travel'; newObject.name_sv = 'Resa i tjänsten';
-    if (id == 4) newObject.name = 'Restaurant/Café'; newObject.name_sv = 'Restaurang/Café';
-    if (id == 5) newObject.name = 'Leisure travel (e.g. go to cinema, theater)'; newObject.name_sv = 'Nöje (t ex bio, teater)';
-    if (id == 6) newObject.name = 'Sport/hobby related travel'; newObject.name_sv = 'Motion/friluftsliv';
-    if (id == 7) newObject.name = 'Food/grocery shopping'; newObject.name_sv = 'Inköp av livsmedel';
-    if (id == 8) newObject.name = 'Non-food shopping'; newObject.name_sv = 'Annat inköp';
-    if (id == 9) newObject.name = 'Personal business (e.g. medical visit, bank, cutting hair)'; newObject.name_sv = 'Service (t ex vårdcentral, bank, frisör)';
-    if (id == 10) newObject.name = 'Visit relatives and friends'; newObject.name_sv = 'Besöka släkt och vänner';
-    if (id == 11) newObject.name = 'Pick-up or drop-off children/other persons'; newObject.name_sv = 'Hämta eller lämna barn/annan person';
-    if (id == 12) newObject.name = 'Return home'; newObject.name_sv = 'Åter till bostaden';
-    if (id == 13) newObject.name = 'Other (incl. walk/travel without specific purpose)'; newObject.name_sv = 'Annat/övrigt (inkl. resa utan ärende)';
-
-    return newObject.name;
-}
-
-function getNameOfPurposeSwedish(id){
-
-    var newObject = {};
-
-    if (id == 1) {newObject.name = 'Travel to work'; newObject.name_sv = 'Resa till arbete';}
-    if (id == 2) {newObject.name = 'Travel to school'; newObject.name_sv = 'Resa till skola';}
-    if (id == 3) {newObject.name = 'Business travel'; newObject.name_sv = 'Resa i tjänsten';}
-    if (id == 4) {newObject.name = 'Restaurant/Café'; newObject.name_sv = 'Restaurang/Café';}
-    if (id == 5) {newObject.name = 'Leisure travel (e.g. go to cinema, theater)'; newObject.name_sv = 'Nöje (t ex bio, teater)';}
-    if (id == 6) {newObject.name = 'Sport/hobby related travel'; newObject.name_sv = 'Motion/friluftsliv';}
-    if (id == 7) {newObject.name = 'Food/grocery shopping'; newObject.name_sv = 'Inköp av livsmedel';}
-    if (id == 8) {newObject.name = 'Non-food shopping'; newObject.name_sv = 'Annat inköp';}
-    if (id == 9) {newObject.name = 'Personal business (e.g. medical visit, bank, cutting hair)'; newObject.name_sv = 'Service (t ex vårdcentral, bank, frisör)';}
-    if (id == 10) {newObject.name = 'Visit relatives and friends'; newObject.name_sv = 'Besöka släkt och vänner';}
-    if (id == 11) {newObject.name = 'Pick-up or drop-off children/other persons'; newObject.name_sv = 'Hämta eller lämna barn/annan person';}
-    if (id == 12) {newObject.name = 'Return home'; newObject.name_sv = 'Åter till bostaden';}
-    if (id == 13) {newObject.name = 'Other (incl. walk/travel without specific purpose)'; newObject.name_sv = 'Annat/övrigt (inkl. resa utan ärende)';}
-
-    return newObject.name_sv;
-}*/
 
 /**
  * Compares two objects by a custom field - used for sort operations on arrays of objects
@@ -1668,60 +1312,6 @@ function getDistanceOfTripLeg(tripleg){
     else distance = Math.round(initDist/1000) +' km';
     return distance;
 }
-/*
-*//**
- * Maps a mode id to a mode name
- * @param id - id of the mode
- * @returns {string} - name of mode associated to id
- */
-/* TODO - this should only be retrieved from the server
-function getMode(id){
-
-        var newObject = {};
-        newObject.id=id;
-        newObject.accuracy="0";
-        if (id == 1) newObject.name = 'Walk'; newObject.name_sv = 'Till fots';
-        if (id == 2) newObject.name = 'Bicycle'; newObject.name_sv = 'Cykel';
-        if (id == 3) newObject.name = 'Moped / Motorcycle'; newObject.name_sv = 'Moped / Mc';
-        if (id == 4) newObject.name = 'Car as driver'; newObject.name_sv = 'Bil som förare';
-        if (id == 5) newObject.name = 'Car as passenger'; newObject.name_sv = 'Bil som passagerare';
-        if (id == 6) newObject.name = 'Taxi'; newObject.name_sv = 'Taxi';
-        if (id == 7) newObject.name = 'Paratransit'; newObject.name_sv = 'Färdtjänst';
-        if (id == 8) newObject.name = 'Bus'; newObject.name_sv = 'Buss';
-        if (id == 9) newObject.name = 'Subway'; newObject.name_sv = 'Tunnelbana';
-        if (id == 10) newObject.name = 'Tram'; newObject.name_sv = 'Spårvagn';
-        if (id == 11) newObject.name = 'Commuter train'; newObject.name_sv = 'Pendeltåg';
-        if (id == 12) newObject.name = 'Train'; newObject.name_sv = 'Tåg';
-        if (id == 13) newObject.name = 'Ferryboat'; newObject.name_sv = 'Färja / båt';
-        if (id == 14) newObject.name = 'Flight'; newObject.name_sv = 'Flyg';
-        if (id == 15) newObject.name = 'Other'; newObject.name_sv = 'Övrigt';
-
-        return newObject.name;
-}
-
-function getModeSwedish(id){
-
-    var newObject = {};
-    newObject.id=id;
-    newObject.accuracy="0";
-    if (id == 1) {newObject.name = 'Walk'; newObject.name_sv = 'Till fots';}
-    if (id == 2) {newObject.name = 'Bicycle'; newObject.name_sv = 'Cykel';}
-    if (id == 3) {newObject.name = 'Moped / Motorcycle'; newObject.name_sv = 'Moped / Mc';}
-    if (id == 4) {newObject.name = 'Car as driver'; newObject.name_sv = 'Bil som förare';}
-    if (id == 5) {newObject.name = 'Car as passenger'; newObject.name_sv = 'Bil som passagerare';}
-    if (id == 6) {newObject.name = 'Taxi'; newObject.name_sv = 'Taxi';}
-    if (id == 7) {newObject.name = 'Paratransit'; newObject.name_sv = 'Färdtjänst';}
-    if (id == 8) {newObject.name = 'Bus'; newObject.name_sv = 'Buss';}
-    if (id == 9) {newObject.name = 'Subway'; newObject.name_sv = 'Tunnelbana';}
-    if (id == 10) {newObject.name = 'Tram'; newObject.name_sv = 'Spårvagn';}
-    if (id == 11) {newObject.name = 'Commuter train'; newObject.name_sv = 'Pendeltåg';}
-    if (id == 12) {newObject.name = 'Train'; newObject.name_sv = 'Tåg';}
-    if (id == 13) {newObject.name = 'Ferryboat'; newObject.name_sv = 'Färja / båt';}
-    if (id == 14) {newObject.name = 'Flight'; newObject.name_sv = 'Flyg';}
-    if (id == 15) {newObject.name = 'Other'; newObject.name_sv = 'Övrigt';}
-
-    return newObject.name_sv;
-}*/
 
 /**
  * Generates a foo array that contains all modes besides one, with a certainty of 0
@@ -1915,8 +1505,7 @@ function generateModal(triplegid){
 
     html+= '<p style="display:inline-block; border-bottom: 0px; text-align: left; width:60%;">From mode of transportation: </p>';
     html+= '<select id="selectFrom'+triplegid+'" style="display: inline-block" class="form-controlV2">';
-    for (var i in copyOfTriplegs[0].mode.length)
-    {
+    for (var i = 0; i < copyOfTriplegs[0].mode.length; i++) {
         //   var selectedSv = getModeSwedish(mode[i].id);
         // selector+= '<option lang="sv" value="'+mode[i].id+'">'+selectedSv+'</option>';
         html+= '<option lang="en" value="'+copyOfTriplegs[0].mode[i].id+'">'+copyOfTriplegs[0].mode[i].name+'</option>';
@@ -1925,8 +1514,7 @@ function generateModal(triplegid){
     html+= '<br>';
     html+= '<p style="display:inline-block; border-bottom: 0px; text-align: left; width:60%;">To mode of transportation: </p>';
     html+= '<select id="selectTo'+triplegid+'" style="display: inline-block" class="form-controlV2">';
-    for (var i in copyOfTriplegs[0].mode.length)
-    {
+    for (var i = 0; i < copyOfTriplegs[0].mode.length; i++) {
         //   var selectedSv = getModeSwedish(mode[i].id);
         // selector+= '<option lang="sv" value="'+mode[i].id+'">'+selectedSv+'</option>';
         html+= '<option lang="en" value="'+copyOfTriplegs[0].mode[i].id+'">'+copyOfTriplegs[0].mode[i].name+'</option>';
@@ -2645,69 +2233,58 @@ function generateTransitionPopup(id){
 
     var fromTime;
     var toTime;
-    var triplegStartDate;
-    var triplegEndDate;
 
     // Get data associated with the tripleg id
-    for (var i=0; i<currentTrip.triplegs.length;i++){
-        if (currentTrip.triplegs[i].triplegid == id){
-            triplegStartDate = new Date(currentTrip.triplegs[i].points[0].time);
-            triplegEndDate = new Date(currentTrip.triplegs[i].points[currentTrip.triplegs[i].points.length-1].time);
-        }
-    }
+    var tripleg = currentTrip.getTriplegById(id);
 
-    var transitionSelectOptionFrom = document.getElementById('selectFrom'+id);
-    var transitionSelectOptionTo = document.getElementById('selectTo'+id);
+    var $choiceModal = $('#transitionChoiceModal' + id);
 
-    $('#transitionChoiceModal'+id).data('modeFrom',1);
-    $('#transitionChoiceModal'+id).data('modeTo',1);
+    $choiceModal.data('modeFrom',1);
+    $choiceModal.data('modeTo',1);
 
-    transitionSelectOptionFrom.onchange = function (){
-        $('#transitionChoiceModal'+id).data('modeFrom',this.value);
+    $('#selectFrom' + id).onchange = function() {
+      $choiceModal.data('modeFrom', this.value);
     };
 
-    transitionSelectOptionTo.onchange = function (){
-        $('#transitionChoiceModal'+id).data('modeTo',this.value);
+    $('#selectTo' + id).onchange = function() {
+      $choiceModal.data('modeTo', this.value);
     };
 
     $('#timepickerStartTransition'+id).timepicker({
         minuteStep: 1,
         showMeridian: false,
-        defaultTime:(triplegStartDate.getHours()<10?'0':'') +triplegStartDate.getHours()+":"+(triplegStartDate.getMinutes()<10?'0':'')+triplegStartDate.getMinutes()
+        defaultTime: tripleg.getStartTime(true)
+    }).on('hide.timepicker', function(e){
+        fromTime.setHours(e.time.hours);
+        fromTime.setMinutes(e.time.minutes);
+        $choiceModal.data('fromTime',fromTime);
+        checkTemporalIntegrityRules(fromTime, toTime, tripleg.getStartTime(), tripleg.getEndTime(), id);
     });
 
-    fromTime = new Date(triplegStartDate);
+    fromTime = tripleg.getStartTime();
 
     $('#timepickerStopTransition'+id).timepicker({
         minuteStep: 1,
         showMeridian: false,
-        defaultTime:(triplegEndDate.getHours()<10?'0':'') +triplegEndDate.getHours()+":"+(triplegEndDate.getMinutes()<10?'0':'')+triplegEndDate.getMinutes()
-    });
-
-    toTime = new Date(triplegEndDate);
-
-    $('#timepickerStartTransition'+id).timepicker().on('hide.timepicker', function(e){
-        fromTime.setHours(e.time.hours);
-        fromTime.setMinutes(e.time.minutes);
-        $('#transitionChoiceModal'+id).data('fromTime',fromTime);
-        checkTemporalIntegrityRules(fromTime, toTime, triplegStartDate, triplegEndDate, id);
-    });
-
-    $('#timepickerStopTransition'+id).timepicker().on('hide.timepicker', function(e){
+        defaultTime: tripleg.getEndTime(true)
+    }).on('hide.timepicker', function(e){
         toTime.setHours(e.time.hours);
         toTime.setMinutes(e.time.minutes);
-        $('#transitionChoiceModal'+id).data('toTime',toTime);
-        checkTemporalIntegrityRules(fromTime, toTime, triplegStartDate, triplegEndDate, id);
+        $choiceModal.data('toTime',toTime);
+        checkTemporalIntegrityRules(fromTime, toTime, tripleg.getStartTime(), tripleg.getEndTime(), id);
     });
 
-    $('#transitionChoiceModal'+id).data('id',id);
-    $('#transitionChoiceModal'+id).data('triplegStartDate',triplegStartDate);
-    $('#transitionChoiceModal'+id).data('triplegEndDate',triplegEndDate);
-    $('#transitionChoiceModal'+id).data('fromTime',fromTime);
-    $('#transitionChoiceModal'+id).data('toTime',toTime);
+    toTime = tripleg.getEndTime();
 
 
-    $('#transitionChoiceModal'+id).modal('show');
+    $choiceModal.data('id',id);
+    $choiceModal.data('triplegStartDate',tripleg.getStartTime());
+    $choiceModal.data('triplegEndDate',tripleg.getEndTime());
+    $choiceModal.data('fromTime',fromTime);
+    $choiceModal.data('toTime',toTime);
+
+
+    $choiceModal.modal('show');
 }
 
 
