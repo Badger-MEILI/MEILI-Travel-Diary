@@ -375,7 +375,7 @@ function updateRemoveRedraw(tripleg){
 
 
 
-    var html = getTimelineElementContent(tripleg);
+    var html = ui.timeline.getContent(tripleg);
 
     if(getTransitionPanel(tripleg.triplegid)!=undefined)
         html+= getTransitionPanel(tripleg.triplegid);
@@ -3301,114 +3301,76 @@ function getPointFormatedDateLong(date) {
  * @param map - the map container
  * @param i - the index of the tripleg within the current trip
  */
-function generatePolyline(tripleg, map, i, first, isLast){
-    var polyline = [];
-    pointLayerArray[pointLayerArray.length]={};
-    pointLayerArray[pointLayerArray.length-1].id = tripleg.triplegid;
-    pointLayerArray[pointLayerArray.length-1].listOfPoints=[];
+function generatePolyline(tripleg, map, i, isFirst, isLast){
+  var polyline = [];
+  var polylineStyle;
 
-    console.log(tripleg);
-    //ACTIVE TRIPLEG
+  pointLayerArray[pointLayerArray.length]={};
+  pointLayerArray[pointLayerArray.length-1].id = tripleg.triplegid;
+  pointLayerArray[pointLayerArray.length-1].listOfPoints=[];
 
-    if (tripleg.type_of_tripleg==1){
-
-    for (var j in tripleg.points){
-        var derivedPoint = L.latLng(tripleg.points[j].lat,tripleg.points[j].lon);
-        polyline.push(derivedPoint);
-
-        if (j!=tripleg.points.length-1 && j!=0)
-        {
-            //NOT the first and not the last
-            drawPoint(tripleg.points[j],map,'regular', tripleg.triplegid);
-        }
-        else
-        if (copyOfTriplegs.length==1){
-            // DRAW FIRST AND LAST
-            console.log('isnt this the case?');
-            if (j==0) drawPoint(tripleg.points[j],map,'start',tripleg.triplegid);
-            if (j==tripleg.points.length-1) drawPoint(tripleg.points[j],map,'stop',tripleg.triplegid);
-        }
-        else{
-
-                if (i==0 && j==0){
-                    //first trip first icon
-                    drawPoint(tripleg.points[j],map,'start',tripleg.triplegid);
-                }
-
-                if (isLast && j==tripleg.points.length-1){
-                    drawPoint(tripleg.points[j],map,'stop',tripleg.triplegid);
-                }
-
-        }
-
+  if(tripleg.type_of_tripleg == 1) {
+    // ACTIVE TRIPLEG
+    polylineStyle = { color: getColor(tripleg.mode), weight: 8, opacity: 0.6 };
+  } else {
+    // PASSIVE TRIPLEGS
+    if(tripleg.points == null) {
+      tripleg.points = [];
+      tripleg.points.push(jQuery.extend(true,{},tripleg.getPrevPassive().getLastPoint()))
+      tripleg.points.push(jQuery.extend(true,{},tripleg.getNextPassive().getFirstPoint()));
     }
-    var polylineColor = getColor(tripleg.mode);
-    var polylineLayer = L.polyline(polyline, {color: polylineColor, weight:8, opacity:0.6}).addTo(map);
+    polylineStyle = { color: 'black', weight: 8, opacity: 0.6, dashArray: '20,15' };
+  }
 
+  for (var j = 0; j < tripleg.points.length; j++) {
+    var pointType = 'regular';
+    if(tripleg.type_of_tripleg == 1) {
+      // ACTIVE TRIPLEG
+      if(isFirst && j === 0) {
+        pointType = 'start';
+      } else if(isLast && j === tripleg.points.length-1) {
+        pointType = 'stop';
+      }
+    } else {
+      // PASSIVE TRIPLEGS
+      pointType = 'transition';
     }
+    var derivedPoint = L.latLng(tripleg.points[j].lat, tripleg.points[j].lon);
+    polyline.push(derivedPoint);
+    drawPoint(tripleg.points[j], map, pointType, tripleg.triplegid);
+  }
 
-    else{
+  var polylineLayer = L.polyline(polyline, polylineStyle).addTo(map);
 
-        console.log('drawing passive tripleg '+tripleg.triplegid);
-        // PASSIVE TRIPLEGS
-        if (tripleg.points == null){
-            tripleg.points =[];
+  plotlayers[polylineLayer._leaflet_id] = polylineLayer;
 
-            console.log(getNextPassiveTripleg(tripleg));
+  correspondingTimeline[polylineLayer._leaflet_id] = tripleg.triplegid;
+  correspondingPolyline[tripleg.triplegid] = polylineLayer._leaflet_id;
 
-            console.log(getPrevPassiveTripleg(tripleg));
-
-            console.log(currentTrip.triplegs);
-
-                 tripleg.points.push(jQuery.extend(true,{},getPrevPassiveTripleg(tripleg).points[getPrevPassiveTripleg(tripleg).points.length-1]))
-                tripleg.points.push(jQuery.extend(true,{},getNextPassiveTripleg(tripleg).points[0]));
-
-        }
-        for (var j in tripleg.points) {
-
-            var derivedPoint = L.latLng(tripleg.points[j].lat, tripleg.points[j].lon);
-            polyline.push(derivedPoint);
-            if ((j==0) || (j==tripleg.points.length-1)){
-                drawPoint(tripleg.points[j],map,'transition',tripleg.triplegid);
-            }
-        }
-
-            var polylineColor = 'black';
-            var polylineLayer = L.polyline(polyline, {color: polylineColor, weight:8, opacity:0.6, dashArray:'20,15'}).addTo(map);
-
-    }
+  map.addLayer(polylineLayer);
+  polylineLayer.bringToBack();
 
 
-    plotlayers[polylineLayer._leaflet_id] = polylineLayer;
+  /**
+   * DESKTOP ONLY EVENTS
+   */
 
-    correspondingTimeline[polylineLayer._leaflet_id] = tripleg.triplegid;
-    correspondingPolyline[tripleg.triplegid] = polylineLayer._leaflet_id;
-
-    map.addLayer(polylineLayer);
-    polylineLayer.bringToBack();
-
-
-    /**
-     * DESKTOP ONLY EVENTS
-     */
-
-    if (tripleg.type_of_tripleg==1)
-    {polylineLayer.on('mouseover', highlightFeature);
+  if(tripleg.type_of_tripleg == 1) {
+    // ACTIVE TRIPLEG
+    polylineLayer.on('mouseover', highlightFeature);
     polylineLayer.on('mouseout', resetHighlight);
     polylineLayer.on('click', scrollToTimeline);
+    polylineLayer.on('dblclick', addPointToPolyline);
+  } else {
+    // PASSIVE TRIPLEG
+    polylineLayer.on('mouseover', highlightPassiveFeature);
+    polylineLayer.on('mouseout', resetPassiveHighlight);
+    polylineLayer.on('click', scrollToPassiveTimeline);
+  }
 
-    polylineLayer.on('dblclick', addPointToPolyline);}
-    else
-    {
-        polylineLayer.on('mouseover', highlightPassiveFeature);
-        polylineLayer.on('mouseout', resetPassiveHighlight);
-        polylineLayer.on('click', scrollToPassiveTimeline);
-    }
-
-    if (first){
-        console.log(polylineLayer);
-        map.fitBounds(polylineLayer.getBounds());
-    }
+  if (isFirst){
+      map.fitBounds(polylineLayer.getBounds());
+  }
 }
 
 
