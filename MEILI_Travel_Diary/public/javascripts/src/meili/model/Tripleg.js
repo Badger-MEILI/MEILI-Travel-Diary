@@ -64,12 +64,12 @@ Tripleg.prototype = {
     },
 
     getStartTime: function(formatted) {
-      var startTime = new Date(this.getFirstPoint().time);
+      var startTime = new Date(this.start_time);
       return formatted ? this.formatDate(startTime) : startTime;
     },
 
     getEndTime: function(formatted) {
-      var endTime = new Date(this.getLastPoint().time);
+      var endTime = new Date(this.stop_time);
       return formatted ? this.formatDate(endTime) : endTime;
     },
 
