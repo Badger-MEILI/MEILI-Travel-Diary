@@ -319,7 +319,7 @@ app.controller('MapCtrl',function($scope, $rootScope, $http, $location, $anchorS
             var triplegsOfCurrentTrip = result.triplegs;
             currentTrip = new Trip(trip, triplegsOfCurrentTrip);
             // TODO move me
-            currentTrip.on('triplegs-update', function(oldtriplegs, newtriplegs) {
+            currentTrip.on('triplegs-update', function(currentTrip) {
               renderTrip(currentTrip);
             });
 

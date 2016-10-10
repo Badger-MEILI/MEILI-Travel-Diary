@@ -32,11 +32,11 @@ var Api = function(config) {
         );
       },
 
-      updateEndTime: function(triplegId, endTime) {
+      updateEndTime: function(tripId, endTime) {
         return request.get(
           url(mainPaths.trips, 'updateEndTimeOfTrip'),
           {
-            tripleg_id: triplegId,
+            trip_id: tripId,
             end_time: endTime
           }
         );
