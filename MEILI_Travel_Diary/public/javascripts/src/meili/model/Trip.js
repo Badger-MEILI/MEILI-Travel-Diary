@@ -1,7 +1,7 @@
 
 var Trip = Trip || function(trip, triplegs) {
   Emitter($.extend(this, trip));
-
+  this.mapLayer = L.featureGroup();
   this.updateTriplegs(triplegs);
 
   return this;
@@ -14,6 +14,7 @@ Trip.prototype = {
   },
 
   updateTriplegs: function(newTriplegs) {
+    this.removeTriplegs();
     if(newTriplegs && newTriplegs.length > 0) {
       newTriplegs[0].isFirst = true;
       newTriplegs[newTriplegs.length-1].isLast = true;
@@ -24,6 +25,13 @@ Trip.prototype = {
     this.triplegs = newTriplegs;
     this.emit('triplegs-update', this.triplegs);
     return this.triplegs;
+  },
+
+  removeTriplegs: function() {
+    this._reset
+    this.emit('triplegs-remove', this.triplegs);
+    this.triplegs = [];
+    return this;
   },
 
   getTriplegById: function(triplegId) {

@@ -319,7 +319,7 @@ app.controller('MapCtrl',function($scope, $rootScope, $http, $location, $anchorS
             var triplegsOfCurrentTrip = result.triplegs;
             currentTrip = new Trip(trip, triplegsOfCurrentTrip);
             // TODO move me
-            currentTrip.on('triplegs-update', function(triplegs) {
+            currentTrip.on('triplegs-update', function(oldtriplegs, newtriplegs) {
               renderTrip(currentTrip);
             });
 
@@ -339,21 +339,29 @@ app.controller('MapCtrl',function($scope, $rootScope, $http, $location, $anchorS
       });
 
     function renderTrip(trip) {
+      // TODO! move into Trip..
+
+      // Reset.
       $('#timeline').html('');
+      if(trip.mapLayer) {
+        trip.mapLayer.clearLayers();
+        map.removeLayer(trip.mapLayer);
+      }
+
+      // Render
       ui.timeline.generateFirstElement(trip);
+      var tripLayers = [];
       for (var i=0; i < trip.triplegs.length; i++) {
         var tripleg = trip.triplegs[i];
         var isFirst = (i === 0);
         var isLast  = (i === (trip.triplegs.length-1));
         ui.timeline.generateElement(trip.trip_id, tripleg, isFirst, isLast);
-
-        tripleg.generatePolyline()
-          .addTo(map).bringToBack();
-        tripleg.generatePoints()
-          .addTo(map);
-        if (isFirst){
-            map.fitBounds(tripleg.polylineLayer.getBounds());
-        }
+        var triplegLayer = tripleg.generateMapLayer();
+        trip.mapLayer.addLayer(triplegLayer);
+      }
+      trip.mapLayer.addTo(map);
+      if (isFirst){
+          map.fitBounds(trip.mapLayer.getBounds());
       }
       ui.timeline.generateLastElement(trip);
     }

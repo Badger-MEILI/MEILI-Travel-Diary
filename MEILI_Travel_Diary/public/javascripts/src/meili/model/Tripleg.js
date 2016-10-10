@@ -202,6 +202,14 @@ Tripleg.prototype = {
         var isLast = (i === this.points.length-1);
         points.push(this._generateMapMarker(point, isFirst, isLast));
       }
-      return L.layerGroup(points);
+      return L.featureGroup(points);
+    },
+
+    generateMapLayer: function() {
+      this.mapLayer = L.featureGroup([
+        this.generatePolyline(),
+        this.generatePoints()
+      ]);
+      return this.mapLayer;
     }
 };
