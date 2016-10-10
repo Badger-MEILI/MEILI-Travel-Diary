@@ -347,8 +347,10 @@ app.controller('MapCtrl',function($scope, $rootScope, $http, $location, $anchorS
         var isLast  = (i === (trip.triplegs.length-1));
         ui.timeline.generateElement(trip.trip_id, tripleg, isFirst, isLast);
 
-        tripleg.generatePolyline(tripleg, map, isFirst, isLast)
+        tripleg.generatePolyline()
           .addTo(map).bringToBack();
+        tripleg.generatePoints()
+          .addTo(map);
         if (isFirst){
             map.fitBounds(tripleg.polylineLayer.getBounds());
         }

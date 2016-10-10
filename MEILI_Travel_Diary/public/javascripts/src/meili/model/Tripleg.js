@@ -59,6 +59,10 @@ Tripleg.prototype = {
       return this.triplegid;
     },
 
+    getType: function() {
+      return this.type_of_tripleg;
+    },
+
     getStartTime: function(formatted) {
       var startTime = new Date(this.getFirstPoint().time);
       return formatted ? this.formatDate(startTime) : startTime;
@@ -142,26 +146,7 @@ Tripleg.prototype = {
         polylineStyle = { color: 'black', weight: 8, opacity: 0.6, dashArray: '20,15' };
       }
 
-      for (var j = 0; j < this.points.length; j++) {
-        var pointType = 'regular';
-        if(this.type_of_tripleg == 1) {
-          // ACTIVE TRIPLEG
-          if(this.isFirst && j === 0) {
-            pointType = 'start';
-          } else if(this.isLast && j === this.points.length-1) {
-            pointType = 'stop';
-          }
-        } else {
-          // PASSIVE TRIPLEGS
-          pointType = 'transition';
-        }
-        var derivedPoint = L.latLng(this.points[j].lat, this.points[j].lon);
-        polyline.push(derivedPoint);
-        console.warn('drap points?')
-        //drawPoint(tripleg.points[j], map, pointType, tripleg.getId());
-      }
-
-      var polylineLayer = L.polyline(polyline, polylineStyle);
+      var polylineLayer = L.polyline(this.points, polylineStyle);
 
       /**
        * DESKTOP ONLY EVENTS
@@ -187,5 +172,36 @@ Tripleg.prototype = {
 
       return polylineLayer;
 
+    },
+
+    _generateMapMarker: function(point, isFirstPoint, isLastPoint) {
+      var pointType;
+      if(this.getType() == 1) {
+        // ACTIVE TRIPLEG
+        if(this.isFirst && isFirstPoint) {
+          // Start point
+          return L.marker(point, { icon: CONFIG.triplegs.map_markers.start });
+        } else if(this.isLast && isLastPoint) {
+          // End point
+          return L.marker(point, { icon: CONFIG.triplegs.map_markers.stop });
+        } else {
+          // Regular point
+          return L.circleMarker(point, CONFIG.triplegs.map_markers.regular);
+        }
+      } else {
+        // PASSIVE TRIPLEGS
+        return L.marker(point, { icon: CONFIG.triplegs.map_markers.transition });
+      }
+    },
+
+    generatePoints: function() {
+      var points = []
+      for (var i = 0; i < this.points.length; i++) {
+        var point = this.points[i];
+        var isFirst = (i === 0);
+        var isLast = (i === this.points.length-1);
+        points.push(this._generateMapMarker(point, isFirst, isLast));
+      }
+      return L.layerGroup(points);
     }
 };
