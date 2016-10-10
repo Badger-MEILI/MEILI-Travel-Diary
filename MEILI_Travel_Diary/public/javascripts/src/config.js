@@ -54,5 +54,33 @@ var CONFIG = {
         }
       }
     ]
+  },
+
+  triplegs: {
+    map_markers: {
+      regular: {
+        radius: 6,
+        fillColor: "#ff7800",
+        color: "#000",
+        weight: 1,
+        opacity: 1,
+        fillOpacity: 0.8
+      },
+      transition: L.icon({
+        iconUrl: 'images/transition.png',
+        iconSize: [20, 20],
+        iconAnchor: [10, 10]
+      }),
+      stop: L.icon({
+        iconUrl: 'images/stop_flag.png',
+        iconSize: [30, 30],
+        iconAnchor: [10, 10]
+      }),
+      start: L.icon({
+        iconUrl: 'images/start_flag.png',
+        iconSize: [30, 30],
+        iconAnchor: [10, 10]
+      })
+    }
   }
 };

@@ -18,7 +18,7 @@ var Api = function(config) {
         return request.get(url(mainPaths.trips, 'getLastTripOfUser'), { user_id: userId });
       },
 
-      getNumberOfTrips: function() {
+      getNumberOfTrips: function(userId) {
         return request.get(url(mainPaths.trips, 'getTripsForBadge'), { user_id: userId });
       },
 
@@ -74,6 +74,16 @@ var Api = function(config) {
           {
             tripleg_id: triplegId,
             end_time: endTime
+          }
+        );
+      },
+
+      updateMode: function(triplegId, travelMode) {
+        return request.get(
+          url(mainPaths.triplegs, 'updateTravelModeOfTripleg'),
+          {
+            tripleg_id: triplegId,
+            travel_mode: travelMode
           }
         );
       },

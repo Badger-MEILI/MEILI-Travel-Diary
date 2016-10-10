@@ -263,6 +263,13 @@ function getJson(str) {
 /**********************************************************************
  * Map controller
  **********************************************************************/
+var currentTrip;
+var log         = Log(CONFIG);
+var api         = Api(CONFIG);
+var ui          = {
+  map: Map(),
+  timeline: Timeline({ elementId: 'timeline'})
+};
 
 app.controller('MapCtrl',function($scope, $rootScope, $http, $location, $anchorScroll, translationService) {
     // This object will be filled by the form
@@ -294,116 +301,70 @@ app.controller('MapCtrl',function($scope, $rootScope, $http, $location, $anchorS
         }
     });
 
+    //initmap($scope.userId);
+    var userId = $scope.userId;
 
 
-    console.log('trying http post');
 
-    /*console.log($scope.userId);
-
-
-    //REPLACING IT WITH AJAX
-    var request = $.ajax({
-        url: "/users/getAllUserTrips",
-        type: "POST",
-        data: {userId:$scope.userId}
-        //contentType: 'application/json; charset=utf-8',
-        //dataType: "json"
-    });*/
-
-    initmap($scope.userId);
-    /*request.done(function(msg) {
-        console.log(msg);
-        initmap(getJson(msg.response), $scope.userId);
+    api.trips.getNumberOfTrips(userId)
+      .done(function(result) {
+        document.getElementById('tripsLeft').innerHTML = result.rows[0].user_get_badge_trips_info;
+        document.getElementById('badge_holder').style.visibility = "visible";
     });
 
-    request.fail(function(jqXHR, textStatus, error) {
-        console.log(error);
-    });*/
-    // Map elem
+    api.trips.getLast(userId)
+      .done(function(trip) {
+        api.triplegs.get(trip.trip_id)
+          .done(function(result) {
+            var triplegsOfCurrentTrip = result.triplegs;
+            currentTrip = new Trip(trip, triplegsOfCurrentTrip);
+            // TODO move me
+            currentTrip.on('triplegs-update', function(oldtriplegs, newtriplegs) {
+              renderTrip(currentTrip);
+            });
 
-        /*// DOM element where the Timeline will be attached
-    var container = document.getElementById('mytimeline');
+            ui.map.init(CONFIG.map, userId);
 
-    // Create a DataSet with data (enables two way data binding)
-    var data = new vis.DataSet([
-        {id: 1, content: 'item 1', start: '2013-04-20'},
-        {id: 2, content: 'item 2', start: '2013-04-14'},
-        {id: 3, content: 'item 3', start: '2013-04-18'},
-        {id: 4, content: 'item 4', start: '2013-04-16', end: '2013-04-17'},
-        {id: 5, content: 'item 5', start: '2013-04-25'},
-        {id: 6, content: 'item 6', start: '2013-04-27'}
-    ]);
+            renderTrip(currentTrip);
+            map.fitBounds(currentTrip.mapLayer.getBounds());
+/*
+            var assistantHelper = document.getElementById('assistant');
+            assistantHelper.style.visibility = "visible";
+            assistantHelper.addEventListener("click", enablingListener);
+
+            enableMapScrolling();*/
+        });
+      })
+      .fail(function() {
+        alert('Please come back later, there are not enough trips to show you yet');
+      });
+
+    function renderTrip(trip) {
+      // TODO! move into Trip..
+
+      // Reset.
+      $('#timeline').html('');
+      if(trip.mapLayer) {
+        trip.mapLayer.clearLayers();
+        map.removeLayer(trip.mapLayer);
+      }
+
+      // Render
+      ui.timeline.generateFirstElement(trip);
+      var tripLayers = [];
+      for (var i=0; i < trip.triplegs.length; i++) {
+        var tripleg = trip.triplegs[i];
+        var isFirst = (i === 0);
+        var isLast  = (i === (trip.triplegs.length-1));
+        ui.timeline.generateElement(trip.trip_id, tripleg, isFirst, isLast);
+        var triplegLayer = tripleg.generateMapLayer();
+        trip.mapLayer.addLayer(triplegLayer);
+      }
+      trip.mapLayer.addTo(map);
+      ui.timeline.generateLastElement(trip);
+    }
 
 
-    var min = new Date(2013, 3, 1); // 1 april
-    var max = new Date(2013, 3, 30, 23, 59, 59); // 30 april
-
-    // Configuration for the Timeline
-    var options = {
-        editable: true,
-        onAdd: function (item, callback) {
-            item.content = prompt('Enter new transportation mode:', item.content);
-            if (item.content != null) {
-                var newDate = new Date();
-                newDate.setTime(item.start.getTime() + 60*60*1000);
-                item.end = newDate;
-                callback(item); // send back adjusted new item
-            }
-            else {
-                callback(null); // cancel item creation
-            }
-        },
-
-        onMove: function (item, callback) {
-            if (confirm('Do you want to change the time to\n' +
-                'start: ' + item.start + '\n' +
-                'end: ' + item.end + '?')) {
-                callback(item); // send back item as confirmation (can be changed)
-            }
-            else {
-                callback(null); // cancel editing item
-            }
-        },
-
-        onMoving: function (item, callback) {
-            if (item.start < min) item.start = min;
-            if (item.start > max) item.start = max;
-
-            callback(item); // send back the (possibly) changed item
-        },
-
-        onUpdate: function (item, callback) {
-            item.content = prompt('Change transportation mode:', item.content);
-            if (item.content != null) {
-                callback(item); // send back adjusted item
-            }
-            else {
-                callback(null); // cancel updating the item
-            }
-        },
-
-        onRemove: function (item, callback) {
-            if (confirm('Delete segment' + item.content + '?')) {
-                callback(item); // confirm deletion
-            }
-            else {
-                callback(null); // cancel deletion
-            }
-        }
-        *//* alternatively, enable/disable individual actions:
-
-         editable: {
-         add: true,
-         updateTime: true,
-         updateGroup: true,
-         remove: true
-         },
-
-         *//*
-    };
-
-    // Create a Timeline
-    var timeline = new vis.Timeline(container, data, options);*/
 
     /**
      *
@@ -481,11 +442,6 @@ app.controller('aboutCtrl', function($scope, $rootScope, $http, $location, trans
 
 
 app.controller('statisticsCtrl',function($scope, $rootScope, $http, $location, translationService) {
-    /*if (getLanguage()=="en")
-        document.getElementById('assistant')
-    else
-        var assistantHelper = document.getElementById('assistantSv');
-    assistantHelper.style.visibility = "hidden";*/
 
     $rootScope.translate = function(){
         translationService.getTranslation($rootScope, $scope.selectedLanguage);

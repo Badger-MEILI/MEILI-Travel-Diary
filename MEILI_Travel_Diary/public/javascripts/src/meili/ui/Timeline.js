@@ -2,7 +2,7 @@
 var Timeline = function(options) {
   var elementId = options.elementId;
 
-
+  var days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
   function onTimeSet(e) {
 
     var $target = $(e.target);
@@ -20,7 +20,7 @@ var Timeline = function(options) {
     newTime.setHours(e.time.hours);
     newTime = newTime.getTime();
 
-    log.info(userId,'changed timepicker start value of tripleg '+tripleg.triplegid+' to '+ newTime);
+    log.info('changed timepicker start value of tripleg '+tripleg.triplegid+' to '+ newTime);
 
     /**
     * CONSEQUENCE 0 - Start time sooner than end time
@@ -83,23 +83,23 @@ var Timeline = function(options) {
    * @param triplegid - the id of the tripleg with which the modes are associated with
    * @returns {string} - outerHTML of the mode selector
    */
-  function getSelector(mode, triplegid){
-      mode.sort(compare);
-      var maxVal = mode[0].accuracy;
+  function getModeSelector(tripleg){
+      var maxVal = tripleg.mode[0].accuracy;
       var classes = 'form-control';
       var options = [];
 
-      if (maxVal<50) {
-          classes += ' form-need-check';
-          options.push('<option lang="en" value="-1" disabled selected style="display:none;">Specify your travel mode</option>');
+      if(maxVal<50) {
+        classes += ' form-need-check';
+        options.push('<option lang="en" value="-1" disabled selected style="display:none;">Specify your travel mode</option>');
       }
 
-      for (var i in mode) {
-          options.push('<option lang="en" value="' + mode[i].id + '">' + mode[i].name + '</option>');
+      for (var i = 0; i < tripleg.mode.length; i++) {
+        var mode = tripleg.mode[i];
+        options.push('<option lang="en" value="' + mode.id + '">' + mode.name + '</option>');
       }
 
       var selector = [
-        '<select id="selectbasic' + triplegid + '" name="selectbasic" class="' + classes + '">',
+        '<select id="selectmode_' + tripleg.getId() + '" name="selectmode" class="' + classes + '">',
           options.join(''),
         '</select>'
       ].join('');
@@ -112,35 +112,37 @@ var Timeline = function(options) {
    * @param tripleg - the tripleg element
    * @returns {string} - outerHTML of the timeline element
    */
-  function getContent(tripleg, isFirst, isLast) {
-      var thisHtml= '<div class="tl-circ" id="telem_circle'+tripleg.triplegid+'" style="cursor:pointer"><span class="glyphicon glyphicon-search"></span></div>';
+  function getContent(tripleg) {
+    var triplegId = tripleg.getId();
+    var thisHtml= '<div class="tl-circ" id="telem_circle'+triplegId+'" style="cursor:pointer"><span class="glyphicon glyphicon-search"></span></div>';
 
-      thisHtml+='<li>';
-      thisHtml+= '<div class="timeline-panel" id="telem'+tripleg.triplegid+'">';
-      thisHtml+= '<div class="tl-heading">';
-      thisHtml+= '<h4>';
-      thisHtml+= getSelector(tripleg.mode, tripleg.triplegid);
-      thisHtml+= '</h4>';
-      thisHtml+= '</div>';
-      thisHtml+= '<div class="tl-body">';
+    thisHtml+='<li>';
+    thisHtml+= '<div class="timeline-panel" id="telem'+triplegId+'">';
+    thisHtml+= '<div class="tl-heading">';
+    thisHtml+= '<h4>';
+    thisHtml+= getModeSelector(tripleg);
+    thisHtml+= '</h4>';
+    thisHtml+= '</div>';
+    thisHtml+= '<div class="tl-body">';
 
-      thisHtml+= '<br>';
-      thisHtml+= '<div class="input-group bootstrap-timepicker">';
-      thisHtml+= 'Start: <input id="timepickerstart_'+tripleg.triplegid+'" class="time-picker start input-small" type="text"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>';
+    thisHtml+= '<br>';
+    thisHtml+= '<div class="input-group bootstrap-timepicker">';
+    thisHtml+= 'Start: <input id="timepickerstart_'+tripleg.getId()+'" class="time-picker start input-small" type="text"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>';
 
 
-      thisHtml+= '</div>';
+    thisHtml+= '</div>';
 
-      thisHtml+= '<p lang="en" style="font-style:italic; cursor: pointer;" id="addtransition'+tripleg.triplegid+'" onclick="generateTransitionPopup(\''+tripleg.triplegid+'\')">Did we miss a transfer? Click to add it.</p>';// <p lang="sv" style="font-style:italic" id="addtransition'+tripleg.triplegid+'" onclick="generateTransitionPopup(\''+tripleg.triplegid+'\')">Har vi missat ett byte? Klicka för att lägga till.</p>';
-      thisHtml+= '<p lang="en" id="distPar'+tripleg.triplegid+'">Distance:'+getDistanceOfTripLeg(tripleg)+'</p>';// <p lang="sv" id="distPar'+tripleg.triplegid+'">Avstånd:'+getDistanceOfTripLeg(tripleg.triplegid)+'</p>';
-      thisHtml+= '<div class="input-group bootstrap-timepicker">'
-      thisHtml+= 'Stop: <input id="timepickerend_'+tripleg.triplegid+'" type="text" class="time-picker end input-small"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>';
-      if (!isLast) thisHtml+= '<hr>';
-      thisHtml+= getTransitionPlace(tripleg, isLast);
-      thisHtml+= getTransitionTime(tripleg, isLast);
-      thisHtml+= '</div>';
+    thisHtml+= '<p lang="en" style="font-style:italic; cursor: pointer;" id="addtransition'+triplegId+'" onclick="generateTransitionPopup(\''+triplegId+'\')">Did we miss a transfer? Click to add it.</p>';// <p lang="sv" style="font-style:italic" id="addtransition'+tripleg.triplegid+'" onclick="generateTransitionPopup(\''+tripleg.triplegid+'\')">Har vi missat ett byte? Klicka för att lägga till.</p>';
+    thisHtml+= '<p lang="en" id="distPar'+triplegId+'">Distance:'+tripleg.getDistance()+'</p>';// <p lang="sv" id="distPar'+tripleg.triplegid+'">Avstånd:'+getDistanceOfTripLeg(tripleg.triplegid)+'</p>';
+    thisHtml+= '<div class="input-group bootstrap-timepicker">'
+    thisHtml+= 'Stop: <input id="timepickerend_'+triplegId+'" type="text" class="time-picker end input-small"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>';
+    if (!tripleg.isLast) thisHtml+= '<hr>';
+    //thisHtml+= getTransitionPlace(tripleg, isLast);
+    console.warn('getTransitionPlace?');
+    thisHtml+= '<p id="transitiontime'+triplegId+'">Transfer time: ' + tripleg.getTransitionTime() + ' min <span class="glyphicon glyphicon-trash" style="float: right;" onclick="mergeWithNext(\''+triplegId+'\')"></span></p>';      
+    thisHtml+= '</div>';
 
-      return thisHtml;
+    return thisHtml;
   };
 
 
@@ -148,22 +150,25 @@ var Timeline = function(options) {
    * Adds listeners to a timeline element associated with a tripleg and checks for consequences of time change
    * @param tripleg - tripleg
    */
-  function addListeners(tripId, tripleg, isFirst, isLast) {
+  function addListeners(tripId, tripleg) {
       var transitionSelectOption = document.getElementById('transitionSelect'+tripleg.triplegid);
 
       if (transitionSelectOption!=null)
           transitionSelectOption.onchange = transitionSelectListener;
 
-      console.log(tripleg.triplegid);
-
-      console.log(tripleg);
-      var initialTime = new Date(tripleg.points[0].time);
-      var endTime = new Date(tripleg.points[tripleg.points.length-1].time);
-      console.log(initialTime);
-      console.log(endTime);
-
-      var selectOption = document.getElementById('selectbasic'+tripleg.triplegid);
-      selectOption.onchange = selectOptionListener;
+      $(('selectmode_'+tripleg.triplegid)).on('change', function(e) {
+        var triplegId = $(e.target).attr('id').split('_')[1];
+        api.triplegs.updateMode(triplegId, this.value)
+          .done(function() {
+            currentTrip.getTriplegById(tripleg.triplegid).updateMode(this.value);
+            log.debug('tripleg mode succefully updated');
+          })
+          .fail(function() {
+            var msg = 'failed to set mode on tripleg';
+            alert(msg);
+            log.error(msg);
+          });
+      });
 
       /********************************************
        * Adding listeners to the timeline elements*
@@ -174,11 +179,10 @@ var Timeline = function(options) {
        */
       $("#telem"+tripleg.triplegid).mouseover(function()
       {
-          var layer = plotlayers[correspondingPolyline[tripleg.triplegid]];
-
-          layer.setStyle({
-              opacity:1
-          });
+        var layer = currentTrip.getTriplegById(tripleg.triplegid).polylineLayer;
+        layer.setStyle({
+            opacity:1
+        });
 
       });
 
@@ -188,7 +192,7 @@ var Timeline = function(options) {
 
       $("#telem"+tripleg.triplegid).mouseout(function()
       {
-          var layer = plotlayers[correspondingPolyline[tripleg.triplegid]];
+          var layer = currentTrip.getTriplegById(tripleg.triplegid).polylineLayer;
           layer.setStyle({
               opacity:0.6
           });
@@ -201,24 +205,21 @@ var Timeline = function(options) {
 
       $("#telem_circle"+tripleg.triplegid).click(function()
       {
-          var layer = plotlayers[correspondingPolyline[tripleg.triplegid]];
+          var layer = currentTrip.getTriplegById(tripleg.triplegid).polylineLayer;
           map.fitBounds(layer.getBounds());
 
-          log.info(userId,'zoomed to layer '+tripleg.triplegid);
+          log.info('zoomed to layer '+tripleg.triplegid);
       });
 
       /**
        * Initialize time pickers
        */
 
-      var initialTime = new Date(tripleg.points[0].time);
-      var endTime = new Date(tripleg.points[tripleg.points.length-1].time);
-
       $('#timepickerstart_'+tripleg.triplegid).timepicker({
           minuteStep: 1,
           showMeridian: false,
           disableMousewheel:false,
-          defaultTime:(initialTime.getHours()<10?'0':'')+initialTime.getHours()+":"+(initialTime.getMinutes()<10?'0':'')+initialTime.getMinutes()
+          defaultTime: tripleg.getStartTime(true)
       }).on('hide.timepicker', onTimeSet);
 
 
@@ -226,7 +227,7 @@ var Timeline = function(options) {
           minuteStep: 1,
           showMeridian: false,
           disableMousewheel:false,
-          defaultTime: (endTime.getHours()<10?'0':'') +endTime.getHours()+":"+(endTime.getMinutes()<10?'0':'')+endTime.getMinutes()
+          defaultTime: tripleg.getEndTime(true)
       }).on('hide.timepicker', onTimeSet);
 
 
@@ -271,10 +272,8 @@ var Timeline = function(options) {
             thisHtml += '</div>';
             thisHtml += '</li>';
 
-            var previousTripEndDateLocal = days[new Date(previousTripEndDate).getDay()]+", "+new Date(previousTripEndDate).format("Y-m-d");
-            var previousTripEndDateLocalSv = days_sv[new Date(previousTripEndDate).getDay()]+", "+new Date(previousTripEndDate).format("Y-m-d");
-
-            var previousTripEndHour = new Date(previousTripEndDate).format("H:i");
+            var previousTripEndDateLocal = moment(previousTripEndDate).format('dddd')+", "+moment(previousTripEndDate).format("YY-MM-DD");
+            var previousTripEndHour = moment(previousTripEndDate).format('hh:ss');
 
             /* Add previous trip ended panel*/
             thisHtml += '<li>';
@@ -306,9 +305,8 @@ var Timeline = function(options) {
             thisHtml += '</li>';
         }
         /* Add started trip info */
-        var currentTripStartDateLocal = days[new Date(currentTripStartDate).getDay()]+", "+new Date(currentTripStartDate).format("Y-m-d");
-        var currentTripStartDateLocalSv = days_sv[new Date(currentTripStartDate).getDay()]+", "+new Date(currentTripStartDate).format("Y-m-d");
-        var currentTripStartHour = new Date(currentTripStartDate).format("H:i");
+        var currentTripStartDateLocal = moment(previousTripEndDate).format('dddd')+", "+moment(currentTripStartDate).format("YY-MM-DD");
+        var currentTripStartHour = moment(currentTripStartDate).format("hh:ss");
 
         thisHtml+='<li>';
         thisHtml+='<div class="tldate" id="tldatefirst" style="width:330px"><p lang="en" id="tldatefirstassociatedparagraph"><span class="glyphicon glyphicon-flag"></span>('+currentTripStartDateLocal  +') '+currentTripStartHour+' - Started trip</p>';// <p id="tldatefirstassociatedparagraphsv" lang="sv"><span class="glyphicon glyphicon-flag"></span>('+currentTripStartDateLocalSv  +') '+currentTripStartHour+' - Påbörjade förflyttning</p>';
@@ -349,10 +347,9 @@ var Timeline = function(options) {
         minutes = minutes < 10 ? '0'+minutes : minutes;
         seconds = seconds < 10 ? '0'+seconds : seconds;
 
-        var currentTripEndDateLocal = days[new Date(currentTripEndDate).getDay()]+", "+new Date(currentTripEndDate).format("Y-m-d");
-        var currentTripEndDateLocalSv = days_sv[new Date(currentTripEndDate).getDay()]+", "+new Date(currentTripEndDate).format("Y-m-d");
+        var currentTripEndDateLocal = moment(currentTripEndDate).format('dddd')+", "+moment(currentTripEndDate).format("YY-MM-DD");
 
-        var currentTripEndDateHour = new Date(currentTripEndDate).format("H:i");
+        var currentTripEndDateHour = moment(currentTripEndDate).format("hh:ss");
 
         var thisHtml = '<li><div class="tldate" id="tldatelast" style="width: 350px;">';
         thisHtml += '<p id="tldatelastassociatedparagraph" lang="en"> <span class="glyphicon glyphicon-flag"> </span>('+currentTripEndDateLocal  +') '+currentTripEndDateHour+' - Ended trip</p>';
@@ -377,8 +374,8 @@ var Timeline = function(options) {
             thisHtml += '<p id="tldatelastparagraph"><small class="text-muted"><i class="glyphicon glyphicon-time"></i> '+(currentTripEndDate.getHours()<10?'0':'')+currentTripEndDate.getHours()+':'+(currentTripEndDate.getMinutes()<10?'0':'')+currentTripEndDate.getMinutes()+' - '+(nextTripStartDate.getHours()<10?'0':'')+nextTripStartDate.getHours()+':'+(nextTripStartDate.getMinutes()<10?'0':'')+nextTripStartDate.getMinutes()+'</small></p>';
             thisHtml += '</div>';
             thisHtml += '<div class="tl-body">';
-                thisHtml += '<p lang="en">Place: '+getPlaceSelector(places)+'</p>';
-                  thisHtml += '<p lang="en">Purpose: '+getPurposeSelector(purposes)+'</p>';
+  //              thisHtml += '<p lang="en">Place: '+getPlaceSelector(places)+'</p>';
+  //               thisHtml += '<p lang="en">Purpose: '+getPurposeSelector(purposes)+'</p>';
                thisHtml += '<p lang="en" id="lasttimeend">Time: '+hoursDiff+' hours</p>';
             thisHtml += '</div>';
             thisHtml += '</div>';
@@ -398,8 +395,8 @@ var Timeline = function(options) {
             thisHtml += '<p id="tldatelastparagraph"><small class="text-muted"><i class="glyphicon glyphicon-time"></i> '+(currentTripEndDate.getHours()<10?'0':'')+currentTripEndDate.getHours()+':'+(currentTripEndDate.getMinutes()<10?'0':'')+currentTripEndDate.getMinutes()+'</small></p>';
             thisHtml += '</div>';
             thisHtml += '<div class="tl-body">';
-               thisHtml += '<p lang="en">Place: '+getPlaceSelector(places)+'</p>';
-                  thisHtml += '<p lang="en">Purpose: '+getPurposeSelector(purposes)+'</p>';
+   //            thisHtml += '<p lang="en">Place: '+getPlaceSelector(places)+'</p>';
+   //              thisHtml += '<p lang="en">Purpose: '+getPurposeSelector(purposes)+'</p>';
               thisHtml += '</div>';
             thisHtml += '</div>';
             thisHtml += '</li>';
@@ -417,7 +414,7 @@ var Timeline = function(options) {
          * NO LISTENERS YET
          */
 
-        var processNext = document.getElementById('processNext');
+    /*    var processNext = document.getElementById('processNext');
 
         if (processNext!=null)
             processNext.onclick = nextFunction;
@@ -427,29 +424,32 @@ var Timeline = function(options) {
 
         var selectPurposeOption = document.getElementById('purposeSelect');
         selectPurposeOption.onchange = purposeSelectListener;
+      */
     },
 
     /**
      * Appends the timeline element of a tripleg to the timeline list and adds its listeners
      * @param tripleg - the tripleg element
      */
-    generateElement: function(tripId, tripleg, isFirst, isLast) {
+    generateElement: function(tripId, tripleg) {
 
-      if (tripleg.type_of_tripleg == 1){
+      if (tripleg.getType() == 1){
         var ul = document.getElementById(elementId);
         var li = document.createElement("li");
-        li.id = "listItem"+tripleg.triplegid;
-        var thisHtml = getContent(tripleg, isLast);
+        li.id = "listItem"+tripleg.getId();
+        var thisHtml = getContent(tripleg);
 
-        thisHtml+=generateModal(tripleg.triplegid, isFirst, isLast);
+        console.warn('generateModal?');
+        //thisHtml+=generateModal(tripleg.triplegid, isFirst, isLast);
 
-        if(getTransitionPanel(tripleg, isLast)!=undefined)
-            thisHtml+= getTransitionPanel(tripleg, isLast);
+        console.warn('getTransitionPanel?');
+        //if(getTransitionPanel(tripleg, isLast)!=undefined)
+        //    thisHtml+= getTransitionPanel(tripleg, isLast);
 
         li.innerHTML = thisHtml;
 
         ul.appendChild(li);
-        addListeners(tripId, tripleg, isFirst, isLast);
+        addListeners(tripId, tripleg);
       }
     },
 
