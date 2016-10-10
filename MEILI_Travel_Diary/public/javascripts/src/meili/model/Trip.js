@@ -23,13 +23,13 @@ Trip.prototype = {
       newTriplegs[i] = new Tripleg(newTriplegs[i]);
     };
     this.triplegs = newTriplegs;
-    this.emit('triplegs-update', this.triplegs);
+    this.emit('triplegs-update', this);
     return this.triplegs;
   },
 
   removeTriplegs: function() {
     this._reset
-    this.emit('triplegs-remove', this.triplegs);
+    this.emit('triplegs-remove', this);
     this.triplegs = [];
     return this;
   },
