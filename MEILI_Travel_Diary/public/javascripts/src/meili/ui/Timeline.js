@@ -112,37 +112,37 @@ var Timeline = function(options) {
    * @param tripleg - the tripleg element
    * @returns {string} - outerHTML of the timeline element
    */
-  function getContent(tripleg, isFirst, isLast) {
+  function getContent(tripleg) {
     var triplegId = tripleg.getId();
-      var thisHtml= '<div class="tl-circ" id="telem_circle'+triplegId+'" style="cursor:pointer"><span class="glyphicon glyphicon-search"></span></div>';
+    var thisHtml= '<div class="tl-circ" id="telem_circle'+triplegId+'" style="cursor:pointer"><span class="glyphicon glyphicon-search"></span></div>';
 
-      thisHtml+='<li>';
-      thisHtml+= '<div class="timeline-panel" id="telem'+triplegId+'">';
-      thisHtml+= '<div class="tl-heading">';
-      thisHtml+= '<h4>';
-      thisHtml+= getModeSelector(tripleg);
-      thisHtml+= '</h4>';
-      thisHtml+= '</div>';
-      thisHtml+= '<div class="tl-body">';
+    thisHtml+='<li>';
+    thisHtml+= '<div class="timeline-panel" id="telem'+triplegId+'">';
+    thisHtml+= '<div class="tl-heading">';
+    thisHtml+= '<h4>';
+    thisHtml+= getModeSelector(tripleg);
+    thisHtml+= '</h4>';
+    thisHtml+= '</div>';
+    thisHtml+= '<div class="tl-body">';
 
-      thisHtml+= '<br>';
-      thisHtml+= '<div class="input-group bootstrap-timepicker">';
-      thisHtml+= 'Start: <input id="timepickerstart_'+tripleg.getId()+'" class="time-picker start input-small" type="text"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>';
+    thisHtml+= '<br>';
+    thisHtml+= '<div class="input-group bootstrap-timepicker">';
+    thisHtml+= 'Start: <input id="timepickerstart_'+tripleg.getId()+'" class="time-picker start input-small" type="text"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>';
 
 
-      thisHtml+= '</div>';
+    thisHtml+= '</div>';
 
-      thisHtml+= '<p lang="en" style="font-style:italic; cursor: pointer;" id="addtransition'+triplegId+'" onclick="generateTransitionPopup(\''+triplegId+'\')">Did we miss a transfer? Click to add it.</p>';// <p lang="sv" style="font-style:italic" id="addtransition'+tripleg.triplegid+'" onclick="generateTransitionPopup(\''+tripleg.triplegid+'\')">Har vi missat ett byte? Klicka för att lägga till.</p>';
-      thisHtml+= '<p lang="en" id="distPar'+triplegId+'">Distance:'+tripleg.getDistance()+'</p>';// <p lang="sv" id="distPar'+tripleg.triplegid+'">Avstånd:'+getDistanceOfTripLeg(tripleg.triplegid)+'</p>';
-      thisHtml+= '<div class="input-group bootstrap-timepicker">'
-      thisHtml+= 'Stop: <input id="timepickerend_'+triplegId+'" type="text" class="time-picker end input-small"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>';
-      if (!isLast) thisHtml+= '<hr>';
-      //thisHtml+= getTransitionPlace(tripleg, isLast);
-      console.warn('getTransitionPlace?');
-      thisHtml+= '<p id="transitiontime'+triplegId+'">Transfer time: ' + tripleg.getTransitionTime() + ' min <span class="glyphicon glyphicon-trash" style="float: right;" onclick="mergeWithNext(\''+triplegId+'\')"></span></p>';      
-      thisHtml+= '</div>';
+    thisHtml+= '<p lang="en" style="font-style:italic; cursor: pointer;" id="addtransition'+triplegId+'" onclick="generateTransitionPopup(\''+triplegId+'\')">Did we miss a transfer? Click to add it.</p>';// <p lang="sv" style="font-style:italic" id="addtransition'+tripleg.triplegid+'" onclick="generateTransitionPopup(\''+tripleg.triplegid+'\')">Har vi missat ett byte? Klicka för att lägga till.</p>';
+    thisHtml+= '<p lang="en" id="distPar'+triplegId+'">Distance:'+tripleg.getDistance()+'</p>';// <p lang="sv" id="distPar'+tripleg.triplegid+'">Avstånd:'+getDistanceOfTripLeg(tripleg.triplegid)+'</p>';
+    thisHtml+= '<div class="input-group bootstrap-timepicker">'
+    thisHtml+= 'Stop: <input id="timepickerend_'+triplegId+'" type="text" class="time-picker end input-small"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>';
+    if (!tripleg.isLast) thisHtml+= '<hr>';
+    //thisHtml+= getTransitionPlace(tripleg, isLast);
+    console.warn('getTransitionPlace?');
+    thisHtml+= '<p id="transitiontime'+triplegId+'">Transfer time: ' + tripleg.getTransitionTime() + ' min <span class="glyphicon glyphicon-trash" style="float: right;" onclick="mergeWithNext(\''+triplegId+'\')"></span></p>';      
+    thisHtml+= '</div>';
 
-      return thisHtml;
+    return thisHtml;
   };
 
 
@@ -150,7 +150,7 @@ var Timeline = function(options) {
    * Adds listeners to a timeline element associated with a tripleg and checks for consequences of time change
    * @param tripleg - tripleg
    */
-  function addListeners(tripId, tripleg, isFirst, isLast) {
+  function addListeners(tripId, tripleg) {
       var transitionSelectOption = document.getElementById('transitionSelect'+tripleg.triplegid);
 
       if (transitionSelectOption!=null)
@@ -431,13 +431,13 @@ var Timeline = function(options) {
      * Appends the timeline element of a tripleg to the timeline list and adds its listeners
      * @param tripleg - the tripleg element
      */
-    generateElement: function(tripId, tripleg, isFirst, isLast) {
+    generateElement: function(tripId, tripleg) {
 
-      if (tripleg.type_of_tripleg == 1){
+      if (tripleg.getType() == 1){
         var ul = document.getElementById(elementId);
         var li = document.createElement("li");
-        li.id = "listItem"+tripleg.triplegid;
-        var thisHtml = getContent(tripleg, isLast);
+        li.id = "listItem"+tripleg.getId();
+        var thisHtml = getContent(tripleg);
 
         console.warn('generateModal?');
         //thisHtml+=generateModal(tripleg.triplegid, isFirst, isLast);
@@ -449,7 +449,7 @@ var Timeline = function(options) {
         li.innerHTML = thisHtml;
 
         ul.appendChild(li);
-        addListeners(tripId, tripleg, isFirst, isLast);
+        addListeners(tripId, tripleg);
       }
     },
 
