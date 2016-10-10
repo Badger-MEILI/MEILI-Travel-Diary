@@ -326,6 +326,7 @@ app.controller('MapCtrl',function($scope, $rootScope, $http, $location, $anchorS
             ui.map.init(CONFIG.map, userId);
 
             renderTrip(currentTrip);
+            map.fitBounds(currentTrip.mapLayer.getBounds());
 /*
             var assistantHelper = document.getElementById('assistant');
             assistantHelper.style.visibility = "visible";
@@ -360,9 +361,6 @@ app.controller('MapCtrl',function($scope, $rootScope, $http, $location, $anchorS
         trip.mapLayer.addLayer(triplegLayer);
       }
       trip.mapLayer.addTo(map);
-      if (isFirst){
-          map.fitBounds(trip.mapLayer.getBounds());
-      }
       ui.timeline.generateLastElement(trip);
     }
 
