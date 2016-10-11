@@ -1,36 +1,31 @@
-<!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <title>Test</title>
-  <link rel="stylesheet" media="all" href="../node_modules/mocha/mocha.css">
-</head>
-<body>
+  <head>
+    <meta charset="utf-8">
+    <!-- encoding must be set for mocha's special characters to render properly -->
+    <link rel="stylesheet" media="all" href="../node_modules/mocha/mocha.css">
+  </head>
+  <body>
+    <div id="mocha"></div>
+    <script src="../node_modules/mocha/mocha.js"></script>
+    <script src="../node_modules/chai/chai.js"></script>
+    <script>
+      mocha.ui('bdd')
+      expect = chai.expect
+    </script>
 
-  <div id="mocha"><p><a href=".">Index</a></p></div>
-  <div id="messages"></div>
-  <div id="fixtures"></div>
 
-  <script src="../node_modules/mocha/mocha.js"></script>
-  <script src="../node_modules/chai/chai.js"></script>
-  <script>mocha.setup('bdd')</script>
+    <script type="text/javascript" src="../public/javascripts/lib/jquery.js"></script>
+    <script type="text/javascript" src="../public/javascripts/lib/leaflet_1.0.0/leaflet.js"></script>
 
-  <script type="text/javascript" src="../public/javascripts/lib/jquery.js"></script>
-  <script type="text/javascript" src="../public/javascripts/lib/leaflet_1.0.0/leaflet.js"></script>
-  <script src="../public/javascripts/src/config.js"></script>
-  <script src="../public/javascripts/src/meili/Request.js"></script>
-  <script src="../public/javascripts/src/meili/Api.js"></script>
+    <script src="../public/javascripts/src/config.js"></script>
+    <script src="../public/javascripts/src/meili/Log.js"></script>
+    <script src="../public/javascripts/src/meili/Request.js"></script>
+    <script src="../public/javascripts/src/meili/Api.js"></script>
 
-  <script src="client_test.js"></script>
+    <script src="client_integration_test.js"></script>
 
-  <script>
-    $.ajax({
-      url: 'http://localhost:3000/users/login',
-      method: 'GET',
-      data: {username: "adi@kth.se", password: "adi", cache: true}
-    }).done(function() {
-      mocha.run();
-    });
-  </script>
-</body>
+    <script>
+      mocha.run()
+    </script>
+  </body>
 </html>
