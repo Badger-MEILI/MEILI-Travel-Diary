@@ -267,8 +267,8 @@ var currentTrip;
 var log         = Log(CONFIG);
 var api         = Api(CONFIG);
 var ui          = {
-  map: Map(),
-  timeline: Timeline({ elementId: 'timeline'})
+  map: new LMap(),
+  timeline: new Timeline({ elementId: 'timeline'})
 };
 
 app.controller('MapCtrl',function($scope, $rootScope, $http, $location, $anchorScroll, translationService) {

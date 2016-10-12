@@ -1,6 +1,9 @@
 
-var Map = function() {
-  return {
+var LMap = LMap || function() {
+  return this;
+};
+
+LMap.prototype = {
 
   /**
    * Populates layers - gets called on new trip only
@@ -29,7 +32,5 @@ var Map = function() {
       map.setView(mapConfig.start.center, mapConfig.zoom);
 
     }
-
-  };
 
 };
