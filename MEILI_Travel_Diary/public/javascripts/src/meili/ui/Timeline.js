@@ -12,72 +12,27 @@ Timeline.prototype = {
   _onTimeSet: function(e) {
 
     var $target = $(e.target);
-    debugger;
-    var triplegId = parseInt($target.attr('id').split('_')[1],10);
-    var tripId = parseInt($target.attr('trip-id'));
-    var newTime = e.timeStamp;
+    var triplegId = parseInt($target.attr('tripleg-id'), 10);
+    var initialTime = parseInt($target.attr('initial-time'), 10);
+    var initialTimeDate = new Date(initialTime);
+
+    var newTime = new Date(initialTime);
+    newTime.setMinutes(e.time.minutes);
+    newTime.setHours(e.time.hours);
+    newTime = newTime.getTime();
 
     log.info('changed timepicker start value of tripleg '+ triplegId +' to '+ newTime);
 
-    /**
-    * CONSEQUENCE 0 - Start time sooner than end time
-    */
-
-    function resetTimePicker(target, time) {
-      $(target).timepicker('setTime', initialTimeDate.getHours()+":"+initialTimeDate.getMinutes());
+    if(initialTime != newTime) {
+      if ($target.hasClass('start')) {
+        this.emit('start-time-change', triplegId, newTime);
+      } else if($target.hasClass('end')) {
+        this.emit('end-time-change', triplegId, newTime);
+      }
+    } else {
+      $target.timepicker('setTime', initialTimeDate.getHours()+":"+initialTimeDate.getMinutes());
     }
 
-    if ($target.hasClass('start')) {
-      this.emit('start-time-change', triplegId, newTime);
-    } else if($target.hasClass('end')) {
-      this.emit('end-time-change', triplegId, newTime);
-    }
-/*
-    if ($target.hasClass('start')) {
-        // New time should be allowed outside of the bounds of start time and end time
-        // -> operations on the first and last triplegs point to trip api endpoints, other on tripleg api endpoints
-
-        // !TODO fix separation of first and last in a better way
-        if($target.hasClass('first')) {
-
-           api.trips.updateStartTime(tripId, newTime)
-            .done(function(result) {
-              currentTrip.updateTriplegs(result.triplegs);
-            })
-            .fail(function() {
-              resetTimePicker(e.target, initialTimeDate);
-            });
-        } else {
-          api.triplegs.updateStartTime(tripleg.triplegid, newTime)
-            .done(function(result) {
-              currentTrip.updateTriplegs(result.triplegs);
-            })
-            .fail(function() {
-              resetTimePicker(e.target, initialTimeDate);
-            });
-        }
-
-    } else if($target.hasClass('end')) {
-        // New time should be allowed outside of the bounds of start time and end time
-        // -> operations on the first and last triplegs point to trip api endpoints, other on tripleg api endpoints
-        if($target.hasClass('last')) {
-           api.trips.updateEndTime(tripId, newTime)
-            .done(function(result) {
-              currentTrip.updateTriplegs(result.triplegs);
-            })
-            .fail(function() {
-              resetTimePicker(e.target, initialTimeDate);
-            });
-        } else {
-          api.triplegs.updateEndTime(tripleg.triplegid, newTime)
-            .done(function(triplegs) {
-              currentTrip.updateTriplegs(result.triplegs);
-            })
-            .fail(function() {
-              resetTimePicker(e.target, initialTimeDate);
-            });
-        }
-    }*/
     e.preventDefault();
   },
 
