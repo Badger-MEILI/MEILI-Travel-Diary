@@ -304,36 +304,35 @@ app.controller('MapCtrl',function($scope, $rootScope, $http, $location, $anchorS
     //initmap($scope.userId);
     var userId = $scope.userId;
 
+    var user = new User(userId);
 
 
-    api.trips.getNumberOfTrips(userId)
+    user.getNumberOfTrips(userId)
       .done(function(result) {
         document.getElementById('tripsLeft').innerHTML = result.rows[0].user_get_badge_trips_info;
         document.getElementById('badge_holder').style.visibility = "visible";
     });
 
-    api.trips.getLast(userId)
+    user.getLastTrip()
       .done(function(trip) {
-        api.triplegs.get(trip.trip_id)
-          .done(function(result) {
-            var triplegsOfCurrentTrip = result.triplegs;
-            currentTrip = new Trip(trip, triplegsOfCurrentTrip);
-            // TODO move me
-            currentTrip.on('triplegs-update', function(currentTrip) {
-              renderTrip(currentTrip);
-            });
-
-            ui.map.init(CONFIG.map, userId);
-
-            renderTrip(currentTrip);
-            map.fitBounds(currentTrip.mapLayer.getBounds());
-/*
-            var assistantHelper = document.getElementById('assistant');
-            assistantHelper.style.visibility = "visible";
-            assistantHelper.addEventListener("click", enablingListener);
-
-            enableMapScrolling();*/
+        // TODO move me
+        trip.on('triplegs-update', function(trip) {
+          renderTrip(trip);
         });
+
+        ui.timeline.on('start-time-change', trip.updateStartTime.bind(trip));
+        ui.timeline.on('end-time-change',   trip.updateEndTime.bind(trip));
+
+        ui.map.init(CONFIG.map, userId);
+
+        renderTrip(trip);
+        map.fitBounds(trip.mapLayer.getBounds());
+/*
+        var assistantHelper = document.getElementById('assistant');
+        assistantHelper.style.visibility = "visible";
+        assistantHelper.addEventListener("click", enablingListener);
+
+        enableMapScrolling();*/
       })
       .fail(function() {
         alert('Please come back later, there are not enough trips to show you yet');

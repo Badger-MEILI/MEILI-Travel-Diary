@@ -2,7 +2,9 @@
 var Trip = Trip || function(trip, triplegs) {
   Emitter($.extend(this, trip));
   this.mapLayer = L.featureGroup();
-  this.updateTriplegs(triplegs);
+  if(triplegs) {
+    this.updateTriplegs(triplegs);
+  }
 
   return this;
 };
@@ -65,5 +67,42 @@ Trip.prototype = {
       }
     }
     return null;
+  },
+
+  _updateTime: function(timeToUpdate, triplegId, newTime) {
+    var dfd = $.Deferred();
+    var tripleg = this.getTriplegById(triplegId);
+    if(tripleg) {
+      var apiEndPoint = api.triplegs;
+      var id = tripleg.getId();
+      // If this is is the first tripleg do operations on trip
+      if(tripleg.isFirst) {
+        apiEndPoint = api.trips;
+        id = this.getId();
+      }
+
+      apiEndPoint[timeToUpdate](id, newTime)
+        .done(function(result) {
+          this.updateTriplegs(result.triplegs);
+          dfd.resolve(this.triplegs);
+        }.bind(this))
+        .fail(function(err) {
+          dfd.reject(err);
+        });
+
+    } else {
+      var msg = 'Tripleg ' + triplegId + ' not found on trip' + this.getId();
+      log.error(msg);
+      dfd.reject(msg);
+    }
+    return dfd.promise();
+  },
+
+  updateStartTime: function(triplegId, newTime) {
+    return this._updateTime('updateStartTime', triplegId, newTime);
+  },
+
+  updateEndTime: function(triplegId, newTime) {
+    return this._updateTime('updateEndTime', triplegId, newTime);
   }
 };

@@ -38,7 +38,7 @@ router.get("/getTriplegsOfTrip", function(req,res){
         var prioryQuery = apiClient.query(sqlQuery);
 
         prioryQuery.on('row', function (row) {
-                results. triplegs = row.pagination_get_triplegs_of_trip;
+            results.triplegs = row.pagination_get_triplegs_of_trip || [];
         });
 
         prioryQuery.on('error', function (row) {
@@ -47,8 +47,8 @@ router.get("/getTriplegsOfTrip", function(req,res){
         });
 
         prioryQuery.on('end', function () {
-            if (results.triplegs.length>0)
-            return res.json(results);
+            if (results.triplegs.length > 0)
+                return res.json(results);
             else {
                 res.status(500);
                 res.send("Trip id does not exist");

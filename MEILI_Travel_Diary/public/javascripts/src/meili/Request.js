@@ -4,6 +4,7 @@ var Request = function(config) {
   var doRequest = function(options) {
     var dfd = $.Deferred();
     log.debug('Sending', options.method, 'request to', options.url)
+    log.error(options);
     $.ajax(options)
     .done(function(result) {
       if(result) {
@@ -15,7 +16,7 @@ var Request = function(config) {
     })
     .fail(function(jqXHR, textStatus, errorThrown) {
       // !TODO handle error and tell user
-      log.error('XHR FAIL', textStatus);
+      log.error('XHR FAIL', textStatus, errorThrown);
       dfd.reject(textStatus);
     });
     return dfd.promise();
