@@ -101,35 +101,41 @@ Timeline.prototype = {
       classes.push('last')
     }
 
-    var thisHtml= '<div class="tl-circ" id="telem_circle'+triplegId+'" style="cursor:pointer"><span class="glyphicon glyphicon-search"></span></div>';
+    var contentHtml = [
+      '<div class="tl-circ" id="telem_circle'+triplegId+'" style="cursor:pointer"><span class="glyphicon glyphicon-search"></span></div>',
 
-    thisHtml+='<li>';
-    thisHtml+= '<div class="timeline-panel" id="telem'+triplegId+'">';
-    thisHtml+= '<div class="tl-heading">';
-    thisHtml+= '<h4>';
-    thisHtml+= this._getModeSelector(tripleg);
-    thisHtml+= '</h4>';
-    thisHtml+= '</div>';
-    thisHtml+= '<div class="tl-body">';
+      '<li>',
+        '<div class="timeline-panel" id="telem'+triplegId+'">',
+          '<div class="tl-heading">',
+            '<h4>',
+              this._getModeSelector(tripleg),
+            '</h4>',
+          '</div>',
+          '<div class="tl-body">',
 
-    thisHtml+= '<br>';
-    thisHtml+= '<div class="input-group bootstrap-timepicker">';
-    thisHtml+= 'Start: <input id="timepickerstart_'+triplegId+'" initial-time="' + tripleg.start_time + '" tripleg-id=" '+tripleg.getId()+' " class="time-picker start input-small ' + classes.join(' ') + '" type="text"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>';
+            '<br>',
+            '<label for="timepickerstart_'+triplegId+'">Start:</label>',
+            '<div class="input-group bootstrap-timepicker timepicker">',
+              '<input id="timepickerstart_'+triplegId+'" initial-time="' + tripleg.start_time + '" tripleg-id=" '+tripleg.getId()+' " class="form-control time-picker start input-small ' + classes.join(' ') + '" type="text"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>',
+            '</div>',
 
+            '<a class="add-transition btn btn-default" href="#" role="button" tripleg-id="' + triplegId + '"><i class="glyphicon glyphicon-transfer"></i> Did we miss a transfer? Click to add it. </a>',
 
-    thisHtml+= '</div>';
+            '<p lang="en" class="distance">Distance:' + tripleg.getDistance() + '</p>',
 
-    thisHtml+= '<p lang="en" style="font-style:italic; cursor: pointer;" tripleg-id="' + triplegId + '" class="add-transition">Did we miss a transfer? Click to add it.</p>';// <p lang="sv" style="font-style:italic" id="addtransition'+tripleg.triplegid+'" onclick="generateTransitionPopup(\''+tripleg.triplegid+'\')">Har vi missat ett byte? Klicka för att lägga till.</p>';
-    thisHtml+= '<p lang="en" id="distPar'+triplegId+'">Distance:'+tripleg.getDistance()+'</p>';// <p lang="sv" id="distPar'+tripleg.triplegid+'">Avstånd:'+getDistanceOfTripLeg(tripleg.triplegid)+'</p>';
-    thisHtml+= '<div class="input-group bootstrap-timepicker">'
-    thisHtml+= 'Stop: <input id="timepickerend_'+triplegId+'" trip-id="' + tripId + '" type="text" class="time-picker end input-small ' + classes.join(' ') + '"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>';
-    if (!tripleg.isLast) thisHtml+= '<hr>';
-    //thisHtml+= getTransitionPlace(tripleg, isLast);
+            '<label for="timepickerstart_'+triplegId+'">Stop:</label>',
+            '<div class="input-group bootstrap-timepicker timepicker">',
+              '<input id="timepickerend_'+triplegId+'" trip-id="' + tripId + '" type="text" class="time-picker end form-control input-small ' + classes.join(' ') + '"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>',
+            '</div>',
+            //if (!tripleg.isLast) '<hr>',
+            //getTransitionPlace(tripleg, isLast),
+            tripleg.getTransitionTime() ? '<p id="transitiontime'+triplegId+'">Transfer time: ' + tripleg.getTransitionTime() + ' min <span class="glyphicon glyphicon-trash" style="float: right;" onclick="mergeWithNext(\''+triplegId+'\')"></span></p>' : '',
+          '</div>',
+        '</div>',
+      '</li>'
+    ];
     console.warn('getTransitionPlace?');
-    thisHtml+= '<p id="transitiontime'+triplegId+'">Transfer time: ' + tripleg.getTransitionTime() + ' min <span class="glyphicon glyphicon-trash" style="float: right;" onclick="mergeWithNext(\''+triplegId+'\')"></span></p>';      
-    thisHtml+= '</div>';
-
-    return thisHtml;
+    return contentHtml.join('');
   },
 
   _addTime: function(time, hoursMinutes) {
@@ -170,6 +176,8 @@ Timeline.prototype = {
         var triplegId = parseInt($(e.target).attr('tripleg-id'), 10);
         var tripleg = this.trip.getTriplegById(triplegId);
         this.openTransitionChoiceModal(tripleg);
+        e.preventDefault();
+        return false;
       }.bind(this));
 
       $('#'+this.elementId).on('click','.transition-accept', function(e) {
@@ -454,7 +462,7 @@ Timeline.prototype = {
 
       console.warn('getTransitionPanel?');
       //if(getTransitionPanel(tripleg, isLast)!=undefined)
-      //    thisHtml+= getTransitionPanel(tripleg, isLast);
+      //    getTransitionPanel(tripleg, isLast);
 
       li.innerHTML = thisHtml;
 
@@ -521,12 +529,14 @@ Timeline.prototype = {
 
             '<br>',
 
-            '<div class="input-group bootstrap-timepicker">',
-              'Start of transfer: <input id="timepicker-start-transition" type="text" class="input-small"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>',
+            '<label for="timepicker-start-transition">Start of transfer:</label>',
+            '<div class="input-group bootstrap-timepicker timepicker">',
+              '<input id="timepicker-start-transition" type="text" class="form-control input-small"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>',
             '</div>',
 
-            '<div class="input-group bootstrap-timepicker">',
-              'Stop of tranfer: <input id="timepicker-stop-transition" type="text" class="input-small"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>',
+            '<label for="timepicker-stop-transition">Stop of tranfer:</label>',
+            '<div class="input-group bootstrap-timepicker timepicker">',
+              '<input id="timepicker-stop-transition" type="text" class="form-control input-small"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>',
             '</div>',
 
             '<button type="button" class="transition-accept btn btn-default center-block" style="width:48%; display:inline-block; margin-left:5px">Accept</button>',

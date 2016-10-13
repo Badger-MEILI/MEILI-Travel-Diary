@@ -40,6 +40,10 @@
 }
 
 
+.modal-content {
+    padding: 20px;
+}
+
 /*Only login styling src= http://bootsnipp.com/snippets/featured/google-style-login */
 
 .form-signin
@@ -172,6 +176,7 @@ PLUS SYMBOL
     color:#000000;
 }
 
+
 .timeline .form-control{
     margin: 0;
     color: #c25b4e;
@@ -291,17 +296,8 @@ IMPORTANT IMPLEMENT FOR SMARTPHONE A SET OF RULES**/
     font-weight: normal;
 }
 
-.timeline li .timeline-panel:hover .bootstrap-timepicker{
-    font-weight: bold;
-}
-
-.timeline li .timeline-panel:hover .glyphicon{
-    font-weight: bold;
-}
-
-.timeline li .timeline-panel:hover .form-control{
-    -webkit-appearance: menulist;
-    border: 1px solid #cccccc;
+.timeline li .timeline-panel:hover {
+    background-color: #eee;
 }
 
 /* END OF IMPORTANT IMPLEMENT FOR SMARTPHONE A SET OF RULES**/
