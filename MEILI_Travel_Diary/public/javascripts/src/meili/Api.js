@@ -88,7 +88,20 @@ var Api = function(config) {
         );
       },
 
-      delete: function() {}
+      delete: function() {},
+
+      insertTransitionBetweenTriplegs: function(tripId, startTime, endTime, fromMode, toMode) {
+        return request.get(
+          url(mainPaths.triplegs, 'insertTransitionBetweenTriplegs'),
+          {
+            trip_id: tripId,
+            start_time: startTime,
+            end_time: endTime,
+            from_travel_mode: fromMode,
+            to_travel_mode: toMode
+          }
+        );
+      }
     }
   }
 };

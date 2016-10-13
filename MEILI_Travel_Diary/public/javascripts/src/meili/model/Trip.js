@@ -104,5 +104,18 @@ Trip.prototype = {
 
   updateEndTime: function(triplegId, newTime) {
     return this._updateTime('updateEndTime', triplegId, newTime);
+  },
+
+  insertTransitionBetweenTriplegs: function(startTime, endTime, fromMode, toMode) {
+    var dfd = $.Deferred();
+    api.triplegs.insertTransitionBetweenTriplegs(this.getId(), startTime, endTime, fromMode, toMode)
+      .done(function(result) {
+        this.updateTriplegs(result.triplegs);
+        dfd.resolve(this.triplegs);
+      }.bind(this))
+      .fail(function(err) {
+        dfd.reject(err);
+      });
+    return dfd.promise();
   }
 };
