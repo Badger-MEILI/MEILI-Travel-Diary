@@ -175,7 +175,6 @@ Tripleg.prototype = {
     },
 
     _generateMapMarker: function(point, isFirstPoint, isLastPoint) {
-      var pointType;
       if(this.getType() == 1) {
         // ACTIVE TRIPLEG
         if(this.isFirst && isFirstPoint) {
@@ -195,7 +194,7 @@ Tripleg.prototype = {
     },
 
     generatePoints: function() {
-      var points = []
+      var points = [];
       for (var i = 0; i < this.points.length; i++) {
         var point = this.points[i];
         var isFirst = (i === 0);
