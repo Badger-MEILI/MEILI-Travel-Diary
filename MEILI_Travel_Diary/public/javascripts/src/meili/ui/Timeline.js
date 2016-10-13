@@ -3,6 +3,8 @@ var Timeline = Timeline || function(options) {
   this.elementId = options.elementId;
   this.days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 
+  this.resize();
+  $(window).resize(this.resize.bind(this));
 
   this.initiateModals();
 
@@ -568,5 +570,8 @@ Timeline.prototype = {
     };
   },
 
+  resize: function() {
+    $('#'+this.elementId).height($('body').height()-$('#navbar-top').height()+'px');
   }
+
 };
