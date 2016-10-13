@@ -9,6 +9,21 @@ var Timeline = Timeline || function(options) {
 }
 
 Timeline.prototype = {
+
+  render: function(trip) {
+    this.trip = trip;
+    // Reset
+    $('#'+this.elementId+' > ul').html('');
+
+    this.generateFirstElement();
+    var tripLayers = [];
+    for (var i=0; i < this.trip.triplegs.length; i++) {
+      var tripleg = this.trip.triplegs[i];
+      this.generateElement(this.trip.getId(), tripleg);
+    }
+    this.generateLastElement();
+},
+
   _onTimeSet: function(e) {
 
     var $target = $(e.target);

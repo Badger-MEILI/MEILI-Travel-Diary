@@ -266,10 +266,7 @@ function getJson(str) {
 var currentTrip;
 var log         = Log(CONFIG);
 var api         = Api(CONFIG);
-var ui          = {
-  map: new LMap(),
-  timeline: new Timeline({ elementId: 'timeline'})
-};
+var ui;
 
 app.controller('MapCtrl',function($scope, $rootScope, $http, $location, $anchorScroll, translationService) {
     // This object will be filled by the form
@@ -304,6 +301,11 @@ app.controller('MapCtrl',function($scope, $rootScope, $http, $location, $anchorS
     //initmap($scope.userId);
     var userId = $scope.userId;
 
+
+    ui = {
+      map: new LMap(),
+      timeline: new Timeline({ elementId: 'timeline'})
+    };
     var user = new User(userId);
 
 
@@ -342,25 +344,21 @@ app.controller('MapCtrl',function($scope, $rootScope, $http, $location, $anchorS
       // TODO! move into Trip..
 
       // Reset.
-      $('#timeline').html('');
       if(trip.mapLayer) {
         trip.mapLayer.clearLayers();
         map.removeLayer(trip.mapLayer);
       }
 
-      // Render
-      ui.timeline.generateFirstElement(trip);
-      var tripLayers = [];
-      for (var i=0; i < trip.triplegs.length; i++) {
+      // Render timeline
+      ui.timeline.render(trip);
+
+      // Render map
+     for (var i=0; i < trip.triplegs.length; i++) {
         var tripleg = trip.triplegs[i];
-        var isFirst = (i === 0);
-        var isLast  = (i === (trip.triplegs.length-1));
-        ui.timeline.generateElement(trip.trip_id, tripleg, isFirst, isLast);
         var triplegLayer = tripleg.generateMapLayer();
         trip.mapLayer.addLayer(triplegLayer);
       }
       trip.mapLayer.addTo(map);
-      ui.timeline.generateLastElement(trip);
     }
 
 
