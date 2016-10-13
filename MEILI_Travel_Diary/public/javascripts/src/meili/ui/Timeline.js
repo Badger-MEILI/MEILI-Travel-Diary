@@ -3,6 +3,9 @@ var Timeline = Timeline || function(options) {
   this.elementId = options.elementId;
   this.days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 
+
+  this.initiateModals();
+
   Emitter(this);
 
   return this;
