@@ -231,7 +231,7 @@ router.get("/insertTransitionBetweenTriplegs", function(req,res){
     else
     {
         var sqlQuery = "select * from apiv2.insert_stationary_tripleg_period_in_trip($bd$"+ start_time +"$bd$,$bd$"+ end_time +"$bd$,$bd$"+ from_travel_mode +
-        "$bd$,$bd$"+to_travel_mode +"$bd$,$bd$"+trip_id +"$bd)";
+        "$bd$,$bd$"+to_travel_mode +"$bd$,$bd$"+trip_id +"$bd$)";
         var prioryQuery = apiClient.query(sqlQuery);
 
         prioryQuery.on('row', function (row) {
