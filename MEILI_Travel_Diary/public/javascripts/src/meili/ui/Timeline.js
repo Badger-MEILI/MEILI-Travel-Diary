@@ -114,7 +114,7 @@ Timeline.prototype = {
 
     thisHtml+= '</div>';
 
-    thisHtml+= '<p lang="en" style="font-style:italic; cursor: pointer;" id="addtransition'+triplegId+'" onclick="generateTransitionPopup(\''+triplegId+'\')">Did we miss a transfer? Click to add it.</p>';// <p lang="sv" style="font-style:italic" id="addtransition'+tripleg.triplegid+'" onclick="generateTransitionPopup(\''+tripleg.triplegid+'\')">Har vi missat ett byte? Klicka för att lägga till.</p>';
+    thisHtml+= '<p lang="en" style="font-style:italic; cursor: pointer;" tripleg-id="' + triplegId + '" class="add-transition">Did we miss a transfer? Click to add it.</p>';// <p lang="sv" style="font-style:italic" id="addtransition'+tripleg.triplegid+'" onclick="generateTransitionPopup(\''+tripleg.triplegid+'\')">Har vi missat ett byte? Klicka för att lägga till.</p>';
     thisHtml+= '<p lang="en" id="distPar'+triplegId+'">Distance:'+tripleg.getDistance()+'</p>';// <p lang="sv" id="distPar'+tripleg.triplegid+'">Avstånd:'+getDistanceOfTripLeg(tripleg.triplegid)+'</p>';
     thisHtml+= '<div class="input-group bootstrap-timepicker">'
     thisHtml+= 'Stop: <input id="timepickerend_'+triplegId+'" trip-id="' + tripId + '" type="text" class="time-picker end input-small ' + classes.join(' ') + '"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>';
@@ -127,6 +127,12 @@ Timeline.prototype = {
     return thisHtml;
   },
 
+  _addTime: function(time, hoursMinutes) {
+    var hm = hoursMinutes.split(':');
+    time.setHours(hm[0]);
+    time.setMinutes(hm[1]);
+    return time.getTime();
+  },
 
     /**
    * Adds listeners to a timeline element associated with a tripleg and checks for consequences of time change
@@ -142,7 +148,7 @@ Timeline.prototype = {
         var triplegId = $(e.target).attr('id').split('_')[1];
         api.triplegs.updateMode(triplegId, this.value)
           .done(function() {
-            currentTrip.getTriplegById(tripleg.triplegid).updateMode(this.value);
+            this.trip.getTriplegById(tripleg.triplegid).updateMode(this.value);
             log.debug('tripleg mode succefully updated');
           })
           .fail(function() {
@@ -155,6 +161,23 @@ Timeline.prototype = {
       /********************************************
        * Adding listeners to the timeline elements*
        ********************************************/
+      $('#'+this.elementId).on('click','.add-transition', function(e) {
+        var triplegId = parseInt($(e.target).attr('tripleg-id'), 10);
+        var tripleg = this.trip.getTriplegById(triplegId);
+        this.openTransitionChoiceModal(tripleg);
+      }.bind(this));
+
+      $('#'+this.elementId).on('click','.transition-accept', function(e) {
+        var $modal = $(e.target).parent();
+        var triplegId = $modal.attr('tripleg-id');
+        var tripleg = this.trip.getTriplegById(triplegId);
+        var startTime = this._addTime(tripleg.getStartTime(), $modal.find('#timepicker-start-transition').val());
+        var endTime = this._addTime(tripleg.getEndTime(), $modal.find('#timepicker-stop-transition').val());
+        var fromMode = parseInt($modal.find('#select-from').val(), 10);
+        var toMode = parseInt($modal.find('#select-from').val(), 10);
+        this.trip.insertTransitionBetweenTriplegs(startTime, endTime, fromMode, toMode);
+      }.bind(this));
+
 
       /**
        * Mouse over
@@ -219,19 +242,19 @@ Timeline.prototype = {
     /**
    * Generates the first timeline element and adds it at the head of the timeline
    */
-  generateFirstElement: function(currentTrip){
-      var ul = document.getElementById("timeline");
+  generateFirstElement: function(){
+      var ul = $('#'+this.elementId+' > ul');
       var li = document.createElement("li");
       li.id= 'firstTimelineElement';
 
 
-      var previousPurpose = currentTrip.previous_trip_purpose;
-      var previousPlace = currentTrip.previous_trip_poi_name;
-      var previousTripEndDate = new Date(parseInt(currentTrip.previous_trip_end_date));
-      var currentTripStartDate = new Date(parseInt(currentTrip.current_trip_start_date));
+      var previousPurpose = this.trip.previous_trip_purpose;
+      var previousPlace = this.trip.previous_trip_poi_name;
+      var previousTripEndDate = new Date(parseInt(this.trip.previous_trip_end_date));
+      var currentTripStartDate = new Date(parseInt(this.trip.current_trip_start_date));
 
       console.log(previousPurpose);
-      console.log(previousTripEndDate+" " +currentTrip.previous_trip_end_date);
+      console.log(previousTripEndDate+" " +this.trip.previous_trip_end_date);
       console.log(previousPlace);
 
 
@@ -298,7 +321,7 @@ Timeline.prototype = {
 
       li.innerHTML = thisHtml;
 
-      ul.appendChild(li)
+      ul.append(li)
 
       console.log(currentTripStartDate);
 
@@ -314,12 +337,12 @@ Timeline.prototype = {
   /**
    * Generates the last timeline element and adds it at the tail of the timeline
    */
-  generateLastElement: function(currentTrip){
-      var ul = document.getElementById("timeline");
+  generateLastElement: function(){
+      var ul = $('#'+this.elementId+' > ul');
       var li = document.createElement("li");
       li.id= 'lastTimelineElement';
 
-      var currentTripEndDate = new Date(parseInt(currentTrip.current_trip_end_date));
+      var currentTripEndDate = new Date(parseInt(this.trip.current_trip_end_date));
 
       var hours = currentTripEndDate.getHours();
       var minutes = currentTripEndDate.getMinutes();
@@ -337,13 +360,13 @@ Timeline.prototype = {
       thisHtml += '<p id="tldatelastassociatedparagraph" lang="en"> <span class="glyphicon glyphicon-flag"> </span>('+currentTripEndDateLocal  +') '+currentTripEndDateHour+' - Ended trip</p>';
       thisHtml += '<p lang="en"><i> Is this a fake stop? Click <span class="glyphicon glyphicon-share-alt" onclick="mergeTripModal()"> </span> to merge with next trip.</i></p>';
       thisHtml += '</div></li>';
-      var places = currentTrip.destination_places;
-      var purposes = currentTrip.purposes;
+      var places = this.trip.destination_places;
+      var purposes = this.trip.purposes;
 
-      if (currentTrip.next_trip_start_date!=null) {
+      if (this.trip.next_trip_start_date!=null) {
       /* Add ended trip info */
 
-          nextTripStartDate = new Date(parseInt(currentTrip.next_trip_start_date));
+          nextTripStartDate = new Date(parseInt(this.trip.next_trip_start_date));
           var timeDiff = Math.abs(nextTripStartDate.getTime() - currentTripEndDate.getTime());
           var hoursDiff = Math.ceil(timeDiff / (1000 * 60 * 60));
 
@@ -390,7 +413,7 @@ Timeline.prototype = {
 
       li.innerHTML = thisHtml;
 
-      ul.appendChild(li)
+      ul.append(li)
 
       /**
        * NO LISTENERS YET
@@ -416,7 +439,7 @@ Timeline.prototype = {
   generateElement: function(tripId, tripleg) {
 
     if (tripleg.getType() == 1){
-      var ul = document.getElementById(this.elementId);
+      var ul = $('#'+this.elementId+' > ul');
       var li = document.createElement("li");
       li.id = "listItem"+tripleg.getId();
       var thisHtml = this._getContent(tripId, tripleg);
@@ -430,8 +453,117 @@ Timeline.prototype = {
 
       li.innerHTML = thisHtml;
 
-      ul.appendChild(li);
+      ul.append(li);
       this._addListeners(tripId, tripleg);
     }
+  },
+
+  /**
+   * Generates the modal dialogs for a tripleg
+   */
+  initiateModals: function() {
+
+    this.transitionModalId = 'transition-modal';
+    this.getTransitionModal = function() {
+      return $(this.transitionModalId);
+    };
+    var transitionModal = [
+      '<div id="' + this.transitionModalId + '" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">',
+        '<div class="modal-dialog modal-sm">',
+          '<div class="modal-content">',
+            '<h4>New transfer point</h4>',
+
+            '<p style="display:inline; border-bottom: 0px;">Transfer type: </p>',
+              '<select class="form-control form-control-inline" id="transition-type" style="display: inline-block; border: 0px; width:190px; color:black; font-size:15;" onchange="transitionTypeEnabler(this.id)">',
+                '<option value="1">Parking place</option>',
+                '<option value="2">Station</option>',
+              '</select>',
+
+            '<div id="station-info" style="display:none">',
+              '<input type="text" class="form-controlV2" style="display:inline-block; width:49%; margin-right:5px;" placeholder="Name" aria-describedby="basic-addon1" id="transition-name">',
+              '<input type="text" class="form-controlV2" style="display:inline-block; width:49%;" placeholder="Lines: e.g.:1,2,5" aria-describedby="basic-addon1" id="transition-lines">',
+              '<form role="form" id="checkbox-form">',
+                '<div class="checkbox" style="display: inline-block; width:30%;"><label><input type="checkbox" value="1">Bus</label></div>',
+                '<div class="checkbox" style="display: inline-block; width:30%;"><label><input type="checkbox" value="2">Tram</label></div>',
+                '<div class="checkbox" style="display: inline-block; width:30%;"><label><input type="checkbox" value="3">Subway</label></div>',
+              '</form>',
+            '</div>',
+
+            '<button id="transition-button" type="button" class="btn btn-default" style="width:48%; display:inline-block; margin-left:5px" data-dismiss="modal" onclick="transitionMarker(this.id)">Draw</button>',
+            '<button type="button" class="btn btn-default" style="width:48%; display:inline-block;" data-dismiss="modal" ">Cancel</button>',
+          '</div>',
+        '</div>',
+      '</div>'
+    ];
+    $('#'+this.elementId).append(transitionModal.join(''));
+
+    this.transitionChoiceModalId = 'transition-choice-modal';
+    var transitionChoiceModal = [
+      '<div id="' + this.transitionChoiceModalId + '" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">',
+        '<div class="modal-dialog modal-sm" style="width:350px">',
+          '<div class="modal-content">',
+            '<h4 style="border-bottom: 2px solid #c25b4e;padding-bottom: 3px;">Insert a new transfer</h4>',
+
+            '<p style="display:inline-block; border-bottom: 0px; text-align: left; width:60%;">From mode of transportation: </p>',
+              '<select id="select-from" style="display: inline-block" class="form-controlV2">',
+              '</select>',
+
+            '<br>',
+
+            '<p style="display:inline-block; border-bottom: 0px; text-align: left; width:60%;">To mode of transportation: </p>',
+              '<select id="select-to" style="display: inline-block" class="form-controlV2">',
+              '</select>',
+
+            '<br>',
+
+            '<div class="input-group bootstrap-timepicker">',
+              'Start of transfer: <input id="timepicker-start-transition" type="text" class="input-small"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>',
+            '</div>',
+
+            '<div class="input-group bootstrap-timepicker">',
+              'Stop of tranfer: <input id="timepicker-stop-transition" type="text" class="input-small"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>',
+            '</div>',
+
+            '<button type="button" class="transition-accept btn btn-default center-block" style="width:48%; display:inline-block; margin-left:5px">Accept</button>',
+            '<button type="button" class="transition-cancel btn btn-default center-block" data-dismiss="modal" style="width:48%; display:inline-block;">Cancel</button>',
+          '</div>',
+        '</div>',
+      '</div>'
+    ];
+
+    $('#'+this.elementId).append(transitionChoiceModal.join(''));
+
+    this.openTransitionChoiceModal = function(tripleg) {
+      var $modal = $('#'+this.transitionChoiceModalId);
+
+      $modal.find('.modal-content').attr('tripleg-id', tripleg.getId());
+      // Add modes to selectors
+      var modeOptions = [];
+      for (var i = 0; i < tripleg.mode.length; i++) {
+        var mode = tripleg.mode[i];
+        modeOptions.push('<option value="' + mode.id + '">' + mode.name + '</option>');
+      }
+      $modal.find('#select-from').append(modeOptions);
+      $modal.find('#select-to').append(modeOptions);
+
+      $('#timepicker-start-transition').timepicker({
+        minuteStep: 1,
+        showMeridian: false,
+        defaultTime: tripleg.getStartTime(true),
+        appendWidgetTo: '#'+this.transitionChoiceModalId
+      }).on('hide.timepicker', function(e) {
+      }.bind(this));
+      $('#timepicker-stop-transition').timepicker({
+        minuteStep: 1,
+        showMeridian: false,
+        defaultTime: tripleg.getEndTime(true),
+        appendWidgetTo: '#'+this.transitionChoiceModalId
+      }).on('hide.timepicker', function(e) {
+      }.bind(this));
+
+      $modal.modal('show');
+    };
+  },
+
   }
 };
