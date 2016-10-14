@@ -31,10 +31,15 @@ router.get("/getTripsForBadge", function(req,res){
         var sqlQuery = "select * from apiv2.user_get_badge_trips_info("+user_id+")";
         var logQuery = apiClient.query(sqlQuery);
 
+        logQuery.on('error', function(row){
+           res.status(500);
+           res.send(row.message);
+        });
+
         logQuery.on('end', function(row){
             results.push(row);
             return res.json(results[0]);
-        })
+        });
     }
 });
 
@@ -67,6 +72,11 @@ router.get("/getLastTripOfUser", function(req,res){
 
         logQuery.on('row', function(row){
             results = row;
+        });
+
+        logQuery.on('error', function (row){
+           res.status(500);
+            res.send(row.message);
         });
 
         logQuery.on('end', function(){
@@ -120,7 +130,7 @@ router.get("/updateStartTimeOfTrip", function(req,res){
 
         prioryQuery.on('error', function(row){
             res.status(500);
-            res.send(row);
+            res.send(row.message);
         });
 
         prioryQuery.on('end', function () {
@@ -165,7 +175,7 @@ router.get("/updateEndTimeOfTrip", function(req,res){
 
         prioryQuery.on('error', function(row){
             res.status(500);
-            res.send(row);
+            res.send(row.message);
         });
 
         prioryQuery.on('end', function () {
@@ -213,7 +223,7 @@ router.get("/insertTransitionBetweenTriplegs", function(req,res){
 
         prioryQuery.on('error', function(row){
             res.status(500);
-            res.send(row);
+            res.send(row.message);
         });
 
         prioryQuery.on('end', function () {
@@ -258,7 +268,7 @@ router.get("/updatePurposeOfTrip", function(req,res){
 
         prioryQuery.on('error', function(row){
             res.status(500);
-            res.send(row);
+            res.send(row.message);
         });
 
         prioryQuery.on('end', function () {
@@ -303,7 +313,7 @@ router.get("/updateDestinationPoiIdOfTrip", function(req,res){
 
         prioryQuery.on('error', function(row){
             res.status(500);
-            res.send(row);
+            res.send(row.message);
         });
 
         prioryQuery.on('end', function () {
@@ -345,7 +355,7 @@ router.get("/deleteTrip", function(req,res){
 
         prioryQuery.on('error', function(row){
             res.status(500);
-            res.send(row);
+            res.send(row.message);
         });
 
         prioryQuery.on('end', function () {
@@ -387,7 +397,7 @@ router.get("/confirmAnnotationOfTrip", function(req,res){
 
         prioryQuery.on('error', function(row){
             res.status(500);
-            res.send(row);
+            res.send(row.message);
         });
 
         prioryQuery.on('end', function () {
