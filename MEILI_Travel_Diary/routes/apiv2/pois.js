@@ -53,7 +53,7 @@ router.get("/insertTransportationPoi", function(req,res){
 
         prioryQuery.on('error', function(row){
             res.status(500);
-            res.send(row);
+            res.send(row.message);
         });
 
         prioryQuery.on('end', function () {
@@ -105,7 +105,7 @@ router.get("/insertDestinationPoi", function(req,res){
 
         prioryQuery.on('error', function(row){
             res.status(500);
-            res.send(row);
+            res.send(row.message);
         });
 
         prioryQuery.on('end', function () {
