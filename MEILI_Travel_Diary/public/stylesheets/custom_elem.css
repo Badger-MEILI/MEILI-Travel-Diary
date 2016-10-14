@@ -176,11 +176,12 @@ PLUS SYMBOL
 #timeline {
     overflow: auto;
     position: relative;
+    padding: 20px;
 }
 
 .timeline {
     list-style: none;
-    padding: 20px 0 20px;
+    padding: 0 0 20px;
 }
 
 .timeline .text-muted{
@@ -195,7 +196,7 @@ PLUS SYMBOL
 }
 
 .timeline li .timeline-panel .form-control-inline {
-max-width: 300px;
+    max-width: 300px;
 }
 
 
@@ -204,8 +205,8 @@ max-width: 300px;
     bottom: 0;
     position: absolute;
     content: " ";
-    width: 3px;
-    background-color: #eee;
+    width: 6px;
+    background-color: #828282;
     left: 50%;
     margin-left: -1.5px;
 }
@@ -214,13 +215,16 @@ max-width: 300px;
     display: block;
     width: 200px;
     background: #c25b4e;
-    border: 3px solid #212121;
     color: #ededed;
     margin: 0 auto;
-    padding: 3px 0;
+    padding: 6px 0;
     font-weight: bold;
     text-align: center;
     -webkit-box-shadow: 0 0 11px rgba(0,0,0,0.35);
+}
+
+.timeline .tldate.start {
+    background-color: #5aab65;
 }
 
 
@@ -267,7 +271,7 @@ max-width: 300px;
     width: 50%;
     float: left;
     background: #fff;
-    border: 1px solid #d4d4d4;
+    border: 6px solid #c5c5c5;
     padding: 20px;
     position: relative;
     -webkit-border-radius: 8px;
@@ -381,6 +385,9 @@ IMPORTANT IMPLEMENT FOR SMARTPHONE A SET OF RULES**/
     border-bottom-right-radius: 50%;
     border-bottom-left-radius: 50%;
    z-index: 2;
+}
+.timeline li .tl-circ .glyphicon{
+    top: 0px;
 }
 
 

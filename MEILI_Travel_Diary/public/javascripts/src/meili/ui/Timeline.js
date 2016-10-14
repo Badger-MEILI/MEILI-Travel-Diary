@@ -104,10 +104,10 @@ Timeline.prototype = {
     }
 
     var contentHtml = [
-      '<div class="tl-circ" id="telem_circle'+triplegId+'" style="cursor:pointer"><span class="glyphicon glyphicon-search"></span></div>',
+      '<div class="tl-circ zoom-to-tripleg" tripleg-id="'+triplegId+'" style="cursor:pointer"><span class="glyphicon glyphicon-search"></span></div>',
 
       '<li>',
-        '<div class="timeline-panel" id="telem'+triplegId+'">',
+        '<div class="timeline-panel" id="telem'+triplegId+'" tripleg-id="' + triplegId + '">',
           '<div class="tl-heading">',
             '<h4>',
               this._getModeSelector(tripleg),
@@ -188,64 +188,34 @@ Timeline.prototype = {
         this.trip.insertTransitionBetweenTriplegs(startTime, endTime, fromMode, toMode);
       }.bind(this));
 
+      // Mouseover
+      $('#'+this.elementId).on('mouseover', '.timeline-panel', function(e) {
+        var triplegId = $(e.currentTarget).attr('tripleg-id');
+        var tripleg = this.trip.getTriplegById(triplegId);
+        if(tripleg.polylineLayer) {
+          tripleg.polylineLayer.setStyle({ opacity: 1 });
+        }
+      }.bind(this));
 
-      /**
-       * Mouse over
-       */
-      $("#telem").mouseover(function()
-      {
-        var layer = tripleg.polylineLayer;
-        layer.setStyle({
-            opacity:1
-        });
+      // Mouse exit
+      $('#'+this.elementId).on('mouseout', '.timeline-panel', function(e) {
+        var triplegId = $(e.currentTarget).attr('tripleg-id');
+        var tripleg = this.trip.getTriplegById(triplegId);
+        if(tripleg.polylineLayer) {
+          tripleg.polylineLayer.setStyle({ opacity: 0.6 });
+        }
+      }.bind(this));
 
-      });
+      // Mouse click
+      $('#'+this.elementId).on('click', '.zoom-to-tripleg', function(e) {
+        var triplegId = $(e.currentTarget).attr('tripleg-id');
+        var tripleg = this.trip.getTriplegById(triplegId);
+        if(tripleg.polylineLayer) {
+          map.fitBounds(tripleg.polylineLayer.getBounds());
+          log.info('Zoomed to layer ' + triplegId);
+        }
+      }.bind(this));
 
-      /**
-       * Mouse exit
-       */
-
-      $("#telem").mouseout(function()
-      {
-          var layer = tripleg.polylineLayer;
-          layer.setStyle({
-              opacity:0.6
-          });
-
-      });
-
-      /**
-       * Mouse click
-       */
-
-      $("#telem_circle").click(function()
-      {
-          var layer = tripleg.polylineLayer;
-          map.fitBounds(layer.getBounds());
-
-          log.info('zoomed to layer '+tripleg.triplegid);
-      });
-
-      /**
-       * Initialize time pickers
-       */
-/*
-      $('#timepickerstart_'+tripleg.triplegid).timepicker({
-          minuteStep: 1,
-          showMeridian: false,
-          disableMousewheel:false,
-          timeFormat: 'H:i',
-          defaultTime: tripleg.getStartTime()
-      }).on('hide.timepicker', this._onTimeSet.bind(this));
-
-
-      $('#timepickerend_'+tripleg.triplegid).timepicker({
-          minuteStep: 1,
-          showMeridian: false,
-          disableMousewheel:false,
-          defaultTime: tripleg.getEndTime(true)
-      }).on('hide.timepicker', this._onTimeSet.bind(this));
-*/
 
   },
 
@@ -314,7 +284,7 @@ Timeline.prototype = {
       }
       else{
           thisHtml += '<li>';
-          thisHtml += '<div class="tldate" id ="firstTimelinePanel"> <p lang="en">This is where you started using MEILI</p>' 
+          thisHtml += '<div class="tldate start" id="firstTimelinePanel"> <p lang="en">This is where you started using MEILI</p>' 
 
           thisHtml += '</div>';
           thisHtml += '</li>';
