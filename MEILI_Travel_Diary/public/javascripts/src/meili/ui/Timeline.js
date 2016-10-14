@@ -8,6 +8,8 @@ var Timeline = Timeline || function(options) {
 
   this.initiateModals();
 
+  this._addListeners();
+
   Emitter(this);
 
   return this;
@@ -64,7 +66,7 @@ Timeline.prototype = {
    */
   _getModeSelector: function(tripleg){
       var maxVal = tripleg.mode[0].accuracy;
-      var classes = 'form-control';
+      var classes = ' form-control';
       var options = [];
 
       if(maxVal<50) {
@@ -78,7 +80,7 @@ Timeline.prototype = {
       }
 
       var selector = [
-        '<select id="selectmode_' + tripleg.getId() + '" name="selectmode" class="' + classes + '">',
+        '<select class="mode-select' + classes + '" tripleg-id="' + tripleg.getId() + '" name="selectmode">',
           options.join(''),
         '</select>'
       ].join('');
@@ -135,6 +137,9 @@ Timeline.prototype = {
       '</li>'
     ];
     console.warn('getTransitionPlace?');
+
+
+
     return contentHtml.join('');
   },
 
@@ -150,24 +155,16 @@ Timeline.prototype = {
    * @param tripleg - tripleg
    */
   _addListeners: function(tripId, tripleg) {
-      var transitionSelectOption = document.getElementById('transitionSelect'+tripleg.triplegid);
+   /*  var transitionSelectOption = document.getElementById('transitionSelect'+tripleg.triplegid);
 
       if (transitionSelectOption!=null)
           transitionSelectOption.onchange = transitionSelectListener;
-
-      $(('selectmode_'+tripleg.triplegid)).on('change', function(e) {
-        var triplegId = $(e.target).attr('id').split('_')[1];
-        api.triplegs.updateMode(triplegId, this.value)
-          .done(function() {
-            this.trip.getTriplegById(tripleg.triplegid).updateMode(this.value);
-            log.debug('tripleg mode succefully updated');
-          })
-          .fail(function() {
-            var msg = 'failed to set mode on tripleg';
-            alert(msg);
-            log.error(msg);
-          });
-      });
+*/
+      $('#'+this.elementId).on('change', '.mode-select', function(e) {
+        var triplegId = parseInt($(e.target).attr('tripleg-id'), 10);
+        var tripleg = this.trip.getTriplegById(triplegId);
+        tripleg.updateMode(e.target.value);
+      }.bind(this));
 
       /********************************************
        * Adding listeners to the timeline elements*
@@ -195,7 +192,7 @@ Timeline.prototype = {
       /**
        * Mouse over
        */
-      $("#telem"+tripleg.triplegid).mouseover(function()
+      $("#telem").mouseover(function()
       {
         var layer = tripleg.polylineLayer;
         layer.setStyle({
@@ -208,7 +205,7 @@ Timeline.prototype = {
        * Mouse exit
        */
 
-      $("#telem"+tripleg.triplegid).mouseout(function()
+      $("#telem").mouseout(function()
       {
           var layer = tripleg.polylineLayer;
           layer.setStyle({
@@ -221,7 +218,7 @@ Timeline.prototype = {
        * Mouse click
        */
 
-      $("#telem_circle"+tripleg.triplegid).click(function()
+      $("#telem_circle").click(function()
       {
           var layer = tripleg.polylineLayer;
           map.fitBounds(layer.getBounds());
@@ -232,7 +229,7 @@ Timeline.prototype = {
       /**
        * Initialize time pickers
        */
-
+/*
       $('#timepickerstart_'+tripleg.triplegid).timepicker({
           minuteStep: 1,
           showMeridian: false,
@@ -248,7 +245,7 @@ Timeline.prototype = {
           disableMousewheel:false,
           defaultTime: tripleg.getEndTime(true)
       }).on('hide.timepicker', this._onTimeSet.bind(this));
-
+*/
 
   },
 
@@ -467,7 +464,23 @@ Timeline.prototype = {
       li.innerHTML = thisHtml;
 
       ul.append(li);
-      this._addListeners(tripId, tripleg);
+
+      $('#timepickerstart_'+tripleg.triplegid).timepicker({
+          minuteStep: 1,
+          showMeridian: false,
+          disableMousewheel:false,
+          timeFormat: 'H:i',
+          defaultTime: tripleg.getStartTime()
+      }).on('hide.timepicker', this._onTimeSet.bind(this));
+
+
+      $('#timepickerend_'+tripleg.triplegid).timepicker({
+          minuteStep: 1,
+          showMeridian: false,
+          disableMousewheel:false,
+          defaultTime: tripleg.getEndTime(true)
+      }).on('hide.timepicker', this._onTimeSet.bind(this));
+
     }
   },
 

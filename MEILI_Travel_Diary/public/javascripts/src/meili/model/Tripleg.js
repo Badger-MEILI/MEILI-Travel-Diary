@@ -41,6 +41,36 @@ var Tripleg = Tripleg || function(tripleg) {
 };
 
 Tripleg.prototype = {
+
+    _setMode: function(modeId) {
+      for (var i = 0; i < this.mode.length; i++) {
+         if(this.mode[i].id === modeId) {
+            this.mode[i].accuracy = 100;
+         } else {
+            this.mode[i].accuracy = 0;
+         }
+       };
+    },
+
+    _generateMapMarker: function(point, isFirstPoint, isLastPoint) {
+      if(this.getType() == 1) {
+        // ACTIVE TRIPLEG
+        if(this.isFirst && isFirstPoint) {
+          // Start point
+          return L.marker(point, { icon: CONFIG.triplegs.map_markers.start });
+        } else if(this.isLast && isLastPoint) {
+          // End point
+          return L.marker(point, { icon: CONFIG.triplegs.map_markers.stop });
+        } else {
+          // Regular point
+          return L.circleMarker(point, CONFIG.triplegs.map_markers.regular);
+        }
+      } else {
+        // PASSIVE TRIPLEGS
+        return L.marker(point, { icon: CONFIG.triplegs.map_markers.transition });
+      }
+    },
+
     getFirstPoint: function() {
       return this.points[0];
     },
@@ -174,25 +204,6 @@ Tripleg.prototype = {
 
     },
 
-    _generateMapMarker: function(point, isFirstPoint, isLastPoint) {
-      if(this.getType() == 1) {
-        // ACTIVE TRIPLEG
-        if(this.isFirst && isFirstPoint) {
-          // Start point
-          return L.marker(point, { icon: CONFIG.triplegs.map_markers.start });
-        } else if(this.isLast && isLastPoint) {
-          // End point
-          return L.marker(point, { icon: CONFIG.triplegs.map_markers.stop });
-        } else {
-          // Regular point
-          return L.circleMarker(point, CONFIG.triplegs.map_markers.regular);
-        }
-      } else {
-        // PASSIVE TRIPLEGS
-        return L.marker(point, { icon: CONFIG.triplegs.map_markers.transition });
-      }
-    },
-
     generatePoints: function() {
       var points = [];
       for (var i = 0; i < this.points.length; i++) {
@@ -210,5 +221,19 @@ Tripleg.prototype = {
         this.generatePoints()
       ]);
       return this.mapLayer;
+    },
+
+    updateMode: function(modeId) {
+      debugger;
+      api.triplegs.updateMode(this.getId(), modeId)
+        .done(function() {
+          this._setMode(this.value);
+          log.debug('tripleg mode succefully updated');
+        }.bind(this))
+        .fail(function() {
+          var msg = 'failed to set mode on tripleg';
+          alert(msg);
+          log.error(msg);
+        });
     }
 };
