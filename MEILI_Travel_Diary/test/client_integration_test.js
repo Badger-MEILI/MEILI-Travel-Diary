@@ -4,7 +4,7 @@ var USER_ID;
 var TRIP_ID;
 var log = Log(CONFIG);
 var api = Api({
-  api_url: 'http://localhost:3000/apiv2'
+  api_url: TEST_CONFIG.api_url
 });
 
 describe("API", function() {
@@ -12,9 +12,9 @@ describe("API", function() {
   before(function(done) {
     $.ajax({
       type: "POST",
-      url: 'http://localhost:3000/users/login',
-      data: { username: 'adi@kth.se', password: 'adi'},
-      dataType: 'json'
+      url: TEST_CONFIG.login_url,
+      data: { username: TEST_CONFIG.username, password: TEST_CONFIG.password},
+      dataType: "json"
     }).done(
       function (result) {
         USER_ID = result.userId;
@@ -45,7 +45,7 @@ describe("API", function() {
 
 
   describe("Triplegs", function() {
-    it("get triplegs for non existing trip should return empty triplegs", function(done) {
+    it("get triplegs for non existing trip should return empty array of triplegs", function(done) {
       api.triplegs.get(3454).done(
         function (result) {
           expect(result.length).to.be.equal(0);
