@@ -19,6 +19,17 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#error-message {
+    margin: 4px 20px;
+    position: absolute;
+    z-index: 10000;
+    width: 50%;
+    right: 0;
+}
+.col-md-6 {
+    padding: 0px;
+}
+
 .navbar-static-top {
     margin-bottom: 0px;
 }

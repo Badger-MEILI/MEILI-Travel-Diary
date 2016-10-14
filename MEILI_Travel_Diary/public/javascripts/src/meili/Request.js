@@ -15,8 +15,7 @@ var Request = function(config) {
       }
     })
     .fail(function(jqXHR, textStatus, errorThrown) {
-      // !TODO handle error and tell user
-      log.error('XHR FAIL', textStatus, errorThrown);
+      throw 'XHR FAIL' + ' ' + textStatus + ' ' + errorThrown;
       dfd.reject(textStatus);
     });
     return dfd.promise();

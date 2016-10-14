@@ -304,10 +304,16 @@ app.controller('MapCtrl',function($scope, $rootScope, $http, $location, $anchorS
 
     ui = {
       map: new LMap(),
-      timeline: new Timeline({ elementId: 'timeline'})
+      timeline: new Timeline({ elementId: 'timeline'}),
+      errorMsg: new ErrorMsg()
     };
     var user = new User(userId);
 
+
+    window.onerror = function (errorMsg, url, lineNumber, column, errorObj) {
+        log.error(errorMsg, url, lineNumber, column, errorObj);
+        ui.errorMsg.show(errorMsg);
+    };
 
     user.getNumberOfTrips(userId)
       .done(function(result) {
