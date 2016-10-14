@@ -14,9 +14,13 @@ var Request = function(config) {
         dfd.reject();
       }
     })
-    .fail(function(jqXHR, textStatus, errorThrown) {
-      throw 'XHR FAIL' + ' ' + textStatus + ' ' + errorThrown;
-      dfd.reject(textStatus);
+    .fail(function(jqXHR, textStatus, errorThrown, a, b, c) {
+      var msg = textStatus + ' ' + errorThrown;
+      if(jqXHR.responseJSON && jqXHR.responseJSON.error) {
+        msg = jqXHR.responseJSON.error.msg;
+      }
+      throw msg;
+      dfd.reject(msg);
     });
     return dfd.promise();
   };
