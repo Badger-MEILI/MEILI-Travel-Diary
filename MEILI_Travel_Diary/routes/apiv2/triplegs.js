@@ -6,7 +6,7 @@ var express = require('express');
 var reqClient = require('../users');
 var apiClient = reqClient.client;
 var router = express.Router();
-
+var util = require('./util');
 
 /**
  * @api {get} /triplegs/getTriplegsOfTrip&:trip_id Gets the triplegs of a given trip
@@ -27,9 +27,7 @@ router.get("/getTriplegsOfTrip", function(req,res){
     var trip_id = req.query.trip_id;
 
     if (trip_id == null || trip_id == undefined) {
-        res.status(500);
-        res.send("Invalid trip id");
-        return res;
+        return util.handleError(res, 400, "Invalid trip id");
     }
 
     else
@@ -42,17 +40,14 @@ router.get("/getTriplegsOfTrip", function(req,res){
         });
 
         prioryQuery.on('error', function (row) {
-            res.status(500);
-            res.send(row.message);
+            return util.handleError(res, 500, row.message);
         });
 
         prioryQuery.on('end', function () {
             if (results.triplegs.length > 0)
                 return res.json(results);
             else {
-                res.status(500);
-                res.send("Trip id does not exist");
-                return res
+                return util.handleError(res, 404, "Trip id does not exist");
             }
         });
     }
@@ -78,9 +73,7 @@ router.get("/updateStartTimeOfTripleg", function(req,res){
     var new_start_time = req.query.start_time;
 
     if (tripleg_id == null || tripleg_id == undefined || new_start_time == null || new_start_time == undefined) {
-        res.status(500);
-        res.send("Invalid input parameters");
-        return res;
+        return util.handleError(res, 400, "Invalid input parameters");
     }
 
     else
@@ -93,8 +86,7 @@ router.get("/updateStartTimeOfTripleg", function(req,res){
         });
 
         prioryQuery.on('error', function(row){
-            res.status(500);
-            res.send(row.message);
+            return util.handleError(res, 500, row.message);
         });
 
         prioryQuery.on('end', function () {
@@ -124,9 +116,7 @@ router.get("/updateEndTimeOfTripleg", function(req,res){
     var new_end_time = req.query.end_time;
 
     if (tripleg_id == null || tripleg_id == undefined || new_end_time == null || new_end_time == undefined) {
-        res.status(500);
-        res.send("Invalid input parameters");
-        return res;
+        return util.handleError(res, 400, "Invalid input parameters");
     }
 
     else
@@ -139,8 +129,7 @@ router.get("/updateEndTimeOfTripleg", function(req,res){
         });
 
         prioryQuery.on('error', function(row){
-            res.status(500);
-            res.send(row.message);
+            return util.handleError(res, 500, row.message);
         });
 
         prioryQuery.on('end', function () {
@@ -168,9 +157,7 @@ router.get("/deleteTripleg", function(req,res){
     var tripleg_id = req.query.tripleg_id;
 
     if (tripleg_id == null || tripleg_id == undefined) {
-        res.status(500);
-        res.send("Invalid input parameters");
-        return res;
+        return util.handleError(res, 400, "Invalid input parameters");
     }
 
     else
@@ -179,16 +166,15 @@ router.get("/deleteTripleg", function(req,res){
         var prioryQuery = apiClient.query(sqlQuery);
 
         prioryQuery.on('row', function (row) {
-                results.triplegs = row.delete_tripleg;
+            results.triplegs = row.delete_tripleg;
         });
 
         prioryQuery.on('error', function(row){
-            res.status(500);
-            res.send(row.message);
+            return util.handleError(res, 500, row.message);
         });
 
         prioryQuery.on('end', function () {
-                return res.json(results);
+            return res.json(results);
         });
     }
 });
@@ -221,9 +207,7 @@ router.get("/insertTransitionBetweenTriplegs", function(req,res){
     if (trip_id == null || trip_id == undefined ||
         start_time== null || start_time== undefined || end_time== null || end_time== undefined ||
         from_travel_mode == null || from_travel_mode == undefined || to_travel_mode == null || to_travel_mode== undefined) {
-        res.status(500);
-        res.send("Invalid input parameters");
-        return res;
+        return util.handleError(res, 400, "Invalid input parameters");
     }
 
     else
@@ -237,8 +221,7 @@ router.get("/insertTransitionBetweenTriplegs", function(req,res){
         });
 
         prioryQuery.on('error', function(row){
-            res.status(500);
-            res.send(row.message);
+            return util.handleError(res, 500, row.message);
         });
 
         prioryQuery.on('end', function () {
@@ -268,9 +251,7 @@ router.get("/updateTravelModeOfTripleg", function(req,res){
     var travel_mode = req.query.travel_mode;
 
     if (tripleg_id == null || tripleg_id == undefined || travel_mode == null || travel_mode == undefined) {
-        res.status(500);
-        res.send("Invalid input parameters");
-        return res;
+        return util.handleError(res, 400, "Invalid input parameters");
     }
 
     else
@@ -279,12 +260,11 @@ router.get("/updateTravelModeOfTripleg", function(req,res){
         var prioryQuery = apiClient.query(sqlQuery);
 
         prioryQuery.on('row', function (row) {
-                results.status = row.update_tripleg_travel_mode;
+            results.status = row.update_tripleg_travel_mode;
         });
 
         prioryQuery.on('error', function(row){
-            res.status(500);
-            res.send(row.message);
+            return util.handleError(res, 500, row.message);
         });
 
         prioryQuery.on('end', function () {
@@ -313,9 +293,7 @@ router.get("/updateTransitionPoiIdOfTripleg", function(req,res){
     var transition_poi_id = req.query.transition_poi_id;
 
     if (tripleg_id == null || tripleg_id == undefined || transition_poi_id == null || transition_poi_id== undefined) {
-        res.status(500);
-        res.send("Invalid input parameters");
-        return res;
+         return util.handleError(res, 400, "Invalid input parameters");
     }
 
     else
@@ -328,8 +306,7 @@ router.get("/updateTransitionPoiIdOfTripleg", function(req,res){
         });
 
         prioryQuery.on('error', function(row){
-            res.status(500);
-            res.send(row.message);
+            return util.handleError(res, 500, row.message);
         });
 
         prioryQuery.on('end', function () {

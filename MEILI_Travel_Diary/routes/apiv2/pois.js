@@ -6,6 +6,7 @@ var express = require('express');
 var reqClient = require('../users');
 var apiClient = reqClient.client;
 var router = express.Router();
+var util = require('./util');
 
 /**
  * @api {get} /pois/insertTransportationPoi&:name_&:latitude&:longitude&:declaring_user_id&:transportation_lines&:transportation_types Inserts a new transportation POI declared by a user

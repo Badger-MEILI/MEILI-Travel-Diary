@@ -6,6 +6,7 @@ var express = require('express');
 var reqClient = require('../users');
 var apiClient = reqClient.client;
 var router = express.Router();
+var util = require('./util');
 
 /**
  * @api {get} /trips/getTripsForBadge&:user_id Gets the number of trips that the user has to process
@@ -23,17 +24,14 @@ router.get("/getTripsForBadge", function(req,res){
     var user_id = req.query.user_id;
 
     if (user_id == null || user_id == undefined) {
-        res.status(500);
-        res.send("Invalid user id");
-        return res;
+        return util.handleError(res, 400, "Invalid user id");
     }
     else {
         var sqlQuery = "select * from apiv2.user_get_badge_trips_info("+user_id+")";
         var logQuery = apiClient.query(sqlQuery);
 
         logQuery.on('error', function(row){
-           res.status(500);
-           res.send(row.message);
+          return util.handleError(res, 500, row.message);
         });
 
         logQuery.on('end', function(row){
@@ -61,9 +59,7 @@ router.get("/getLastTripOfUser", function(req,res){
     var user_id = req.query.user_id;
 
     if (user_id == null || user_id == undefined) {
-        res.status(500);
-        res.send("Invalid user id");
-        return res;
+        return util.handleError(res, 400, "Invalid user id");
     }
     else
     {
@@ -75,8 +71,7 @@ router.get("/getLastTripOfUser", function(req,res){
         });
 
         logQuery.on('error', function (row){
-           res.status(500);
-            res.send(row.message);
+           return util.handleError(res, 500, row.message);
         });
 
         logQuery.on('end', function(){
@@ -86,9 +81,7 @@ router.get("/getLastTripOfUser", function(req,res){
                 return res.json(results);
             }
             else {
-                res.status(500);
-                res.send("The user does not have any trips to process");
-                return res
+                return util.handleError(res, 204, "The user does not have any trips to process");
             }
         })
     }
@@ -114,9 +107,7 @@ router.get("/updateStartTimeOfTrip", function(req,res){
     var new_start_time = req.query.start_time;
 
     if (trip_id == null || trip_id == undefined || new_start_time == null || new_start_time == undefined) {
-        res.status(500);
-        res.send("Invalid input parameters");
-        return res;
+        return util.handleError(res, 400, "Invalid input parameters");
     }
 
     else
@@ -129,8 +120,7 @@ router.get("/updateStartTimeOfTrip", function(req,res){
         });
 
         prioryQuery.on('error', function(row){
-            res.status(500);
-            res.send(row.message);
+            return util.handleError(res, 500, row.message);
         });
 
         prioryQuery.on('end', function () {
@@ -159,9 +149,7 @@ router.get("/updateEndTimeOfTrip", function(req,res){
     var new_end_time = req.query.end_time;
 
     if (trip_id == null || trip_id == undefined || new_end_time == null || new_end_time == undefined) {
-        res.status(500);
-        res.send("Invalid input parameters");
-        return res;
+        return util.handleError(res, 400, "Invalid input parameters");
     }
 
     else
@@ -174,8 +162,7 @@ router.get("/updateEndTimeOfTrip", function(req,res){
         });
 
         prioryQuery.on('error', function(row){
-            res.status(500);
-            res.send(row.message);
+            return util.handleError(res, 500, row.message);
         });
 
         prioryQuery.on('end', function () {
@@ -207,9 +194,7 @@ router.get("/insertTransitionBetweenTriplegs", function(req,res){
 
     if (user_id == null || user_id == undefined ||
         start_time== null || start_time== undefined || end_time== null || end_time== undefined ) {
-        res.status(500);
-        res.send("Invalid input parameters");
-        return res;
+        return util.handleError(res, 400, "Invalid input parameters");
     }
 
     else
@@ -222,8 +207,7 @@ router.get("/insertTransitionBetweenTriplegs", function(req,res){
         });
 
         prioryQuery.on('error', function(row){
-            res.status(500);
-            res.send(row.message);
+            return util.handleError(res, 500, row.message);
         });
 
         prioryQuery.on('end', function () {
@@ -252,9 +236,7 @@ router.get("/updatePurposeOfTrip", function(req,res){
     var purpose_id = req.query.purpose_id;
 
     if (trip_id == null || trip_id == undefined || purpose_id == null || purpose_id== undefined) {
-        res.status(500);
-        res.send("Invalid input parameters");
-        return res;
+        return util.handleError(res, 400, "Invalid input parameters");
     }
 
     else
@@ -267,8 +249,7 @@ router.get("/updatePurposeOfTrip", function(req,res){
         });
 
         prioryQuery.on('error', function(row){
-            res.status(500);
-            res.send(row.message);
+            return util.handleError(res, 500, row.message);
         });
 
         prioryQuery.on('end', function () {
@@ -297,9 +278,7 @@ router.get("/updateDestinationPoiIdOfTrip", function(req,res){
     var destination_poi_id = req.query.destination_poi_id;
 
     if (trip_id == null || trip_id == undefined || destination_poi_id == null || destination_poi_id == undefined) {
-        res.status(500);
-        res.send("Invalid input parameters");
-        return res;
+        return util.handleError(res, 400, "Invalid input parameters");
     }
 
     else
@@ -312,8 +291,7 @@ router.get("/updateDestinationPoiIdOfTrip", function(req,res){
         });
 
         prioryQuery.on('error', function(row){
-            res.status(500);
-            res.send(row.message);
+            return util.handleError(res, 500, row.message);
         });
 
         prioryQuery.on('end', function () {
@@ -339,9 +317,7 @@ router.get("/deleteTrip", function(req,res){
     var trip_id = req.query.trip_id;
 
     if (trip_id == null || trip_id == undefined ) {
-        res.status(500);
-        res.send("Invalid input parameters");
-        return res;
+        return util.handleError(res, 400, "Invalid input parameters");
     }
 
     else
@@ -354,8 +330,7 @@ router.get("/deleteTrip", function(req,res){
         });
 
         prioryQuery.on('error', function(row){
-            res.status(500);
-            res.send(row.message);
+            return util.handleError(res, 500, row.message);
         });
 
         prioryQuery.on('end', function () {
@@ -381,9 +356,7 @@ router.get("/confirmAnnotationOfTrip", function(req,res){
     var trip_id = req.query.trip_id;
 
     if (trip_id == null || trip_id == undefined) {
-        res.status(500);
-        res.send("Invalid input parameters");
-        return res;
+        return util.handleError(res, 400, "Invalid input parameters");
     }
 
     else
@@ -396,8 +369,7 @@ router.get("/confirmAnnotationOfTrip", function(req,res){
         });
 
         prioryQuery.on('error', function(row){
-            res.status(500);
-            res.send(row.message);
+            return util.handleError(res, 500, row.message);
         });
 
         prioryQuery.on('end', function () {
