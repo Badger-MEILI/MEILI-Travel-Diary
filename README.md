@@ -27,12 +27,21 @@ The MEILI Database is built on top of NodeJS and ExpressJS and uses multiple thi
 First, set up your database (see the **MEILI Database** docs).
 
 Then go to the root folder of MEILI Travel Diary and start the Express app
-```sh
+
+```
 $ cd /path/to/folder
 $ npm start
 ```
 
 Alternatively, you can setup your scripts and build operations in your IDE of choice.
+
+### Test
+#### Client integration tests
+Mocha test run with Phanthomjs
+
+1. Make sure database is running with test data, preferably run the docker container
+2. Start the development server
+3. `npm run test-client`
 
 ### Development
 
