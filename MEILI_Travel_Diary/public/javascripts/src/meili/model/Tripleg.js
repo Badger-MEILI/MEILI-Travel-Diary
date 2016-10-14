@@ -153,7 +153,7 @@ Tripleg.prototype = {
       if (this.mode[0].accuracy < 50){
         color = 'red';
       } else {
-        _color = this.colors[mode[0].id];
+        _color = this.colors[this.mode[0].id];
         color = _color ? _color : color;
       }
       return color;
