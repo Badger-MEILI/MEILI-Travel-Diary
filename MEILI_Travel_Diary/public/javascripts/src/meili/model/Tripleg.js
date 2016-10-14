@@ -224,7 +224,6 @@ Tripleg.prototype = {
     },
 
     updateMode: function(modeId) {
-      debugger;
       api.triplegs.updateMode(this.getId(), modeId)
         .done(function() {
           this._setMode(this.value);
