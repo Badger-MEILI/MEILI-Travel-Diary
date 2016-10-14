@@ -306,7 +306,7 @@ router.get("/updateTravelModeOfTripleg", function(req,res){
  *
  * @apiSuccess {Boolean} Boolean Returns whether the operation was successfull or not.
  */
-router.get("/updateTravelModeOfTripleg", function(req,res){
+router.get("/updateTransitionPoiIdOfTripleg", function(req,res){
     var results = {};
     results.status = {};
     var tripleg_id = req.query.tripleg_id;
