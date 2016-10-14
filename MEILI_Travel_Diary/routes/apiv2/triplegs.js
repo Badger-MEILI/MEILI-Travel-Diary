@@ -43,7 +43,7 @@ router.get("/getTriplegsOfTrip", function(req,res){
 
         prioryQuery.on('error', function (row) {
             res.status(500);
-            res.send(row);
+            res.send(row.message);
         });
 
         prioryQuery.on('end', function () {
@@ -94,8 +94,7 @@ router.get("/updateStartTimeOfTripleg", function(req,res){
 
         prioryQuery.on('error', function(row){
             res.status(500);
-            res.send(row);
-            // res.send("Request failed with parameters tripleg_id: "+ tripleg_id+" and start_time "+new_start_time);
+            res.send(row.message);
         });
 
         prioryQuery.on('end', function () {
@@ -141,8 +140,7 @@ router.get("/updateEndTimeOfTripleg", function(req,res){
 
         prioryQuery.on('error', function(row){
             res.status(500);
-            res.send(row);
-            // res.send("Request failed with parameters tripleg_id: "+ tripleg_id+" and start_time "+new_end_time);
+            res.send(row.message);
         });
 
         prioryQuery.on('end', function () {
@@ -186,7 +184,7 @@ router.get("/deleteTripleg", function(req,res){
 
         prioryQuery.on('error', function(row){
             res.status(500);
-            res.send(row);
+            res.send(row.message);
         });
 
         prioryQuery.on('end', function () {
@@ -240,7 +238,7 @@ router.get("/insertTransitionBetweenTriplegs", function(req,res){
 
         prioryQuery.on('error', function(row){
             res.status(500);
-            res.send(row);
+            res.send(row.message);
         });
 
         prioryQuery.on('end', function () {
@@ -286,8 +284,7 @@ router.get("/updateTravelModeOfTripleg", function(req,res){
 
         prioryQuery.on('error', function(row){
             res.status(500);
-            res.send(row);
-            // res.send("Request failed with parameters tripleg_id: "+ tripleg_id+" and start_time "+new_end_time);
+            res.send(row.message);
         });
 
         prioryQuery.on('end', function () {
@@ -332,8 +329,7 @@ router.get("/updateTravelModeOfTripleg", function(req,res){
 
         prioryQuery.on('error', function(row){
             res.status(500);
-            res.send(row);
-            // res.send("Request failed with parameters tripleg_id: "+ tripleg_id+" and start_time "+new_end_time);
+            res.send(row.message);
         });
 
         prioryQuery.on('end', function () {
