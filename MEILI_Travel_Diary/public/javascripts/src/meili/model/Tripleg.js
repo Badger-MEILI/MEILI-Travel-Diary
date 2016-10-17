@@ -18,7 +18,7 @@ var Tripleg = Tripleg || function(tripleg) {
   });
 
   this.colors = {
-    1: 'rgb(31,120,180)',
+    1:  'rgb(31,120,180)',
     2:  'rgb(106,61,154)',
     3:  'rgb(240,2,127)',
     4:  'rgb(128,0,0)',
@@ -57,17 +57,17 @@ Tripleg.prototype = {
         // ACTIVE TRIPLEG
         if(this.isFirst && isFirstPoint) {
           // Start point
-          return L.marker(point, { icon: CONFIG.triplegs.map_markers.start });
+          return L.marker(point, { icon: CONFIG.triplegs.map.markers.start });
         } else if(this.isLast && isLastPoint) {
           // End point
-          return L.marker(point, { icon: CONFIG.triplegs.map_markers.stop });
+          return L.marker(point, { icon: CONFIG.triplegs.map.markers.stop });
         } else {
           // Regular point
-          return L.circleMarker(point, CONFIG.triplegs.map_markers.regular);
+          return L.circleMarker(point, CONFIG.triplegs.map.markers.regular);
         }
       } else {
         // PASSIVE TRIPLEGS
-        return L.marker(point, { icon: CONFIG.triplegs.map_markers.transition });
+        return L.marker(point, { icon: CONFIG.triplegs.map.markers.transition });
       }
     },
 
@@ -165,7 +165,7 @@ Tripleg.prototype = {
 
       if(this.type_of_tripleg == 1) {
         // ACTIVE TRIPLEG
-        polylineStyle = { color: this.getColor(this.mode), weight: 8, opacity: 0.6 };
+        polylineStyle = { color: this.getColor(this.mode), weight: CONFIG.triplegs.map.lines.active.weight, opacity: CONFIG.triplegs.map.lines.active.opacity };
       } else {
         // PASSIVE TRIPLEGS
         if(this.points == null) {
@@ -173,7 +173,7 @@ Tripleg.prototype = {
           this.points.push(jQuery.extend(true,{},this.getPrevPassive().getLastPoint()))
           this.points.push(jQuery.extend(true,{},this.getNextPassive().getFirstPoint()));
         }
-        polylineStyle = { color: 'black', weight: 8, opacity: 0.6, dashArray: '20,15' };
+        polylineStyle = CONFIG.triplegs.map.lines.passive;
       }
 
       var polylineLayer = L.polyline(this.points, polylineStyle);
@@ -212,14 +212,13 @@ Tripleg.prototype = {
         var isLast = (i === this.points.length-1);
         points.push(this._generateMapMarker(point, isFirst, isLast));
       }
-      return L.featureGroup(points);
+      return L.featureGroup(points)
     },
 
     generateMapLayer: function() {
-      this.mapLayer = L.featureGroup([
-        this.generatePolyline(),
-        this.generatePoints()
-      ]);
+      this.mapLayer = L.featureGroup();
+      this.mapLayer.addLayer(this.generatePolyline());
+      this.mapLayer.addLayer(this.generatePoints());
       return this.mapLayer;
     },
 

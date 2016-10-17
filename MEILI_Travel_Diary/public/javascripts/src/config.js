@@ -57,30 +57,61 @@ var CONFIG = {
   },
 
   triplegs: {
-    map_markers: {
-      regular: {
-        radius: 6,
-        fillColor: "#ff7800",
-        color: "#000",
-        weight: 1,
-        opacity: 1,
-        fillOpacity: 0.8
+    map: {
+      lines: {
+        active: {
+          colors: {
+            1:  'rgb(31,120,180)',
+            2:  'rgb(106,61,154)',
+            3:  'rgb(240,2,127)',
+            4:  'rgb(128,0,0)',
+            5:  'rgb(128,128,0)',
+            6:  'rgb(0,128,0)',
+            7:  'rgb(128,0,128)',
+            8:  'rgb(0,128,128)',
+            9:  'rgb(0,0,128)',
+            10: 'rgb(102,205,170)',
+            11: 'rgb(0,255,255)',
+            12: 'rgb(25,25,112)',
+            13: 'rgb(138,43,226)',
+            14: 'rgb(218,112,214)',
+            15: 'rgb(244,164,96)'
+          },
+          weight: 8,
+          opacity: 0.8
+        },
+        passive: {
+          color: 'black',
+          weight: 8,
+          opacity: 0.6,
+          dashArray: '20,15'
+        }
       },
-      transition: L.icon({
-        iconUrl: 'images/transition.png',
-        iconSize: [20, 20],
-        iconAnchor: [10, 10]
-      }),
-      stop: L.icon({
-        iconUrl: 'images/stop_flag.png',
-        iconSize: [30, 30],
-        iconAnchor: [10, 10]
-      }),
-      start: L.icon({
-        iconUrl: 'images/start_flag.png',
-        iconSize: [30, 30],
-        iconAnchor: [10, 10]
-      })
+      markers: {
+        regular: {
+          radius: 8,
+          fillColor: "#ff7800",
+          color: "#000",
+          weight: 1,
+          opacity: 1,
+          fillOpacity: 0.8
+        },
+        transition: L.icon({
+          iconUrl: 'images/transition.png',
+          iconSize: [20, 20],
+          iconAnchor: [10, 10]
+        }),
+        stop: L.icon({
+          iconUrl: 'images/stop_flag.png',
+          iconSize: [30, 30],
+          iconAnchor: [10, 10]
+        }),
+        start: L.icon({
+          iconUrl: 'images/start_flag.png',
+          iconSize: [30, 30],
+          iconAnchor: [10, 10]
+        })
+      }
     }
   }
 };

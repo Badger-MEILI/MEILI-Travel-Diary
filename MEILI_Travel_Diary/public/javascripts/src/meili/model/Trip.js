@@ -110,8 +110,14 @@ Trip.prototype = {
     var dfd = $.Deferred();
     api.triplegs.insertTransitionBetweenTriplegs(this.getId(), startTime, endTime, fromMode, toMode)
       .done(function(result) {
-        this.updateTriplegs(result.triplegs);
-        dfd.resolve(this.triplegs);
+        if(result.triplegs) {
+          this.updateTriplegs(result.triplegs);
+          dfd.resolve(this.triplegs);
+        } else {
+          var msg = 'No triplegs returned';
+          throw msg
+          dfd.reject(msg);
+        }
       }.bind(this))
       .fail(function(err) {
         dfd.reject(err);
