@@ -1,7 +1,8 @@
 var expect = chai.expect;
 
-var USER_ID;
-var TRIP_ID;
+var user;
+var trip;
+
 var log = Log(CONFIG);
 var api = Api({
   api_url: TEST_CONFIG.api_url
@@ -17,7 +18,7 @@ describe("API", function() {
       dataType: "json"
     }).done(
       function (result) {
-        USER_ID = result.userId;
+        user = new User(result.userId);
         done();
       })
       .fail(
@@ -27,17 +28,17 @@ describe("API", function() {
   });
 
   describe("Trips", function() {
-    it("get last trip for user should return a trip", function(done) {
-      api.trips.getLast(USER_ID).done(
-        function (result) {
-          TRIP_ID = result.trip_id;
-          expect(result).to.have.property("trip_id");
+    it("get last trip for user should return a trip with triplegs", function(done) {
+      user.getLastTrip()
+        .done(function(resTrip) {
+          trip = resTrip;
+          expect(trip).to.have.property("trip_id");
+          expect(trip.triplegs).to.have.length.above(0);
           done();
         })
-        .fail(
-        function (err,f,d) {
+        .fail(function (err,f,d) {
           console.log(err,f,d);
-           done(f);
+          done(f);
         });
     });
 
@@ -45,36 +46,18 @@ describe("API", function() {
 
 
   describe("Triplegs", function() {
-    it("get triplegs for non existing trip should return empty array of triplegs", function(done) {
-      api.triplegs.get(3454).done(
-        function (result) {
-          expect(result.length).to.be.equal(0);
-          done();
-        })
-        .fail(
-        function (err,f,d) {
-          console.log(err,f,d);
-           done(f);
-        });
-    });
-
-    it("get triplegs for a trip should return triplegs", function(done) {
-      api.triplegs.get(TRIP_ID).done(
-        function (result) {
-          expect(result).to.have.property("triplegs");
-          done();
-        })
-        .fail(
-        function (err,f,d) {
-          console.log(err,f,d);
-           done(f);
-        });
-    });
-
-    it("get triplegs for a trip should return triplegs", function(done) {
-      api.triplegs.get(TRIP_ID).done(
-        function (result) {
-          expect(result).to.have.property("triplegs");
+    it("insert transition between triplegs should return a list of updated triplegs", function(done) {
+      var oldTriplegs = trip.triplegs;
+      var timeDiff = 60*60*1000; // 1hour
+      var tripleg = trip.triplegs[0];
+      trip.insertTransitionBetweenTriplegs(
+        (tripleg.getStartTime().getTime() + timeDiff),
+        (tripleg.getEndTime().getTime() - timeDiff),
+        tripleg.mode[0].id,
+        tripleg.mode[0].id
+      ).done(
+        function (trip) {
+          expect(trip.triplegs).to.not.eql(oldTriplegs);
           done();
         })
         .fail(
