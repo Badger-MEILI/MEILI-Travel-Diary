@@ -59,23 +59,25 @@ var CONFIG = {
   triplegs: {
     map: {
       lines: {
+        low_accuracy_color: '#c25b4e',
+        dafult_color: 'black',
         active: {
           colors: {
-            1:  'rgb(31,120,180)',
-            2:  'rgb(106,61,154)',
-            3:  'rgb(240,2,127)',
-            4:  'rgb(128,0,0)',
-            5:  'rgb(128,128,0)',
-            6:  'rgb(0,128,0)',
-            7:  'rgb(128,0,128)',
-            8:  'rgb(0,128,128)',
-            9:  'rgb(0,0,128)',
-            10: 'rgb(102,205,170)',
-            11: 'rgb(0,255,255)',
-            12: 'rgb(25,25,112)',
-            13: 'rgb(138,43,226)',
-            14: 'rgb(218,112,214)',
-            15: 'rgb(244,164,96)'
+            1:  'rgb(31,120,180)', // blue
+            2:  'rgb(106,61,154)', // purple
+            3:  'rgb(240,2,127)',  // pink
+            4:  'rgb(128,0,0)',    // dark red
+            5:  'rgb(128,128,0)',  // yellowish
+            6:  'rgb(0,128,0)',    // green
+            7:  'rgb(128,0,128)',  // purple
+            8:  'rgb(0,128,128)',  // turquoise
+            9:  'rgb(0,0,128)',    // blue
+            10: 'rgb(102,205,170)',// light green
+            11: 'rgb(0,255,255)',  // light turquoise
+            12: 'rgb(25,25,112)',  // dark blue
+            13: 'rgb(138,43,226)', // light purple
+            14: 'rgb(218,112,214)',// light pink
+            15: 'rgb(244,164,96)'  // orange
           },
           weight: 8,
           opacity: 0.8
@@ -90,11 +92,11 @@ var CONFIG = {
       markers: {
         regular: {
           radius: 8,
-          fillColor: "#ff7800",
-          color: "#000",
-          weight: 1,
+          fillColor: "#c25b4e",
+          color: "#9e4c42",
+          weight: 2,
           opacity: 1,
-          fillOpacity: 0.8
+          fillOpacity: 1
         },
         transition: L.icon({
           iconUrl: 'images/transition.png',

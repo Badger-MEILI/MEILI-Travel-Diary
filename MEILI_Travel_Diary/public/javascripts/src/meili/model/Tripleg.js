@@ -149,9 +149,9 @@ Tripleg.prototype = {
     },
 
     getColor: function() {
-      var color = 'black'
+      var color = CONFIG.triplegs.map.lines.default_color;
       if (this.mode[0].accuracy < 50){
-        color = 'red';
+        color = CONFIG.triplegs.map.lines.low_accuracy_color;
       } else {
         _color = this.colors[this.mode[0].id];
         color = _color ? _color : color;
