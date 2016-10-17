@@ -191,28 +191,34 @@ Timeline.prototype = {
       // Mouseover
       $('#'+this.elementId).on('mouseover', '.timeline-panel', function(e) {
         var triplegId = $(e.currentTarget).attr('tripleg-id');
-        var tripleg = this.trip.getTriplegById(triplegId);
-        if(tripleg.polylineLayer) {
-          tripleg.polylineLayer.setStyle({ opacity: 1 });
+        if(triplegId) {
+          var tripleg = this.trip.getTriplegById(triplegId);
+          if(tripleg.polylineLayer) {
+            tripleg.polylineLayer.setStyle({ opacity: 1 });
+          }
         }
       }.bind(this));
 
       // Mouse exit
       $('#'+this.elementId).on('mouseout', '.timeline-panel', function(e) {
         var triplegId = $(e.currentTarget).attr('tripleg-id');
-        var tripleg = this.trip.getTriplegById(triplegId);
-        if(tripleg.polylineLayer) {
-          tripleg.polylineLayer.setStyle({ opacity: 0.6 });
+        if(triplegId) {
+          var tripleg = this.trip.getTriplegById(triplegId);
+          if(tripleg.polylineLayer) {
+            tripleg.polylineLayer.setStyle({ opacity: 0.6 });
+          }
         }
       }.bind(this));
 
       // Mouse click
       $('#'+this.elementId).on('click', '.zoom-to-tripleg', function(e) {
         var triplegId = $(e.currentTarget).attr('tripleg-id');
-        var tripleg = this.trip.getTriplegById(triplegId);
-        if(tripleg.polylineLayer) {
-          map.fitBounds(tripleg.polylineLayer.getBounds());
-          log.info('Zoomed to layer ' + triplegId);
+        if(triplegId) {
+          var tripleg = this.trip.getTriplegById(triplegId);
+          if(tripleg.polylineLayer) {
+            map.fitBounds(tripleg.polylineLayer.getBounds());
+            log.info('Zoomed to layer ' + triplegId);
+          }
         }
       }.bind(this));
 
