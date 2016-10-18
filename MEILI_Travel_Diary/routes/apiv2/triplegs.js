@@ -210,6 +210,9 @@ router.get("/insertTransitionBetweenTriplegs", function(req,res){
         return util.handleError(res, 400, "Invalid input parameters");
     }
 
+    if (start_time>end_time)
+        return util.handleError(res, 400, "Start time cannot be later than end time");
+
     else
     {
         var sqlQuery = "select * from apiv2.insert_stationary_tripleg_period_in_trip($bd$"+ start_time +"$bd$,$bd$"+ end_time +"$bd$,$bd$"+ from_travel_mode +
