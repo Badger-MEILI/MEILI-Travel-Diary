@@ -71,6 +71,14 @@ Tripleg.prototype = {
       return this.triplegid;
     },
 
+    getMode: function() {
+      var mode;
+      if(this.mode && this.mode.length > 0) {
+        mode = this.mode[0];
+      }
+      return mode;
+    },
+
     getType: function() {
       return this.type_of_tripleg;
     },
