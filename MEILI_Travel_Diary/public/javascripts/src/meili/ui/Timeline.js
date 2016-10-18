@@ -118,7 +118,7 @@ Timeline.prototype = {
             '<br>',
             '<label for="timepickerstart_'+triplegId+'">Start:</label>',
             '<div class="input-group bootstrap-timepicker timepicker">',
-              '<input id="timepickerstart_'+triplegId+'" initial-time="' + tripleg.start_time + '" tripleg-id=" '+tripleg.getId()+' " class="form-control time-picker start input-small ' + classes.join(' ') + '" type="text"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>',
+              '<input id="timepickerstart_'+triplegId+'" initial-time="' + tripleg.getStartTime().getTime() + '" tripleg-id=" '+tripleg.getId()+' " class="form-control time-picker start input-small ' + classes.join(' ') + '" type="text"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>',
             '</div>',
 
             '<a class="add-transition btn btn-default" href="#" role="button" tripleg-id="' + triplegId + '"><i class="glyphicon glyphicon-transfer"></i> Did we miss a transfer? Click to add it. </a>',
@@ -127,7 +127,7 @@ Timeline.prototype = {
 
             '<label for="timepickerstart_'+triplegId+'">Stop:</label>',
             '<div class="input-group bootstrap-timepicker timepicker">',
-              '<input id="timepickerend_'+triplegId+'" trip-id="' + tripId + '" type="text" class="time-picker end form-control input-small ' + classes.join(' ') + '"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>',
+              '<input id="timepickerend_'+triplegId+'" initial-time="' + tripleg.getEndTime().getTime() + '" tripleg-id=" '+tripleg.getId()+' " type="text" class="time-picker end form-control input-small ' + classes.join(' ') + '"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>',
             '</div>',
             //if (!tripleg.isLast) '<hr>',
             //getTransitionPlace(tripleg, isLast),
