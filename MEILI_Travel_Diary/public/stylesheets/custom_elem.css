@@ -19,6 +19,10 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+span.glyphicon.large {
+    font-size: 30px;
+}
+
 #error-message {
     margin: 4px 20px;
     position: absolute;
@@ -227,8 +231,12 @@ PLUS SYMBOL
     background-color: #5aab65;
 }
 
+.timeline .tldate .glyphicon-flag {
+    float: left;
+    padding-left: 10px;
+}
 
-.tldate p{
+.tldate p {
     margin:0;
 }
 

@@ -112,6 +112,10 @@ Timeline.prototype = {
             '<h4>',
               this._getModeSelector(tripleg),
             '</h4>',
+            '<h5>',
+               '<span class="distance">Distance: ' + tripleg.getDistance() + '</span>',
+               tripleg.getTransitionTime() ? ' - <span id="transitiontime'+triplegId+'">Transfer time: ' + tripleg.getTransitionTime() + ' min </span>' : '',
+            '</h5>',
           '</div>',
           '<div class="tl-body">',
 
@@ -121,17 +125,15 @@ Timeline.prototype = {
               '<input id="timepickerstart_'+triplegId+'" initial-time="' + tripleg.getStartTime().getTime() + '" tripleg-id=" '+tripleg.getId()+' " class="form-control time-picker start input-small ' + classes.join(' ') + '" type="text"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>',
             '</div>',
 
-            '<a class="add-transition btn btn-default" href="#" role="button" tripleg-id="' + triplegId + '"><i class="glyphicon glyphicon-transfer"></i> Did we miss a transfer? Click to add it. </a>',
-
-            '<p lang="en" class="distance">Distance:' + tripleg.getDistance() + '</p>',
-
             '<label for="timepickerstart_'+triplegId+'">Stop:</label>',
             '<div class="input-group bootstrap-timepicker timepicker">',
               '<input id="timepickerend_'+triplegId+'" initial-time="' + tripleg.getEndTime().getTime() + '" tripleg-id=" '+tripleg.getId()+' " type="text" class="time-picker end form-control input-small ' + classes.join(' ') + '"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>',
             '</div>',
             //if (!tripleg.isLast) '<hr>',
             //getTransitionPlace(tripleg, isLast),
-            tripleg.getTransitionTime() ? '<p id="transitiontime'+triplegId+'">Transfer time: ' + tripleg.getTransitionTime() + ' min <span class="glyphicon glyphicon-trash" style="float: right;" onclick="mergeWithNext(\''+triplegId+'\')"></span></p>' : '',
+            '<br>',
+            '<a class="add-transition btn btn-default" href="#" role="button" tripleg-id="' + triplegId + '"><i class="glyphicon glyphicon-transfer"></i> Did we miss a transfer? Click to add it. </a>',
+            '<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-trash" style="float: right;" onclick="mergeWithNext(\''+triplegId+'\')"></span></button>',
           '</div>',
         '</div>',
       '</li>'
@@ -299,8 +301,8 @@ Timeline.prototype = {
       var currentTripStartHour = moment(currentTripStartDate).format("hh:ss");
 
       thisHtml+='<li>';
-      thisHtml+='<div class="tldate" id="tldatefirst" style="width:330px"><p lang="en" id="tldatefirstassociatedparagraph"><span class="glyphicon glyphicon-flag"></span>('+currentTripStartDateLocal  +') '+currentTripStartHour+' - Started trip</p>';// <p id="tldatefirstassociatedparagraphsv" lang="sv"><span class="glyphicon glyphicon-flag"></span>('+currentTripStartDateLocalSv  +') '+currentTripStartHour+' - Påbörjade förflyttning</p>';
-      thisHtml+='<p lang="en"><i>Is this a fake trip? Click <span class="glyphicon glyphicon-trash" onclick="deleteTripModal()"></span> to delete.</i></p>';
+      thisHtml+='<div class="tldate start" id="tldatefirst" style="width:330px"><span class="glyphicon large glyphicon-flag"></span><span><p lang="en" id="tldatefirstassociatedparagraph">('+currentTripStartDateLocal  +') '+currentTripStartHour+' - Started trip</p>';// <p id="tldatefirstassociatedparagraphsv" lang="sv"><span class="glyphicon glyphicon-flag"></span>('+currentTripStartDateLocalSv  +') '+currentTripStartHour+' - Påbörjade förflyttning</p>';
+      thisHtml+='<p lang="en"><i>Is this a fake trip? Click <span class="glyphicon glyphicon-trash" onclick="deleteTripModal()"></span> to delete.</i></p></span>';
       thisHtml+='</div>';
       thisHtml+='</li>';
 
@@ -341,9 +343,9 @@ Timeline.prototype = {
 
       var currentTripEndDateHour = moment(currentTripEndDate).format("hh:ss");
 
-      var thisHtml = '<li><div class="tldate" id="tldatelast" style="width: 350px;">';
-      thisHtml += '<p id="tldatelastassociatedparagraph" lang="en"> <span class="glyphicon glyphicon-flag"> </span>('+currentTripEndDateLocal  +') '+currentTripEndDateHour+' - Ended trip</p>';
-      thisHtml += '<p lang="en"><i> Is this a fake stop? Click <span class="glyphicon glyphicon-share-alt" onclick="mergeTripModal()"> </span> to merge with next trip.</i></p>';
+      var thisHtml = '<li><div class="tldate" id="tldatelast" style="width: 390px;">';
+      thisHtml += '<span class="glyphicon glyphicon-flag large"> </span><span><p id="tldatelastassociatedparagraph" lang="en"> ('+currentTripEndDateLocal  +') '+currentTripEndDateHour+' - Ended trip</p>';
+      thisHtml += '<p lang="en"><i> Is this a fake stop? Click <span class="glyphicon glyphicon-share-alt" onclick="mergeTripModal()"> </span> to merge with next trip.</i></p></span>';
       thisHtml += '</div></li>';
       var places = this.trip.destination_places;
       var purposes = this.trip.purposes;
