@@ -155,20 +155,18 @@ Timeline.prototype = {
    * @param tripleg - tripleg
    */
   _addListeners: function(tripId, tripleg) {
-   /*  var transitionSelectOption = document.getElementById('transitionSelect'+tripleg.triplegid);
+      /********************************************
+       * Adding listeners to the timeline elements*
+       ********************************************/
 
-      if (transitionSelectOption!=null)
-          transitionSelectOption.onchange = transitionSelectListener;
-*/
+      // Tripleg mode change
       $('#'+this.elementId).on('change', '.mode-select', function(e) {
         var triplegId = parseInt($(e.target).attr('tripleg-id'), 10);
         var tripleg = this.trip.getTriplegById(triplegId);
         tripleg.updateMode(e.target.value);
       }.bind(this));
 
-      /********************************************
-       * Adding listeners to the timeline elements*
-       ********************************************/
+      // Open transition modal
       $('#'+this.elementId).on('click','.add-transition', function(e) {
         var triplegId = parseInt($(e.target).attr('tripleg-id'), 10);
         var tripleg = this.trip.getTriplegById(triplegId);
@@ -177,6 +175,7 @@ Timeline.prototype = {
         return false;
       }.bind(this));
 
+      // Insert transition between triplegs
       $('#'+this.elementId).on('click','.transition-accept', function(e) {
         var $modal = $(e.target).parent();
         var triplegId = $modal.attr('tripleg-id');
@@ -188,7 +187,7 @@ Timeline.prototype = {
         this.trip.insertTransitionBetweenTriplegs(startTime, endTime, fromMode, toMode);
       }.bind(this));
 
-      // Mouseover
+      // Tripleg panel mouseover
       $('#'+this.elementId).on('mouseover', '.timeline-panel', function(e) {
         var triplegId = $(e.currentTarget).attr('tripleg-id');
         if(triplegId) {
@@ -199,7 +198,7 @@ Timeline.prototype = {
         }
       }.bind(this));
 
-      // Mouse exit
+      // Tripleg panel mouse exit
       $('#'+this.elementId).on('mouseout', '.timeline-panel', function(e) {
         var triplegId = $(e.currentTarget).attr('tripleg-id');
         if(triplegId) {
@@ -210,7 +209,7 @@ Timeline.prototype = {
         }
       }.bind(this));
 
-      // Mouse click
+      // Tripleg panel mouse click
       $('#'+this.elementId).on('click', '.zoom-to-tripleg', function(e) {
         var triplegId = $(e.currentTarget).attr('tripleg-id');
         if(triplegId) {
