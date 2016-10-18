@@ -2,34 +2,36 @@
   <head>
     <meta charset="utf-8">
     <!-- encoding must be set for mocha's special characters to render properly -->
-    <link rel="stylesheet" media="all" href="../node_modules/mocha/mocha.css">
+    <link rel="stylesheet" media="all" href="../../node_modules/mocha/mocha.css">
   </head>
   <body>
     <div id="mocha"></div>
-    <script src="../node_modules/mocha/mocha.js"></script>
-    <script src="../node_modules/chai/chai.js"></script>
+    <script src="../../node_modules/mocha/mocha.js"></script>
+    <script src="../../node_modules/chai/chai.js"></script>
     <script>
       mocha.ui('bdd')
       expect = chai.expect
     </script>
 
 
-    <script type="text/javascript" src="../public/javascripts/lib/jquery.js"></script>
-    <script type="text/javascript" src="../public/javascripts/lib/leaflet_1.0.0/leaflet.js"></script>
-    <script type="text/javascript" src="../public/javascripts/lib/emitter_1.2.1/index.js"></script>
-    <script type="text/javascript" src="../public/javascripts/lib/moment_2.15.1.js"></script>
+    <script src="../../public/javascripts/lib/jquery.js"></script>
+    <script src="../../public/javascripts/lib/leaflet_1.0.0/leaflet.js"></script>
+    <script src="../../public/javascripts/lib/emitter_1.2.1/index.js"></script>
+    <script src="../../public/javascripts/lib/moment_2.15.1.js"></script>
 
-    <script src="../public/javascripts/src/config.js"></script>
-    <script src="../public/javascripts/src/meili/Log.js"></script>
-    <script src="../public/javascripts/src/meili/Request.js"></script>
-    <script src="../public/javascripts/src/meili/Api.js"></script>
+    <script src="../../public/javascripts/src/config.js"></script>
+    <script src="../../public/javascripts/src/meili/Log.js"></script>
+    <script src="../../public/javascripts/src/meili/Request.js"></script>
+    <script src="../../public/javascripts/src/meili/Api.js"></script>
 
-    <script src="../public/javascripts/src/meili/model/User.js"></script>
-    <script src="../public/javascripts/src/meili/model/Tripleg.js"></script>
-    <script src="../public/javascripts/src/meili/model/Trip.js"></script>
+    <script src="../../public/javascripts/src/meili/model/User.js"></script>
+    <script src="../../public/javascripts/src/meili/model/Tripleg.js"></script>
+    <script src="../../public/javascripts/src/meili/model/Trip.js"></script>
 
     <script src="test_config.js"></script>
-    <script src="client_integration_test.js"></script>
+    <script src="specs/trips.js"></script>
+    <script src="specs/triplegs.js"></script>
+    <script src="specs/test.js"></script>
 
     <script>
       mocha.run()
