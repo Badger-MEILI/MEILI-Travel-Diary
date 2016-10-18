@@ -47,6 +47,7 @@ describe("API", function() {
 
   describe("Triplegs", function() {
     it("insert transition between triplegs should return a list of updated triplegs", function(done) {
+        // TODO -> this operation should fail due to invalid state (start time later than end time)
       var oldTriplegs = trip.triplegs;
       var timeDiff = 60*60*1000; // 1hour
       var tripleg = trip.triplegs[0];
