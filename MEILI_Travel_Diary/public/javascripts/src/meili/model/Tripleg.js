@@ -153,9 +153,9 @@ Tripleg.prototype = {
       var polyline = [];
       var polylineStyle;
 
-      if(this.type_of_tripleg == 1) {
+      if(this.getType() == 1) {
         // ACTIVE TRIPLEG
-        polylineStyle = { color: this.getColor(this.mode), weight: CONFIG.triplegs.map.lines.active.weight, opacity: CONFIG.triplegs.map.lines.active.opacity };
+        polylineStyle = { color: this.getColor(), weight: CONFIG.triplegs.map.lines.active.weight, opacity: CONFIG.triplegs.map.lines.active.opacity };
       } else {
         // PASSIVE TRIPLEGS
         if(this.points == null) {
