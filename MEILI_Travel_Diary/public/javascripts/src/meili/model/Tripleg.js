@@ -1,23 +1,9 @@
 
 var Tripleg = Tripleg || function(tripleg) {
 
-  tripleg.mode = tripleg.mode.sort(function(a,b) {
-    if (a.accuracy < b.accuracy) {
-        return 1;
-    }
-
-    if (a.accuracy > b.accuracy) {
-        return -1;
-    }
-
-    if (a.name > b.name) {
-      return 1;
-    }
-
-    return -1;
-  });
-
   Emitter($.extend(this, tripleg));
+  // Make sure that modes are in order
+  this._sortModes();
 
   return this;
 };
@@ -25,13 +11,33 @@ var Tripleg = Tripleg || function(tripleg) {
 Tripleg.prototype = {
 
     _setMode: function(modeId) {
+      log.info('tripleg setting mode', modeId);
       for (var i = 0; i < this.mode.length; i++) {
-         if(this.mode[i].id === modeId) {
+         if(this.mode[i].id == modeId) {
             this.mode[i].accuracy = 100;
          } else {
             this.mode[i].accuracy = 0;
          }
        };
+      this._sortModes();
+    },
+
+    _sortModes: function() {
+      this.mode = this.mode.sort(function(a,b) {
+        if (a.accuracy < b.accuracy) {
+            return 1;
+        }
+
+        if (a.accuracy > b.accuracy) {
+            return -1;
+        }
+
+        if (a.name > b.name) {
+          return 1;
+        }
+
+        return -1;
+      });
     },
 
     _generateMapMarker: function(point, isFirstPoint, isLastPoint) {
@@ -215,7 +221,8 @@ Tripleg.prototype = {
     updateMode: function(modeId) {
       api.triplegs.updateMode(this.getId(), modeId)
         .done(function() {
-          this._setMode(this.value);
+          this._setMode(modeId);
+          this.emit('tripleg-updated');
           log.debug('tripleg mode succefully updated');
         }.bind(this))
         .fail(function() {
