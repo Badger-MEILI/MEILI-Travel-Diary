@@ -144,13 +144,20 @@ Tripleg.prototype = {
       }
     },
 
-    getColor: function() {
+    getColor: function(alpha) {
       var color = CONFIG.triplegs.map.lines.default_color;
-      if (this.mode[0].accuracy < 50){
-        color = CONFIG.triplegs.map.lines.low_accuracy_color;
-      } else {
-        _color = CONFIG.triplegs.map.lines.active.colors[this.mode[0].id];
-        color = _color ? _color : color;
+      var mode = this.getMode();
+      if(mode) {
+        if (mode.accuracy < 50){
+          color = CONFIG.triplegs.map.lines.low_accuracy_color;
+        } else {
+          _color = CONFIG.triplegs.map.lines.active.colors[mode.id];
+          color = _color ? _color : color;
+        }
+      }
+      if(alpha) {
+        // Add alpha to rgb
+        color = color.replace(')',','+alpha+')').replace('rgb','rgba');
       }
       return color;
     },

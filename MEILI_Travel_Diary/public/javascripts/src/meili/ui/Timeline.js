@@ -107,7 +107,7 @@ Timeline.prototype = {
       '<div class="tl-circ zoom-to-tripleg" tripleg-id="'+triplegId+'" style="cursor:pointer"><span class="glyphicon glyphicon-search"></span></div>',
 
       '<li>',
-        '<div class="timeline-panel" id="telem'+triplegId+'" tripleg-id="' + triplegId + '">',
+        '<div class="timeline-panel" style="background-color:'+tripleg.getColor(0.6)+'" id="telem'+triplegId+'" tripleg-id="' + triplegId + '">',
           '<div class="tl-heading">',
             '<h4>',
               this._getModeSelector(tripleg),
