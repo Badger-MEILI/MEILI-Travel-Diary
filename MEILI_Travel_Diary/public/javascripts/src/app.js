@@ -265,6 +265,11 @@ function getJson(str) {
  **********************************************************************/
 var currentTrip;
 var log         = Log(CONFIG);
+
+window.onerror = function (errorMsg, url, lineNumber, column, errorObj) {
+    log.error(errorMsg, url, lineNumber, column, errorObj);
+    ui.errorMsg.show(errorMsg);
+};
 var api         = Api(CONFIG);
 var ui;
 
@@ -308,12 +313,6 @@ app.controller('MapCtrl',function($scope, $rootScope, $http, $location, $anchorS
       errorMsg: new ErrorMsg()
     };
     var user = new User(userId);
-
-
-    window.onerror = function (errorMsg, url, lineNumber, column, errorObj) {
-        log.error(errorMsg, url, lineNumber, column, errorObj);
-        ui.errorMsg.show(errorMsg);
-    };
 
     user.getNumberOfTrips(userId)
       .done(function(result) {
