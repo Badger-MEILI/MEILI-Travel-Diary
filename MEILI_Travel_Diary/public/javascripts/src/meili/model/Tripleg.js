@@ -205,7 +205,7 @@ Tripleg.prototype = {
       /**
        * DESKTOP ONLY EVENTS
        */
-      console.warn('add events?');
+      console.warn('add events on polyline?');
 /*
       if(this.type_of_tripleg == 1) {
         // ACTIVE TRIPLEG

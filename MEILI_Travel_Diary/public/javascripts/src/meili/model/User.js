@@ -7,6 +7,10 @@ User.prototype = {
   userId: null,
   currentTrip: null,
 
+  // API connected
+  // -------------------------------------------
+  // -------------------------------------------
+
   getNumberOfTrips: function() {
     return api.trips.getNumberOfTrips(this.userId);
   },
