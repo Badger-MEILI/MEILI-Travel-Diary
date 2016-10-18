@@ -23,6 +23,7 @@ Trip.prototype = {
     }
     for (var i = 0; i < newTriplegs.length; i++) {
       newTriplegs[i] = new Tripleg(newTriplegs[i]);
+      newTriplegs[i].on('tripleg-updated', function() { this.emit('triplegs-update', this); }.bind(this));
     };
     this.triplegs = newTriplegs;
     this.emit('triplegs-update', this);
