@@ -65,7 +65,7 @@ Timeline.prototype = {
    * @returns {string} - outerHTML of the mode selector
    */
   _getModeSelector: function(tripleg){
-      var maxVal = tripleg.mode[0].accuracy;
+      var maxVal = tripleg.getMode().accuracy;
       var classes = ' form-control';
       var options = [];
 
