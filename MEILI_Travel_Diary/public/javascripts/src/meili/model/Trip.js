@@ -24,6 +24,11 @@ Trip.prototype = {
     for (var i = 0; i < newTriplegs.length; i++) {
       newTriplegs[i] = new Tripleg(newTriplegs[i]);
       newTriplegs[i].on('tripleg-updated', function() { this.emit('triplegs-update', this); }.bind(this));
+
+      // Add reference to next and previous tripleg
+      if(i-2 >= 0) {
+        newTriplegs[i-1].setPrevNext(newTriplegs[i-2], newTriplegs[i]);
+      }
     };
     this.triplegs = newTriplegs;
     this.emit('triplegs-update', this);
