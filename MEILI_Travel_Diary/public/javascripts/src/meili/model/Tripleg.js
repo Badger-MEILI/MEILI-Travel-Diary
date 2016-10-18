@@ -17,24 +17,6 @@ var Tripleg = Tripleg || function(tripleg) {
     return -1;
   });
 
-  this.colors = {
-    1:  'rgb(31,120,180)',
-    2:  'rgb(106,61,154)',
-    3:  'rgb(240,2,127)',
-    4:  'rgb(128,0,0)',
-    5:  'rgb(128,128,0)',
-    6:  'rgb(0,128,0)',
-    7:  'rgb(128,0,128)',
-    8:  'rgb(0,128,128)',
-    9:  'rgb(0,0,128)',
-    10: 'rgb(102,205,170)',
-    11: 'rgb(0,255,255)',
-    12: 'rgb(25,25,112)',
-    13: 'rgb(138,43,226)',
-    14: 'rgb(218,112,214)',
-    15: 'rgb(244,164,96)'
-  };
-
   Emitter($.extend(this, tripleg));
 
   return this;
@@ -153,7 +135,7 @@ Tripleg.prototype = {
       if (this.mode[0].accuracy < 50){
         color = CONFIG.triplegs.map.lines.low_accuracy_color;
       } else {
-        _color = this.colors[this.mode[0].id];
+        _color = CONFIG.triplegs.map.lines.active.colors[this.mode[0].id];
         color = _color ? _color : color;
       }
       return color;
