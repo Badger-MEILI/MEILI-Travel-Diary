@@ -228,6 +228,12 @@ Timeline.prototype = {
           this.trip.updatePurposeOfTrip(e.target.value);
         }
       }.bind(this));
+
+      $('#'+this.elementId).on('change', '.place-selector', function(e) {
+        if(e.target.value) {
+          this.trip.updateDestinationPoiIdOfTrip(e.target.value);
+        }
+      }.bind(this));
   },
 
     /**
@@ -420,7 +426,7 @@ Timeline.prototype = {
     var placeSelector = '';
     if (places && places.length > 0) {
       placeSelector = '<p lang="en">Place: ' +
-                        '<select class="form-control form-control-inline" id="placeSelect">';
+                        '<select class="form-control form-control-inline place-selector">';
 
       var maxAccuracy = places[0].accuracy;
       if (maxAccuracy < 50){
@@ -431,7 +437,7 @@ Timeline.prototype = {
       for (var i=0; i < places.length; i++) {
         var place = places[i];
         if (typeof place.db_id !== undefined) {
-          placeSelector += '<option value="' + place.db_id + '">' + place.name + '</option>';
+          placeSelector += '<option value="' + place.gid + '">' + place.name + '</option>';
         }
       }
 

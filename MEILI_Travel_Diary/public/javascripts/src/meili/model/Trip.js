@@ -14,7 +14,7 @@ var Trip = Trip || function(trip, triplegs) {
   }
   // Make sure places is sorted at init
   if(this.destination_places) {
-    this._sortPlaces();
+    this._sortDestinationPlaces();
   }
 
   return this;
@@ -161,6 +161,17 @@ Trip.prototype = {
     return dfd.promise();
   },
 
+  updateDestinationPoiIdOfTrip: function(destinationPoiId) {
+    var dfd = $.Deferred();
+    api.trips.updateDestinationPoiIdOfTrip(this.getId(), destinationPoiId).done(function(result) {
+      if(result.status == true) {
+        this._updateDestinationPlace(destinationPoiId);
+        this.emit('trip-update', this);
+      }
+    }.bind(this));
+    return dfd.promise();
+  },
+
   // Internal methods
   // -------------------------------------------
   // -------------------------------------------
@@ -174,11 +185,20 @@ Trip.prototype = {
     this._sortPurposes();
   },
 
+  _updateDestinationPlace: function(destinationPlaceId) {
+    for (var i = 0; i < this.destination_places.length; i++) {
+      if(this.destination_places[i].gid == destinationPlaceId) {
+        this.destination_places[i].accuracy = 100;
+      }
+    }
+    this._sortDestinationPlaces();
+  },
+
   _sortPurposes: function() {
     this.purposes = util.sortByAccuracy(this.purposes);
   },
 
-  _sortPlaces: function() {
+  _sortDestinationPlaces: function() {
     this.destination_places = util.sortByAccuracy(this.destination_places);
   },
 

@@ -52,6 +52,16 @@ var Api = function(config) {
         );
       },
 
+      updateDestinationPoiIdOfTrip: function(tripId, destinationPoiId) {
+        return request.get(
+          url(mainPaths.trips, 'updateDestinationPoiIdOfTrip'),
+          {
+            trip_id: tripId,
+            destination_poi_id: destinationPoiId
+          }
+        );
+      },
+
       create: function() {},
       update: function() {},
       delete: function() {}
