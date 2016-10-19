@@ -1,3 +1,4 @@
+var util = Util();
 
 var Tripleg = Tripleg || function(tripleg) {
   this.previousTripleg;
@@ -33,13 +34,11 @@ Tripleg.prototype = {
   },
 
   getStartTime: function(formatted) {
-    var startTime = new Date(this.start_time);
-    return formatted ? moment(startTime).format('HH:mm') : startTime;
+    return util.formatTime(this.start_time, formatted ? CONFIG.default_time_format : false);
   },
 
   getEndTime: function(formatted) {
-    var endTime = new Date(this.stop_time);
-    return formatted ? moment(endTime).format('HH:mm') : endTime;
+    return util.formatTime(this.stop_time, formatted ? CONFIG.default_time_format : false);
   },
 
   getPrevious: function() {

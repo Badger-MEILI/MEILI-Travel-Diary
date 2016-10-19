@@ -3,6 +3,8 @@ var CONFIG = {
 
   api_url: '/apiv2',
 
+  default_time_format: 'HH:mm',
+
   map: {
     start: {
       center: [59.340893391583855, 18.00436019897461],

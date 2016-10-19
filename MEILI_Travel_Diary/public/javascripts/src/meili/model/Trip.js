@@ -1,4 +1,6 @@
 
+var util = Util();
+
 var Trip = Trip || function(trip, triplegs) {
   Emitter($.extend(this, trip));
   this.mapLayer = L.featureGroup();
@@ -37,6 +39,36 @@ Trip.prototype = {
 
   getNextPassiveTripleg: function(tripleg) {
     return this._getTripleg(tripleg.triplegid, +1);
+  },
+
+  getStartTime: function(formatted) {
+    return util.formatTime(this.current_trip_start_date, formatted ? CONFIG.default_time_format : false);
+  },
+
+  getEndTime: function(formatted) {
+    return util.formatTime(this.current_trip_end_date, formatted ? CONFIG.default_time_format : false);
+  },
+
+  getNextTripStartTime: function(formatted) {
+    return util.formatTime(this.next_trip_start_date, formatted ? CONFIG.default_time_format : false);
+  },
+
+  getPreviousTripEndTime: function(formatted) {
+    return util.formatTime(this.previous_trip_end_date, formatted ? CONFIG.default_time_format : false);
+  },
+
+  getPreviousTripPOIName: function() {
+    return this.previous_trip_poi_name;
+  },
+
+  getPreviousTripPurpose: function() {
+    return this.previous_trip_purpose;
+  },
+
+  getTimeDiffToNextTrip: function() {
+    var timeDiff = Math.abs(this.getNextTripStartTime().getTime() - this.getEndTime().getTime());
+    var hoursDiff = Math.ceil(timeDiff / (1000 * 60 * 60));
+    return hoursDiff;
   },
 
   // Local changes on trip
