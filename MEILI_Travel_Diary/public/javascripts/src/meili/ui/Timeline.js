@@ -223,7 +223,11 @@ Timeline.prototype = {
         }
       }.bind(this));
 
-
+      $('#'+this.elementId).on('change', '.purpose-selector', function(e) {
+        if(e.target.value) {
+          this.trip.updatePurposeOfTrip(e.target.value);
+        }
+      }.bind(this));
   },
 
     /**
@@ -446,7 +450,7 @@ Timeline.prototype = {
     if(purposes && purposes.length > 0) {
       var maxAccuracy = purposes[0].accuracy;
       var purposeSelector = '<p lang="en">Purpose: '+
-                              '<select class="form-control form-control-inline form-need-check" id="purposeSelect">';
+                              '<select class="form-control form-control-inline form-need-check purpose-selector">';
 
       // Accuracy is not high enough to preselect for the user
       if (maxAccuracy < 50){

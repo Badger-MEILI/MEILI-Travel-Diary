@@ -323,6 +323,9 @@ app.controller('MapCtrl',function($scope, $rootScope, $http, $location, $anchorS
     user.getLastTrip()
       .done(function(trip) {
         // TODO move me
+        trip.on('trip-update', function(trip) {
+          renderTrip(trip);
+        });
         trip.on('triplegs-update', function(trip) {
           renderTrip(trip);
         });

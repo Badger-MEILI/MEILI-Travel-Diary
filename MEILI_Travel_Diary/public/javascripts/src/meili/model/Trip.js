@@ -150,9 +150,29 @@ Trip.prototype = {
     return dfd.promise();
   },
 
+  updatePurposeOfTrip: function(purposeId) {
+    var dfd = $.Deferred();
+    api.trips.updatePurposeOfTrip(this.getId(), purposeId).done(function(result) {
+      if(result.status == true) {
+        this._updatePurpose(purposeId);
+        this.emit('trip-update', this);
+      }
+    }.bind(this));
+    return dfd.promise();
+  },
+
   // Internal methods
   // -------------------------------------------
   // -------------------------------------------
+
+  _updatePurpose: function(purposeId) {
+    for (var i = 0; i < this.purposes.length; i++) {
+      if(this.purposes[i].id == purposeId) {
+        this.purposes[i].accuracy = 100;
+      }
+    }
+    this._sortPurposes();
+  },
 
   _sortPurposes: function() {
     this.purposes = util.sortByAccuracy(this.purposes);
