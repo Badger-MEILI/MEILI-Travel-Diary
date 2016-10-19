@@ -449,15 +449,13 @@ Timeline.prototype = {
       li.id = "listItem"+tripleg.getId();
       var thisHtml = this._getContent(tripId, tripleg);
 
-      console.warn('generateModal?');
-      //thisHtml+=generateModal(tripleg.triplegid, isFirst, isLast);
-
       li.innerHTML = thisHtml;
-
+      // Add tripleg panel
       ul.append(li);
-
+      // Add transition panel
       ul.append(this.getTransitionPanel(tripleg));
 
+      // Activate timepickers
       $('#timepickerstart_'+tripleg.triplegid).timepicker({
           minuteStep: 1,
           showMeridian: false,
