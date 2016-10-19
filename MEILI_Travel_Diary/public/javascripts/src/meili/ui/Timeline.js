@@ -326,81 +326,69 @@ Timeline.prototype = {
    */
   generateLastElement: function(){
       var ul = $('#'+this.elementId+' > ul');
-      var li = document.createElement("li");
-      li.id= 'lastTimelineElement';
 
-      var currentTripEndDate = new Date(parseInt(this.trip.current_trip_end_date));
+      var currentTripEnd = this.trip.getEndTime();
+      var currentTripEndDateLocal = moment(currentTripEnd).format('dddd')+", "+moment(currentTripEnd).format("YY-MM-DD");
 
-      var hours = currentTripEndDate.getHours();
-      var minutes = currentTripEndDate.getMinutes();
-      var seconds = currentTripEndDate.getSeconds();
+      var lastTimelineElement = [
+        '<li>',
+          '<div class="tldate" id="tldatelast" style="width: 390px;">',
+            '<span class="glyphicon glyphicon-flag large"></span> <span><p id="tldatelastassociatedparagraph" lang="en"> ('+currentTripEndDateLocal  +') '+ this.trip.getEndTime(true) +' - Ended trip</p>',
+            '<p lang="en"><i> Is this a fake stop? Click <span class="glyphicon glyphicon-share-alt" onclick="mergeTripModal()"> </span> to merge with next trip.</i></p></span>',
+          '</div>',
+        '</li>'
+      ];
 
-      hours = hours < 10 ? '0'+ hours: hours;
-      minutes = minutes < 10 ? '0'+minutes : minutes;
-      seconds = seconds < 10 ? '0'+seconds : seconds;
-
-      var currentTripEndDateLocal = moment(currentTripEndDate).format('dddd')+", "+moment(currentTripEndDate).format("YY-MM-DD");
-
-      var currentTripEndDateHour = moment(currentTripEndDate).format("hh:ss");
-
-      var thisHtml = '<li><div class="tldate" id="tldatelast" style="width: 390px;">';
-      thisHtml += '<span class="glyphicon glyphicon-flag large"> </span><span><p id="tldatelastassociatedparagraph" lang="en"> ('+currentTripEndDateLocal  +') '+currentTripEndDateHour+' - Ended trip</p>';
-      thisHtml += '<p lang="en"><i> Is this a fake stop? Click <span class="glyphicon glyphicon-share-alt" onclick="mergeTripModal()"> </span> to merge with next trip.</i></p></span>';
-      thisHtml += '</div></li>';
-      var places = this.trip.destination_places;
-      var purposes = this.trip.purposes;
-
-      if (this.trip.next_trip_start_date!=null) {
-      /* Add ended trip info */
-
-          nextTripStartDate = new Date(parseInt(this.trip.next_trip_start_date));
-          var timeDiff = Math.abs(nextTripStartDate.getTime() - currentTripEndDate.getTime());
-          var hoursDiff = Math.ceil(timeDiff / (1000 * 60 * 60));
+      ul.append(lastTimelineElement.join(''));
 
 
-          /* Add previous trip ended panel*/
-          thisHtml += '<li class="timeline-inverted">';
-          thisHtml += '<div class="timeline-panel"  id ="lastTimelinePanel">';
-          thisHtml += '<div class="tl-heading">';
-          thisHtml += '<h4 lang="en">End of trip</h4>';
-          thisHtml += '<p id="tldatelastparagraph"><small class="text-muted"><i class="glyphicon glyphicon-time"></i> '+(currentTripEndDate.getHours()<10?'0':'')+currentTripEndDate.getHours()+':'+(currentTripEndDate.getMinutes()<10?'0':'')+currentTripEndDate.getMinutes()+' - '+(nextTripStartDate.getHours()<10?'0':'')+nextTripStartDate.getHours()+':'+(nextTripStartDate.getMinutes()<10?'0':'')+nextTripStartDate.getMinutes()+'</small></p>';
-          thisHtml += '</div>';
-          thisHtml += '<div class="tl-body">';
-//              thisHtml += '<p lang="en">Place: '+getPlaceSelector(places)+'</p>';
-//               thisHtml += '<p lang="en">Purpose: '+getPurposeSelector(purposes)+'</p>';
-             thisHtml += '<p lang="en" id="lasttimeend">Time: '+hoursDiff+' hours</p>';
-          thisHtml += '</div>';
-          thisHtml += '</div>';
-          thisHtml += '</li>';
-
-          /* Add process next trip */
-          thisHtml += '<li id="processNext">';
-          thisHtml += '<div class="tldatecontrol"> <p lang="en"><i class="glyphicon glyphicon-arrow-down"></i> Process the next trip <i class="glyphicon glyphicon-arrow-down"></i> </p>';// <p lang="sv"><i class="glyphicon glyphicon-arrow-down"></i> Gå till nästa förflyttning <i class="glyphicon glyphicon-arrow-down"></i> </p>';
-          thisHtml += '</div>';
-          thisHtml += '</li>';
-      }
-      else{
-          thisHtml += '<li class="timeline-inverted">';
-          thisHtml += '<div class="timeline-panel" id ="lastTimelinePanel">';
-          thisHtml += '<div class="tl-heading">';
-          thisHtml += '<h4 lang="en">End of the trip</h4>';
-          thisHtml += '<p id="tldatelastparagraph"><small class="text-muted"><i class="glyphicon glyphicon-time"></i> '+(currentTripEndDate.getHours()<10?'0':'')+currentTripEndDate.getHours()+':'+(currentTripEndDate.getMinutes()<10?'0':'')+currentTripEndDate.getMinutes()+'</small></p>';
-          thisHtml += '</div>';
-          thisHtml += '<div class="tl-body">';
- //            thisHtml += '<p lang="en">Place: '+getPlaceSelector(places)+'</p>';
- //              thisHtml += '<p lang="en">Purpose: '+getPurposeSelector(purposes)+'</p>';
-            thisHtml += '</div>';
-          thisHtml += '</div>';
-          thisHtml += '</li>';
-
-          thisHtml += '<li><div class="tldate">';
-          thisHtml += '<p lang="en"> These are all the trip data available now</p>';
-          thisHtml += '</div></li>';
+      // Add ended trip info
+      // TODO! move into separate method
+      var displayTripEndTime = this.trip.getEndTime(true);
+      if (this.trip.getNextTripStartTime() !== null) {
+          // Add previous trip ended panel
+          displayTripEndTime = this.trip.getEndTime(true) + ' - ' + this.trip.getNextTripStartTime(true);
       }
 
-      li.innerHTML = thisHtml;
+      var lastTripControl = [
+        '<li class="timeline-inverted">',
+          '<div class="timeline-panel" id="lastTimelinePanel">',
+            '<div class="tl-heading">',
+              '<h4 lang="en">End of trip</h4>',
+              '<p id="tldatelastparagraph"><small class="text-muted"><i class="glyphicon glyphicon-time"></i> ' + displayTripEndTime + '</small></p>',
+            '</div>',
+            '<div class="tl-body">',
+              this.generatePlaceSelector(this.trip.getPlaces()),
+              this.generatePurposeSelector(this.trip.getPurposes()),
+              '<p lang="en" id="lasttimeend">Time: '+this.trip.getTimeDiffToNextTrip()+' hours</p>',
+            '</div>',
+          '</div>',
+        '</li>'
+      ];
 
-      ul.append(li)
+      ul.append(lastTripControl.join(''));
+
+
+
+      // Navigation to next trip
+      // TODO! move into separate method
+      var navigateToNextTrip = [
+        '<li>',
+          '<div class="tldate">',
+            '<p lang="en"> These are all the trip data available now</p>',
+          '</div>',
+        '</li>'];
+
+      if (this.trip.getNextTripStartTime() !== null) {
+        /* Add process next trip */
+        navigateToNextTrip = [
+          '<li id="processNext">',
+            '<div class="tldatecontrol">',
+              '<p lang="en"><i class="glyphicon glyphicon-arrow-down"></i> Process the next trip <i class="glyphicon glyphicon-arrow-down"></i> </p>',
+            '</div>',
+          '</li>'];
+      }
+      ul.append(navigateToNextTrip.join(''));
 
       /**
        * NO LISTENERS YET
@@ -418,6 +406,63 @@ Timeline.prototype = {
       selectPurposeOption.onchange = purposeSelectListener;
     */
   },
+
+  /**
+   * Generates a selector for the places (for destination) associated to a trip
+   * @param places - array of places (lat, lon) that have accuracy of inference embedded
+   * @returns {string|string} - outerHTML of the place selector
+   */
+  generatePlaceSelector: function(places) {
+    var placeSelector = '';
+    if (places && places.length > 0) {
+      placeSelector = '<p lang="en">Place: ' +
+                        '<select class="form-control form-control-inline" id="placeSelect">';
+
+      var maxAccuracy = places[0].accuracy;
+      if (maxAccuracy < 50){
+        // Can not preselect for the user
+        placeSelector += '<option value="-1" disabled selected style="display:none;" lang="en">Specify your destination</option>';
+      }
+
+      for (var i=0; i < places.length; i++) {
+        var place = places[i];
+        if (typeof place.db_id !== undefined) {
+          placeSelector += '<option value="' + place.db_id + '">' + place.name + '</option>';
+        }
+      }
+
+      placeSelector += '</select></p>';
+    }
+    return placeSelector;
+  },
+
+  /**
+   * Generates a selector for the purposes associated with a trip
+   * @param purposes - an array of purposes and their inference certainty
+   * @returns {string|string} outerHTML of the purpose selector
+   */
+  generatePurposeSelector: function(purposes) {
+    var purposeSelector = '';
+    if(purposes && purposes.length > 0) {
+      var maxAccuracy = purposes[0].accuracy;
+      var purposeSelector = '<p lang="en">Purpose: '+
+                              '<select class="form-control form-control-inline form-need-check" id="purposeSelect">';
+
+      // Accuracy is not high enough to preselect for the user
+      if (maxAccuracy < 50){
+        purposeSelector += '<option value="-1" lang="en" disabled selected style="display:none;">Specify your trip\'s purpose</option>';
+      }
+
+      for (var i=0; i < purposes.length; i++){
+        var purpose = purposes[i];
+        purposeSelector += '<option value="' + purpose.id + '" lang="en">' + purpose.name + '</option>';
+
+      }
+      purposeSelector += '</select>';
+    }
+    return purposeSelector;
+  },
+
 
   getTransitionPanel: function(tripleg) {
     var transitionPanel = [];

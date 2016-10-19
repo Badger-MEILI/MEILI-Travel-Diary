@@ -239,21 +239,7 @@ Tripleg.prototype = {
   },
 
   _sortModes: function() {
-    this.mode = this.mode.sort(function(a,b) {
-      if (a.accuracy < b.accuracy) {
-          return 1;
-      }
-
-      if (a.accuracy > b.accuracy) {
-          return -1;
-      }
-
-      if (a.name > b.name) {
-        return 1;
-      }
-
-      return -1;
-    });
+    this.mode = util.sortByAccuracy(this.mode);
   },
 
   _generateMapMarker: function(point, isFirstPoint, isLastPoint) {

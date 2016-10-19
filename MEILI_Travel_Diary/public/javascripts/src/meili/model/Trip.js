@@ -3,9 +3,18 @@ var util = Util();
 
 var Trip = Trip || function(trip, triplegs) {
   Emitter($.extend(this, trip));
+
   this.mapLayer = L.featureGroup();
   if(triplegs) {
     this.updateTriplegs(triplegs);
+  }
+  // Make sure purposes is sorted at init
+  if(this.purposes) {
+    this._sortPurposes();
+  }
+  // Make sure places is sorted at init
+  if(this.destination_places) {
+    this._sortPlaces();
   }
 
   return this;
@@ -19,6 +28,14 @@ Trip.prototype = {
 
   getId: function() {
     return this.trip_id;
+  },
+
+  getPurposes: function() {
+    return this.purposes;
+  },
+
+  getPlaces: function() {
+    return this.destination_places;
   },
 
   getTriplegById: function(triplegId) {
@@ -136,6 +153,14 @@ Trip.prototype = {
   // Internal methods
   // -------------------------------------------
   // -------------------------------------------
+
+  _sortPurposes: function() {
+    this.purposes = util.sortByAccuracy(this.purposes);
+  },
+
+  _sortPlaces: function() {
+    this.destination_places = util.sortByAccuracy(this.destination_places);
+  },
 
   _updateTime: function(timeToUpdate, triplegId, newTime) {
     var dfd = $.Deferred();
