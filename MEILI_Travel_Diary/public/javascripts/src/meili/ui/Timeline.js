@@ -460,8 +460,7 @@ Timeline.prototype = {
           minuteStep: 1,
           showMeridian: false,
           disableMousewheel:false,
-          timeFormat: 'H:i',
-          defaultTime: tripleg.getStartTime()
+          defaultTime: tripleg.getStartTime(true)
       }).on('hide.timepicker', this._onTimeSet.bind(this));
 
 
