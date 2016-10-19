@@ -11,6 +11,29 @@ var Util = function(config) {
         }
       }
       return dateTime;
+    },
+
+    sortByAccuracy: function(array) {
+      if(array) {
+        return array.sort(
+          function(a, b) {
+            if (a.accuracy < b.accuracy) {
+              return 1;
+            }
+
+            if (a.accuracy > b.accuracy) {
+              return -1;
+            }
+
+            if (a.name > b.name) {
+              return 1;
+            }
+
+            return -1;
+          });
+      } else {
+        return array;
+      }
     }
   }
 };
