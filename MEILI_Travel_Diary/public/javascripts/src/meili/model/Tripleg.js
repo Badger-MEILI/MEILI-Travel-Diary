@@ -34,12 +34,12 @@ Tripleg.prototype = {
 
   getStartTime: function(formatted) {
     var startTime = new Date(this.start_time);
-    return formatted ? this.formatDate(startTime) : startTime;
+    return formatted ? moment(startTime).format('HH:mm') : startTime;
   },
 
   getEndTime: function(formatted) {
     var endTime = new Date(this.stop_time);
-    return formatted ? this.formatDate(endTime) : endTime;
+    return formatted ? moment(endTime).format('HH:mm') : endTime;
   },
 
   getPrevious: function() {
@@ -56,12 +56,6 @@ Tripleg.prototype = {
 
   getLastPoint: function() {
     return this.points[this.points.length-1];
-  },
-
-  formatDate: function(triplegDate) {
-    return (triplegDate.getHours() < 10 ? '0' : '') + triplegDate.getHours() +
-            ':' +
-            (triplegDate.getMinutes() < 10 ? '0' : '') + triplegDate.getMinutes()
   },
 
   /**
