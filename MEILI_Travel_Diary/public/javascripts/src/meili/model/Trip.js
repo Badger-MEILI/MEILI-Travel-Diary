@@ -54,7 +54,7 @@ Trip.prototype = {
       newTriplegs[i].on('tripleg-updated', function() { this.emit('triplegs-update', this); }.bind(this));
 
       // Add reference to next and previous tripleg
-      if(i-2 >= 0) {
+      if(i-1 >= 0) {
         newTriplegs[i-1].setPrevNext(newTriplegs[i-2], newTriplegs[i]);
       }
     };
