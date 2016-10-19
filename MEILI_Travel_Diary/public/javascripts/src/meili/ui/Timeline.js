@@ -419,6 +419,24 @@ Timeline.prototype = {
     */
   },
 
+  getTransitionPanel: function(tripleg) {
+    var transitionPanel = [];
+
+    // Not the last trip leg -> generate panel
+    // TODO! handle language for mode and the case that there is no mode set
+    if (!tripleg.isLast){
+      var nextTripleg = tripleg.getNext();
+      transitionPanel = [
+        '<li>',
+          '<div class="tldate transition-panel" id="tldate' + nextTripleg.getId() + '">',
+            '<p lang="en">'+ tripleg.getEndTime(true) +' - '+ nextTripleg.getStartTime(true) +' - Tranferred from '+ tripleg.getMode().name +' to '+ nextTripleg.getMode().name +'</p>',
+          '</div>',
+        '</li>'];
+    }
+
+    return transitionPanel.join('');
+  },
+
   /**
    * Appends the timeline element of a tripleg to the timeline list and adds its listeners
    * @param tripleg - the tripleg element
@@ -434,13 +452,11 @@ Timeline.prototype = {
       console.warn('generateModal?');
       //thisHtml+=generateModal(tripleg.triplegid, isFirst, isLast);
 
-      console.warn('getTransitionPanel?');
-      //if(getTransitionPanel(tripleg, isLast)!=undefined)
-      //    getTransitionPanel(tripleg, isLast);
-
       li.innerHTML = thisHtml;
 
       ul.append(li);
+
+      ul.append(this.getTransitionPanel(tripleg));
 
       $('#timepickerstart_'+tripleg.triplegid).timepicker({
           minuteStep: 1,

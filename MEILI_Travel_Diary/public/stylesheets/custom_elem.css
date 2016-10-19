@@ -240,6 +240,11 @@ PLUS SYMBOL
     margin:0;
 }
 
+.tldate.transition-panel {
+    background-color: #828282;
+    font-weight: normal;
+    padding: 6px;
+}
 
 .tldatecontrol{
     display: block;
