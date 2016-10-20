@@ -152,88 +152,89 @@ Timeline.prototype = {
     return time.getTime();
   },
 
-    /**
+  /**
    * Adds listeners to a timeline element associated with a tripleg and checks for consequences of time change
    * @param tripleg - tripleg
    */
   _addListeners: function(tripId, tripleg) {
-      /********************************************
-       * Adding listeners to the timeline elements*
-       ********************************************/
 
-      // Tripleg mode change
-      $('#'+this.elementId).on('change', '.mode-select', function(e) {
-        var triplegId = parseInt($(e.target).attr('tripleg-id'), 10);
+    var $element = $('#'+this.elementId);
+
+    // Tripleg mode change
+    $element.on('change', '.mode-select', function(e) {
+      var triplegId = parseInt($(e.target).attr('tripleg-id'), 10);
+      var tripleg = this.trip.getTriplegById(triplegId);
+      tripleg.updateMode(e.target.value);
+    }.bind(this));
+
+    // Open transition modal
+    $element.on('click','.add-transition', function(e) {
+      var triplegId = parseInt($(e.target).attr('tripleg-id'), 10);
+      var tripleg = this.trip.getTriplegById(triplegId);
+      this.openTransitionChoiceModal(tripleg);
+      e.preventDefault();
+      return false;
+    }.bind(this));
+
+    // Insert transition between triplegs
+    $element.on('click','.transition-accept', function(e) {
+      var $modal = $(e.target).parent();
+      var triplegId = $modal.attr('tripleg-id');
+      var tripleg = this.trip.getTriplegById(triplegId);
+      var startTime = this._addTime(tripleg.getStartTime(), $modal.find('#timepicker-start-transition').val());
+      var endTime = this._addTime(tripleg.getEndTime(), $modal.find('#timepicker-stop-transition').val());
+      var fromMode = parseInt($modal.find('#select-from').val(), 10);
+      var toMode = parseInt($modal.find('#select-from').val(), 10);
+      this.trip.insertTransitionBetweenTriplegs(startTime, endTime, fromMode, toMode);
+    }.bind(this));
+
+    // Tripleg panel mouseover
+    $element.on('mouseover', '.timeline-panel', function(e) {
+      var triplegId = $(e.currentTarget).attr('tripleg-id');
+      if(triplegId) {
         var tripleg = this.trip.getTriplegById(triplegId);
-        tripleg.updateMode(e.target.value);
-      }.bind(this));
+        if(tripleg.polylineLayer) {
+          tripleg.polylineLayer.setStyle({ opacity: 1 });
+        }
+      }
+    }.bind(this));
 
-      // Open transition modal
-      $('#'+this.elementId).on('click','.add-transition', function(e) {
-        var triplegId = parseInt($(e.target).attr('tripleg-id'), 10);
+    // Tripleg panel mouse exit
+    $element.on('mouseout', '.timeline-panel', function(e) {
+      var triplegId = $(e.currentTarget).attr('tripleg-id');
+      if(triplegId) {
         var tripleg = this.trip.getTriplegById(triplegId);
-        this.openTransitionChoiceModal(tripleg);
-        e.preventDefault();
-        return false;
-      }.bind(this));
+        if(tripleg.polylineLayer) {
+          tripleg.polylineLayer.setStyle({ opacity: 0.6 });
+        }
+      }
+    }.bind(this));
 
-      // Insert transition between triplegs
-      $('#'+this.elementId).on('click','.transition-accept', function(e) {
-        var $modal = $(e.target).parent();
-        var triplegId = $modal.attr('tripleg-id');
+    // Tripleg panel mouse click
+    $element.on('click', '.zoom-to-tripleg', function(e) {
+      var triplegId = $(e.currentTarget).attr('tripleg-id');
+      if(triplegId) {
         var tripleg = this.trip.getTriplegById(triplegId);
-        var startTime = this._addTime(tripleg.getStartTime(), $modal.find('#timepicker-start-transition').val());
-        var endTime = this._addTime(tripleg.getEndTime(), $modal.find('#timepicker-stop-transition').val());
-        var fromMode = parseInt($modal.find('#select-from').val(), 10);
-        var toMode = parseInt($modal.find('#select-from').val(), 10);
-        this.trip.insertTransitionBetweenTriplegs(startTime, endTime, fromMode, toMode);
-      }.bind(this));
-
-      // Tripleg panel mouseover
-      $('#'+this.elementId).on('mouseover', '.timeline-panel', function(e) {
-        var triplegId = $(e.currentTarget).attr('tripleg-id');
-        if(triplegId) {
-          var tripleg = this.trip.getTriplegById(triplegId);
-          if(tripleg.polylineLayer) {
-            tripleg.polylineLayer.setStyle({ opacity: 1 });
-          }
+        if(tripleg.polylineLayer) {
+          map.fitBounds(tripleg.polylineLayer.getBounds());
+          log.info('Zoomed to layer ' + triplegId);
         }
-      }.bind(this));
+      }
+    }.bind(this));
 
-      // Tripleg panel mouse exit
-      $('#'+this.elementId).on('mouseout', '.timeline-panel', function(e) {
-        var triplegId = $(e.currentTarget).attr('tripleg-id');
-        if(triplegId) {
-          var tripleg = this.trip.getTriplegById(triplegId);
-          if(tripleg.polylineLayer) {
-            tripleg.polylineLayer.setStyle({ opacity: 0.6 });
-          }
-        }
-      }.bind(this));
+    $element.on('change', '.purpose-selector', function(e) {
+      if(e.target.value) {
+        this.trip.updatePurposeOfTrip(e.target.value);
+      }
+    }.bind(this));
 
-      // Tripleg panel mouse click
-      $('#'+this.elementId).on('click', '.zoom-to-tripleg', function(e) {
-        var triplegId = $(e.currentTarget).attr('tripleg-id');
-        if(triplegId) {
-          var tripleg = this.trip.getTriplegById(triplegId);
-          if(tripleg.polylineLayer) {
-            map.fitBounds(tripleg.polylineLayer.getBounds());
-            log.info('Zoomed to layer ' + triplegId);
-          }
-        }
-      }.bind(this));
+    $element.on('change', '.place-selector', function(e) {
+      if(e.target.value) {
+        this.trip.updateDestinationPoiIdOfTrip(e.target.value);
+      }
+    }.bind(this));
 
-      $('#'+this.elementId).on('change', '.purpose-selector', function(e) {
-        if(e.target.value) {
-          this.trip.updatePurposeOfTrip(e.target.value);
-        }
-      }.bind(this));
 
-      $('#'+this.elementId).on('change', '.place-selector', function(e) {
-        if(e.target.value) {
-          this.trip.updateDestinationPoiIdOfTrip(e.target.value);
-        }
-      }.bind(this));
   },
 
     /**
@@ -409,11 +410,6 @@ Timeline.prototype = {
       if (processNext!=null)
           processNext.onclick = nextFunction;
 
-      var selectOption = document.getElementById('placeSelect');
-      selectOption.onchange = placeSelectListener;
-
-      var selectPurposeOption = document.getElementById('purposeSelect');
-      selectPurposeOption.onchange = purposeSelectListener;
     */
   },
 
