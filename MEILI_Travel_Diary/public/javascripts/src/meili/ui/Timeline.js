@@ -222,12 +222,14 @@ Timeline.prototype = {
       }
     }.bind(this));
 
+    // Trip purpose selector
     $element.on('change', '.purpose-selector', function(e) {
       if(e.target.value) {
         this.trip.updatePurposeOfTrip(e.target.value);
       }
     }.bind(this));
 
+    // Trip place selector
     $element.on('change', '.place-selector', function(e) {
       if(e.target.value) {
         this.trip.updateDestinationPoiIdOfTrip(e.target.value);
