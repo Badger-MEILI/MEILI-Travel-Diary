@@ -1,28 +1,25 @@
-
 function testTriplegs() {
 
   describe("Triplegs", function() {
-    it("insert transition between triplegs should return a list of updated triplegs", function(done) {
-        // TODO -> this operation should fail due to invalid state (start time later than end time)
-      var oldTriplegs = trip.triplegs;
-      var timeDiff = 60*60*1000; // 1hour
-      var tripleg = trip.triplegs[0];
-      trip.insertTransitionBetweenTriplegs(
-        (tripleg.getStartTime().getTime() + timeDiff),
-        (tripleg.getEndTime().getTime() - timeDiff),
-        tripleg.mode[0].id,
-        tripleg.mode[0].id
-      ).done(
-        function (trip) {
-          expect(trip.triplegs).to.not.eql(oldTriplegs);
-          done();
-        })
-        .fail(
-        function (err,f,d) {
-          console.log(err,f,d);
-           done(f);
-        });
-    });
-  });
+      it("insert transition between triplegs should fail due to invalid start time later than end time", function(done) {
 
+          var timeDiff = 60*60*1000; // 1hour
+          var tripleg = trip.triplegs[0];
+
+          trip.insertTransitionBetweenTriplegs(
+              tripleg.getStartTime().getTime() + timeDiff,
+              tripleg.getEndTime().getTime() - timeDiff,
+              tripleg.mode[0].id,
+              tripleg.mode[0].id
+          ).done(function(result) {
+                  done(new Error("Start time of transition should not be allowed to be later than the end time of the transition"));
+              }).fail(
+              function (jqXHR, textStatus, errorThrown) {
+                  if (jqXHR.responseJSON.error.code != 400) return done(new Error("Status should be 400"));
+                  expect(jqXHR.responseJSON.error.msg).to.be.equal('Start time cannot be later than end time');
+                  done();
+              });
+      });
+
+  });
 }

@@ -14,13 +14,13 @@ var Request = function(config) {
         dfd.reject();
       }
     })
-    .fail(function(jqXHR, textStatus, errorThrown, a, b, c) {
+    .fail(function(jqXHR, textStatus, errorThrown) {
       var msg = textStatus + ' ' + errorThrown;
       if(jqXHR.responseJSON && jqXHR.responseJSON.error) {
         msg = jqXHR.responseJSON.error.msg;
       }
+      dfd.reject(jqXHR, textStatus, errorThrown);
       throw msg;
-      dfd.reject(msg);
     });
     return dfd.promise();
   };
