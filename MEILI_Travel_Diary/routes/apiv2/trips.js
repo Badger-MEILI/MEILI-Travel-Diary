@@ -378,4 +378,44 @@ router.get("/confirmAnnotationOfTrip", function(req,res){
     }
 });
 
+/**
+ * @api {get} /trips/navigateToNextTrip&:trip_id&:user_id Navigates to the next annotated trip, if it exists
+ * @apiName NavigateToNextTrip
+ * @apiGroup Trips
+ *
+ * @apiError [400] InvalidInput The parameter <code>trip_id</code> or <code>user_id</code> are undefined, null or of wrong types.
+ * @apiError [500] SQLError SQL error traceback.
+ *
+ * @apiParam {Number} trip_id Id of the trip whose annotations are confirmed
+ *
+ * @apiSuccess {Trip} Trip The json representation of a trip without its triplegs, and a status field with values "already_annotated", if the trip's time intervals should not be modifiable, or "needs_annotation" if the trip is the same with the response for getLastTripOfUser
+ */
+router.get("/navigateToNextTrip", function(req,res){
+    var results = {};
+    var trip_id = req.query.trip_id;
+    var user_id = req.query.user_id;
+
+    if (trip_id == null || trip_id == undefined || user_id == null || user_id == undefined) {
+        return util.handleError(res, 400, "Invalid input parameters");
+    }
+
+    else
+    {
+        var sqlQuery = "select * from apiv2.pagination_navigate_to_next_trip($bd$"+user_id+"$bd$,$bd$"+trip_id+"$bd$)";
+        var prioryQuery = apiClient.query(sqlQuery);
+
+        prioryQuery.on('row', function (row) {
+            results = row;
+        });
+
+        prioryQuery.on('error', function(row){
+            return util.handleError(res, 500, row.message);
+        });
+
+        prioryQuery.on('end', function () {
+            return res.json(results);
+        });
+    }
+});
+
 module.exports = router;
