@@ -108,12 +108,12 @@ var CONFIG = {
         stop: L.icon({
           iconUrl: 'images/stop_flag.png',
           iconSize: [30, 30],
-          iconAnchor: [10, 10]
+          iconAnchor: [0, 30]
         }),
         start: L.icon({
           iconUrl: 'images/start_flag.png',
           iconSize: [30, 30],
-          iconAnchor: [10, 10]
+          iconAnchor: [0, 30]
         })
       }
     }

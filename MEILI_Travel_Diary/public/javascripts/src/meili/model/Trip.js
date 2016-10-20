@@ -98,10 +98,11 @@ Trip.prototype = {
       newTriplegs[0].isFirst = true;
       newTriplegs[newTriplegs.length-1].isLast = true;
     }
-    for (var i = 0; i < newTriplegs.length; i++) {
-      newTriplegs[i] = new Tripleg(newTriplegs[i]);
-      newTriplegs[i].on('tripleg-updated', function() { this.emit('triplegs-update', this); }.bind(this));
-
+    for (var i = 0; i < (newTriplegs.length+1); i++) {
+      if(newTriplegs[i]) {
+        newTriplegs[i] = new Tripleg(newTriplegs[i]);
+        newTriplegs[i].on('tripleg-updated', function() { this.emit('triplegs-update', this); }.bind(this));
+      }
       // Add reference to next and previous tripleg
       if(i-1 >= 0) {
         newTriplegs[i-1].setPrevNext(newTriplegs[i-2], newTriplegs[i]);
