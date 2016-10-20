@@ -37,6 +37,7 @@ var users = require('./routes/users');
 
 var api = require('./routes/api');
 
+var testEndPoint = require('./routes/apiv2/tests');
 var tripEndPoint = require('./routes/apiv2/trips');
 var triplegsEndPoint = require('./routes/apiv2/triplegs');
 var poisEndPoint = require('./routes/apiv2/pois');
@@ -101,7 +102,6 @@ var auth = function (req, res, next) {
     }
 };
 
-
 var app = express();
 app.use(bodyParser.json({limit: '150mb'}));
 app.use(bodyParser.urlencoded({extended: true, limit: '150mb'}));
@@ -137,6 +137,7 @@ app.use('/api', auth,api);
 app.use('/apiv2/trips', auth, tripEndPoint);
 app.use('/apiv2/triplegs', auth, triplegsEndPoint);
 app.use('/apiv2/pois', auth, poisEndPoint);
+app.use('/apiv2/tests', auth, testEndPoint);
 
 // default fallback
 app.use('/', routes);
