@@ -243,22 +243,27 @@ Tripleg.prototype = {
   },
 
   _generateMapMarker: function(point, isFirstPoint, isLastPoint) {
+    var marker;
     if(this.getType() == 1) {
       // ACTIVE TRIPLEG
       if(this.isFirst && isFirstPoint) {
         // Start point
-        return L.marker(point, { icon: CONFIG.triplegs.map.markers.start });
+        marker = L.marker(point, { icon: CONFIG.triplegs.map.markers.start });
       } else if(this.isLast && isLastPoint) {
         // End point
-        return L.marker(point, { icon: CONFIG.triplegs.map.markers.stop });
+        marker = L.marker(point, { icon: CONFIG.triplegs.map.markers.stop });
       } else {
         // Regular point
-        return L.circleMarker(point, CONFIG.triplegs.map.markers.regular);
+        marker = L.circleMarker(point, CONFIG.triplegs.map.markers.regular);
       }
     } else if(!isFirstPoint && !isLastPoint) {
       // PASSIVE TRIPLEGS
-      return L.marker(point, { icon: CONFIG.triplegs.map.markers.transition });
+      marker = L.marker(point, { icon: CONFIG.triplegs.map.markers.transition });
     }
-    return;
+    // Add a tooltip for simpler debugging
+    if(marker) {
+      marker.bindTooltip(util.formatTime(point.time, 'YYYY-MM-DD HH:mm:ss'));
+    }
+    return marker;
   }
 };
