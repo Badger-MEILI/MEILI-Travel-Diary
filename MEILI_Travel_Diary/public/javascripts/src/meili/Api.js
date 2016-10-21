@@ -121,6 +121,16 @@ var Api = function(config) {
             to_travel_mode: toMode
           }
         );
+      },
+
+      updateTransitionPoiIdOfTripleg: function(triplegId, transitionPoiId) {
+        return request.get(
+          url(mainPaths.triplegs, 'updateTransitionPoiIdOfTripleg'),
+          {
+            tripleg_id: triplegId,
+            transition_poi_id: transitionPoiId
+          }
+        );
       }
     }
   }

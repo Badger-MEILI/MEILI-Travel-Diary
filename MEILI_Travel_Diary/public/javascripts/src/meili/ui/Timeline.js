@@ -129,8 +129,7 @@ Timeline.prototype = {
             '<div class="input-group bootstrap-timepicker timepicker">',
               '<input id="timepickerend_'+triplegId+'" initial-time="' + tripleg.getEndTime().getTime() + '" tripleg-id=" '+tripleg.getId()+' " type="text" class="time-picker end form-control input-small ' + classes.join(' ') + '"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>',
             '</div>',
-            //if (!tripleg.isLast) '<hr>',
-            //getTransitionPlace(tripleg, isLast),
+            this.generatePlaceSelector(tripleg.places, tripleg.getId()),
             '<br>',
             '<a class="add-transition btn btn-default" href="#" role="button" tripleg-id="' + triplegId + '"><i class="glyphicon glyphicon-transfer"></i> Did we miss a transfer? Click to add it. </a>',
             '<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-trash" style="float: right;" onclick="mergeWithNext(\''+triplegId+'\')"></span></button>',
@@ -230,7 +229,17 @@ Timeline.prototype = {
     }.bind(this));
 
     // Trip place selector
-    $element.on('change', '.place-selector', function(e) {
+    $element.on('change', '.place-selector.transition', function(e) {
+      if(e.target.value) {
+        var triplegId = $(e.currentTarget).attr('tripleg-id');
+        if(triplegId) {
+          var tripleg = this.trip.getTriplegById(triplegId);
+          tripleg.updateTransitionPoiIdOfTripleg(e.target.value);
+        }
+      }
+    }.bind(this));
+
+    $element.on('change', '.place-selector.destination', function(e) {
       if(e.target.value) {
         this.trip.updateDestinationPoiIdOfTrip(e.target.value);
       }
@@ -480,7 +489,7 @@ Timeline.prototype = {
 
       // Accuracy is not high enough to preselect for the user
       if (maxAccuracy < 50){
-        purposeSelector += '<option value="-1" lang="en" disabled selected style="display:none;">Specify your trip\'s purpose</option>';
+        purposeSelector += '<option value="-1" lang="en" disabled selected>Specify your trip\'s purpose</option>';
       }
 
       for (var i=0; i < purposes.length; i++){

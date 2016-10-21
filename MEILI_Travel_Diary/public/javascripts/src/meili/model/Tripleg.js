@@ -217,7 +217,19 @@ Tripleg.prototype = {
       }.bind(this))
       .fail(function() {
         var msg = 'failed to set mode on tripleg';
-        alert(msg);
+        log.error(msg);
+      });
+  },
+
+  updateTransitionPoiIdOfTripleg: function(transitionPoiId) {
+    api.triplegs.updateTransitionPoiIdOfTripleg(this.getId(), transitionPoiId)
+      .done(function() {
+        this._setTransition(transitionPoiId);
+        this.emit('tripleg-updated');
+        log.debug('tripleg mode succefully updated');
+      }.bind(this))
+      .fail(function() {
+        var msg = 'failed to set transition on tripleg';
         log.error(msg);
       });
   },
