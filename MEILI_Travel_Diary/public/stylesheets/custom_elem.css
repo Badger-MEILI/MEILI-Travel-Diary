@@ -19,8 +19,13 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-span.glyphicon.large {
+.glyphicon.large {
     font-size: 30px;
+    top: 5px;
+}
+.glyphicon.medium {
+    font-size: 20px;
+    top: 4px;
 }
 
 #error-message {
@@ -246,7 +251,7 @@ PLUS SYMBOL
     padding: 6px;
 }
 
-.tldatecontrol{
+.tldatecontrol {
     display: block;
     width: 200px;
     background: #0071BC;
@@ -259,6 +264,9 @@ PLUS SYMBOL
     font-weight: bold;
     text-align: center;
     -webkit-box-shadow: 0 0 11px rgba(0,0,0,0.35);
+}
+.tldatecontrol a {
+    color: white;
 }
 
 .timeline li {

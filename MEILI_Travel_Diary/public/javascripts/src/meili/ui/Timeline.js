@@ -236,6 +236,11 @@ Timeline.prototype = {
       }
     }.bind(this));
 
+    $element.on('click','.go-to-next-trip', function(e) {
+      console.log('MOVE TO NEXT TRIP?');
+      e.preventDefault();
+      return false;
+    }.bind(this));
 
   },
 
@@ -397,7 +402,7 @@ Timeline.prototype = {
         navigateToNextTrip = [
           '<li id="processNext">',
             '<div class="tldatecontrol">',
-              '<p lang="en"><i class="glyphicon glyphicon-arrow-down"></i> Process the next trip <i class="glyphicon glyphicon-arrow-down"></i> </p>',
+              '<a class="go-to-next-trip" href="#" lang="en">Process the next trip <i class="glyphicon medium glyphicon-arrow-right"></i> </a>',
             '</div>',
           '</li>'];
       }
