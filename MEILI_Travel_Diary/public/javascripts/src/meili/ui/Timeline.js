@@ -425,28 +425,45 @@ Timeline.prototype = {
    * @param places - array of places (lat, lon) that have accuracy of inference embedded
    * @returns {string|string} - outerHTML of the place selector
    */
-  generatePlaceSelector: function(places) {
-    var placeSelector = '';
+  generatePlaceSelector: function(places, triplegId) {
+    var placeSelector = [];
     if (places && places.length > 0) {
-      placeSelector = '<p lang="en">Place: ' +
-                        '<select class="form-control form-control-inline place-selector">';
 
-      var maxAccuracy = places[0].accuracy;
-      if (maxAccuracy < 50){
-        // Can not preselect for the user
-        placeSelector += '<option value="-1" disabled selected style="display:none;" lang="en">Specify your destination</option>';
-      }
+      var selectorOptions = [];
+      var className = '';
+      var attributes = '';
 
       for (var i=0; i < places.length; i++) {
         var place = places[i];
-        if (typeof place.db_id !== undefined) {
-          placeSelector += '<option value="' + place.gid + '">' + place.name + '</option>';
+        // Handle both trip and tipleg places
+        var id = place.gid || place.osm_id;
+        var type = place.type ? ' ('+place.type+')' : '';
+        if (id !== undefined) {
+          selectorOptions.push('<option value="' + id + '">' + place.name + type + '</option>');
         }
       }
 
-      placeSelector += '</select></p>';
+      //  Destination place
+      if(!triplegId) {
+        // Add initial option?
+        className = 'destination';
+        var maxAccuracy = places[0].accuracy;
+        if (maxAccuracy < 50){
+          // Can not preselect for the user
+          selectorOptions.unshift('<option value="-1" disabled selected lang="en">Specify your destination</option>');
+        }
+      } else {
+        className = 'transition';
+        attributes = 'tripleg-id="' + triplegId + '"';
+        selectorOptions.unshift('<option value="-1" disabled selected lang="en">(Optional) Specify transfer place</option>');
+      }
+
+      placeSelector = ['<p lang="en">Place: ',
+                        '<select class="form-control form-control-inline place-selector ' + className + '" ' + attributes + '>',
+                          selectorOptions.join(''),
+                        '</select></p>'];
     }
-    return placeSelector;
+    return placeSelector.join('');
   },
 
   /**
