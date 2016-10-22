@@ -13,7 +13,7 @@ var util = require('./util');
  * @apiName InsertTransportationPoi
  * @apiGroup POIs
  *
- * @apiError [500] InvalidInput The parameters <code>name_</code>, <code>latitude</code>, <code>longitude</code>, <code>declaring_user_id</code> are undefined, null or of wrong types.
+ * @apiError [400] InvalidInput The parameters <code>name_</code>, <code>latitude</code>, <code>longitude</code>, <code>declaring_user_id</code> are undefined, null or of wrong types.
  * @apiError [500] SQLError SQL error traceback.
  *
  * @apiParam {String} name_ Name of the inserted POI
@@ -34,11 +34,8 @@ router.get("/insertTransportationPoi", function(req,res){
     var transportation_lines = (req.query.transportation_lines == undefined) ? "" : req.query.transportation_lines;
     var transportation_types = (req.query.transportation_types == undefined) ? "" : req.query.transportation_types;
 
-    if (name_ == null || name_ == undefined || latitude == null || latitude== undefined
-        || longitude == null || longitude == undefined || declaring_user_id == null || declaring_user_id== undefined ) {
-        res.status(500);
-        res.send("Invalid input parameters");
-        return res;
+    if ((!name_ )|| (!latitude) || (!longitude) || (!declaring_user_id)) {
+        return util.handleError(res, 400, "Invalid input parameters");
     }
 
     else
@@ -53,8 +50,7 @@ router.get("/insertTransportationPoi", function(req,res){
         });
 
         prioryQuery.on('error', function(row){
-            res.status(500);
-            res.send(row.message);
+            return util.handleError(res, 500, row.message);
         });
 
         prioryQuery.on('end', function () {
@@ -69,7 +65,7 @@ router.get("/insertTransportationPoi", function(req,res){
  * @apiName InsertDestinationPoi
  * @apiGroup POIs
  *
- * @apiError [500] InvalidInput The parameters <code>name_</code>, <code>latitude</code>, <code>longitude</code>, <code>declaring_user_id</code> are undefined, null or of wrong types.
+ * @apiError [400] InvalidInput The parameters <code>name_</code>, <code>latitude</code>, <code>longitude</code>, <code>declaring_user_id</code> are undefined, null or of wrong types.
  * @apiError [500] SQLError SQL error traceback.
  *
  * @apiParam {String} name_ Name of the inserted POI
@@ -86,11 +82,8 @@ router.get("/insertDestinationPoi", function(req,res){
     var longitude = req.query.longitude;
     var declaring_user_id = req.query.declaring_user_id;
 
-    if (name_ == null || name_ == undefined || latitude == null || latitude== undefined
-        || longitude == null || longitude == undefined || declaring_user_id == null || declaring_user_id== undefined ) {
-        res.status(500);
-        res.send("Invalid input parameters");
-        return res;
+    if ((!name_) || (!latitude) || (!longitude) || (!declaring_user_id )) {
+        return util.handleError(res, 400, "Invalid parameters");
     }
 
     else
@@ -105,8 +98,7 @@ router.get("/insertDestinationPoi", function(req,res){
         });
 
         prioryQuery.on('error', function(row){
-            res.status(500);
-            res.send(row.message);
+            return util.handleError(res, 500, row.message);
         });
 
         prioryQuery.on('end', function () {
