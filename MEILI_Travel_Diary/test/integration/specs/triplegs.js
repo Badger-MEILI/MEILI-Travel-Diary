@@ -21,5 +21,21 @@ function testTriplegs() {
               });
       });
 
+      it("the specified transition poi id should not be null", function(done) {
+
+          var tripleg = trip.triplegs[0];
+
+          tripleg.updateTransitionPoiIdOfTripleg(
+              null
+          ).done(function(result) {
+                  done(new Error("the specified transition poi id should not be allowed to be null"));
+              }).fail(
+              function (jqXHR, textStatus, errorThrown) {
+                  if (jqXHR.responseJSON.error.code != 400) return done(new Error("Status should be 400"));
+                  expect(jqXHR.responseJSON.error.msg).to.be.equal('Invalid input parameters');
+                  done();
+              });
+      });
+
   });
 }

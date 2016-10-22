@@ -295,7 +295,9 @@ router.get("/updateTransitionPoiIdOfTripleg", function(req,res){
     var tripleg_id = req.query.tripleg_id;
     var transition_poi_id = req.query.transition_poi_id;
 
-    if (tripleg_id == null || tripleg_id == undefined || transition_poi_id == null || transition_poi_id== undefined) {
+    console.log(tripleg_id);
+    console.log(transition_poi_id);
+    if ((!tripleg_id )|| (!transition_poi_id)) {
          return util.handleError(res, 400, "Invalid input parameters");
     }
 

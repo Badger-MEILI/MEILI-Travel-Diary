@@ -222,16 +222,18 @@ Tripleg.prototype = {
   },
 
   updateTransitionPoiIdOfTripleg: function(transitionPoiId) {
-    api.triplegs.updateTransitionPoiIdOfTripleg(this.getId(), transitionPoiId)
+      var dfd = $.Deferred();
+      api.triplegs.updateTransitionPoiIdOfTripleg(this.getId(), transitionPoiId)
       .done(function() {
         this._setTransition(transitionPoiId);
         this.emit('tripleg-updated');
         log.debug('tripleg mode succefully updated');
       }.bind(this))
-      .fail(function() {
+      .fail(function(error) {
         var msg = 'failed to set transition on tripleg';
-        log.error(msg);
+        dfd.reject(error);
       });
+      return dfd.promise();
   },
 
   // Internal methods
