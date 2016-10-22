@@ -13,7 +13,7 @@ var util = require('./util');
  * @apiName GetTripsForBadge
  * @apiGroup Trips
  *
- * @apiError [500] UserIdInvalid The <code>user_id</code> is undefined or null.
+ * @apiError [400] UserIdInvalid The <code>user_id</code> is undefined or null.
  *
  * @apiParam {Number} user_id Id of the user that requests the number of available unannotated trips.
  *
@@ -23,7 +23,7 @@ router.get("/getTripsForBadge", function(req,res){
     var results = [];
     var user_id = req.query.user_id;
 
-    if (user_id == null || user_id == undefined) {
+    if (!user_id) {
         return util.handleError(res, 400, "Invalid user id");
     }
     else {
@@ -47,7 +47,7 @@ router.get("/getTripsForBadge", function(req,res){
  * @apiName GetLastTripOfUser
  * @apiGroup Trips
  *
- * @apiError [500] UserIdInvalid The <code>user_id</code> is undefined or null.
+ * @apiError [400] UserIdInvalid The <code>user_id</code> is undefined or null.
  * @apiError [500] UserCannotAnnotate The user with <code>user_id</code> does not have any trips to annotate.
  *
  * @apiParam {Number} user_id Id of the user that requests the earliest unannotated trip
@@ -58,7 +58,7 @@ router.get("/getLastTripOfUser", function(req,res){
     var results = {};
     var user_id = req.query.user_id;
 
-    if (user_id == null || user_id == undefined) {
+    if (!user_id) {
         return util.handleError(res, 400, "Invalid user id");
     }
     else
@@ -92,7 +92,7 @@ router.get("/getLastTripOfUser", function(req,res){
  * @apiName UpdateStartTimeOfTrip
  * @apiGroup Trips
  *
- * @apiError [500] InvalidInput The parameters <code>trip_id</code> or <code>start_time</code> are undefined, null or of wrong types.
+ * @apiError [400] InvalidInput The parameters <code>trip_id</code> or <code>start_time</code> are undefined, null or of wrong types.
  * @apiError [500] SQLError SQL error traceback.
  *
  * @apiParam {Number} trip_id Id of the trip that will have its start date modified.
@@ -106,7 +106,7 @@ router.get("/updateStartTimeOfTrip", function(req,res){
     var trip_id = req.query.trip_id;
     var new_start_time = req.query.start_time;
 
-    if (trip_id == null || trip_id == undefined || new_start_time == null || new_start_time == undefined) {
+    if ((!trip_id)|| (!new_start_time)) {
         return util.handleError(res, 400, "Invalid input parameters");
     }
 
@@ -134,7 +134,7 @@ router.get("/updateStartTimeOfTrip", function(req,res){
  * @apiName UpdateEndTimeOfTrip
  * @apiGroup Trips
  *
- * @apiError [500] InvalidInput The parameters <code>trip_id</code> or <code>end_time</code> are undefined, null or of wrong types.
+ * @apiError [400] InvalidInput The parameters <code>trip_id</code> or <code>end_time</code> are undefined, null or of wrong types.
  * @apiError [500] SQLError SQL error traceback.
  *
  * @apiParam {Number} trip_id Id of the trip that will have its end time modified.
@@ -148,7 +148,7 @@ router.get("/updateEndTimeOfTrip", function(req,res){
     var trip_id = req.query.trip_id;
     var new_end_time = req.query.end_time;
 
-    if (trip_id == null || trip_id == undefined || new_end_time == null || new_end_time == undefined) {
+    if ((!trip_id)|| (!new_end_time)) {
         return util.handleError(res, 400, "Invalid input parameters");
     }
 
@@ -176,7 +176,7 @@ router.get("/updateEndTimeOfTrip", function(req,res){
  * @apiName InsertPeriodBetweenTris
  * @apiGroup Trips
  *
- * @apiError [500] InvalidInput The parameters <code>user_id</code>, <code>start_time</code> or <code>end_time</code> are undefined, null or of wrong types.
+ * @apiError [400] InvalidInput The parameters <code>user_id</code>, <code>start_time</code> or <code>end_time</code> are undefined, null or of wrong types.
  * @apiError [500] SQLError SQL error traceback.
  *
  * @apiParam {Number} user_id Id of the user who inserts the period between trips
@@ -192,8 +192,7 @@ router.get("/insertTransitionBetweenTriplegs", function(req,res){
     var start_time = req.query.start_time;
     var end_time = req.query.end_time;
 
-    if (user_id == null || user_id == undefined ||
-        start_time== null || start_time== undefined || end_time== null || end_time== undefined ) {
+    if ((!user_id) || (!start_time) || (!end_time)) {
         return util.handleError(res, 400, "Invalid input parameters");
     }
 
@@ -221,7 +220,7 @@ router.get("/insertTransitionBetweenTriplegs", function(req,res){
  * @apiName UpdatePurposeOfTrip
  * @apiGroup Trips
  *
- * @apiError [500] InvalidInput The parameters <code>trip_id</code> or <code>purpose_id</code> are undefined, null or of wrong types.
+ * @apiError [400] InvalidInput The parameters <code>trip_id</code> or <code>purpose_id</code> are undefined, null or of wrong types.
  * @apiError [500] SQLError SQL error traceback.
  *
  * @apiParam {Number} trip_id Id of the trip that will have its purpose updated
@@ -235,7 +234,7 @@ router.get("/updatePurposeOfTrip", function(req,res){
     var trip_id = req.query.trip_id;
     var purpose_id = req.query.purpose_id;
 
-    if (trip_id == null || trip_id == undefined || purpose_id == null || purpose_id== undefined) {
+    if ((!trip_id) || (!purpose_id )) {
         return util.handleError(res, 400, "Invalid input parameters");
     }
 
@@ -263,7 +262,7 @@ router.get("/updatePurposeOfTrip", function(req,res){
  * @apiName UpdateDestinationPoiIdOfTrip
  * @apiGroup Trips
  *
- * @apiError [500] InvalidInput The parameters <code>trip_id</code> or <code>destination_poi_id</code> are undefined, null or of wrong types.
+ * @apiError [400] InvalidInput The parameters <code>trip_id</code> or <code>destination_poi_id</code> are undefined, null or of wrong types.
  * @apiError [500] SQLError SQL error traceback.
  *
  * @apiParam {Number} trip_id Id of the trip that will have its destination poi id updated
@@ -277,7 +276,7 @@ router.get("/updateDestinationPoiIdOfTrip", function(req,res){
     var trip_id = req.query.trip_id;
     var destination_poi_id = req.query.destination_poi_id;
 
-    if (trip_id == null || trip_id == undefined || destination_poi_id == null || destination_poi_id == undefined) {
+    if ((!trip_id)|| (!destination_poi_id)) {
         return util.handleError(res, 400, "Invalid input parameters");
     }
 
@@ -305,7 +304,7 @@ router.get("/updateDestinationPoiIdOfTrip", function(req,res){
  * @apiName DeleteTrip
  * @apiGroup Trips
  *
- * @apiError [500] InvalidInput The parameter <code>trip_id</code> is undefined, null or of a wrong type.
+ * @apiError [400] InvalidInput The parameter <code>trip_id</code> is undefined, null or of a wrong type.
  * @apiError [500] SQLError SQL error traceback.
  *
  * @apiParam {Number} trip_id Id of the trip that will be deleted
@@ -316,7 +315,7 @@ router.get("/deleteTrip", function(req,res){
     var results = {};
     var trip_id = req.query.trip_id;
 
-    if (trip_id == null || trip_id == undefined ) {
+    if (!trip_id ) {
         return util.handleError(res, 400, "Invalid input parameters");
     }
 
@@ -344,7 +343,7 @@ router.get("/deleteTrip", function(req,res){
  * @apiName ConfirmAnnotationOfTrip
  * @apiGroup Trips
  *
- * @apiError [500] InvalidInput The parameter <code>trip_id</code> is undefined, null or of wrong types.
+ * @apiError [400] InvalidInput The parameter <code>trip_id</code> is undefined, null or of wrong types.
  * @apiError [500] SQLError SQL error traceback.
  *
  * @apiParam {Number} trip_id Id of the trip whose annotations are confirmed
@@ -355,7 +354,7 @@ router.get("/confirmAnnotationOfTrip", function(req,res){
     var results = {};
     var trip_id = req.query.trip_id;
 
-    if (trip_id == null || trip_id == undefined) {
+    if (!trip_id) {
         return util.handleError(res, 400, "Invalid input parameters");
     }
 
@@ -396,7 +395,7 @@ router.get("/navigateToNextTrip", function(req,res){
     var trip_id = req.query.trip_id;
     var user_id = req.query.user_id;
 
-    if (trip_id == null || trip_id == undefined || user_id == null || user_id == undefined) {
+    if ((!trip_id )|| (!user_id )) {
         return util.handleError(res, 400, "Invalid input parameters");
     }
 
@@ -437,7 +436,7 @@ router.get("/navigateToPreviousTrip", function(req,res){
     var trip_id = req.query.trip_id;
     var user_id = req.query.user_id;
 
-    if (trip_id == null || trip_id == undefined || user_id == null || user_id == undefined) {
+    if ((!trip_id)|| (!user_id )) {
         return util.handleError(res, 400, "Invalid input parameters");
     }
 

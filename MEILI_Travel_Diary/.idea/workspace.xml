@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BookmarkManager">
+    <bookmark url="file://$PROJECT_DIR$/routes/apiv2/trips.js" line="60" mnemonic="2" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="1e2cf684-ae55-4d7a-8e15-763edce44804" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/routes/apiv2/triplegs.js" afterPath="$PROJECT_DIR$/routes/apiv2/triplegs.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/routes/apiv2/trips.js" afterPath="$PROJECT_DIR$/routes/apiv2/trips.js" />
     </list>
     <ignored path="foo.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -26,11 +29,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="triplegs.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="triplegs.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/routes/apiv2/triplegs.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.86153847" vertical-offset="4628" max-vertical-offset="5922">
-              <caret line="282" column="15" selection-start-line="282" selection-start-column="15" selection-end-line="282" selection-end-column="15" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="5402" max-vertical-offset="5922">
+              <caret line="250" column="24" selection-start-line="250" selection-start-column="24" selection-end-line="250" selection-end-column="24" />
               <folding />
             </state>
           </provider>
@@ -66,6 +69,16 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="trips.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/routes/apiv2/trips.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.89615387" vertical-offset="7418" max-vertical-offset="8406">
+              <caret line="438" column="32" selection-start-line="438" selection-start-column="32" selection-end-line="438" selection-end-column="32" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="Tripleg.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/javascripts/src/meili/model/Tripleg.js">
           <provider selected="true" editor-type-id="text-editor">
@@ -80,7 +93,7 @@
         <entry file="file://$PROJECT_DIR$/public/javascripts/src/meili/ui/Timeline.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0" vertical-offset="9558" max-vertical-offset="12222">
-              <caret line="532" column="0" selection-start-line="532" selection-start-column="0" selection-end-line="532" selection-end-column="0" />
+              <caret line="532" column="1" selection-start-line="532" selection-start-column="1" selection-end-line="532" selection-end-column="1" />
               <folding>
                 <marker date="1477140475284" expanded="true" signature="2142:2155" placeholder="..." />
                 <marker date="1477140475284" expanded="true" signature="5233:5246" placeholder="..." />
@@ -125,16 +138,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0" vertical-offset="241" max-vertical-offset="774">
               <caret line="30" column="6" selection-start-line="30" selection-start-column="6" selection-end-line="30" selection-end-column="6" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="trips.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test/integration/specs/trips.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="450">
-              <caret line="1" column="9" selection-start-line="1" selection-start-column="9" selection-end-line="1" selection-end-column="9" />
               <folding />
             </state>
           </provider>
@@ -205,10 +208,10 @@
         <option value="$PROJECT_DIR$/public/javascripts/src/meili/Api.js" />
         <option value="$PROJECT_DIR$/test/integration/specs/test.js" />
         <option value="$PROJECT_DIR$/public/javascripts/src/meili/Request.js" />
-        <option value="$PROJECT_DIR$/routes/apiv2/trips.js" />
         <option value="$PROJECT_DIR$/public/javascripts/src/meili/model/Tripleg.js" />
         <option value="$PROJECT_DIR$/test/integration/specs/triplegs.js" />
         <option value="$PROJECT_DIR$/routes/apiv2/triplegs.js" />
+        <option value="$PROJECT_DIR$/routes/apiv2/trips.js" />
       </list>
     </option>
   </component>
@@ -538,7 +541,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="restartRequiresConfirmation" value="true" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
-    <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file:///home/adi/Documents/Personal Docs/git/MEILI/MEILI-Travel-Diary/MEILI_Travel_Diary/public/javascripts/src/meili/model/Tripleg.js&#10;datab&#9;FILE&#9;file:///home/adi/Documents/Personal Docs/git/MEILI/MEILI-Travel-Diary/MEILI_Travel_Diary/routes/database.js&#10;d&#9;FILE&#9;file:///home/adi/Documents/Personal Docs/git/MEILI/MEILI-Travel-Diary/MEILI_Travel_Diary/routes/database.js&#10;users&#9;FILE&#9;file:///home/adi/Documents/Personal Docs/git/MEILI/MEILI-Travel-Diary/MEILI_Travel_Diary/routes/users.js&#10;tr&#9;FILE&#9;file:///home/adi/Documents/Personal Docs/git/MEILI/MEILI-Travel-Diary/MEILI_Travel_Diary/routes/apiv2/triplegs.js&#10;api&#9;FILE&#9;file:///home/adi/Documents/Personal Docs/git/MEILI/MEILI-Travel-Diary/MEILI_Travel_Diary/routes/api.js&#10;leafletem&#9;FILE&#9;file:///home/adi/Documents/Personal Docs/git/MEILI/MEILI-Travel-Diary/MEILI_Travel_Diary/public/javascripts/leafletembed.js&#10;leafle&#9;FILE&#9;file:///home/adi/Documents/Personal Docs/git/MEILI/MEILI-Travel-Diary/MEILI_Travel_Diary/public/javascripts/leafletembed.js&#10;trip&#9;FILE&#9;file:///home/adi/Documents/Personal Docs/git/MEILI/MEILI-Travel-Diary/MEILI_Travel_Diary/public/javascripts/TripElements/TripPagination.js&#10;leaflet&#9;FILE&#9;file:///home/adi/Documents/Personal Docs/git/MEILI/MEILI-Travel-Diary/MEILI_Travel_Diary/public/javascripts/leafletembed.js&#10;~1&#9;null&#9;null" />
+    <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file:///home/adi/Documents/Personal Docs/git/MEILI/MEILI-Travel-Diary/MEILI_Travel_Diary/routes/apiv2/triplegs.js&#10;datab&#9;FILE&#9;file:///home/adi/Documents/Personal Docs/git/MEILI/MEILI-Travel-Diary/MEILI_Travel_Diary/routes/database.js&#10;d&#9;FILE&#9;file:///home/adi/Documents/Personal Docs/git/MEILI/MEILI-Travel-Diary/MEILI_Travel_Diary/routes/database.js&#10;users&#9;FILE&#9;file:///home/adi/Documents/Personal Docs/git/MEILI/MEILI-Travel-Diary/MEILI_Travel_Diary/routes/users.js&#10;tr&#9;FILE&#9;file:///home/adi/Documents/Personal Docs/git/MEILI/MEILI-Travel-Diary/MEILI_Travel_Diary/routes/apiv2/triplegs.js&#10;api&#9;FILE&#9;file:///home/adi/Documents/Personal Docs/git/MEILI/MEILI-Travel-Diary/MEILI_Travel_Diary/routes/api.js&#10;leafletem&#9;FILE&#9;file:///home/adi/Documents/Personal Docs/git/MEILI/MEILI-Travel-Diary/MEILI_Travel_Diary/public/javascripts/leafletembed.js&#10;leafle&#9;FILE&#9;file:///home/adi/Documents/Personal Docs/git/MEILI/MEILI-Travel-Diary/MEILI_Travel_Diary/public/javascripts/leafletembed.js&#10;trip&#9;FILE&#9;file:///home/adi/Documents/Personal Docs/git/MEILI/MEILI-Travel-Diary/MEILI_Travel_Diary/public/javascripts/TripElements/TripPagination.js&#10;leaflet&#9;FILE&#9;file:///home/adi/Documents/Personal Docs/git/MEILI/MEILI-Travel-Diary/MEILI_Travel_Diary/public/javascripts/leafletembed.js&#10;~1&#9;null&#9;null" />
     <property name="options.lastSelected" value="Errors" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="options.splitter.details.proportions" value="0.2" />
@@ -950,14 +953,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/routes/apiv2/trips.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.7307693" vertical-offset="7416" max-vertical-offset="8424">
-          <caret line="462" column="24" selection-start-line="462" selection-start-column="24" selection-end-line="462" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public/javascripts/src/meili/model/User.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="149" max-vertical-offset="774">
@@ -1051,7 +1046,7 @@
     <entry file="file://$PROJECT_DIR$/public/javascripts/src/meili/ui/Timeline.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="9558" max-vertical-offset="12222">
-          <caret line="532" column="0" selection-start-line="532" selection-start-column="0" selection-end-line="532" selection-end-column="0" />
+          <caret line="532" column="1" selection-start-line="532" selection-start-column="1" selection-end-line="532" selection-end-column="1" />
           <folding>
             <marker date="1477140475284" expanded="true" signature="2142:2155" placeholder="..." />
             <marker date="1477140475284" expanded="true" signature="5233:5246" placeholder="..." />
@@ -1082,8 +1077,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/routes/apiv2/triplegs.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.86153847" vertical-offset="4628" max-vertical-offset="5922">
-          <caret line="282" column="15" selection-start-line="282" selection-start-column="15" selection-end-line="282" selection-end-column="15" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="5402" max-vertical-offset="5922">
+          <caret line="250" column="24" selection-start-line="250" selection-start-column="24" selection-end-line="250" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/routes/apiv2/trips.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.89615387" vertical-offset="7418" max-vertical-offset="8406">
+          <caret line="438" column="32" selection-start-line="438" selection-start-column="32" selection-end-line="438" selection-end-column="32" />
           <folding />
         </state>
       </provider>
