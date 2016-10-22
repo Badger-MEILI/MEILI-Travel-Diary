@@ -1,9 +1,9 @@
 function testTriplegs() {
 
-  describe("Triplegs error calls", function() {
-      it("insert transition between triplegs should fail due to invalid start time later than end time", function(done) {
+  describe("Insert transition between triplegs", function() {
+      it("insert transition between triplegs should fail due to invalid start time later than end time", function (done) {
 
-          var timeDiff = 60*60*1000; // 1hour
+          var timeDiff = 60 * 60 * 1000; // 1hour
           var tripleg = trip.triplegs[0];
 
           trip.insertTransitionBetweenTriplegs(
@@ -11,7 +11,7 @@ function testTriplegs() {
               tripleg.getEndTime().getTime() - timeDiff,
               tripleg.mode[0].id,
               tripleg.mode[0].id
-          ).done(function(result) {
+          ).done(function (result) {
                   done(new Error("Start time of transition should not be allowed to be later than the end time of the transition"));
               }).fail(
               function (jqXHR, textStatus, errorThrown) {
@@ -21,7 +21,8 @@ function testTriplegs() {
               });
       });
 
-      it("insert transition between triplegs should fail due to wrong parameter state", function(done) {
+
+      it("insert transition between triplegs should fail due to invalid parameters", function(done) {
 
           var timeDiff = 60*60*1000; // 1hour
           var tripleg = trip.triplegs[0];
@@ -40,6 +41,9 @@ function testTriplegs() {
                   done();
               });
       });
+  });
+
+    describe("Specify transition poi", function(){
 
       it("the specified transition poi id should not be null", function(done) {
 
@@ -89,4 +93,6 @@ function testTriplegs() {
               });
       });
   });
+
+
 }
