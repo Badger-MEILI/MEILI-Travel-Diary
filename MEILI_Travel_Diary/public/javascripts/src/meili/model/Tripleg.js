@@ -209,16 +209,18 @@ Tripleg.prototype = {
   // -------------------------------------------
 
   updateMode: function(modeId) {
-    api.triplegs.updateMode(this.getId(), modeId)
+      var dfd = $.Deferred();
+      api.triplegs.updateMode(this.getId(), modeId)
       .done(function() {
         this._setMode(modeId);
         this.emit('tripleg-updated');
         log.debug('tripleg mode succefully updated');
       }.bind(this))
-      .fail(function() {
+      .fail(function(error) {
         var msg = 'failed to set mode on tripleg';
-        log.error(msg);
+        dfd.reject(error);
       });
+      return dfd.promise();
   },
 
   updateTransitionPoiIdOfTripleg: function(transitionPoiId) {

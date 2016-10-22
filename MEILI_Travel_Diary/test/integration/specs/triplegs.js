@@ -92,7 +92,91 @@ function testTriplegs() {
                   done();
               });
       });
+
+
+      it("the specified transition poi id should exist", function(done) {
+
+            var tripleg = trip.triplegs[0];
+
+            tripleg.updateTransitionPoiIdOfTripleg(
+                0
+            ).done(function(result) {
+                    done(new Error("the specified transition poi id should exists"));
+                }).fail(
+                function (jqXHR, textStatus, errorThrown) {
+                    if (jqXHR.responseJSON.error.code != 500) return done(new Error("Status should be 500"));
+                    expect(jqXHR.responseJSON.error.msg).to.not.be.null;
+                    done();
+                });
+      });
   });
 
 
+    describe("Specify the travel mode of a tripleg", function(){
+
+        it("the specified travel mode should not be null", function(done) {
+
+            var tripleg = trip.triplegs[0];
+
+            tripleg.updateMode(
+                null
+            ).done(function(result) {
+                    done(new Error("the specified travel mode should not be allowed to be null"));
+                }).fail(
+                function (jqXHR, textStatus, errorThrown) {
+                    if (jqXHR.responseJSON.error.code != 400) return done(new Error("Status should be 400"));
+                    expect(jqXHR.responseJSON.error.msg).to.be.equal('Invalid input parameters');
+                    done();
+                });
+        });
+
+        it("the specified travel mode should not be undefined", function(done) {
+
+            var tripleg = trip.triplegs[0];
+
+            tripleg.updateMode(
+                undefined
+            ).done(function(result) {
+                    done(new Error("the specified travel mode should not be allowed to be undefined"));
+                }).fail(
+                function (jqXHR, textStatus, errorThrown) {
+                    if (jqXHR.responseJSON.error.code != 400) return done(new Error("Status should be 400"));
+                    expect(jqXHR.responseJSON.error.msg).to.be.equal('Invalid input parameters');
+                    done();
+                });
+        });
+
+        it("the specified travel mode should not be empty", function(done) {
+
+            var tripleg = trip.triplegs[0];
+
+            tripleg.updateMode(
+                ''
+            ).done(function(result) {
+                    done(new Error("the specified travel mode should not be allowed to be empty"));
+                }).fail(
+                function (jqXHR, textStatus, errorThrown) {
+                    if (jqXHR.responseJSON.error.code != 400) return done(new Error("Status should be 400"));
+                    expect(jqXHR.responseJSON.error.msg).to.be.equal('Invalid input parameters');
+                    done();
+                });
+        });
+
+
+        it("the specified travel mode should exist", function(done) {
+
+            var tripleg = trip.triplegs[0];
+
+            tripleg.updateMode(
+                0
+            ).done(function(result) {
+                    done(new Error("the specified travel mode should exists"));
+                }).fail(
+                function (jqXHR, textStatus, errorThrown) {
+                    if (jqXHR.responseJSON.error.code != 500) return done(new Error("Status should be 500"));
+                    expect(jqXHR.responseJSON.error.msg).to.not.be.null;
+                    done();
+                });
+        });
+    });
 }
