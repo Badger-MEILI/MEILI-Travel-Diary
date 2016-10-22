@@ -59,6 +59,46 @@ function testTrips() {
       });
   });
 
+    describe("Trip purpose specification", function() {
 
+        it("undefined purpose id should receive server error", function(done) {
+            trip.updatePurposeOfTrip(
+                undefined
+            ).done(function (result) {
+                    done(new Error("a request with an undefined purpose id should not return a successfull response"));
+                }).fail(
+                function (jqXHR, textStatus, errorThrown) {
+                    if (jqXHR.responseJSON.error.code != 400) return done(new Error("Status should be 400"));
+                    expect(jqXHR.responseJSON.error.msg).to.be.equal('Invalid input parameters');
+                    done();
+                });
+        });
+
+        it("null purpose id should receive server error", function(done) {
+            trip.updatePurposeOfTrip(
+                null
+            ).done(function (result) {
+                    done(new Error("a request with a null purpose id should not return a successfull response"));
+                }).fail(
+                function (jqXHR, textStatus, errorThrown) {
+                    if (jqXHR.responseJSON.error.code != 400) return done(new Error("Status should be 400"));
+                    expect(jqXHR.responseJSON.error.msg).to.be.equal('Invalid input parameters');
+                    done();
+                });
+        });
+
+        it("non existent purpose id should receive server error", function(done) {
+            trip.updatePurposeOfTrip(
+                0
+            ).done(function (result) {
+                    done(new Error("a request with a non existent purpose id should not return a successfull response"));
+                }).fail(
+                function (jqXHR, textStatus, errorThrown) {
+                    if (jqXHR.responseJSON.error.code != 500) return done(new Error("Status should be 500"));
+                    expect(jqXHR.responseJSON.error.msg).to.not.be.null;
+                    done();
+                });
+        });
+    });
 
 }

@@ -158,7 +158,9 @@ Trip.prototype = {
         this._updatePurpose(purposeId);
         this.emit('trip-update', this);
       }
-    }.bind(this));
+    }.bind(this)).fail(function(err) {
+        dfd.reject(err);
+    });
     return dfd.promise();
   },
 
