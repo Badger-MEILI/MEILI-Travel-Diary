@@ -13,8 +13,8 @@ var util = require('./util');
  * @apiName GetTriplegsOfTrip
  * @apiGroup Triplegs
  *
- * @apiError [500] TripIdInvalid The <code>trip_id</code> is undefined or null.
- * @apiError [500] TripIdNotFound The <code>trip_id</code> does not exist.
+ * @apiError [400] TripIdInvalid The <code>trip_id</code> is undefined or null.
+ * @apiError [404] TripIdNotFound The <code>trip_id</code> does not exist.
  * @apiError [500] SQLError SQL error traceback.
  *
  * @apiParam {Number} trip_id Id of the trip for which the triplegs will be retrieved
@@ -26,7 +26,7 @@ router.get("/getTriplegsOfTrip", function(req,res){
     results.triplegs = [];
     var trip_id = req.query.trip_id;
 
-    if (trip_id == null || trip_id == undefined) {
+    if (!trip_id) {
         return util.handleError(res, 400, "Invalid trip id");
     }
 
@@ -58,7 +58,7 @@ router.get("/getTriplegsOfTrip", function(req,res){
  * @apiName UpdateStartTimeOfTripleg
  * @apiGroup Triplegs
  *
- * @apiError [500] InvalidInput The parameters <code>tripleg_id</code> or <code>start_time</code> are undefined, null or of wrong types.
+ * @apiError [400] InvalidInput The parameters <code>tripleg_id</code> or <code>start_time</code> are undefined, null or of wrong types.
  * @apiError [500] SQLError SQL error traceback.
  *
  * @apiParam {Number} tripleg_id Id of the tripleg that will have its start date modified.
@@ -72,7 +72,7 @@ router.get("/updateStartTimeOfTripleg", function(req,res){
     var tripleg_id = req.query.tripleg_id;
     var new_start_time = req.query.start_time;
 
-    if (tripleg_id == null || tripleg_id == undefined || new_start_time == null || new_start_time == undefined) {
+    if ((!tripleg_id) || (!new_start_time)) {
         return util.handleError(res, 400, "Invalid input parameters");
     }
 
@@ -101,7 +101,7 @@ router.get("/updateStartTimeOfTripleg", function(req,res){
  * @apiName UpdateEndTimeOfTripleg
  * @apiGroup Triplegs
  *
- * @apiError [500] InvalidInput The parameters <code>tripleg_id</code> or <code>end_time</code> are undefined, null or of wrong types.
+ * @apiError [400] InvalidInput The parameters <code>tripleg_id</code> or <code>end_time</code> are undefined, null or of wrong types.
  * @apiError [500] SQLError SQL error traceback.
  *
  * @apiParam {Number} tripleg_id Id of the tripleg that will have its end date modified.
@@ -115,7 +115,7 @@ router.get("/updateEndTimeOfTripleg", function(req,res){
     var tripleg_id = req.query.tripleg_id;
     var new_end_time = req.query.end_time;
 
-    if (tripleg_id == null || tripleg_id == undefined || new_end_time == null || new_end_time == undefined) {
+    if ((!tripleg_id) || (!new_end_time)) {
         return util.handleError(res, 400, "Invalid input parameters");
     }
 
@@ -143,8 +143,7 @@ router.get("/updateEndTimeOfTripleg", function(req,res){
  * @apiName DeleteTripleg
  * @apiGroup Triplegs
  *
- * @apiError [500] OnlyTriplegIn Trip The only tripleg of a trip cannot be deleted. If you want to delete the tripleg, call the trip deletion endpoint
- * @apiError [500] InvalidInput The parameters <code>tripleg_id</code> is undefined, null or of wrong types.
+ * @apiError [400] InvalidInput The parameters <code>tripleg_id</code> is undefined, null or of wrong types.
  * @apiError [500] SQLError SQL error traceback.
  *
  * @apiParam {Number} tripleg_id Id of the tripleg that will be deleted
@@ -156,7 +155,7 @@ router.get("/deleteTripleg", function(req,res){
     results.triplegs = [];
     var tripleg_id = req.query.tripleg_id;
 
-    if (tripleg_id == null || tripleg_id == undefined) {
+    if (!tripleg_id) {
         return util.handleError(res, 400, "Invalid input parameters");
     }
 
@@ -184,7 +183,8 @@ router.get("/deleteTripleg", function(req,res){
  * @apiName InsertTransitionBetweenTriplegs
  * @apiGroup Triplegs
  *
- * @apiError [500] InvalidInput The parameters <code>tripleg_id</code> is undefined, null or of wrong types.
+ * @apiError [400] InvalidInput The parameters <code>tripleg_id</code> is undefined, null or of wrong types.
+ * @apiError [400] InvalidInput Start time cannot be later than end time.
  * @apiError [500] SQLError SQL error traceback.
  *
  * @apiParam {Number} trip_id Id of the trip where the transition will be inserted
@@ -204,9 +204,7 @@ router.get("/insertTransitionBetweenTriplegs", function(req,res){
     var from_travel_mode = req.query.from_travel_mode;
     var to_travel_mode =req.query.to_travel_mode;
 
-    if (trip_id == null || trip_id == undefined ||
-        start_time== null || start_time== undefined || end_time== null || end_time== undefined ||
-        from_travel_mode == null || from_travel_mode == undefined || to_travel_mode == null || to_travel_mode== undefined) {
+    if ((!trip_id) ||(!start_time) ||(!end_time) ||(!from_travel_mode) || (!to_travel_mode)) {
         return util.handleError(res, 400, "Invalid input parameters");
     }
 
@@ -239,7 +237,7 @@ router.get("/insertTransitionBetweenTriplegs", function(req,res){
  * @apiName UpdateTravelModeOfTripleg
  * @apiGroup Triplegs
  *
- * @apiError [500] InvalidInput The parameters <code>tripleg_id</code> or <code>travel_mode</code> are undefined, null or of wrong types.
+ * @apiError [400] InvalidInput The parameters <code>tripleg_id</code> or <code>travel_mode</code> are undefined, null or of wrong types.
  * @apiError [500] SQLError SQL error traceback.
  *
  * @apiParam {Number} tripleg_id Id of the tripleg that will have its travel mode updated
@@ -253,7 +251,7 @@ router.get("/updateTravelModeOfTripleg", function(req,res){
     var tripleg_id = req.query.tripleg_id;
     var travel_mode = req.query.travel_mode;
 
-    if (tripleg_id == null || tripleg_id == undefined || travel_mode == null || travel_mode == undefined) {
+    if ((!tripleg_id) || (!travel_mode)) {
         return util.handleError(res, 400, "Invalid input parameters");
     }
 
@@ -281,7 +279,7 @@ router.get("/updateTravelModeOfTripleg", function(req,res){
  * @apiName UpdateTransitionPoiIdOfTripleg
  * @apiGroup Triplegs
  *
- * @apiError [500] InvalidInput The parameters <code>tripleg_id</code> or <code>transition_poi_id</code> are undefined, null or of wrong types.
+ * @apiError [400] InvalidInput The parameters <code>tripleg_id</code> or <code>transition_poi_id</code> are undefined, null or of wrong types.
  * @apiError [500] SQLError SQL error traceback.
  *
  * @apiParam {Number} tripleg_id Id of the tripleg that will have its travel mode updated
