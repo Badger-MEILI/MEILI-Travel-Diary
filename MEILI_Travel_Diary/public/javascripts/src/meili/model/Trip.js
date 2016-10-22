@@ -169,7 +169,9 @@ Trip.prototype = {
         this._updateDestinationPlace(destinationPoiId);
         this.emit('trip-update', this);
       }
-    }.bind(this));
+    }.bind(this)).fail(function(err) {
+        dfd.reject(err);
+    });
     return dfd.promise();
   },
 
