@@ -152,29 +152,25 @@ Trip.prototype = {
   },
 
   updatePurposeOfTrip: function(purposeId) {
-    var dfd = $.Deferred();
-    api.trips.updatePurposeOfTrip(this.getId(), purposeId).done(function(result) {
+    return api.trips.updatePurposeOfTrip(this.getId(), purposeId).done(function(result) {
       if(result.status == true) {
         this._updatePurpose(purposeId);
         this.emit('trip-update', this);
       }
     }.bind(this)).fail(function(err) {
-        dfd.reject(err);
+      log.error(err);
     });
-    return dfd.promise();
   },
 
   updateDestinationPoiIdOfTrip: function(destinationPoiId) {
-    var dfd = $.Deferred();
-    api.trips.updateDestinationPoiIdOfTrip(this.getId(), destinationPoiId).done(function(result) {
+    return api.trips.updateDestinationPoiIdOfTrip(this.getId(), destinationPoiId).done(function(result) {
       if(result.status == true) {
         this._updateDestinationPlace(destinationPoiId);
         this.emit('trip-update', this);
       }
     }.bind(this)).fail(function(err) {
-        dfd.reject(err);
+      log.error(err);
     });
-    return dfd.promise();
   },
 
   // Internal methods

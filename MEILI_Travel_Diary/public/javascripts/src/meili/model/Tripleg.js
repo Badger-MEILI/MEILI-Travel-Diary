@@ -209,8 +209,7 @@ Tripleg.prototype = {
   // -------------------------------------------
 
   updateMode: function(modeId) {
-      var dfd = $.Deferred();
-      api.triplegs.updateMode(this.getId(), modeId)
+    return api.triplegs.updateMode(this.getId(), modeId)
       .done(function() {
         this._setMode(modeId);
         this.emit('tripleg-updated');
@@ -218,14 +217,11 @@ Tripleg.prototype = {
       }.bind(this))
       .fail(function(error) {
         var msg = 'failed to set mode on tripleg';
-        dfd.reject(error);
       });
-      return dfd.promise();
   },
 
   updateTransitionPoiIdOfTripleg: function(transitionPoiId) {
-      var dfd = $.Deferred();
-      api.triplegs.updateTransitionPoiIdOfTripleg(this.getId(), transitionPoiId)
+      return api.triplegs.updateTransitionPoiIdOfTripleg(this.getId(), transitionPoiId)
       .done(function() {
         this._setTransition(transitionPoiId);
         this.emit('tripleg-updated');
@@ -233,9 +229,7 @@ Tripleg.prototype = {
       }.bind(this))
       .fail(function(error) {
         var msg = 'failed to set transition on tripleg';
-        dfd.reject(error);
       });
-      return dfd.promise();
   },
 
   // Internal methods
