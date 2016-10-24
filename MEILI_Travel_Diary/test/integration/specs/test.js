@@ -11,6 +11,7 @@ var api = Api({
 describe("API", function() {
 
   before(function(done) {
+    // Login user
     $.ajax({
       type: "POST",
       url: TEST_CONFIG.login_url,
@@ -19,6 +20,7 @@ describe("API", function() {
     }).done(
       function (result) {
         user = new User(result.userId);
+        console.log('User is logged in', user);
         done();
       })
       .fail(
@@ -31,8 +33,22 @@ describe("API", function() {
   testTriplegs();
 
 
-  after(function() {
-    // !TODO reset data
+  after(function(done) {
+    // Reset test data
+    $.ajax({
+      type: "GET",
+      url: TEST_CONFIG.api_url + '/tests/populateWithTestData',
+      dataType: "json"
+    }).done(
+      function (result) {
+        console.log('\n ↻ TEST DATA IS RESET');
+        done();
+      })
+      .fail(
+      function (err) {
+        console.error('Something went wrong when reseting test data.');
+        done(err);
+      });
   });
 
 });
