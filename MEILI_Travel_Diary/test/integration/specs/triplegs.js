@@ -1,6 +1,24 @@
 function testTriplegs() {
 
   describe("Insert transition between triplegs", function() {
+
+    it("insert transition between triplegs", function (done) {
+
+      var timeDiff = 5 * 60 * 1000; // 5 minutes
+      var tripleg = trip.triplegs[0];
+      var numberOfTriplegsBeforeAdd = trip.triplegs.length;
+
+      trip.insertTransitionBetweenTriplegs(
+          tripleg.getStartTime().getTime() + timeDiff,
+          tripleg.getStartTime().getTime() + (timeDiff*2),
+          tripleg.mode[0].id,
+          tripleg.mode[0].id
+      ).done(function (trip) {
+        expect(trip.triplegs.length).to.be.equal(numberOfTriplegsBeforeAdd+1);
+        done();
+      });
+    });
+
       it("insert transition between triplegs should fail due to invalid start time later than end time", function (done) {
 
           var timeDiff = 60 * 60 * 1000; // 1hour

@@ -140,7 +140,9 @@ Trip.prototype = {
           this.updateTriplegs(result.triplegs);
           dfd.resolve(this.triplegs);
         } else {
-          var msg = 'No triplegs returned';
+
+          var msg = 'Got ok from server but no triplegs returned';
+          log.error(msg, 'Got: ', result, 'FOR -- Trip: ' + this.getId(), 'StartTime: ' + startTime, 'EndTime: ' + endTime, 'FromMode: ' + fromMode, 'ToMode: ' + toMode)
           throw msg
           dfd.reject(msg);
         }
