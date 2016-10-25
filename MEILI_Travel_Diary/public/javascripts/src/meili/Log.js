@@ -1,16 +1,23 @@
 
 var Log = function(config) {
+  function keepQuiet() {
+    return config.log_level === 'silent';
+  }
   return {
     debug: function() {
-      if(config.debug) {
+      if(config.debug && !keepQuiet()) {
         console.debug( Array.prototype.slice.call(arguments) );
       }
     },
     info: function() {
-      console.info( Array.prototype.slice.call(arguments) );
+      if(!keepQuiet()) {
+        console.info( Array.prototype.slice.call(arguments) );
+      }
     },
     error: function() {
-      console.error( Array.prototype.slice.call(arguments) );
+      if(!keepQuiet()) {
+        console.error( Array.prototype.slice.call(arguments) );
+      }
     }
   };
 };
