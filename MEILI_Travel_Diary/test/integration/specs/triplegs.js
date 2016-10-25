@@ -6,7 +6,7 @@ function testTriplegs() {
             it("insert transition between triplegs", function (done) {
 
                 var timeDiff = 5 * 60 * 1000; // 5 minutes
-                var tripleg = trip.triplegs[0];
+                var tripleg = trip.getFirstTripleg();
                 var numberOfTriplegsBeforeAdd = trip.triplegs.length;
 
                 trip.insertTransitionBetweenTriplegs(
@@ -23,7 +23,7 @@ function testTriplegs() {
             it("insert transition between triplegs should fail due to invalid start time later than end time", function (done) {
 
                 var timeDiff = 60 * 60 * 1000; // 1hour
-                var tripleg = trip.triplegs[0];
+                var tripleg = trip.getFirstTripleg();
 
                 trip.insertTransitionBetweenTriplegs(
                     tripleg.getStartTime().getTime() + timeDiff,
@@ -46,7 +46,7 @@ function testTriplegs() {
             it("insert transition between triplegs should fail due to invalid parameters", function(done) {
 
                 var timeDiff = 60*60*1000; // 1hour
-                var tripleg = trip.triplegs[0];
+                var tripleg = trip.getFirstTripleg();
 
                 trip.insertTransitionBetweenTriplegs(
                     tripleg.getStartTime().getTime() + timeDiff,
@@ -69,7 +69,7 @@ function testTriplegs() {
 
             it("the specified transition poi id should not be null", function(done) {
 
-                var tripleg = trip.triplegs[0];
+                var tripleg = trip.getFirstTripleg();
 
                 tripleg.updateTransitionPoiIdOfTripleg(
                     null
@@ -86,7 +86,7 @@ function testTriplegs() {
 
             it("the specified transition poi id should not be undefined", function(done) {
 
-                var tripleg = trip.triplegs[0];
+                var tripleg = trip.getFirstTripleg();
 
                 tripleg.updateTransitionPoiIdOfTripleg(
                   undefined
@@ -103,7 +103,7 @@ function testTriplegs() {
 
             it("the specified transition poi id should not be empty", function(done) {
 
-                var tripleg = trip.triplegs[0];
+                var tripleg = trip.getFirstTripleg();
 
                 tripleg.updateTransitionPoiIdOfTripleg(
                     ''
@@ -121,7 +121,7 @@ function testTriplegs() {
 
           it("the specified transition poi id should exist", function(done) {
 
-                var tripleg = trip.triplegs[0];
+                var tripleg = trip.getFirstTripleg();
 
                 tripleg.updateTransitionPoiIdOfTripleg(
                     0
@@ -143,7 +143,7 @@ function testTriplegs() {
 
             it("the specified travel mode should not be null", function(done) {
 
-                var tripleg = trip.triplegs[0];
+                var tripleg = trip.getFirstTripleg();
 
                 tripleg.updateMode(
                     null
@@ -151,7 +151,7 @@ function testTriplegs() {
                     done(new Error("the specified travel mode should not be allowed to be null"));
                 }).fail(
                     function (jqXHR, textStatus, errorThrown) {
-                        if (jqXHR.responseJSON.error.code != 400) { 
+                        if (jqXHR.responseJSON.error.code != 400) {
                             return done(new Error("Status should be 400"));
                         }
                         expect(jqXHR.responseJSON.error.msg).to.be.equal('Invalid input parameters');
@@ -161,7 +161,7 @@ function testTriplegs() {
 
             it("the specified travel mode should not be undefined", function(done) {
 
-                var tripleg = trip.triplegs[0];
+                var tripleg = trip.getFirstTripleg();
 
                 tripleg.updateMode(
                     undefined
@@ -178,7 +178,7 @@ function testTriplegs() {
 
             it("the specified travel mode should not be empty", function(done) {
 
-                var tripleg = trip.triplegs[0];
+                var tripleg = trip.getFirstTripleg();
 
                 tripleg.updateMode(
                     ''
@@ -196,7 +196,7 @@ function testTriplegs() {
 
             it("the specified travel mode should exist", function(done) {
 
-                var tripleg = trip.triplegs[0];
+                var tripleg = trip.getFirstTripleg();
 
                 tripleg.updateMode(
                     0

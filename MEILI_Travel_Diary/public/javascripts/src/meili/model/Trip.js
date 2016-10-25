@@ -38,6 +38,14 @@ Trip.prototype = {
     return this.destination_places;
   },
 
+  getFirstTripleg: function() {
+    return this.triplegs[0];
+  },
+
+  getLastTripleg: function() {
+    return this.triplegs[this.triplegs.length-1];
+  },
+
   getTriplegById: function(triplegId) {
     return this._getTripleg(triplegId);
   },
