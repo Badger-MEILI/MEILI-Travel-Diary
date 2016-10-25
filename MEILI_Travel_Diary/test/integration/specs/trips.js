@@ -12,9 +12,9 @@ function testTrips() {
         });
 
 
-        describe("Trip poi specification", function() {
+        describe("trip poi specification", function() {
 
-            it("Update destination poi id should return status true", function(done) {
+            it("update destination poi id should return status true", function(done) {
                 trip.updateDestinationPoiIdOfTrip(
                     trip.getPlaces()[0].gid
                 ).done(function (result) {
@@ -66,9 +66,9 @@ function testTrips() {
             });
         });
 
-        describe("Trip purpose specification", function() {
+        describe("trip purpose specification", function() {
 
-            it("Update purpose should return status true", function(done) {
+            it("update purpose should return status true", function(done) {
                 trip.updatePurposeOfTrip(
                     trip.getPurposes()[0].id
                 ).done(function (result) {
