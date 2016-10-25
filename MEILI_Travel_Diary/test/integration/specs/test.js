@@ -8,7 +8,7 @@ var api = Api({
   api_url: TEST_CONFIG.api_url
 });
 
-describe("API", function() {
+describe("MEILI test: ", function() {
 
   before(function(done) {
     // Login user
