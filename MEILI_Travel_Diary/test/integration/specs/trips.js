@@ -9,10 +9,6 @@ function testTrips() {
                 expect(trip).to.have.property("trip_id");
                 expect(trip.triplegs).to.have.length.above(0);
                 done();
-            })
-            .fail(function (err,f,d) {
-                console.log(err,f,d);
-                done(f);
             });
         });
     });
