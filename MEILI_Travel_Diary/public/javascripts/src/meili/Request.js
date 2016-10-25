@@ -4,14 +4,14 @@ var Request = function(config) {
   var doRequest = function(options) {
     var dfd = $.Deferred();
     log.debug('Sending', options.method, 'request to', options.url)
-    log.error(options);
     $.ajax(options)
     .done(function(result) {
       if(result) {
         dfd.resolve(result);
       } else {
-        log.error('XHR NO DATA');
-        dfd.reject();
+        var msg = 'Request got empty result back';
+        log.error(msg);
+        dfd.reject(msg);
       }
     })
     .fail(function(jqXHR, textStatus, errorThrown) {
