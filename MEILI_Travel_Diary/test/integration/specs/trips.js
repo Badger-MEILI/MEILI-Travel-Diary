@@ -124,7 +124,7 @@ function testTrips() {
         describe("trip time", function() {
             it("update start time of trip should update start time of trip and of first tripleg", function(done) {
                 var timeDiff = 1 * 60 * 1000; // 1 minute
-                var newStartTime = trip.getStartTime().getTime() + timeDiff;
+                var newStartTime = trip.getStartTime().getTime() - timeDiff;
                 trip.updateStartTime(
                     newStartTime
                 ).done(function(updatedTrip) {

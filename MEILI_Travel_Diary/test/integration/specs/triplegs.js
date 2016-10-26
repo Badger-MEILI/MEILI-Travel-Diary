@@ -3,19 +3,20 @@ function testTriplegs() {
 
         describe("insert transition between triplegs", function() {
 
-            it("insert transition between triplegs", function (done) {
+            it("valid transition", function (done) {
 
-                var timeDiff = 5 * 60 * 1000; // 5 minutes
+                var timeDiff = 1 * 60 * 1000; // 5 minutes
                 var tripleg = trip.getFirstTripleg();
                 var numberOfTriplegsBeforeAdd = trip.triplegs.length;
 
                 trip.insertTransitionBetweenTriplegs(
-                    tripleg.getStartTime().getTime() + timeDiff,
-                    tripleg.getStartTime().getTime() + (timeDiff*2),
+                    tripleg.getStartTime().getTime() + 2*timeDiff,
+                    tripleg.getStartTime().getTime() + (3*timeDiff),
                     tripleg.mode[0].id,
                     tripleg.mode[0].id
-                ).done(function (trip) {
-                    expect(trip.triplegs.length).to.be.equal(numberOfTriplegsBeforeAdd+1);
+                ).done(function (triplegs) {
+                        // increment by 2 because of the passive tripleg
+                    expect(triplegs.length).to.be.equal(numberOfTriplegsBeforeAdd+2);
                     done();
                 });
             });
@@ -75,9 +76,12 @@ function testTriplegs() {
                     newTransitionPoiId
                 ).done(function(result) {
                     expect(result.status).to.be.equal(true);
+                        // TODO -> This will fail because the method is not implemented
                     expect(tripleg.getTransition()).to.be.equal(newTransitionPoiId);
                     done();
-                });
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                    });
             });
 
             it("the specified transition poi id should not be null", function(done) {
@@ -277,7 +281,8 @@ function testTriplegs() {
                 trip.deleteTripleg(
                     trip.getLastTripleg().getId()
                 ).done(function(updatedTrip) {
-                    expect(updatedTrip.triplegs.length).to.be.equal(numberOfTriplegsBeforeDelete-1);
+                        // Decrement by 2 because of the passive tripleg
+                    expect(updatedTrip.triplegs.length).to.be.equal(numberOfTriplegsBeforeDelete-2);
                     done();
                 });
             });
