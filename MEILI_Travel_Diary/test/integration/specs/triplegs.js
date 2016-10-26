@@ -75,7 +75,7 @@ function testTriplegs() {
                     newTransitionPoiId
                 ).done(function(result) {
                     expect(result.status).to.be.equal(true);
-                    expect(tripleg.getTransition()).to.be.equal(newTransitionPoiId);
+                    expect(tripleg.getTransition().osm_id).to.be.equal(newTransitionPoiId);
                     done();
                 });
             });
