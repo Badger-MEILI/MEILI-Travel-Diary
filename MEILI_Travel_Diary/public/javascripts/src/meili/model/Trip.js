@@ -252,6 +252,10 @@ Trip.prototype = {
     });
   },
 
+  confirm: function() {
+    return api.trips.confirmAnnotationOfTrip(this.getId());
+  },
+
   // Internal methods
   // -------------------------------------------
   // -------------------------------------------

@@ -246,7 +246,11 @@ Timeline.prototype = {
     }.bind(this));
 
     $element.on('click','.go-to-next-trip', function(e) {
-      console.log('MOVE TO NEXT TRIP?');
+      if(this.trip.isLastUnannotated) {
+        this.trip.confirm();
+      } else {
+        throw 'Move to next trip?';
+      }
       e.preventDefault();
       return false;
     }.bind(this));

@@ -92,6 +92,15 @@ var Api = function(config) {
         );
       },
 
+      confirmAnnotationOfTrip: function(tripId) {
+        return request.get(
+          url(mainPaths.trips, 'confirmAnnotationOfTrip'),
+          {
+            trip_id: tripId
+          }
+        );
+      },
+
       delete: function(tripId) {
         return request.get(
           url(mainPaths.trips, 'deleteTrip'),
@@ -100,7 +109,7 @@ var Api = function(config) {
           },
           verifyTriplegsIsReturned
         );
-      },
+      }
     },
 
     triplegs: {
