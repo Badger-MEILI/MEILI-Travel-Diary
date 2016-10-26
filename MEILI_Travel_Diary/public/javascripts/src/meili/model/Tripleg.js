@@ -7,6 +7,8 @@ var Tripleg = Tripleg || function(tripleg) {
   Emitter($.extend(this, tripleg));
   // Make sure that modes are in order
   this._sortModes();
+  // Make sure transitions are in order
+  this._setTransition();
 
   return this;
 };
@@ -30,7 +32,11 @@ Tripleg.prototype = {
   },
 
   getTransition: function() {
-    throw 'No transition set for tripleg';
+    var transition;
+    if(this.places && this.places.length > 0) {
+      transition = this.places[0];
+    }
+    return transition;
   },
 
   getType: function() {
@@ -240,10 +246,6 @@ Tripleg.prototype = {
   // -------------------------------------------
   // -------------------------------------------
 
-  _setTransition: function(transitionPoiId) {
-    throw 'No way to specify transition on tripleg';
-  },
-
   _setMode: function(modeId) {
     log.info('tripleg setting mode', modeId);
     for (var i = 0; i < this.mode.length; i++) {
@@ -258,6 +260,22 @@ Tripleg.prototype = {
 
   _sortModes: function() {
     this.mode = util.sortByAccuracy(this.mode);
+  },
+
+  _setTransition: function(transitionPoiId) {
+    log.info('tripleg setting transition place', transitionPoiId);
+    for (var i = 0; i < this.places.length; i++) {
+       if(this.places[i].osm_id == transitionPoiId) {
+          this.places[i].accuracy = 100;
+       } else {
+          this.places[i].accuracy = 0;
+       }
+     };
+    this._sortTransitionPlaces();
+  },
+
+  _sortTransitionPlaces: function() {
+    this.places = util.sortByAccuracy(this.places);
   },
 
   _generateMapMarker: function(point, isFirstPoint, isLastPoint) {
