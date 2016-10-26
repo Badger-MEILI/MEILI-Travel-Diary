@@ -5,10 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1e2cf684-ae55-4d7a-8e15-763edce44804" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/src/meili/model/Trip.js" afterPath="$PROJECT_DIR$/public/javascripts/src/meili/model/Trip.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/src/meili/model/Tripleg.js" afterPath="$PROJECT_DIR$/public/javascripts/src/meili/model/Tripleg.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/integration/specs/triplegs.js" afterPath="$PROJECT_DIR$/test/integration/specs/triplegs.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/integration/specs/trips.js" afterPath="$PROJECT_DIR$/test/integration/specs/trips.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/routes/apiv2/triplegs.js" afterPath="$PROJECT_DIR$/routes/apiv2/triplegs.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="foo.iws" />
@@ -33,11 +30,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="triplegs.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="triplegs.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/routes/apiv2/triplegs.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="3528" max-vertical-offset="5922">
-              <caret line="219" column="46" selection-start-line="219" selection-start-column="46" selection-end-line="219" selection-end-column="46" />
+            <state vertical-scroll-proportion="0.9315589" vertical-offset="3632" max-vertical-offset="5958">
+              <caret line="229" column="16" selection-start-line="229" selection-start-column="16" selection-end-line="229" selection-end-column="16" />
               <folding />
             </state>
           </provider>
@@ -46,8 +43,8 @@
       <file leaf-file-name="triplegs.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/integration/specs/triplegs.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="4500" max-vertical-offset="5328">
-              <caret line="285" column="24" selection-start-line="285" selection-start-column="24" selection-end-line="285" selection-end-column="24" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="4770" max-vertical-offset="5328">
+              <caret line="269" column="22" selection-start-line="269" selection-start-column="22" selection-end-line="269" selection-end-column="22" />
               <folding />
             </state>
           </provider>
@@ -63,10 +60,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="test.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="test.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/integration/specs/test.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.76623374" vertical-offset="451" max-vertical-offset="1062">
+            <state vertical-scroll-proportion="0.0" vertical-offset="523" max-vertical-offset="1062">
               <caret line="48" column="63" selection-start-line="48" selection-start-column="63" selection-end-line="48" selection-end-column="63" />
               <folding />
             </state>
@@ -187,11 +184,11 @@
         <option value="$PROJECT_DIR$/public/javascripts/src/meili/Request.js" />
         <option value="$PROJECT_DIR$/routes/apiv2/trips.js" />
         <option value="$PROJECT_DIR$/routes/apiv2/pois.js" />
-        <option value="$PROJECT_DIR$/routes/apiv2/triplegs.js" />
         <option value="$PROJECT_DIR$/public/javascripts/src/meili/model/Trip.js" />
         <option value="$PROJECT_DIR$/test/integration/specs/trips.js" />
         <option value="$PROJECT_DIR$/public/javascripts/src/meili/model/Tripleg.js" />
         <option value="$PROJECT_DIR$/test/integration/specs/triplegs.js" />
+        <option value="$PROJECT_DIR$/routes/apiv2/triplegs.js" />
       </list>
     </option>
   </component>
@@ -620,10 +617,10 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-1" y="27" width="1922" height="1054" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32868758" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.33565623" sideWeight="0.8490765" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.33565623" sideWeight="0.8490765" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3263647" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32752612" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1074,14 +1071,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/routes/apiv2/triplegs.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="3528" max-vertical-offset="5922">
-          <caret line="219" column="46" selection-start-line="219" selection-start-column="46" selection-end-line="219" selection-end-column="46" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/test/integration/specs/trips.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1998" max-vertical-offset="2826">
@@ -1114,18 +1103,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/integration/specs/triplegs.js">
+    <entry file="file://$PROJECT_DIR$/test/integration/specs/test.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="4500" max-vertical-offset="5328">
-          <caret line="285" column="24" selection-start-line="285" selection-start-column="24" selection-end-line="285" selection-end-column="24" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="523" max-vertical-offset="1062">
+          <caret line="48" column="63" selection-start-line="48" selection-start-column="63" selection-end-line="48" selection-end-column="63" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/integration/specs/test.js">
+    <entry file="file://$PROJECT_DIR$/test/integration/specs/triplegs.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.76623374" vertical-offset="451" max-vertical-offset="1062">
-          <caret line="48" column="63" selection-start-line="48" selection-start-column="63" selection-end-line="48" selection-end-column="63" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="4770" max-vertical-offset="5328">
+          <caret line="269" column="22" selection-start-line="269" selection-start-column="22" selection-end-line="269" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/routes/apiv2/triplegs.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.9315589" vertical-offset="3632" max-vertical-offset="5958">
+          <caret line="229" column="16" selection-start-line="229" selection-start-column="16" selection-end-line="229" selection-end-column="16" />
           <folding />
         </state>
       </provider>
