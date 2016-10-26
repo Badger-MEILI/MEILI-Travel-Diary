@@ -211,5 +211,37 @@ function testTriplegs() {
                 });
             });
         });
+
+        describe("tripleg time", function() {
+            it("update start time of tripleg should update start time", function(done) {
+                var timeDiff = 1 * 60 * 1000; // 1 minute
+
+                var tripleg = trip.getLastTripleg();
+                var newStartTime = tripleg.getStartTime().getTime() + timeDiff;
+
+                trip.updateTriplegStartTime(
+                    tripleg.getId(),
+                    newStartTime
+                ).done(function(updatedTrip) {
+                    expect(updatedTrip.getLastTripleg().getStartTime().getTime()).to.be.equal(newStartTime);
+                    done();
+                });
+            });
+
+            it("update end time of tripleg should update end time", function() {
+                var timeDiff = 1 * 60 * 1000; // 1 minute
+
+                var tripleg = trip.getFirstTripleg();
+                var newEndTime = tripleg.getEndTime().getTime() - timeDiff;
+
+                trip.updateTriplegEndTime(
+                    trip.getLastTripleg().getId(),
+                    newEndTime
+                ).done(function(updatedTrip) {
+                    expect(updatedTrip.getLastTripleg().getEndTime().getTime()).to.be.equal(newEndTime);
+                    done();
+                });
+            });
+        });
     });
 }

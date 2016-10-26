@@ -120,5 +120,32 @@ function testTrips() {
                 });
             });
         });
+
+        describe("trip time", function() {
+            it("update start time of trip should update start time of trip and of first tripleg", function(done) {
+                var timeDiff = 1 * 60 * 1000; // 1 minute
+                var newStartTime = trip.getStartTime().getTime() + timeDiff;
+                trip.updateStartTime(
+                    newStartTime
+                ).done(function(updatedTrip) {
+                    expect(updatedTrip.getStartTime().getTime()).to.be.equal(newStartTime);
+                    expect(updatedTrip.getFirstTripleg().getStartTime().getTime()).to.be.equal(newStartTime);
+                    done();
+                });
+            });
+
+            it("update end time of trip should update end time of trip and of last tripleg", function(done) {
+                var timeDiff = 1 * 60 * 1000; // 1 minute
+                var newEndTime = trip.getEndTime().getTime() - timeDiff;
+                trip.updateEndTime(
+                    newEndTime
+                ).done(function(updatedTrip) {
+                    expect(updatedTrip.getEndTime().getTime()).to.be.equal(newEndTime);
+                    expect(updatedTrip.getLastTripleg().getEndTime().getTime()).to.be.equal(newEndTime);
+                    done();
+                });
+            });
+        });
+
     });
 }
