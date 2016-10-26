@@ -449,6 +449,7 @@ Timeline.prototype = {
       var selectorOptions = [];
       var className = '';
       var attributes = '';
+      var specifyOptionLabel = '';
 
       for (var i=0; i < places.length; i++) {
         var place = places[i];
@@ -464,15 +465,17 @@ Timeline.prototype = {
       if(!triplegId) {
         // Add initial option?
         className = 'destination';
-        var maxAccuracy = places[0].accuracy;
-        if (maxAccuracy < 50){
-          // Can not preselect for the user
-          selectorOptions.unshift('<option value="-1" disabled selected lang="en">Specify your destination</option>');
-        }
+        specifyOptionLabel = 'Specify your destination';
       } else {
         className = 'transition';
         attributes = 'tripleg-id="' + triplegId + '"';
-        selectorOptions.unshift('<option value="-1" disabled selected lang="en">(Optional) Specify transfer place</option>');
+        specifyOptionLabel = '(Optional) Specify transfer place';
+      }
+
+      var maxAccuracy = places[0].accuracy;
+      if (maxAccuracy < 50) {
+        // Can not preselect for the user
+        selectorOptions.unshift('<option value="-1" disabled selected lang="en">' + specifyOptionLabel + '</option>');
       }
 
       placeSelector = ['<p lang="en">',
