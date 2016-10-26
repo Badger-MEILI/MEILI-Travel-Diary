@@ -76,8 +76,7 @@ function testTriplegs() {
                     newTransitionPoiId
                 ).done(function(result) {
                     expect(result.status).to.be.equal(true);
-                        // TODO -> This will fail because the method is not implemented
-                    expect(tripleg.getTransition()).to.be.equal(newTransitionPoiId);
+                    expect(tripleg.getTransition().osm_id).to.be.equal(newTransitionPoiId);
                     done();
                 }).fail(function (jqXHR, textStatus, errorThrown) {
                     console.log(jqXHR);
@@ -278,10 +277,12 @@ function testTriplegs() {
 
             it("delete a tripleg should remove the tripleg", function(done) {
                 var numberOfTriplegsBeforeDelete = trip.triplegs.length;
+                var triplegIdToDelete = trip.getLastTripleg().getId();
                 trip.deleteTripleg(
-                    trip.getLastTripleg().getId()
+                    triplegIdToDelete
                 ).done(function(updatedTrip) {
                         // Decrement by 2 because of the passive tripleg
+                    expect(updatedTrip.getTriplegById(triplegIdToDelete)).to.be.null;
                     expect(updatedTrip.triplegs.length).to.be.equal(numberOfTriplegsBeforeDelete-2);
                     done();
                 });

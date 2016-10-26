@@ -5,7 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1e2cf684-ae55-4d7a-8e15-763edce44804" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/routes/apiv2/triplegs.js" afterPath="$PROJECT_DIR$/routes/apiv2/triplegs.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/src/meili/ui/Timeline.js" afterPath="$PROJECT_DIR$/public/javascripts/src/meili/ui/Timeline.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/src/meili/model/Trip.js" afterPath="$PROJECT_DIR$/public/javascripts/src/meili/model/Trip.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/src/meili/model/Tripleg.js" afterPath="$PROJECT_DIR$/public/javascripts/src/meili/model/Tripleg.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/integration/specs/triplegs.js" afterPath="$PROJECT_DIR$/test/integration/specs/triplegs.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="foo.iws" />
@@ -30,21 +33,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="triplegs.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="triplegs.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/routes/apiv2/triplegs.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.9315589" vertical-offset="3632" max-vertical-offset="5958">
-              <caret line="229" column="16" selection-start-line="229" selection-start-column="16" selection-end-line="229" selection-end-column="16" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="3632" max-vertical-offset="5958">
+              <caret line="219" column="44" selection-start-line="219" selection-start-column="44" selection-end-line="219" selection-end-column="44" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="triplegs.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="triplegs.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/test/integration/specs/triplegs.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="4770" max-vertical-offset="5328">
-              <caret line="269" column="22" selection-start-line="269" selection-start-column="22" selection-end-line="269" selection-end-column="22" />
+            <state vertical-scroll-proportion="0.5893536" vertical-offset="4820" max-vertical-offset="5346">
+              <caret line="285" column="101" selection-start-line="285" selection-start-column="101" selection-end-line="285" selection-end-column="101" />
               <folding />
             </state>
           </provider>
@@ -53,8 +56,8 @@
       <file leaf-file-name="Tripleg.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/javascripts/src/meili/model/Tripleg.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="379" max-vertical-offset="5364">
-              <caret line="40" column="27" selection-start-line="40" selection-start-column="27" selection-end-line="40" selection-end-column="27" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="415" max-vertical-offset="5688">
+              <caret line="33" column="2" selection-start-line="33" selection-start-column="2" selection-end-line="33" selection-end-column="2" />
               <folding />
             </state>
           </provider>
@@ -83,8 +86,8 @@
       <file leaf-file-name="Trip.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/javascripts/src/meili/model/Trip.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="3704" max-vertical-offset="5454">
-              <caret line="233" column="4" selection-start-line="233" selection-start-column="4" selection-end-line="233" selection-end-column="4" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="3776" max-vertical-offset="5526">
+              <caret line="237" column="4" selection-start-line="237" selection-start-column="4" selection-end-line="237" selection-end-column="4" />
               <folding />
             </state>
           </provider>
@@ -187,8 +190,8 @@
         <option value="$PROJECT_DIR$/public/javascripts/src/meili/model/Trip.js" />
         <option value="$PROJECT_DIR$/test/integration/specs/trips.js" />
         <option value="$PROJECT_DIR$/public/javascripts/src/meili/model/Tripleg.js" />
-        <option value="$PROJECT_DIR$/test/integration/specs/triplegs.js" />
         <option value="$PROJECT_DIR$/routes/apiv2/triplegs.js" />
+        <option value="$PROJECT_DIR$/test/integration/specs/triplegs.js" />
       </list>
     </option>
   </component>
@@ -975,74 +978,74 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="9792" max-vertical-offset="12456">
           <caret line="545" column="1" selection-start-line="545" selection-start-column="1" selection-end-line="545" selection-end-column="1" />
           <folding>
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="[...]" />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="/** Adds listeners to a timeline element associated with a tripleg and checks for consequences of time change ...*/" />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="/** LISTENERS ...*/" />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="[...]" />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="[...]" />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="[...]" />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="/*...*/" />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="[...]" />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="/** NO LISTENERS YET ...*/" />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="/*...*/" />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="/** Generates a selector for the places (for destination) associated to a trip ...*/" />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="[...]" />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="/** Generates a selector for the purposes associated with a trip ...*/" />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1477482316881" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="[...]" />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="/** Adds listeners to a timeline element associated with a tripleg and checks for consequences of time change ...*/" />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="/** LISTENERS ...*/" />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="[...]" />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="[...]" />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="[...]" />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="/*...*/" />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="[...]" />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="/** NO LISTENERS YET ...*/" />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="/*...*/" />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="/** Generates a selector for the places (for destination) associated to a trip ...*/" />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="[...]" />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="/** Generates a selector for the purposes associated with a trip ...*/" />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1477509186696" expanded="true" signature="-1:-1" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -1089,16 +1092,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/public/javascripts/src/meili/model/Trip.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="3704" max-vertical-offset="5454">
-          <caret line="233" column="4" selection-start-line="233" selection-start-column="4" selection-end-line="233" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/javascripts/src/meili/model/Tripleg.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="379" max-vertical-offset="5364">
-          <caret line="40" column="27" selection-start-line="40" selection-start-column="27" selection-end-line="40" selection-end-column="27" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="3776" max-vertical-offset="5526">
+          <caret line="237" column="4" selection-start-line="237" selection-start-column="4" selection-end-line="237" selection-end-column="4" />
           <folding />
         </state>
       </provider>
@@ -1111,18 +1106,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/integration/specs/triplegs.js">
+    <entry file="file://$PROJECT_DIR$/routes/apiv2/triplegs.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="4770" max-vertical-offset="5328">
-          <caret line="269" column="22" selection-start-line="269" selection-start-column="22" selection-end-line="269" selection-end-column="22" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="3632" max-vertical-offset="5958">
+          <caret line="219" column="44" selection-start-line="219" selection-start-column="44" selection-end-line="219" selection-end-column="44" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/routes/apiv2/triplegs.js">
+    <entry file="file://$PROJECT_DIR$/public/javascripts/src/meili/model/Tripleg.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.9315589" vertical-offset="3632" max-vertical-offset="5958">
-          <caret line="229" column="16" selection-start-line="229" selection-start-column="16" selection-end-line="229" selection-end-column="16" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="415" max-vertical-offset="5688">
+          <caret line="33" column="2" selection-start-line="33" selection-start-column="2" selection-end-line="33" selection-end-column="2" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/integration/specs/triplegs.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5893536" vertical-offset="4820" max-vertical-offset="5346">
+          <caret line="285" column="101" selection-start-line="285" selection-start-column="101" selection-end-line="285" selection-end-column="101" />
           <folding />
         </state>
       </provider>
