@@ -20,6 +20,21 @@
     <script src="../../public/javascripts/lib/moment_2.15.1.js"></script>
 
     <script src="../../public/javascripts/src/config.js"></script>
+    <script>
+      function getParameterByName(name) {
+        var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+        return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+      }
+
+      var silent = getParameterByName('SILENT');
+      if(silent && silent === 'true') {
+        CONFIG.debug = false;
+        CONFIG.log_level = 'silent';
+      } else {
+        CONFIG.debug = true;
+        CONFIG.log_level = 'full';
+      }
+    </script>
     <script src="../../public/javascripts/src/meili/Util.js"></script>
     <script src="../../public/javascripts/src/meili/Log.js"></script>
     <script src="../../public/javascripts/src/meili/Request.js"></script>

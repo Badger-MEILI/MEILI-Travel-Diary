@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node bin/www",
-    "test-client": "mocha-phantomjs --ignore-resource-errors -s webSecurityEnabled=false test/integration/index.html"
+    "test-client": "mocha-phantomjs --ignore-resource-errors -s webSecurityEnabled=false test/integration/index.html?SILENT=$SILENT"
   },
   "main": "bin/www",
   "dependencies": {

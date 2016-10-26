@@ -41,7 +41,9 @@ Mocha test run with Phanthomjs
 
 1. Make sure database is running with test data, preferably run the docker container
 2. Start the development server
-3. `npm run test-client`
+3. `npm run test-client` 
+
+for running tests without console logging run `SILENT=true npm run test-client`
 
 ### Development
 

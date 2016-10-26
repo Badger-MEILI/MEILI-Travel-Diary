@@ -1,5 +1,6 @@
 var CONFIG = {
   debug: true,
+  log_level: 'full',
 
   api_url: '/apiv2',
 
