@@ -260,6 +260,8 @@ Trip.prototype = {
     for (var i = 0; i < this.purposes.length; i++) {
       if(this.purposes[i].id == purposeId) {
         this.purposes[i].accuracy = 100;
+      } else {
+        this.purposes[i].accuracy = 0;
       }
     }
     this._sortPurposes();
@@ -269,6 +271,8 @@ Trip.prototype = {
     for (var i = 0; i < this.destination_places.length; i++) {
       if(this.destination_places[i].gid == destinationPlaceId) {
         this.destination_places[i].accuracy = 100;
+      } else {
+        this.destination_places[i].accuracy = 0;
       }
     }
     this._sortDestinationPlaces();
