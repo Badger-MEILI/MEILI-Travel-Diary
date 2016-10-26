@@ -274,10 +274,12 @@ function testTriplegs() {
 
             it("delete a tripleg should remove the tripleg", function(done) {
                 var numberOfTriplegsBeforeDelete = trip.triplegs.length;
+                var triplegIdToDelete = trip.getLastTripleg().getId();
                 trip.deleteTripleg(
-                    trip.getLastTripleg().getId()
+                    triplegIdToDelete
                 ).done(function(updatedTrip) {
-                    expect(updatedTrip.triplegs.length).to.be.equal(numberOfTriplegsBeforeDelete-1);
+                    expect(updatedTrip.getTriplegById(triplegIdToDelete)).to.be.null;
+                    expect(updatedTrip.triplegs.length).to.be.equal((numberOfTriplegsBeforeDelete-1));
                     done();
                 });
             });
