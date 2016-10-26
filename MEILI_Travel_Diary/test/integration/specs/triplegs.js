@@ -65,7 +65,20 @@ function testTriplegs() {
             });
         });
 
-        describe("specify transition poi", function(){
+        describe("specify transition poi", function() {
+
+             it("update transition poi should return status true and update tripleg current transition", function(done) {
+
+                var tripleg = trip.getFirstTripleg();
+                var newTransitionPoiId = tripleg.places[0].osm_id;
+                tripleg.updateTransitionPoiIdOfTripleg(
+                    newTransitionPoiId
+                ).done(function(result) {
+                    expect(result.status).to.be.equal(true);
+                    expect(tripleg.getTransition()).to.be.equal(newTransitionPoiId);
+                    done();
+                });
+            });
 
             it("the specified transition poi id should not be null", function(done) {
 
@@ -139,7 +152,20 @@ function testTriplegs() {
         });
 
 
-        describe("specify the travel mode of a tripleg", function(){
+        describe("specify the travel mode of a tripleg", function() {
+
+            it("update travel mode should return status true and update tripleg current mode", function(done) {
+
+                var tripleg = trip.getFirstTripleg();
+                var newModeId = tripleg.mode[tripleg.mode.length-1].id;
+                tripleg.updateMode(
+                    newModeId
+                ).done(function(result) {
+                    expect(result.status).to.be.equal(true);
+                    expect(tripleg.getMode().id).to.be.equal(newModeId);
+                    done();
+                });
+            });
 
             it("the specified travel mode should not be null", function(done) {
 
