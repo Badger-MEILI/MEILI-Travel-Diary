@@ -495,7 +495,9 @@ Timeline.prototype = {
     var purposeSelector = '';
     if(purposes && purposes.length > 0) {
       var maxAccuracy = purposes[0].accuracy;
-      var purposeSelector = '<p lang="en">Purpose: '+
+      var purposeSelector = '<p lang="en">' +
+                              '<label for="purpose-selector">Purpose: </label>'+
+                              '<div>' +
                               '<select class="form-control form-control-inline form-need-check purpose-selector">';
 
       // Accuracy is not high enough to preselect for the user
@@ -508,7 +510,7 @@ Timeline.prototype = {
         purposeSelector += '<option value="' + purpose.id + '" lang="en">' + purpose.name + '</option>';
 
       }
-      purposeSelector += '</select>';
+      purposeSelector += '</select></div>';
     }
     return purposeSelector;
   },
