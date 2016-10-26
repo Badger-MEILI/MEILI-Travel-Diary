@@ -1,7 +1,7 @@
 function testTriplegs() {
     describe("Triplegs", function() {
 
-        describe("Insert transition between triplegs", function() {
+        describe("insert transition between triplegs", function() {
 
             it("insert transition between triplegs", function (done) {
 
@@ -65,7 +65,7 @@ function testTriplegs() {
             });
         });
 
-        describe("Specify transition poi", function(){
+        describe("specify transition poi", function(){
 
             it("the specified transition poi id should not be null", function(done) {
 
@@ -139,7 +139,7 @@ function testTriplegs() {
         });
 
 
-        describe("Specify the travel mode of a tripleg", function(){
+        describe("specify the travel mode of a tripleg", function(){
 
             it("the specified travel mode should not be null", function(done) {
 

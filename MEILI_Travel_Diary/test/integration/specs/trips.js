@@ -11,7 +11,6 @@ function testTrips() {
             });
         });
 
-
         describe("trip poi specification", function() {
 
             it("update destination poi id should return status true", function(done) {
@@ -74,6 +73,8 @@ function testTrips() {
                 ).done(function (result) {
                     expect(result.status).to.be.equal(true);
                     done();
+                }).fail(function(err) {
+                    done(err);
                 });
             });
 
