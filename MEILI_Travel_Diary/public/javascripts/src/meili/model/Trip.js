@@ -101,23 +101,25 @@ Trip.prototype = {
   // -------------------------------------------
 
   updateTriplegs: function(newTriplegs) {
-    this.removeTriplegs();
     if(newTriplegs && newTriplegs.length > 0) {
+      this.removeTriplegs();
+
       newTriplegs[0].isFirst = true;
       newTriplegs[newTriplegs.length-1].isLast = true;
+
+      for (var i = 0; i < (newTriplegs.length+1); i++) {
+        if(newTriplegs[i]) {
+          newTriplegs[i] = new Tripleg(newTriplegs[i]);
+          newTriplegs[i].on('tripleg-updated', function() { this.emit('triplegs-update', this); }.bind(this));
+        }
+        // Add reference to next and previous tripleg
+        if(i-1 >= 0) {
+          newTriplegs[i-1].setPrevNext(newTriplegs[i-2], newTriplegs[i]);
+        }
+      };
+      this.triplegs = newTriplegs;
+      this.emit('triplegs-update', this);
     }
-    for (var i = 0; i < (newTriplegs.length+1); i++) {
-      if(newTriplegs[i]) {
-        newTriplegs[i] = new Tripleg(newTriplegs[i]);
-        newTriplegs[i].on('tripleg-updated', function() { this.emit('triplegs-update', this); }.bind(this));
-      }
-      // Add reference to next and previous tripleg
-      if(i-1 >= 0) {
-        newTriplegs[i-1].setPrevNext(newTriplegs[i-2], newTriplegs[i]);
-      }
-    };
-    this.triplegs = newTriplegs;
-    this.emit('triplegs-update', this);
     return this.triplegs;
   },
 
@@ -132,12 +134,88 @@ Trip.prototype = {
   // -------------------------------------------
   // -------------------------------------------
 
-  updateStartTime: function(triplegId, newTime) {
-    return this._updateTime('start', triplegId, newTime);
+  updateStartTime: function(newTime) {
+    var dfd = $.Deferred();
+    api.trips.updateStartTime(this.getId(), newTime)
+      .done(function(result) {
+        if(result.triplegs && result.triplegs.length > 0) {
+
+          this.updateTriplegs(result.triplegs);
+          // TODO! potentially bad to update trip state here, should the server do this?
+          this.current_trip_start_date = result.triplegs[0].start_time;
+
+          dfd.resolve(this);
+        } else {
+          dfd.reject('No tripleg returned');
+        }
+      }.bind(this))
+      .fail(function(err) {
+        dfd.reject(err);
+      });
+
+    return dfd.promise();
   },
 
-  updateEndTime: function(triplegId, newTime) {
-    return this._updateTime('end', triplegId, newTime);
+  updateEndTime: function(newTime) {
+    var dfd = $.Deferred();
+    api.trips.updateEndTime(this.getId(), newTime)
+      .done(function(result) {
+        if(result.triplegs && result.triplegs.length > 0) {
+
+          this.updateTriplegs(result.triplegs);
+          // TODO! potentially bad to update trip state here, should the server do this?
+          this.current_trip_end_date = result.triplegs[result.triplegs.length-1].stop_time;
+
+          dfd.resolve(this);
+        } else {
+          dfd.reject('No tripleg returned');
+        }
+      }.bind(this))
+      .fail(function(err) {
+        dfd.reject(err);
+      });
+
+    return dfd.promise();
+  },
+
+  // This is on a trip since a time change could result in multiple triplegs being affected
+  // and current tiplegs state is returned
+  updateTriplegStartTime: function(triplegId, newTime) {
+    var dfd = $.Deferred();
+    api.triplegs.updateStartTime(triplegId, newTime)
+      .done(function(result) {
+        if(result.triplegs && result.triplegs.length > 0) {
+          this.updateTriplegs(result.triplegs);
+          dfd.resolve(this);
+        } else {
+          dfd.reject('No tripleg returned');
+        }
+      }.bind(this))
+      .fail(function(err) {
+        dfd.reject(err);
+      });
+
+    return dfd.promise();
+  },
+
+  // This is on a trip since a time change could result in multiple triplegs being affected
+  // and current tiplegs state is returned
+  updateTriplegEndTime: function(triplegId, newTime) {
+    var dfd = $.Deferred();
+    api.triplegs.updateEndTime(triplegId, newTime)
+      .done(function(result) {
+        if(result.triplegs && result.triplegs.length > 0) {
+          this.updateTriplegs(result.triplegs);
+          dfd.resolve(this);
+        } else {
+          dfd.reject('No tripleg returned');
+        }
+      }.bind(this))
+      .fail(function(err) {
+        dfd.reject(err);
+      });
+
+    return dfd.promise();
   },
 
   insertTransitionBetweenTriplegs: function(startTime, endTime, fromMode, toMode) {
@@ -211,36 +289,6 @@ Trip.prototype = {
 
   _sortDestinationPlaces: function() {
     this.destination_places = util.sortByAccuracy(this.destination_places);
-  },
-
-  _updateTime: function(timeToUpdate, triplegId, newTime) {
-    var dfd = $.Deferred();
-    var tripleg = this.getTriplegById(triplegId);
-    if(tripleg) {
-      var apiMethod = timeToUpdate === 'start' ? 'updateStartTime' : 'updateEndTime';
-      var apiEndPoint = api.triplegs;
-      var id = tripleg.getId();
-      // If this is is the first tripleg do operations on trip
-      if((tripleg.isFirst && timeToUpdate === 'start') || (tripleg.isLast && timeToUpdate === 'end')) {
-        apiEndPoint = api.trips;
-        id = this.getId();
-      }
-
-      apiEndPoint[apiMethod](id, newTime)
-        .done(function(result) {
-          this.updateTriplegs(result.triplegs);
-          dfd.resolve(this.triplegs);
-        }.bind(this))
-        .fail(function(err) {
-          dfd.reject(err);
-        });
-
-    } else {
-      var msg = 'Tripleg ' + triplegId + ' not found on trip' + this.getId();
-      log.error(msg);
-      dfd.reject(msg);
-    }
-    return dfd.promise();
   },
 
   _getTripleg: function(id, indexDiff) {
