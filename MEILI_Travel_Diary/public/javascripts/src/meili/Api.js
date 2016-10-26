@@ -10,6 +10,16 @@ var Api = function(config) {
 
   function url(mainPath, path) { return [config.api_url, mainPath, path].join('/') };
 
+  function verifyTriplegsIsReturned(dfd, result) {
+    if(result.triplegs && result.triplegs.length > 0) {
+      dfd.resolve(result);
+    } else {
+      var msg = 'No triplegs returned';
+      dfd.reject(msg);
+      throw msg;
+    }
+  }
+
   return {
 
     trips: {
@@ -28,7 +38,8 @@ var Api = function(config) {
           {
             trip_id: tripId,
             start_time: startTime
-          }
+          },
+          verifyTriplegsIsReturned
         );
       },
 
@@ -38,7 +49,8 @@ var Api = function(config) {
           {
             trip_id: tripId,
             end_time: endTime
-          }
+          },
+          verifyTriplegsIsReturned
         );
       },
 
@@ -48,6 +60,15 @@ var Api = function(config) {
           {
             trip_id: tripId,
             purpose_id: purposeId
+          },
+          function(dfd, result) {
+            if(result.status == true) {
+              dfd.resolve(result);
+            } else {
+              var msg = 'Some problem updating purpose of trip, server responded with incorrect status';
+              dfd.reject(msg);
+              throw msg;
+            }
           }
         );
       },
@@ -58,6 +79,15 @@ var Api = function(config) {
           {
             trip_id: tripId,
             destination_poi_id: destinationPoiId
+          },
+          function(dfd, result) {
+            if(result.status == true) {
+              dfd.resolve(result);
+            } else {
+              var msg = 'Some problem updating destination poi of trip, server responded with incorrect status';
+              dfd.reject(msg);
+              throw msg;
+            }
           }
         );
       },
@@ -84,7 +114,8 @@ var Api = function(config) {
           {
             tripleg_id: triplegId,
             start_time: startTime
-          }
+          },
+          verifyTriplegsIsReturned
         );
       },
 
@@ -94,7 +125,8 @@ var Api = function(config) {
           {
             tripleg_id: triplegId,
             end_time: endTime
-          }
+          },
+          verifyTriplegsIsReturned
         );
       },
 
@@ -104,6 +136,15 @@ var Api = function(config) {
           {
             tripleg_id: triplegId,
             travel_mode: travelMode
+          },
+          function(dfd, result) {
+            if(result.status == true) {
+              dfd.resolve(result);
+            } else {
+              var msg = 'Some problem updating mode, server responded with incorrect status';
+              dfd.reject(msg);
+              throw msg;
+            }
           }
         );
       },
@@ -119,7 +160,8 @@ var Api = function(config) {
             end_time: endTime,
             from_travel_mode: fromMode,
             to_travel_mode: toMode
-          }
+          },
+          verifyTriplegsIsReturned
         );
       },
 
@@ -129,6 +171,15 @@ var Api = function(config) {
           {
             tripleg_id: triplegId,
             transition_poi_id: transitionPoiId
+          },
+          function(dfd, result) {
+            if(result.status == true) {
+              dfd.resolve(result);
+            } else {
+              var msg = 'Some problem updating transition poi of tripleg, server responded with incorrect status';
+              dfd.reject(msg);
+              throw msg;
+            }
           }
         );
       }

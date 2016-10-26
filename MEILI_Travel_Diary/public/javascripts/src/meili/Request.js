@@ -1,13 +1,17 @@
 
 var Request = function(config) {
 
-  var doRequest = function(options) {
+  var doRequest = function(options, responseValidator) {
+    if(!responseValidator) {
+      responseValidator = function(dfd, result) { dfd.resolve(result); };
+    }
+
     var dfd = $.Deferred();
     log.debug('Sending', options.method, 'request to', options.url)
     $.ajax(options)
     .done(function(result) {
       if(result) {
-        dfd.resolve(result);
+        responseValidator(dfd, result);
       } else {
         var msg = 'Request got empty result back';
         log.error(msg);
@@ -27,36 +31,36 @@ var Request = function(config) {
 
   return {
 
-    get: function(url, data){
+    get: function(url, data, responseValidator){
       return doRequest({
         method: 'GET',
         url: url,
         data: data
-      });
+      }, responseValidator);
     },
 
-    post: function(url, data) {
+    post: function(url, data, responseValidator) {
       return doRequest({
         method: 'POST',
         url: url,
         data: data
-      });
+      }, responseValidator);
     },
 
-    put: function(url, data) {
+    put: function(url, data, responseValidator) {
       return doRequest({
         method: 'PUT',
         url: url,
         data: data
-      });
+      }, responseValidator);
     },
 
-    delete: function(url) {
+    delete: function(url, responseValidator) {
       return doRequest({
         method: 'DELETE',
         url: url,
         data: data
-      });
+      }, responseValidator);
     }
 
   }

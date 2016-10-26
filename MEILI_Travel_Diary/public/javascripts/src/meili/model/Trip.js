@@ -138,16 +138,11 @@ Trip.prototype = {
     var dfd = $.Deferred();
     api.trips.updateStartTime(this.getId(), newTime)
       .done(function(result) {
-        if(result.triplegs && result.triplegs.length > 0) {
+        this.updateTriplegs(result.triplegs);
+        // TODO! potentially bad to update trip state here, should the server do this?
+        this.current_trip_start_date = result.triplegs[0].start_time;
 
-          this.updateTriplegs(result.triplegs);
-          // TODO! potentially bad to update trip state here, should the server do this?
-          this.current_trip_start_date = result.triplegs[0].start_time;
-
-          dfd.resolve(this);
-        } else {
-          dfd.reject('No tripleg returned');
-        }
+        dfd.resolve(this);
       }.bind(this))
       .fail(function(err) {
         dfd.reject(err);
@@ -160,16 +155,11 @@ Trip.prototype = {
     var dfd = $.Deferred();
     api.trips.updateEndTime(this.getId(), newTime)
       .done(function(result) {
-        if(result.triplegs && result.triplegs.length > 0) {
-
           this.updateTriplegs(result.triplegs);
           // TODO! potentially bad to update trip state here, should the server do this?
           this.current_trip_end_date = result.triplegs[result.triplegs.length-1].stop_time;
 
           dfd.resolve(this);
-        } else {
-          dfd.reject('No tripleg returned');
-        }
       }.bind(this))
       .fail(function(err) {
         dfd.reject(err);
@@ -184,12 +174,8 @@ Trip.prototype = {
     var dfd = $.Deferred();
     api.triplegs.updateStartTime(triplegId, newTime)
       .done(function(result) {
-        if(result.triplegs && result.triplegs.length > 0) {
-          this.updateTriplegs(result.triplegs);
-          dfd.resolve(this);
-        } else {
-          dfd.reject('No tripleg returned');
-        }
+        this.updateTriplegs(result.triplegs);
+        dfd.resolve(this);
       }.bind(this))
       .fail(function(err) {
         dfd.reject(err);
@@ -204,12 +190,8 @@ Trip.prototype = {
     var dfd = $.Deferred();
     api.triplegs.updateEndTime(triplegId, newTime)
       .done(function(result) {
-        if(result.triplegs && result.triplegs.length > 0) {
-          this.updateTriplegs(result.triplegs);
-          dfd.resolve(this);
-        } else {
-          dfd.reject('No tripleg returned');
-        }
+        this.updateTriplegs(result.triplegs);
+        dfd.resolve(this);
       }.bind(this))
       .fail(function(err) {
         dfd.reject(err);
@@ -241,10 +223,8 @@ Trip.prototype = {
 
   updatePurposeOfTrip: function(purposeId) {
     return api.trips.updatePurposeOfTrip(this.getId(), purposeId).done(function(result) {
-      if(result.status == true) {
-        this._updatePurpose(purposeId);
-        this.emit('trip-update', this);
-      }
+      this._updatePurpose(purposeId);
+      this.emit('trip-update', this);
     }.bind(this)).fail(function(err) {
       log.error(err);
     });
@@ -252,10 +232,8 @@ Trip.prototype = {
 
   updateDestinationPoiIdOfTrip: function(destinationPoiId) {
     return api.trips.updateDestinationPoiIdOfTrip(this.getId(), destinationPoiId).done(function(result) {
-      if(result.status == true) {
-        this._updateDestinationPlace(destinationPoiId);
-        this.emit('trip-update', this);
-      }
+      this._updateDestinationPlace(destinationPoiId);
+      this.emit('trip-update', this);
     }.bind(this)).fail(function(err) {
       log.error(err);
     });

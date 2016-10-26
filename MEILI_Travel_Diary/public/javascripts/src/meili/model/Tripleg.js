@@ -214,7 +214,7 @@ Tripleg.prototype = {
 
   updateMode: function(modeId) {
     return api.triplegs.updateMode(this.getId(), modeId)
-      .done(function() {
+      .done(function(result) {
         this._setMode(modeId);
         this.emit('tripleg-updated');
         log.debug('tripleg mode succefully updated');
