@@ -261,7 +261,7 @@ function testTriplegs() {
                 var newEndTime = tripleg.getEndTime().getTime() - timeDiff;
 
                 trip.updateTriplegEndTime(
-                    trip.getLastTripleg().getId(),
+                    tripleg.getId(),
                     newEndTime
                 ).done(function(updatedTrip) {
                     expect(updatedTrip.getLastTripleg().getEndTime().getTime()).to.be.equal(newEndTime);
