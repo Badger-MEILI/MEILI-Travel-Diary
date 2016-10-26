@@ -200,6 +200,17 @@ Trip.prototype = {
     return dfd.promise();
   },
 
+  // This is on a trip since a time change could result in multiple triplegs being affected
+  // and current tiplegs state is returned
+  deleteTripleg: function(triplegId) {
+    return api.triplegs.delete(triplegId).done(function(result) {
+      this.updateTriplegs(result.triplegs);
+      dfd.resolve(this);
+    }.bind(this)).fail(function(err) {
+      log.error(err);
+    });
+  },
+
   insertTransitionBetweenTriplegs: function(startTime, endTime, fromMode, toMode) {
     var dfd = $.Deferred();
     api.triplegs.insertTransitionBetweenTriplegs(this.getId(), startTime, endTime, fromMode, toMode)

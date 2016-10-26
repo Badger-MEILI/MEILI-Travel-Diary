@@ -92,9 +92,15 @@ var Api = function(config) {
         );
       },
 
-      create: function() {},
-      update: function() {},
-      delete: function() {}
+      delete: function(tripId) {
+        return request.get(
+          url(mainPaths.trips, 'deleteTrip'),
+          {
+            trip_id: tripId
+          },
+          verifyTriplegsIsReturned
+        );
+      },
     },
 
     triplegs: {
@@ -105,8 +111,6 @@ var Api = function(config) {
           { trip_id: tripId }
         );
       },
-
-      create: function() {},
 
       updateStartTime: function(triplegId, startTime) {
         return request.get(
@@ -149,7 +153,15 @@ var Api = function(config) {
         );
       },
 
-      delete: function() {},
+      delete: function(triplegId) {
+        return request.get(
+          url(mainPaths.triplegs, 'deleteTripleg'),
+          {
+            tripleg_id: triplegId
+          },
+          verifyTriplegsIsReturned
+        );
+      },
 
       insertTransitionBetweenTriplegs: function(tripId, startTime, endTime, fromMode, toMode) {
         return request.get(
