@@ -273,14 +273,12 @@ function testTriplegs() {
         describe("tripleg delete", function() {
 
             it("delete a tripleg should remove the tripleg", function(done) {
-                 it("update end time of tripleg should update end time", function() {
-                    var numberOfTriplegsBeforeDelete = trip.triplegs.length;
-                    trip.deleteTripleg(
-                        trip.getLastTripleg().getId()
-                    ).done(function(updatedTrip) {
-                        expect(updatedTrip.triplegs.length).to.be.equal(numberOfTriplegsBeforeDelete-1);
-                        done();
-                    });
+                var numberOfTriplegsBeforeDelete = trip.triplegs.length;
+                trip.deleteTripleg(
+                    trip.getLastTripleg().getId()
+                ).done(function(updatedTrip) {
+                    expect(updatedTrip.triplegs.length).to.be.equal(numberOfTriplegsBeforeDelete-1);
+                    done();
                 });
             });
         });
