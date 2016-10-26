@@ -467,10 +467,13 @@ Timeline.prototype = {
         selectorOptions.unshift('<option value="-1" disabled selected lang="en">(Optional) Specify transfer place</option>');
       }
 
-      placeSelector = ['<p lang="en">Place: ',
+      placeSelector = ['<p lang="en">',
+                        '<label for="place-selector">Place: </label>',
+                        '<div>',
                         '<select class="form-control form-control-inline place-selector ' + className + '" ' + attributes + '>',
                           selectorOptions.join(''),
-                        '</select></p>'];
+                        '</select></p>',
+                        '</div>'];
     }
     return placeSelector.join('');
   },
