@@ -29,6 +29,10 @@ Tripleg.prototype = {
     return mode;
   },
 
+  getTransition: function() {
+    throw 'No transition set for tripleg';
+  },
+
   getType: function() {
     return this.type_of_tripleg;
   },
@@ -222,7 +226,7 @@ Tripleg.prototype = {
 
   updateTransitionPoiIdOfTripleg: function(transitionPoiId) {
       return api.triplegs.updateTransitionPoiIdOfTripleg(this.getId(), transitionPoiId)
-      .done(function() {
+      .done(function(result) {
         this._setTransition(transitionPoiId);
         this.emit('tripleg-updated');
         log.debug('tripleg mode succefully updated');
@@ -236,7 +240,11 @@ Tripleg.prototype = {
   // -------------------------------------------
   // -------------------------------------------
 
-   _setMode: function(modeId) {
+  _setTransition: function(transitionPoiId) {
+    throw 'No way to specify transition on tripleg';
+  },
+
+  _setMode: function(modeId) {
     log.info('tripleg setting mode', modeId);
     for (var i = 0; i < this.mode.length; i++) {
        if(this.mode[i].id == modeId) {
