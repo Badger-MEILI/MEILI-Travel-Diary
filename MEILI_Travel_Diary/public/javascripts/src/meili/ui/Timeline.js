@@ -245,6 +245,16 @@ Timeline.prototype = {
       }
     }.bind(this));
 
+    $element.on('click','.go-to-previous-trip', function(e) {
+      if(this.trip.isLastUnannotated) {
+        
+      } else {
+        throw 'Move to next trip?';
+      }
+      e.preventDefault();
+      return false;
+    }.bind(this));
+
     $element.on('click','.go-to-next-trip', function(e) {
       if(this.trip.isLastUnannotated) {
         this.trip.confirm();
@@ -270,94 +280,84 @@ Timeline.prototype = {
    */
   generateFirstElement: function(){
       var ul = $('#'+this.elementId+' > ul');
-      var li = document.createElement("li");
-      li.id= 'firstTimelineElement';
 
+      var previousPurpose = this.trip.getPreviousTripPurpose();
+      var previousPlace = this.trip.getPreviousTripPOIName();
+      var previousTripEndDate = this.trip.getPreviousTripEndTime();
+      var currentTripStartDate = this.trip.getStartTime();
+      var timeDiff = this.trip.getTimeDiffToPreviousTrip();
 
-      var previousPurpose = this.trip.previous_trip_purpose;
-      var previousPlace = this.trip.previous_trip_poi_name;
-      var previousTripEndDate = new Date(parseInt(this.trip.previous_trip_end_date));
-      var currentTripStartDate = new Date(parseInt(this.trip.current_trip_start_date));
-
-      console.log(previousPurpose);
-      console.log(previousTripEndDate+" " +this.trip.previous_trip_end_date);
-      console.log(previousPlace);
-
-
-      var timeDiff = Math.abs(currentTripStartDate.getTime() - previousTripEndDate.getTime());
-      var htmlToAddTime=''
-      if ((timeDiff/1000*60)<60){
-          htmlToAddTime =Math.ceil(timeDiff/1000*60)+' minutes';
-      }
-      else
-      {
-          htmlToAddTime= Math.ceil(timeDiff / (1000 * 60 * 60))+' hours';
-      }
-
-      var thisHtml = '<li>';
 
       if (previousPurpose!=null) {
           /* Add see previous button */
+          var navigateToPreviousTrip = [
+              '<li>',
+                '<div class="tldatecontrol" id="seePrevious">',
+                  '<a class="go-to-previous-trip" href="#" lang="en"><i class="glyphicon medium glyphicon-arrow-left"></i> See previous trip</a>',
+                '</div>',
+              '</li>'
+          ];
+          ul.append(navigateToPreviousTrip.join(''));
 
-          thisHtml += '<div class="tldatecontrol" id="seePrevious"> <p lang="en"> <i class="glyphicon glyphicon-arrow-up"></i> See previous trip <i class="glyphicon glyphicon-arrow-up"></i> </p>';// <p lang="sv"><i class="glyphicon glyphicon-arrow-up"></i> Gå tillbaka till den senaste förflyttningen <i class="glyphicon glyphicon-arrow-up"></i> </p>';
-          thisHtml += '</div>';
-          thisHtml += '</li>';
-
-          var previousTripEndDateLocal = moment(previousTripEndDate).format('dddd')+", "+moment(previousTripEndDate).format("YY-MM-DD");
-          var previousTripEndHour = moment(previousTripEndDate).format('hh:ss');
+          var previousTripEndDateLocal = moment(this.trip.getPreviousTripEndTime()).format('dddd, YY-MM-DD');
 
           /* Add previous trip ended panel*/
-          thisHtml += '<li>';
-          thisHtml += '<div class="tldate" style="width:330px"> <p lang="en">('+previousTripEndDateLocal  +') '+previousTripEndHour+' - Previous trip ended</p>';// <p lang="sv">('+previousTripEndDateLocalSv  +') '+previousTripEndHour+' - -Senaste förflyttningen slutade</p>';
-          thisHtml += '</div>';
-          thisHtml += '</li>';
+          var previousTripPanel = [
+            '<li>',
+              '<div class="tldate" style="width:330px"> <p lang="en">('+previousTripEndDateLocal  +') '+ this.trip.getPreviousTripEndTime(true) +' - Previous trip ended</p>',
+              '</div>',
+            '</li>'
+          ];
+          ul.append(previousTripPanel.join(''));
 
           /* Add previous trip summary */
-          thisHtml += '<li class="timeline-inverted">';
-          thisHtml += '<div class="timeline-panel" id ="firstTimelinePanel">';
-          thisHtml += '<div class="tl-heading">';
-          thisHtml += '<h4 lang="en">Time spent at '+previousPlace+'</h4>';
-
-          thisHtml += '<p id="tldatefirstparagraph"><small class="text-muted"><i class="glyphicon glyphicon-time"></i> '+(previousTripEndDate.getHours()<10?'0':'')+previousTripEndDate.getHours()+':'+(previousTripEndDate.getMinutes()<10?'0':'')+previousTripEndDate.getMinutes()+' - '+(currentTripStartDate.getHours()<10?'0':'')+currentTripStartDate.getHours()+':'+(currentTripStartDate.getMinutes()<10?'0':'')+currentTripStartDate.getMinutes()+'</small></p>';
-          thisHtml += '</div>';
-          thisHtml += '<div class="tl-body">';
-          thisHtml += '<p lang="en">Place: '+previousPlace+'</p>';
-          thisHtml += '<p lang="en">Purpose: '+previousPurpose+'</p>';
-          thisHtml += '<p lang="en" id="firsttimeend">Time: '+htmlToAddTime+'</p>';
-          thisHtml += '</div>';
-          thisHtml += '</div>';
-          thisHtml += '</li>';
-      }
-      else{
-          thisHtml += '<li>';
-          thisHtml += '<div class="tldate start" id="firstTimelinePanel"> <p lang="en">This is where you started using MEILI</p>' 
-
-          thisHtml += '</div>';
-          thisHtml += '</li>';
+          var previousTripSummaryPanel = [
+            '<li class="timeline-inverted">',
+              '<div class="timeline-panel" id ="firstTimelinePanel">',
+                '<div class="tl-heading">',
+                  '<h4 lang="en">Time spent at '+previousPlace+'</h4>',
+                  '<p id="tldatefirstparagraph"><small class="text-muted"><i class="glyphicon glyphicon-time"></i> '+(previousTripEndDate.getHours()<10?'0':'')+previousTripEndDate.getHours()+':'+(previousTripEndDate.getMinutes()<10?'0':'')+previousTripEndDate.getMinutes()+' - '+(currentTripStartDate.getHours()<10?'0':'')+currentTripStartDate.getHours()+':'+(currentTripStartDate.getMinutes()<10?'0':'')+currentTripStartDate.getMinutes()+'</small></p>',
+                '</div>',
+                '<div class="tl-body">',
+                  '<p lang="en">Place: '+previousPlace+'</p>',
+                  '<p lang="en">Purpose: '+previousPurpose+'</p>',
+                  '<p lang="en" id="firsttimeend">Time: '+timeDiff+' hours</p>',
+                '</div>',
+              '</div>',
+            '</li>'
+            ];
+          ul.append(previousTripSummaryPanel.join(''));
+      } else {
+          var firstTimePanel = [
+            '<li>',
+              '<div class="tldate start" id="firstTimelinePanel">',
+                '<p lang="en">This is where you started using MEILI</p>',
+              '</div>',
+            '</li>'
+          ].join('');
+          ul.append(firstTimePanel.join(''));
       }
       /* Add started trip info */
       var currentTripStartDateLocal = moment(previousTripEndDate).format('dddd')+", "+moment(currentTripStartDate).format("YY-MM-DD");
       var currentTripStartHour = moment(currentTripStartDate).format("hh:ss");
 
-      thisHtml+='<li>';
-      thisHtml+='<div class="tldate start" id="tldatefirst" style="width:330px"><span class="glyphicon large glyphicon-flag"></span><span><p lang="en" id="tldatefirstassociatedparagraph">('+currentTripStartDateLocal  +') '+currentTripStartHour+' - Started trip</p>';// <p id="tldatefirstassociatedparagraphsv" lang="sv"><span class="glyphicon glyphicon-flag"></span>('+currentTripStartDateLocalSv  +') '+currentTripStartHour+' - Påbörjade förflyttning</p>';
-      thisHtml+='<p lang="en"><i>Is this a fake trip? Click <span class="glyphicon glyphicon-trash" onclick="deleteTripModal()"></span> to delete.</i></p></span>';
-      thisHtml+='</div>';
-      thisHtml+='</li>';
+      var tripStartPanel = [
+        '<li>',
+          '<div class="tldate start" id="tldatefirst" style="width:330px"><span class="glyphicon large glyphicon-flag"></span><span><p lang="en" id="tldatefirstassociatedparagraph">('+currentTripStartDateLocal  +') '+currentTripStartHour+' - Started trip</p>',
+            '<p lang="en"><i>Is this a fake trip? Click <span class="glyphicon glyphicon-trash" onclick="deleteTripModal()"></span> to delete.</i></p></span>',
+          '</div>',
+        '</li>'
+      ];
 
-      li.innerHTML = thisHtml;
-
-      ul.append(li)
-
-      console.log(currentTripStartDate);
+      ul.append(tripStartPanel.join(''));
 
       var seePrevious = document.getElementById('seePrevious');
 
       /**
        * LISTENERS
        */
-      if (seePrevious!=null)
-          seePrevious.onclick = previousFunction;
+      //if (seePrevious!=null)
+      //    seePrevious.onclick = previousFunction;
   },
 
   /**

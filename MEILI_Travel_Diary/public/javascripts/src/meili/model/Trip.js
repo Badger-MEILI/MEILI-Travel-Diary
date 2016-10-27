@@ -90,6 +90,12 @@ Trip.prototype = {
     return this.previous_trip_purpose;
   },
 
+  getTimeDiffToPreviousTrip: function() {
+    var timeDiff = Math.abs(this.getStartTime().getTime() - this.getPreviousTripEndTime().getTime());
+    var hoursDiff = Math.ceil(timeDiff / (1000 * 60 * 60));
+    return hoursDiff;
+  },
+
   getTimeDiffToNextTrip: function() {
     var timeDiff = Math.abs(this.getNextTripStartTime().getTime() - this.getEndTime().getTime());
     var hoursDiff = Math.ceil(timeDiff / (1000 * 60 * 60));
