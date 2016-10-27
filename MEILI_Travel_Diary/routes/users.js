@@ -209,7 +209,7 @@ router.post('/insertLog',  function(req, res) {
     var data =  JSON.parse(req.body.dataToUpload);
     var userId = JSON.parse(req.body.userId);
 
-    var sql ="INSERT INTO log_table(userid, log_date, log_message)";
+        /* var sql ="INSERT INTO log_table(userid, log_date, log_message)";
     var values = [];
 
     for (var i=0; i<data.length;i++){
@@ -226,6 +226,8 @@ router.post('/insertLog',  function(req, res) {
                 res.end("success");
             }
         });
+        */
+    res.end("success");
 });
 
 
