@@ -282,7 +282,7 @@ router.post('/insertLocationsAndroid',  function(req, res) {
     var data =  JSON.parse(req.body.embeddedLocations_);
 
     var userId = 0;
-    var sql = "INSERT INTO location_table (upload,  accuracy_, altitude_, bearing_, lat_, lon_, time_, speed_, satellites_, user_id, size, totalismoving, totalmax, totalmean, totalmin,"+
+    var sql = "INSERT INTO raw_data.location_table (upload,  accuracy_, altitude_, bearing_, lat_, lon_, time_, speed_, satellites_, user_id, size, totalismoving, totalmax, totalmean, totalmin,"+
         "totalnumberofpeaks, totalnumberofsteps, totalstddev, "+
         "xismoving, xmaximum, xmean, xminimum, xnumberofpeaks, xstddev,"+
         "yismoving, ymax, ymean, ymin, ynumberofpeaks, ystddev, zismoving, zmax, zmean, zmin, znumberofpeaks, zstddev, "+
