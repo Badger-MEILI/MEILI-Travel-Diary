@@ -209,7 +209,7 @@ router.post('/insertLog',  function(req, res) {
     var data =  JSON.parse(req.body.dataToUpload);
     var userId = JSON.parse(req.body.userId);
 
-    var sql ="INSERT INTO log_table(userid, log_date, log_message)";
+        /* var sql ="INSERT INTO log_table(userid, log_date, log_message)";
     var values = [];
 
     for (var i=0; i<data.length;i++){
@@ -226,6 +226,8 @@ router.post('/insertLog',  function(req, res) {
                 res.end("success");
             }
         });
+        */
+    res.end("success");
 });
 
 
@@ -235,7 +237,7 @@ router.post('/insertLog',  function(req, res) {
 router.post('/insertLocationsIOS',  function(req, res) {
 
     var data =  JSON.parse(req.body.dataToUpload);
-    var sql = "INSERT INTO location_table (upload,  accuracy_, altitude_, bearing_, lat_, lon_, time_, speed_, satellites_, user_id, size, totalismoving, totalmax, totalmean, totalmin,"+
+    var sql = "INSERT INTO raw_data.location_table (upload,  accuracy_, altitude_, bearing_, lat_, lon_, time_, speed_, satellites_, user_id, size, totalismoving, totalmax, totalmean, totalmin,"+
         "totalnumberofpeaks, totalnumberofsteps, totalstddev, "+
         "xismoving, xmaximum, xmean, xminimum, xnumberofpeaks, xstddev,"+
         "yismoving, ymax, ymean, ymin, ynumberofpeaks, ystddev, zismoving, zmax, zmean, zmin, znumberofpeaks, zstddev, "+
@@ -282,7 +284,7 @@ router.post('/insertLocationsAndroid',  function(req, res) {
     var data =  JSON.parse(req.body.embeddedLocations_);
 
     var userId = 0;
-    var sql = "INSERT INTO location_table (upload,  accuracy_, altitude_, bearing_, lat_, lon_, time_, speed_, satellites_, user_id, size, totalismoving, totalmax, totalmean, totalmin,"+
+    var sql = "INSERT INTO raw_data.location_table (upload,  accuracy_, altitude_, bearing_, lat_, lon_, time_, speed_, satellites_, user_id, size, totalismoving, totalmax, totalmean, totalmin,"+
         "totalnumberofpeaks, totalnumberofsteps, totalstddev, "+
         "xismoving, xmaximum, xmean, xminimum, xnumberofpeaks, xstddev,"+
         "yismoving, ymax, ymean, ymin, ynumberofpeaks, ystddev, zismoving, zmax, zmean, zmin, znumberofpeaks, zstddev, "+

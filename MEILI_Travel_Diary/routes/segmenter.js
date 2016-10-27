@@ -85,7 +85,7 @@ module.exports = {
         var pointsInActiveTrip = 0;
 
         pg.connect(credentials, function(err, client, done) {
-            var prioryQuery = client.query("select ap_get_stream_for_stop_detection as response from ap_get_stream_for_stop_detection("+userId+");");
+            var prioryQuery = client.query("select get_stream_for_stop_detection as response from apiv2.get_stream_for_stop_detection("+userId+");");
 
             // Gets the stream that has to be segmented
             if (err) console.log(err);
@@ -225,7 +225,7 @@ function generateTriplegs(userId) {
     var results = [];
 
     pg.connect(credentials, function(err, client, done) {
-        var prioryQuery = client.query("select ap_get_stream_for_tripleg_detection as response from ap_get_stream_for_tripleg_detection("+userId+");");
+        var prioryQuery = client.query("select get_stream_for_tripleg_detection as response from apiv2.get_stream_for_tripleg_detection("+userId+");");
 
         prioryQuery.on('row', function (row) {
             results.push(row);
@@ -284,13 +284,13 @@ function generateTriplegSql(arrayOfTriplegs) {
 
     var triplegs = arrayOfTriplegs;
 
-    var sql ="INSERT INTO triplegs_inf(trip_id, user_id, from_point_id, to_point_id, from_time, to_time, type_of_tripleg, transportation_type , transition_poi_id, length_of_tripleg, duration_of_tripleg)";
+    var sql ="INSERT INTO triplegs_inf(trip_id, user_id, from_time, to_time, type_of_tripleg)";
     var values = [];
 
 
     for (var i=0; i<triplegs.length;i++){
         var object =[];
-        object.push("'"+triplegs[i].trip_id+"'","'"+triplegs[i].user_id+"'","'"+triplegs[i].from_point_id+"'","'"+triplegs[i].to_point_id+"'","'"+triplegs[i].from_time+"'","'"+triplegs[i].to_time+"'","'"+triplegs[i].type_of_tripleg+"'","'"+triplegs[i].transportation_type+"'","'"+triplegs[i].transition_poi_id+"'","'"+triplegs[i].length_of_tripleg+"'","'"+triplegs[i].duration_of_tripleg+"'");
+        object.push("'"+triplegs[i].trip_id+"'","'"+triplegs[i].user_id+"'","'"+triplegs[i].from_time+"'","'"+triplegs[i].to_time+"'","'"+triplegs[i].type_of_tripleg+"'");
         values.push("("+object.toString()+")");
     }
 
@@ -372,12 +372,12 @@ function toRad(Value)
  * @param userId
  */
 function generateSql(trips,userId) {
-    var sql ="INSERT INTO trips_inf(user_id, from_point_id, to_point_id, from_time, to_time, type_of_trip, purpose_id, destination_poi_id, length_of_trip, duration_of_trip, number_of_triplegs)";
+    var sql ="INSERT INTO trips_inf(user_id, from_time, to_time, type_of_trip)";
     var values = [];
 
     for (var i=0; i<trips.length;i++){
         var object =[];
-        object.push("'"+trips[i].user_id+"'","'"+trips[i].from_point_id+"'","'"+trips[i].to_point_id+"'","'"+trips[i].from_time+"'","'"+trips[i].to_time+"'","'"+trips[i].type_of_trip+"'","'"+trips[i].purpose_id+"'","'"+trips[i].destination_poi_id+"'","'"+trips[i].length_of_trip+"'","'"+trips[i].duration_of_trip+"'","'"+trips[i].number_of_triplegs+"'");
+        object.push("'"+trips[i].user_id+"'","'"+trips[i].from_time+"'","'"+trips[i].to_time+"'","'"+trips[i].type_of_trip+"'");
         values.push("("+object.toString()+")");
     }
 
