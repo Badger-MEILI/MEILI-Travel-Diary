@@ -92,6 +92,26 @@ var Api = function(config) {
         );
       },
 
+      navigateToPreviousTrip: function(userId, tripId) {
+        return request.get(
+          url(mainPaths.trips, 'navigateToPreviousTrip'),
+          {
+            trip_id: tripId,
+            user_id: userId
+          }
+        );
+      },
+
+      navigateToNextTrip: function(userId, tripId) {
+        return request.get(
+          url(mainPaths.trips, 'navigateToNextTrip'),
+          {
+            trip_id: tripId,
+            user_id: userId
+          }
+        );
+      },
+
       confirmAnnotationOfTrip: function(tripId) {
         return request.get(
           url(mainPaths.trips, 'confirmAnnotationOfTrip'),
