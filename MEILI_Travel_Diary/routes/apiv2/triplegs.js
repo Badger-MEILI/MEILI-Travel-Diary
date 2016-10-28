@@ -226,7 +226,7 @@ router.get("/insertTransitionBetweenTriplegs", function(req,res){
         });
 
         prioryQuery.on('end', function () {
-            if (results.triplegs.length==0) return util.handleError(res, 500, "you specified an invalid time period");
+            if (!results.triplegs) return util.handleError(res, 500, "you specified an invalid time period");
             else
             return res.json(results);
         });

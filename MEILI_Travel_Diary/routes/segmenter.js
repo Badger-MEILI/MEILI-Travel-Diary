@@ -22,6 +22,15 @@
 
 var pg = require('pg');
 var credentials = require('./database');
+var myClient = new pg.Client(credentials);
+
+//Connect to the database with one client specific to each user to avoid overflow of clients
+myClient.connect(function(err){
+    if (err){
+        return console.error('could not connect to postgres', err);
+    }
+    else console.log('connection successfull');
+});
 
 /**
  * String to json converter
@@ -69,6 +78,7 @@ module.exports = {
      */
     generateTrips: function (userId) {
 
+        console.log('generating trips for ' + userId);
         // counter for number of points clustered in the stop period
         var stopNumber = 0;
 
@@ -84,11 +94,10 @@ module.exports = {
         // counter for number of points in trip
         var pointsInActiveTrip = 0;
 
-        pg.connect(credentials, function(err, client, done) {
-            var prioryQuery = client.query("select get_stream_for_stop_detection as response from apiv2.get_stream_for_stop_detection("+userId+");");
+
+            var prioryQuery = myClient.query("select get_stream_for_stop_detection as response from apiv2.get_stream_for_stop_detection("+userId+");");
 
             // Gets the stream that has to be segmented
-            if (err) console.log(err);
             prioryQuery.on('row', function (row) {
                 results.push(row);
             });
@@ -208,10 +217,7 @@ module.exports = {
                     }
                 }
                 generateSql(tripArray,userId);
-
             });
-
-        });
     }
 };
 
@@ -224,8 +230,7 @@ function generateTriplegs(userId) {
     var arrayOfTriplegs = [];
     var results = [];
 
-    pg.connect(credentials, function(err, client, done) {
-        var prioryQuery = client.query("select get_stream_for_tripleg_detection as response from apiv2.get_stream_for_tripleg_detection("+userId+");");
+        var prioryQuery = myClient.query("select get_stream_for_tripleg_detection as response from apiv2.get_stream_for_tripleg_detection("+userId+");");
 
         prioryQuery.on('row', function (row) {
             results.push(row);
@@ -263,17 +268,15 @@ function generateTriplegs(userId) {
                             tripleg.length_of_tripleg = 0;
                             tripleg.duration_of_tripleg = 0;
 
+                            arrayOfTriplegs.push(tripleg);
                             firstPoint = extend(points[i],{});
                         }
                     }
-
                     prevPoint = extend(points[i],{});
                 }
             }
             generateTriplegSql(arrayOfTriplegs);
         });
-
-    });
 }
 
 /**
@@ -284,9 +287,8 @@ function generateTriplegSql(arrayOfTriplegs) {
 
     var triplegs = arrayOfTriplegs;
 
-    var sql ="INSERT INTO triplegs_inf(trip_id, user_id, from_time, to_time, type_of_tripleg)";
+    var sql ="INSERT INTO apiv2.triplegs_inf(trip_id, user_id, from_time, to_time, type_of_tripleg)";
     var values = [];
-
 
     for (var i=0; i<triplegs.length;i++){
         var object =[];
@@ -294,14 +296,14 @@ function generateTriplegSql(arrayOfTriplegs) {
         values.push("("+object.toString()+")");
     }
 
+    console.log('executing triplegs -> ' + sql+ "values "+values.toString());
+
     if (triplegs.length>0)
-    pg.connect(credentials, function(err, client, done) {
-        var prioryQuery = client.query(sql+ "values "+values.toString() , function(err) {
+        var prioryQuery = myClient.query(sql+ "values "+values.toString() , function(err) {
             if (err) {
                 throw err;
             }
         });
-    });
 }
 
 /**
@@ -372,7 +374,7 @@ function toRad(Value)
  * @param userId
  */
 function generateSql(trips,userId) {
-    var sql ="INSERT INTO trips_inf(user_id, from_time, to_time, type_of_trip)";
+    var sql ="INSERT INTO apiv2.trips_inf(user_id, from_time, to_time, type_of_trip)";
     var values = [];
 
     for (var i=0; i<trips.length;i++){
@@ -381,9 +383,9 @@ function generateSql(trips,userId) {
         values.push("("+object.toString()+")");
     }
 
+    console.log('executing -> ' + sql+ " values "+values.toString());
     if (trips.length>0)
-    pg.connect(credentials, function(err, client, done) {
-        var prioryQuery = client.query(sql+ "values "+values.toString() , function(err) {
+        var prioryQuery = myClient.query(sql+ " values "+values.toString() , function(err) {
             if (err) {
                 throw err;
             }
@@ -391,5 +393,5 @@ function generateSql(trips,userId) {
                 generateTriplegs(userId);
             }
         });
-    });
 }
+module.exports.client = myClient;
