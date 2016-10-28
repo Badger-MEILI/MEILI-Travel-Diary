@@ -72,7 +72,6 @@ passport.use(new LocalStrategy(
                 console.log(results);
                 if (results[0].id!=null && results[0].id!=undefined){
                     //retrieved id successfully
-                    segmenter.generateTrips(results[0].id);
                     done(null, {userId: results[0].id, userName: username});
                 }
                 else
