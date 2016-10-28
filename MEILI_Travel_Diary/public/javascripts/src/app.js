@@ -19,7 +19,9 @@ $(function() {
             .done(function(content) {
                 var $contentRef = $('#content');
                 $contentRef.empty().append(content);
-                callback($contentRef);
+                if(callback) {
+                    callback($contentRef);
+                }
             });
     }
 
@@ -66,9 +68,7 @@ $(function() {
     })
 
     page('/', function(ctx, next) {
-        verifyLoggedIn(function() {
-            page('/map');
-        });
+        render('views/main.html');
     });
 
     page('/login', function(ctx, next) {
