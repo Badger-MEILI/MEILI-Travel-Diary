@@ -127,6 +127,12 @@ $(function() {
         });
     });
 
+    page('/statistics', function(ctx, next) {
+        verifyLoggedIn(function() {
+            render('views/statistics.html', function() { next(); });
+        });
+    });
+
     page('/faq', function(ctx, next) {
         render('views/faq.html', function() { next(); });
     });
@@ -137,10 +143,6 @@ $(function() {
 
     page('/contact', function(ctx, next) {
         render('views/contact.html', function() { next(); });
-    });
-
-    page('/statistics', function(ctx, next) {
-        render('views/statistics.html', function() { next(); });
     });
 
     page({ hashbang: true });
