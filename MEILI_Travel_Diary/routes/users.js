@@ -25,16 +25,7 @@ var passport = require('passport');
 var pg = require('pg');
 var credentials = require('./database');
 var segmenter = require('./segmenter.js');
-var myClient = new pg.Client(credentials);
-
-//Connect to the database with one client specific to each user to avoid overflow of clients
-myClient.connect(function(err){
-    if (err){
-        return console.error('could not connect to postgres', err);
-    }
-    else console.log('connection successufll');
-});
-
+var myClient = segmenter.client;
 
 /**
  * Checks if the user is logged in or not

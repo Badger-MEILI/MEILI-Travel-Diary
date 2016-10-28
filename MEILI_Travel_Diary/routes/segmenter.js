@@ -29,7 +29,7 @@ myClient.connect(function(err){
     if (err){
         return console.error('could not connect to postgres', err);
     }
-    else console.log('connection successufll');
+    else console.log('connection successfull');
 });
 
 /**
@@ -159,14 +159,10 @@ module.exports = {
                                              centroidLon = 0;
                                              skipOne = true;
 
-                                             console.log(pointsInActiveTrip);
                                              var fromID = extend(firstLocation, {});
                                              var toID = extend(endLocation, {});
 
-                                             prevTo = extend(toID, {});
-
-                                             console.log(prevFrom);
-                                             console.log(prevTo);
+                                             prevTo = extend(fromID, {});
 
                                              var activeTrip = {};
                                              activeTrip.user_id = userId;
@@ -220,13 +216,7 @@ module.exports = {
                         }
                     }
                 }
-
-                for (var j in tripArray){
-                    console.log(tripArray[j]);
-                }
-
                 generateSql(tripArray,userId);
-
             });
     }
 };
@@ -278,10 +268,10 @@ function generateTriplegs(userId) {
                             tripleg.length_of_tripleg = 0;
                             tripleg.duration_of_tripleg = 0;
 
+                            arrayOfTriplegs.push(tripleg);
                             firstPoint = extend(points[i],{});
                         }
                     }
-
                     prevPoint = extend(points[i],{});
                 }
             }
@@ -404,3 +394,4 @@ function generateSql(trips,userId) {
             }
         });
 }
+module.exports.client = myClient;
