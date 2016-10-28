@@ -334,7 +334,7 @@ Timeline.prototype = {
                 '<p lang="en">This is where you started using MEILI</p>',
               '</div>',
             '</li>'
-          ].join('');
+          ];
           ul.append(firstTimePanel.join(''));
       }
       /* Add started trip info */
