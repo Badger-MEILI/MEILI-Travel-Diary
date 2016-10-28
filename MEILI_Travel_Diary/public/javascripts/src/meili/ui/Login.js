@@ -23,7 +23,9 @@ Login.prototype = {
         throw 'No password provided';
         return;
       }
-      this.user.login(input[0], input[1]);
+      this.user.login(input[0].value, input[1].value)
+        .done(function() { page('/map'); })
+        .fail(function() { page('/login'); });
 
       e.preventDefault();
     }.bind(this));

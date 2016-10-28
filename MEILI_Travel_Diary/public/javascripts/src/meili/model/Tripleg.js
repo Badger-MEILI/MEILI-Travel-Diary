@@ -268,15 +268,17 @@ Tripleg.prototype = {
   },
 
   _setTransition: function(transitionPoiId) {
-    log.info('tripleg setting transition place', transitionPoiId);
-    for (var i = 0; i < this.places.length; i++) {
-       if(this.places[i].osm_id == transitionPoiId) {
-          this.places[i].accuracy = 100;
-       } else {
-          this.places[i].accuracy = 0;
-       }
-     };
-    this._sortTransitionPlaces();
+    if(this.places && transitionPoiId) {
+      log.info('tripleg setting transition place', transitionPoiId);
+      for (var i = 0; i < this.places.length; i++) {
+         if(this.places[i].osm_id == transitionPoiId) {
+            this.places[i].accuracy = 100;
+         } else {
+            this.places[i].accuracy = 0;
+         }
+       };
+      this._sortTransitionPlaces();
+    }
   },
 
   _sortTransitionPlaces: function() {
