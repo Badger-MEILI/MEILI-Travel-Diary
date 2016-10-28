@@ -21,10 +21,142 @@
 
 'use strict';
 
+var log = Log(CONFIG);
+var api = Api(CONFIG);
+var ui;
+
+$(function() {
+
+    var user = new User();
+    var login = new Login(user);
+
+    window.onerror = function (errorMsg, url, lineNumber, column, errorObj) {
+        log.error(errorMsg, url, lineNumber, column, errorObj);
+        ui.errorMsg.show(errorMsg);
+    };
+
+    function render(content) {
+        $('#content').empty().append(content);
+    }
+
+    function verifyLoggedIn(callback) {
+        user.verifyLoggedIn()
+            .done(function() {
+                callback();
+            })
+            .fail(function() {
+                page('/login');
+            });
+    }
+
+     function renderTrip(trip) {
+      // TODO! move into Trip..
+
+      // Reset.
+      if(trip.mapLayer) {
+        trip.mapLayer.clearLayers();
+        map.removeLayer(trip.mapLayer);
+      }
+
+      // Render timeline
+      ui.timeline.render(trip);
+
+      // Render map
+     for (var i=0; i < trip.triplegs.length; i++) {
+        var tripleg = trip.triplegs[i];
+        var triplegLayer = tripleg.generateMapLayer();
+        trip.mapLayer.addLayer(triplegLayer);
+      }
+      trip.mapLayer.addTo(map);
+    }
+
+
+    page('/', function(ctx, next) {
+        verifyLoggedIn(function() {
+            page('/map');
+        });
+    });
+
+    page('/login', function() {
+        request.get('views/login.html').done(render);
+    });
+
+    page('/map', function() {
+        verifyLoggedIn(function() {
+            request.get('views/map.html').done(function(content) {
+                render(content);
+
+                ui = {
+                  map: new LMap(),
+                  timeline: new Timeline({ elementId: 'timeline'}),
+                  errorMsg: new ErrorMsg()
+                };
+
+                user.getNumberOfTrips()
+                  .done(function(result) {
+                    document.getElementById('tripsLeft').innerHTML = result.rows[0].user_get_badge_trips_info;
+                    document.getElementById('badge_holder').style.visibility = "visible";
+                });
+
+                user.getLastTrip()
+                  .done(function(trip) {
+                    // TODO move me
+                    trip.on('trip-update', function(trip) {
+                      renderTrip(trip);
+                    });
+                    trip.on('triplegs-update', function(trip) {
+                      renderTrip(trip);
+                    });
+
+                    ui.timeline.on('start-time-change', function(triplegId, newStartTime) {
+                        var tripleg = trip.getTriplegById(triplegId);
+                        if(tripleg.isFirst) {
+                            trip.updateStartTime(newStartTime);
+                        } else {
+                            trip.updateTriplegStartTime(triplegId, newStartTime);
+                        }
+                    }.bind(trip));
+                    ui.timeline.on('end-time-change', function(triplegId, newEndTime) {
+                        var tripleg = trip.getTriplegById(triplegId);
+                        if(tripleg.isLast) {
+                            trip.updateEndTime(newEndTime);
+                        } else {
+                            trip.updateTriplegEndTime(triplegId, newEndTime);
+                        }
+                    }.bind(trip));
+
+                    ui.map.init(CONFIG.map, user.id);
+
+                    renderTrip(trip);
+                    map.fitBounds(trip.mapLayer.getBounds());
+                });
+            });
+        });
+    });
+
+    page('/faq', function() {
+        request.get('views/faq.html').done(render);
+    });
+
+    page('/about', function() {
+        request.get('views/about.html').done(render);
+    });
+
+    page('/contact', function() {
+        request.get('views/contact.html').done(render);
+    });
+
+    page('/statistics', function() {
+        request.get('views/statistics.html').done(render);
+    });
+
+    page({ hashbang: true });
+});
+/*
 /**********************************************************************
  * Angular Application
- **********************************************************************/
-var app = angular.module('app', ['ngRoute', 'ngResource'/*, 'leaflet-directive'*/])
+ *********************************************************************
+var app = angular.module('app', ['ngRoute', 'ngResource'])
     .config(function($routeProvider, $locationProvider, $httpProvider) {
         //================================================
         // Check if the user is connected
@@ -161,12 +293,12 @@ var app = angular.module('app', ['ngRoute', 'ngResource'/*, 'leaflet-directive'*
         $rootScope.logout = function(){
             $rootScope.message = 'Logged out.';
             $http.post('/logout');
-        };*/
+        };
     })
 
 /**
  * adjust for offset when scrolling
- */
+ 
     .run(['$anchorScroll', function($anchorScroll) {
     $anchorScroll.yOffset = 130;   // always scroll by 50 extra pixels
     }]);
@@ -184,13 +316,13 @@ app.service('translationService', function($resource) {
 
 /**********************************************************************
  * Login controller
- **********************************************************************/
+ *********************************************************************
 app.controller('LoginCtrl', function($scope, $rootScope, $http, $location, translationService) {
 
     //if (getLanguage()=="en")
         var assistantHelper =document.getElementById('assistant');
     /*else
-        var assistantHelper = document.getElementById('assistantSv');*/
+        var assistantHelper = document.getElementById('assistantSv');
     assistantHelper.style.visibility =  "hidden";
 
     // This object will be filled by the form
@@ -262,7 +394,7 @@ function getJson(str) {
 
 /**********************************************************************
  * Map controller
- **********************************************************************/
+ *********************************************************************
 var currentTrip;
 var log         = Log(CONFIG);
 
@@ -295,7 +427,7 @@ app.controller('MapCtrl',function($scope, $rootScope, $http, $location, $anchorS
 
     /**
      * end of function
-     */
+     
 
     angular.extend($scope, {
         defaults: {
@@ -356,7 +488,7 @@ app.controller('MapCtrl',function($scope, $rootScope, $http, $location, $anchorS
         assistantHelper.style.visibility = "visible";
         assistantHelper.addEventListener("click", enablingListener);
 
-        enableMapScrolling();*/
+        enableMapScrolling();
       })
       .fail(function() {
         alert('Please come back later, there are not enough trips to show you yet');
@@ -388,7 +520,7 @@ app.controller('MapCtrl',function($scope, $rootScope, $http, $location, $anchorS
     /**
      *
      * Function for anchor scrolling for angular
-     */
+     
     $scope.scrollTo = function(id) {
         var old = $location.hash();
         $location.hash(id);
@@ -418,7 +550,7 @@ app.controller('MapCtrl',function($scope, $rootScope, $http, $location, $anchorS
 
 /**********************************************************************
  * FAQ controller
- **********************************************************************/
+ *********************************************************************
 
 app.controller('FAQCtrl',function($scope, $rootScope, $http, $location, translationService) {
     if (getLanguage()=="en")
