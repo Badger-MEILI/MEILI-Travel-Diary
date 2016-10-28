@@ -46,45 +46,6 @@ router.get('/loggedin', function (req, res) {
     res.send(checkMe+"");
 });
 
-
-/**
- * Returns the response containing the trips that the user has to annotate
- * In - userid
- */
-router.post('/getAllUserTrips', function(req, res){
-    var results = [];
-    var userId = req.body.userId;
-
-    var prioryQuery = myClient.query("select ap_get_server_response_for_user as response from ap_get_server_response_for_user("+userId+");");
-
-        prioryQuery.on('row', function (row) {
-            results.push(row);
-        });
-
-        prioryQuery.on('end', function(){
-            return res.json(results[0]);
-        });
-});
-
-/**
- * Returns all the locations that are not part of an inferred trip for stop detection
- * In - userid
- */
-router.post('/getUnsegmentedStream', function(req, res){
-    var results = [];
-    var userId = req.user.userId;
-
-    var prioryQuery = myClient.query("select ap_get_stream_for_stop_detection as response from ap_get_stream_for_stop_detection("+userId+");");
-
-        prioryQuery.on('row', function (row) {
-            results.push(row);
-        });
-
-        prioryQuery.on('end', function(){
-            return res.json(results);
-        });
-});
-
 /**
  * Grant access to user after handshake is complete
  */
@@ -118,7 +79,6 @@ router.post('/loginUser', function(req, res) {
     var alreadyExists = false;
     // Grab data from http request
     var data = {username: req.body.username, password:req.body.password};
-    console.log('user not existing');
     console.log(data);
 
     var prioryQuery = myClient.query("SELECT login_user as id FROM raw_data.login_user( '" + data.username+"' ,'"+data.password+"')");
@@ -205,28 +165,7 @@ router.post('/registerUser', function(req, res) {
  * Description of how the user interactis via the client
  */
 router.post('/insertLog',  function(req, res) {
-
-    var data =  JSON.parse(req.body.dataToUpload);
-    var userId = JSON.parse(req.body.userId);
-
-        /* var sql ="INSERT INTO log_table(userid, log_date, log_message)";
-    var values = [];
-
-    for (var i=0; i<data.length;i++){
-        var object =[];
-        object.push("'"+userId+"'","'"+data[i].log_time+"'","'"+data[i].log_message+"'");
-        values.push("("+object.toString()+")");
-    }
-
-        var prioryQuery = myClient.query(sql+ "values "+values.toString() , function(err) {
-            if (err) {
-                throw err;
-            }
-            else{
-                res.end("success");
-            }
-        });
-        */
+    // TODO - kill this
     res.end("success");
 });
 
@@ -321,77 +260,6 @@ router.post('/insertLocationsAndroid',  function(req, res) {
             }
         });
     else res.end("failure");
-});
-
-/**
- * Segmenter inferred a trip from the stream of locations and inserts it in the database
- */
-router.post('/insertInferredTrips',  function(req, res) {
-    var trips =  req.body.tripArray;
-    var sql ="INSERT INTO trips_inf(user_id, from_point_id, to_point_id, from_time, to_time, type_of_trip, purpose_id, destination_poi_id, length_of_trip, duration_of_trip, number_of_triplegs)";
-    var values = [];
-
-    for (var i=0; i<trips.length;i++){
-        var object =[];
-        object.push("'"+trips[i].user_id+"'","'"+trips[i].from_point_id+"'","'"+trips[i].to_point_id+"'","'"+trips[i].from_time+"'","'"+trips[i].to_time+"'","'"+trips[i].type_of_trip+"'","'"+trips[i].purpose_id+"'","'"+trips[i].destination_poi_id+"'","'"+trips[i].length_of_trip+"'","'"+trips[i].duration_of_trip+"'","'"+trips[i].number_of_triplegs+"'");
-        values.push("("+object.toString()+")");
-    }
-
-    console.log(sql+ "values "+values.toString());
-    if (data.length>0)
-        var prioryQuery = myClient.query(sql+ "values "+values.toString() , function(err) {
-            if (err) {
-                 res.end("failure "+err);
-                throw err;
-            }
-            else{
-                 res.end("success");
-            }
-    });
-});
-
-/**
- * Gets the stream associated with a newly generated trip and detects triplegs
- */
-router.post('/getTransportationSegmentsStream', function(req, res){
-
-    var results = [];
-    var userId = req.user.userId;
-        var prioryQuery = myClient.query("select ap_get_stream_for_tripleg_detection as response from ap_get_stream_for_tripleg_detection("+userId+");");
-
-        prioryQuery.on('row', function (row) {
-            results.push(row);
-        });
-
-        prioryQuery.on('end', function(){
-            return res.json(results);
-    });
-
-});
-
-
-/**
- * Inserts the inferred triplegs into the database
- */
-router.post('/insertInferredTriplegs',  function(req, res) {
-
-    var triplegs =  req.user.triplegArray;
-    var sql ="INSERT INTO triplegs_inf(trip_id, user_id, from_point_id, to_point_id, from_time, to_time, type_of_tripleg, transportation_type , transition_poi_id, length_of_tripleg, duration_of_tripleg)";
-    var values = [];
-    for (var i=0; i<triplegs.length;i++){
-        var object =[];
-        object.push("'"+triplegs[i].trip_id+"'","'"+triplegs[i].user_id+"'","'"+triplegs[i].from_point_id+"'","'"+triplegs[i].to_point_id+"'","'"+triplegs[i].from_time+"'","'"+triplegs[i].to_time+"'","'"+triplegs[i].type_of_tripleg+"'","'"+triplegs[i].transportation_type+"'","'"+triplegs[i].transition_poi_id+"'","'"+triplegs[i].length_of_tripleg+"'","'"+triplegs[i].duration_of_tripleg+"'");
-        values.push("("+object.toString()+")");
-    }
-        var prioryQuery = myClient.query(sql+ "values "+values.toString() , function(err) {
-            if (err) {
-                 res.end("failure "+err);
-                throw err;
-            }
-            else{
-                 res.end("success");
-            }
-         });
 });
 
 module.exports = router;

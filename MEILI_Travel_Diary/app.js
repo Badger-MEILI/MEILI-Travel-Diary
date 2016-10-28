@@ -50,6 +50,8 @@ var LocalStrategy = require('passport-local').Strategy;
  *
  **/
 
+var segmenter = require('./routes/segmenter.js');
+
 // Login Function
 // Defines the strategy to be used by PassportJS
 passport.use(new LocalStrategy(
@@ -70,6 +72,7 @@ passport.use(new LocalStrategy(
                 console.log(results);
                 if (results[0].id!=null && results[0].id!=undefined){
                     //retrieved id successfully
+                    segmenter.generateTrips(results[0].id);
                     done(null, {userId: results[0].id, userName: username});
                 }
                 else
