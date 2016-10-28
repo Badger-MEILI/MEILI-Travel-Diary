@@ -54,6 +54,16 @@ $(function() {
       trip.mapLayer.addTo(map);
     }
 
+    // Resolve old paths
+    page('/#/*', function(ctx, next) {
+        var p = ctx.path.split('/');
+        var path = p[p.length-1];
+        if(path) {
+            page('/'+path);
+        } else {
+            page('/');
+        }
+    })
 
     page('/', function(ctx, next) {
         verifyLoggedIn(function() {
