@@ -18,6 +18,8 @@ function testTriplegs() {
                         // increment by 2 because of the passive tripleg
                     expect(triplegs.length).to.be.equal(numberOfTriplegsBeforeAdd+2);
                     done();
+                }).fail(function() {
+                    done(err);
                 });
             });
 
@@ -79,8 +81,8 @@ function testTriplegs() {
                     expect(tripleg.getTransition().osm_id).to.be.equal(newTransitionPoiId);
                     done();
                 }).fail(function (jqXHR, textStatus, errorThrown) {
-                    console.log(jqXHR);
-                    });
+                    done(jqXHR);
+                });
             });
 
             it("the specified transition poi id should not be null", function(done) {
@@ -167,6 +169,8 @@ function testTriplegs() {
                     expect(result.status).to.be.equal(true);
                     expect(tripleg.getMode().id).to.be.equal(newModeId);
                     done();
+                }).fail(function() {
+                    done(err);
                 });
             });
 
@@ -254,10 +258,12 @@ function testTriplegs() {
                 ).done(function(updatedTrip) {
                     expect(updatedTrip.getLastTripleg().getStartTime().getTime()).to.be.equal(newStartTime);
                     done();
+                }).fail(function() {
+                    done(err);
                 });
             });
 
-            it("update end time of tripleg should update end time", function() {
+            it("update end time of tripleg should update end time", function(done) {
                 var timeDiff = 1 * 60 * 1000; // 1 minute
 
                 var tripleg = trip.getFirstTripleg();
@@ -269,6 +275,8 @@ function testTriplegs() {
                 ).done(function(updatedTrip) {
                     expect(updatedTrip.getLastTripleg().getEndTime().getTime()).to.be.equal(newEndTime);
                     done();
+                }).fail(function() {
+                    done(err);
                 });
             });
         });
@@ -285,6 +293,8 @@ function testTriplegs() {
                     expect(updatedTrip.getTriplegById(triplegIdToDelete)).to.be.null;
                     expect(updatedTrip.triplegs.length).to.be.equal(numberOfTriplegsBeforeDelete-2);
                     done();
+                }).fail(function() {
+                    done(err);
                 });
             });
         });
