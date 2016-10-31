@@ -5,7 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1e2cf684-ae55-4d7a-8e15-763edce44804" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/routes/apiv2/trips.js" afterPath="$PROJECT_DIR$/routes/apiv2/trips.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="foo.iws" />
@@ -73,8 +72,8 @@
       <file leaf-file-name="Trip.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/javascripts/src/meili/model/Trip.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="4361" max-vertical-offset="5706">
-              <caret line="212" column="19" selection-start-line="212" selection-start-column="19" selection-end-line="212" selection-end-column="19" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="4685" max-vertical-offset="6030">
+              <caret line="230" column="19" selection-start-line="230" selection-start-column="19" selection-end-line="230" selection-end-column="19" />
               <folding />
             </state>
           </provider>
@@ -103,9 +102,12 @@
       <file leaf-file-name="Tripleg.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/javascripts/src/meili/model/Tripleg.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="4771" max-vertical-offset="5724">
-              <caret line="33" column="2" selection-start-line="33" selection-start-column="2" selection-end-line="33" selection-end-column="2" />
-              <folding />
+            <state vertical-scroll-proportion="0.0" vertical-offset="5059" max-vertical-offset="6120">
+              <caret line="49" column="2" selection-start-line="49" selection-start-column="2" selection-end-line="49" selection-end-column="2" />
+              <folding>
+                <marker date="1477909643798" expanded="true" signature="9089:9130" placeholder="{...}" />
+                <marker date="1477909643798" expanded="true" signature="9250:9276" placeholder="{...}" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -113,31 +115,31 @@
       <file leaf-file-name="Timeline.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/javascripts/src/meili/ui/Timeline.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="10364" max-vertical-offset="12582">
-              <caret line="590" column="102" selection-start-line="590" selection-start-column="102" selection-end-line="590" selection-end-column="102" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="10382" max-vertical-offset="12582">
+              <caret line="591" column="46" selection-start-line="591" selection-start-column="46" selection-end-line="591" selection-end-column="46" />
               <folding>
-                <marker date="1477639851734" expanded="true" signature="2142:2155" placeholder="..." />
-                <marker date="1477639851734" expanded="true" signature="11059:11070" placeholder="..." />
-                <marker date="1477639851734" expanded="true" signature="13167:13178" placeholder="..." />
-                <marker date="1477639851734" expanded="true" signature="14262:14275" placeholder="..." />
-                <marker date="1477639851734" expanded="true" signature="22313:22348" placeholder="..." />
-                <marker date="1477639851734" expanded="true" signature="22464:22539" placeholder="..." />
-                <marker date="1477639851734" expanded="true" signature="22771:22783" placeholder="..." />
-                <marker date="1477639851734" expanded="true" signature="22852:22902" placeholder="..." />
-                <marker date="1477639851734" expanded="true" signature="23043:23075" placeholder="..." />
-                <marker date="1477639851734" expanded="true" signature="23267:23300" placeholder="..." />
-                <marker date="1477639851734" expanded="true" signature="23408:23441" placeholder="..." />
-                <marker date="1477639851734" expanded="true" signature="23550:23583" placeholder="..." />
-                <marker date="1477639851734" expanded="true" signature="23785:23833" placeholder="..." />
-                <marker date="1477639851734" expanded="true" signature="23974:24006" placeholder="..." />
-                <marker date="1477639851734" expanded="true" signature="24541:24552" placeholder="..." />
-                <marker date="1477639851734" expanded="true" signature="24622:24675" placeholder="..." />
-                <marker date="1477639851734" expanded="true" signature="24730:24800" placeholder="..." />
-                <marker date="1477639851734" expanded="true" signature="24885:24906" placeholder="..." />
-                <marker date="1477639851734" expanded="true" signature="25006:25076" placeholder="..." />
-                <marker date="1477639851734" expanded="true" signature="25157:25178" placeholder="..." />
-                <marker date="1477639851734" expanded="true" signature="26070:26118" placeholder="..." />
-                <marker date="1477639851734" expanded="true" signature="26256:26288" placeholder="..." />
+                <marker date="1477909643798" expanded="true" signature="2142:2155" placeholder="..." />
+                <marker date="1477909643798" expanded="true" signature="11102:11113" placeholder="..." />
+                <marker date="1477909643798" expanded="true" signature="13210:13221" placeholder="..." />
+                <marker date="1477909643798" expanded="true" signature="14305:14318" placeholder="..." />
+                <marker date="1477909643798" expanded="true" signature="22356:22391" placeholder="..." />
+                <marker date="1477909643798" expanded="true" signature="22507:22582" placeholder="..." />
+                <marker date="1477909643798" expanded="true" signature="22814:22826" placeholder="..." />
+                <marker date="1477909643798" expanded="true" signature="22895:22945" placeholder="..." />
+                <marker date="1477909643798" expanded="true" signature="23086:23118" placeholder="..." />
+                <marker date="1477909643798" expanded="true" signature="23310:23343" placeholder="..." />
+                <marker date="1477909643798" expanded="true" signature="23451:23484" placeholder="..." />
+                <marker date="1477909643798" expanded="true" signature="23593:23626" placeholder="..." />
+                <marker date="1477909643798" expanded="true" signature="23828:23876" placeholder="..." />
+                <marker date="1477909643798" expanded="true" signature="24017:24049" placeholder="..." />
+                <marker date="1477909643798" expanded="true" signature="24584:24595" placeholder="..." />
+                <marker date="1477909643798" expanded="true" signature="24665:24718" placeholder="..." />
+                <marker date="1477909643798" expanded="true" signature="24773:24843" placeholder="..." />
+                <marker date="1477909643798" expanded="true" signature="24928:24949" placeholder="..." />
+                <marker date="1477909643798" expanded="true" signature="25049:25119" placeholder="..." />
+                <marker date="1477909643798" expanded="true" signature="25200:25221" placeholder="..." />
+                <marker date="1477909643798" expanded="true" signature="26113:26161" placeholder="..." />
+                <marker date="1477909643798" expanded="true" signature="26299:26331" placeholder="..." />
               </folding>
             </state>
           </provider>
@@ -655,11 +657,11 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1" y="27" width="1922" height="1054" extended-state="6" />
-    <editor active="true" />
+    <frame x="-1" y="27" width="1922" height="1054" extended-state="7" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32868758" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.33565623" sideWeight="0.8490765" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.33565623" sideWeight="0.8490765" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3263647" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1011,39 +1013,42 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/public/javascripts/src/meili/model/Tripleg.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="415" max-vertical-offset="5688">
-          <caret line="33" column="2" selection-start-line="33" selection-start-column="2" selection-end-line="33" selection-end-column="2" />
-          <folding />
+        <state vertical-scroll-proportion="0.0" vertical-offset="5059" max-vertical-offset="6120">
+          <caret line="49" column="2" selection-start-line="49" selection-start-column="2" selection-end-line="49" selection-end-column="2" />
+          <folding>
+            <marker date="1477909643798" expanded="true" signature="9089:9130" placeholder="{...}" />
+            <marker date="1477909643798" expanded="true" signature="9250:9276" placeholder="{...}" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/public/javascripts/src/meili/ui/Timeline.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="10364" max-vertical-offset="12582">
-          <caret line="590" column="102" selection-start-line="590" selection-start-column="102" selection-end-line="590" selection-end-column="102" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="10382" max-vertical-offset="12582">
+          <caret line="591" column="46" selection-start-line="591" selection-start-column="46" selection-end-line="591" selection-end-column="46" />
           <folding>
-            <marker date="1477639851734" expanded="true" signature="2142:2155" placeholder="..." />
-            <marker date="1477639851734" expanded="true" signature="11059:11070" placeholder="..." />
-            <marker date="1477639851734" expanded="true" signature="13167:13178" placeholder="..." />
-            <marker date="1477639851734" expanded="true" signature="14262:14275" placeholder="..." />
-            <marker date="1477639851734" expanded="true" signature="22313:22348" placeholder="..." />
-            <marker date="1477639851734" expanded="true" signature="22464:22539" placeholder="..." />
-            <marker date="1477639851734" expanded="true" signature="22771:22783" placeholder="..." />
-            <marker date="1477639851734" expanded="true" signature="22852:22902" placeholder="..." />
-            <marker date="1477639851734" expanded="true" signature="23043:23075" placeholder="..." />
-            <marker date="1477639851734" expanded="true" signature="23267:23300" placeholder="..." />
-            <marker date="1477639851734" expanded="true" signature="23408:23441" placeholder="..." />
-            <marker date="1477639851734" expanded="true" signature="23550:23583" placeholder="..." />
-            <marker date="1477639851734" expanded="true" signature="23785:23833" placeholder="..." />
-            <marker date="1477639851734" expanded="true" signature="23974:24006" placeholder="..." />
-            <marker date="1477639851734" expanded="true" signature="24541:24552" placeholder="..." />
-            <marker date="1477639851734" expanded="true" signature="24622:24675" placeholder="..." />
-            <marker date="1477639851734" expanded="true" signature="24730:24800" placeholder="..." />
-            <marker date="1477639851734" expanded="true" signature="24885:24906" placeholder="..." />
-            <marker date="1477639851734" expanded="true" signature="25006:25076" placeholder="..." />
-            <marker date="1477639851734" expanded="true" signature="25157:25178" placeholder="..." />
-            <marker date="1477639851734" expanded="true" signature="26070:26118" placeholder="..." />
-            <marker date="1477639851734" expanded="true" signature="26256:26288" placeholder="..." />
+            <marker date="1477909643798" expanded="true" signature="2142:2155" placeholder="..." />
+            <marker date="1477909643798" expanded="true" signature="11102:11113" placeholder="..." />
+            <marker date="1477909643798" expanded="true" signature="13210:13221" placeholder="..." />
+            <marker date="1477909643798" expanded="true" signature="14305:14318" placeholder="..." />
+            <marker date="1477909643798" expanded="true" signature="22356:22391" placeholder="..." />
+            <marker date="1477909643798" expanded="true" signature="22507:22582" placeholder="..." />
+            <marker date="1477909643798" expanded="true" signature="22814:22826" placeholder="..." />
+            <marker date="1477909643798" expanded="true" signature="22895:22945" placeholder="..." />
+            <marker date="1477909643798" expanded="true" signature="23086:23118" placeholder="..." />
+            <marker date="1477909643798" expanded="true" signature="23310:23343" placeholder="..." />
+            <marker date="1477909643798" expanded="true" signature="23451:23484" placeholder="..." />
+            <marker date="1477909643798" expanded="true" signature="23593:23626" placeholder="..." />
+            <marker date="1477909643798" expanded="true" signature="23828:23876" placeholder="..." />
+            <marker date="1477909643798" expanded="true" signature="24017:24049" placeholder="..." />
+            <marker date="1477909643798" expanded="true" signature="24584:24595" placeholder="..." />
+            <marker date="1477909643798" expanded="true" signature="24665:24718" placeholder="..." />
+            <marker date="1477909643798" expanded="true" signature="24773:24843" placeholder="..." />
+            <marker date="1477909643798" expanded="true" signature="24928:24949" placeholder="..." />
+            <marker date="1477909643798" expanded="true" signature="25049:25119" placeholder="..." />
+            <marker date="1477909643798" expanded="true" signature="25200:25221" placeholder="..." />
+            <marker date="1477909643798" expanded="true" signature="26113:26161" placeholder="..." />
+            <marker date="1477909643798" expanded="true" signature="26299:26331" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -1098,8 +1103,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/public/javascripts/src/meili/model/Trip.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="3605" max-vertical-offset="5706">
-          <caret line="212" column="19" selection-start-line="212" selection-start-column="19" selection-end-line="212" selection-end-column="19" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="4685" max-vertical-offset="6030">
+          <caret line="230" column="19" selection-start-line="230" selection-start-column="19" selection-end-line="230" selection-end-column="19" />
           <folding />
         </state>
       </provider>
