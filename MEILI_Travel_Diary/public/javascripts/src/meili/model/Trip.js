@@ -275,6 +275,19 @@ Trip.prototype = {
     });
   },
 
+  mergeWithNextTrip: function() {
+    var dfd = $.Deferred();
+    api.trips.mergeWithNextTrip(this.getId())
+      .done(function(result) {
+          this.updateTriplegs(result.triplegs);
+          dfd.resolve(this);
+        }.bind(this))
+      .fail(function(err) {
+          dfd.reject(err);
+        });
+    return dfd.promise();
+  },
+
   confirm: function() {
     return api.trips.confirmAnnotationOfTrip(this.getId());
   },
