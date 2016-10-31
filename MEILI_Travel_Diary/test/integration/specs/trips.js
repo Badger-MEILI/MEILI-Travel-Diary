@@ -19,7 +19,7 @@ function testTrips() {
                 ).done(function (result) {
                     expect(result.status).to.be.equal(true);
                     done();
-                }).fail(function() {
+                }).fail(function(err) {
                     done(err);
                 });
             });
@@ -133,7 +133,7 @@ function testTrips() {
                     expect(updatedTrip.getStartTime().getTime()).to.be.equal(newStartTime);
                     expect(updatedTrip.getFirstTripleg().getStartTime().getTime()).to.be.equal(newStartTime);
                     done();
-                }).fail(function() {
+                }).fail(function(err) {
                     done(err);
                 });
             });
@@ -147,7 +147,7 @@ function testTrips() {
                     expect(updatedTrip.getEndTime().getTime()).to.be.equal(newEndTime);
                     expect(updatedTrip.getLastTripleg().getEndTime().getTime()).to.be.equal(newEndTime);
                     done();
-                }).fail(function() {
+                }).fail(function(err) {
                     done(err);
                 });
             });
