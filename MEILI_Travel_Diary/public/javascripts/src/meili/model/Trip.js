@@ -4,7 +4,6 @@ var util = Util();
 var Trip = Trip || function(trip, triplegs) {
   Emitter($.extend(this, trip));
 
-  this.mapLayer = L.featureGroup();
   if(triplegs) {
     this.updateTriplegs(triplegs);
   }
@@ -100,6 +99,25 @@ Trip.prototype = {
     var timeDiff = Math.abs(this.getNextTripStartTime().getTime() - this.getEndTime().getTime());
     var hoursDiff = Math.ceil(timeDiff / (1000 * 60 * 60));
     return hoursDiff;
+  },
+
+  generatePlacePoints: function() {
+    var placesPoints = [];
+    for (var i = 0; i < this.destination_places.length; i++) {
+      var place = this.destination_places[i];
+      if(place.accuracy === 100) {
+        var marker = L.marker([place.latitude, place.longitude]);
+        marker.bindTooltip(place.name);
+        placesPoints.push(marker);
+        break;
+      }
+    }
+    return L.featureGroup(placesPoints)
+  },
+
+  generateMapLayer: function() {
+    this.mapLayer = L.featureGroup();
+    this.mapLayer.addLayer(this.generatePlacePoints());
   },
 
   // Local changes on trip

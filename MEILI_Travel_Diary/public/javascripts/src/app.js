@@ -371,6 +371,8 @@ app.controller('MapCtrl',function($scope, $rootScope, $http, $location, $anchorS
         map.removeLayer(trip.mapLayer);
       }
 
+      trip.generateMapLayer();
+
       // Render timeline
       ui.timeline.render(trip);
 
