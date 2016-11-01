@@ -18,7 +18,7 @@ function testTriplegs() {
                         // increment by 2 because of the passive tripleg
                     expect(triplegs.length).to.be.equal(numberOfTriplegsBeforeAdd+2);
                     done();
-                }).fail(function() {
+                }).fail(function(err) {
                     done(err);
                 });
             });
@@ -169,7 +169,7 @@ function testTriplegs() {
                     expect(result.status).to.be.equal(true);
                     expect(tripleg.getMode().id).to.be.equal(newModeId);
                     done();
-                }).fail(function() {
+                }).fail(function(err) {
                     done(err);
                 });
             });
@@ -258,7 +258,7 @@ function testTriplegs() {
                 ).done(function(updatedTrip) {
                     expect(updatedTrip.getLastTripleg().getStartTime().getTime()).to.be.equal(newStartTime);
                     done();
-                }).fail(function() {
+                }).fail(function(err) {
                     done(err);
                 });
             });
@@ -267,15 +267,15 @@ function testTriplegs() {
                 var timeDiff = 1 * 60 * 1000; // 1 minute
 
                 var tripleg = trip.getFirstTripleg();
-                var newEndTime = tripleg.getEndTime().getTime() - timeDiff;
+                var newEndTime = tripleg.getEndTime().getTime() + timeDiff;
 
                 trip.updateTriplegEndTime(
                     tripleg.getId(),
                     newEndTime
                 ).done(function(updatedTrip) {
-                    expect(updatedTrip.getLastTripleg().getEndTime().getTime()).to.be.equal(newEndTime);
+                    expect(updatedTrip.getFirstTripleg().getEndTime().getTime()).to.be.equal(newEndTime);
                     done();
-                }).fail(function() {
+                }).fail(function(err) {
                     done(err);
                 });
             });
@@ -293,7 +293,7 @@ function testTriplegs() {
                     expect(updatedTrip.getTriplegById(triplegIdToDelete)).to.be.null;
                     expect(updatedTrip.triplegs.length).to.be.equal(numberOfTriplegsBeforeDelete-2);
                     done();
-                }).fail(function() {
+                }).fail(function(err) {
                     done(err);
                 });
             });

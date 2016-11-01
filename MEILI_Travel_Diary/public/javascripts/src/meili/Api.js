@@ -142,6 +142,16 @@ var Api = function(config) {
           },
           verifyTriplegsIsReturned
         );
+      },
+
+      mergeWithNext: function(tripId) {
+        return request.get(
+          url(mainPaths.trips, 'mergeWithNextTrip'),
+          {
+            trip_id: tripId
+          },
+          verifyTriplegsIsReturned
+        );
       }
     },
 

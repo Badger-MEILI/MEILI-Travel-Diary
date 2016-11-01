@@ -162,6 +162,8 @@ router.get("/deleteTripleg", function(req,res){
     else
     {
         var sqlQuery = "select * from apiv2.delete_tripleg("+tripleg_id+")";
+        console.log(sqlQuery);
+
         var prioryQuery = apiClient.query(sqlQuery);
 
         prioryQuery.on('row', function (row) {
@@ -169,6 +171,7 @@ router.get("/deleteTripleg", function(req,res){
         });
 
         prioryQuery.on('error', function(row){
+            console.log(row);
             return util.handleError(res, 500, row.message);
         });
 

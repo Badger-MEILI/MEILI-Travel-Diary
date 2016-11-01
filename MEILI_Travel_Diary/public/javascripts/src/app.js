@@ -44,6 +44,8 @@ $(function() {
         map.removeLayer(trip.mapLayer);
       }
 
+      trip.generateMapLayer();
+
       // Render timeline
       ui.timeline.render(trip);
 

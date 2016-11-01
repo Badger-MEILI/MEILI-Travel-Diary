@@ -132,7 +132,7 @@ Timeline.prototype = {
             tripleg.isLast ? '' : this.generatePlaceSelector(tripleg.places, tripleg.getId()),
             '<br>',
             '<a class="add-transition btn btn-default" href="#" role="button" tripleg-id="' + triplegId + '"><i class="glyphicon glyphicon-transfer"></i> Did we miss a transfer? Click to add it. </a>',
-            '<button type="button" class="btn btn-default delete-tripleg" tripleg-id="' + triplegId + '"><span class="glyphicon glyphicon-trash"></span></button>',
+            (tripleg.isFirst && tripleg.isLast) ? '' : '<button type="button" class="btn btn-default delete-tripleg" tripleg-id="' + triplegId + '"><span class="glyphicon glyphicon-trash"></span></button>',
           '</div>',
         '</div>',
       '</li>'

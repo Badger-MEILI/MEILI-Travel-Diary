@@ -172,6 +172,46 @@ router.get("/updateEndTimeOfTrip", function(req,res){
 });
 
 /**
+ * @api {get} /trips/mergeWithNextTrip&:trip_id Merges a trip with its neighbor
+ * @apiName MergeWithNextTrip
+ * @apiGroup Trips
+ *
+ * @apiError [400] InvalidInput The parameters <code>trip_id</code> is undefined, null or of a wrong type.
+ * @apiError [500] SQLError SQL error traceback.
+ *
+ * @apiParam {Number} trip_id Id of the trip that will be merged with its neighbor
+ *
+ * @apiSuccess {Tripleg[]} Triplegs An array of json objects that represent the triplegs of the trip after the merge is performed
+ */
+router.get("/updateEndTimeOfTrip", function(req,res){
+    var results = {};
+    results.triplegs = [];
+    var trip_id = req.query.trip_id;
+
+    if (!trip_id) {
+        return util.handleError(res, 400, "Invalid input parameters");
+    }
+
+    else
+    {
+        var sqlQuery = "select * from apiv2.merge_with_next_trip($bd$"+trip_id+"$bd$)";
+        var prioryQuery = apiClient.query(sqlQuery);
+
+        prioryQuery.on('row', function (row) {
+            results.triplegs = row.merge_with_next_trip;
+        });
+
+        prioryQuery.on('error', function(row){
+            return util.handleError(res, 500, row.message);
+        });
+
+        prioryQuery.on('end', function () {
+            return res.json(results);
+        });
+    }
+});
+
+/**
  * @api {get} /trips/insertPeriodBetweenTrips&:start_time&:end_time&:user_id Inserts a missed non movement period between two trips by splitting the existing affected trip
  * @apiName InsertPeriodBetweenTris
  * @apiGroup Trips

@@ -199,7 +199,7 @@ Tripleg.prototype = {
       var point = this.points[i];
       var isFirst = (i === 0);
       var isLast = (i === this.points.length-1);
-      var marker = this._generateMapMarker(point, isFirst, isLast)
+      var marker = this._generateMapMarker(point, isFirst, isLast);
       if(marker) {
         points.push(marker);
       }
@@ -207,10 +207,26 @@ Tripleg.prototype = {
     return L.featureGroup(points)
   },
 
+  generatePlacePoints: function() {
+    var placesPoints = [];
+    for (var i = 0; i < this.places.length; i++) {
+      var place = this.places[i];
+      if(place.accuracy === 100) {
+        var marker = this._generateMapMarker(place);
+        if(marker) {
+          placesPoints.push(marker);
+        }
+        break;
+      }
+    }
+    return L.featureGroup(placesPoints)
+  },
+
   generateMapLayer: function() {
     this.mapLayer = L.featureGroup();
     this.mapLayer.addLayer(this.generatePolyline());
     this.mapLayer.addLayer(this.generatePoints());
+    this.mapLayer.addLayer(this.generatePlacePoints());
     return this.mapLayer;
   },
 
@@ -295,17 +311,23 @@ Tripleg.prototype = {
       } else if(this.isLast && isLastPoint) {
         // End point
         marker = L.marker(point, { icon: CONFIG.triplegs.map.markers.stop });
+      } else if(point.osm_id) {
+        // Place, add better way to check?
+        marker = L.marker(point);
       } else {
         // Regular point
         marker = L.circleMarker(point, CONFIG.triplegs.map.markers.regular);
       }
-    } else if(!isFirstPoint && !isLastPoint) {
+    } else {
       // PASSIVE TRIPLEGS
       marker = L.marker(point, { icon: CONFIG.triplegs.map.markers.transition });
     }
     // Add a tooltip for simpler debugging
     if(marker) {
-      marker.bindTooltip(util.formatTime(point.time, 'YYYY-MM-DD HH:mm:ss'));
+      var tooltipInfo = util.formatTime(point.time, 'YYYY-MM-DD HH:mm:ss') || point.name;
+      if(tooltipInfo) {
+        marker.bindTooltip(tooltipInfo);
+      }
     }
     return marker;
   }
