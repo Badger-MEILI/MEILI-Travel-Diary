@@ -47,9 +47,8 @@
 .navbar-inverse .navbar-nav > li > a {
     color:#ffffff;
 }
-/*Text message in navbar*/
-.navtext-right{
-    padding-right:30px;
+#badge_holder {
+    display: none;
 }
 
 #language-selector{

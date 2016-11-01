@@ -90,8 +90,8 @@ $(function() {
 
                 user.getNumberOfTrips()
                   .done(function(result) {
-                    document.getElementById('tripsLeft').innerHTML = result.rows[0].user_get_badge_trips_info;
-                    document.getElementById('badge_holder').style.visibility = "visible";
+                    $('#tripsLeft').html(result.rows[0].user_get_badge_trips_info);
+                    $('#badge_holder').show();
                 });
 
                 user.getLastTrip()
