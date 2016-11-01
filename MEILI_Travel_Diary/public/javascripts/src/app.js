@@ -86,7 +86,7 @@ $(function() {
         verifyLoggedIn(function() {
             render('views/partials/map.html', function() {
                 ui.map = new LMap();
-                ui.timline = new Timeline({ elementId: 'timeline'});
+                ui.timeline = new Timeline({ elementId: 'timeline'});
 
                 user.getNumberOfTrips()
                   .done(function(result) {
