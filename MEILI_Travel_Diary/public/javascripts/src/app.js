@@ -2,12 +2,13 @@
 
 var log = Log(CONFIG);
 var api = Api(CONFIG);
-var ui;
+var ui  = {};
 
 $(function() {
 
     var user = new User();
     var login = new Login(user);
+    ui.errorMsg = new ErrorMsg();
 
     window.onerror = function (errorMsg, url, lineNumber, column, errorObj) {
         log.error(errorMsg, url, lineNumber, column, errorObj);
@@ -84,12 +85,8 @@ $(function() {
     page('/map', function(ctx, next) {
         verifyLoggedIn(function() {
             render('views/partials/map.html', function() {
-
-                ui = {
-                  map: new LMap(),
-                  timeline: new Timeline({ elementId: 'timeline'}),
-                  errorMsg: new ErrorMsg()
-                };
+                ui.map = new LMap();
+                ui.timline = new Timeline({ elementId: 'timeline'});
 
                 user.getNumberOfTrips()
                   .done(function(result) {

@@ -1,6 +1,6 @@
 
 var ErrorMsg = ErrorMsg || function(elementId) {
-  this.elementId = elementId || '.content';
+  this.elementId = elementId || 'body';
   return this;
 };
 
