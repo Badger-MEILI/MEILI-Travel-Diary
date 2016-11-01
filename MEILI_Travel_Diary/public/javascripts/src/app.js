@@ -15,17 +15,21 @@ $(function() {
     };
 
     function render(path, callback) {
+        // Getting document
         request.get(path)
             .done(function(content) {
+                // Render it to #content
                 var $contentRef = $('#content');
                 $contentRef.empty().append(content);
                 if(callback) {
+                    // procceed
                     callback($contentRef);
                 }
             });
     }
 
     function verifyLoggedIn(callback) {
+        // Call server to verify that the user is logged in
         user.verifyLoggedIn()
             .done(function() {
                 callback();
