@@ -9,9 +9,12 @@ LMap.prototype = {
    * Populates layers - gets called on new trip only
    */
     init: function(mapConfig, userId) {
+      var targetElement = 'map';
+      $('#'+targetElement).height($('#content').height());
+
       log.debug(userId, 'the map is drawn');
 
-      map = new L.Map('map', mapConfig.options);
+      map = new L.Map(targetElement, mapConfig.options);
 
       // Create layers from config
       var layerControl = L.control.layers();

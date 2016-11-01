@@ -1,0 +1,19 @@
+<!--<p lang="en" style="display: none;">This page is in development.</p>
+<p lang="sv">Denna sida är under utveckling.</p>-->
+
+<div id="drawBody">
+    <!--<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="svg" style="display: block"></svg>-->
+    <div id="chart"></div>
+    <script src="/javascripts/src/graphVis.js"></script>
+
+    <select class="form-control form-control-inline" style="width:200px; display: inline-block" id="selectStatType" onchange="changeLoad()">;
+        <option value="1" selected lang="en">Time spent per mode</option>
+        <!--<option value="1" selected lang="sv">Tid per färdmedel</option>-->
+        <option value="2" lang="en">Number of steps</option>
+        <!--<option value="2" lang="sv">Antal steg</option>-->
+        <option value="3" lang="en">CO2 Emissions</option>
+        <!--<option value="3" lang="sv">CO2-utsläpp</option>-->
+    </select>
+
+
+</div>

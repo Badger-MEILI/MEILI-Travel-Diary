@@ -22,6 +22,19 @@ var Api = function(config) {
 
   return {
 
+    users: {
+      loggedIn: function() {
+        return request.get('/users/loggedin');
+      },
+
+      login: function(username, password) {
+        return request.post('users/login', {
+          username: username,
+          password: password
+        });
+      }
+    },
+
     trips: {
 
       getLast: function(userId){

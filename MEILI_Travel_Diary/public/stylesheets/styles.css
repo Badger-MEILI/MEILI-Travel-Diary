@@ -1,24 +1,20 @@
 /*
- MEILI Travel Diary - web interface that allows to annotate GPS trajectories
- fused with accelerometer readings into travel diaries
+    General style
+*/
+html, body {
+    padding: 0px;
+    margin: 0px;
+}
 
- Copyright (C) 2014-2016 Adrian C. Prelipcean - http://adrianprelipcean.github.io/
- Copyright (C) 2016 adIT AI - https://github.com/adIT-AI
+.modal-content {
+    padding: 20px;
+}
 
- This program is free software: you can redistribute it and/or modify
- it under the terms of the GNU Affero General Public License as
- published by the Free Software Foundation, either version 3 of the
- License, or (at your option) any later version.
 
- This program is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Affero General Public License for more details.
 
- You should have received a copy of the GNU Affero General Public License
- along with this program.  If not, see <http://www.gnu.org/licenses/>.
+/*
+    Icons
  */
-
 .glyphicon.large {
     font-size: 30px;
     top: 5px;
@@ -28,6 +24,10 @@
     top: 4px;
 }
 
+/*
+    Error message
+ */
+
 #error-message {
     margin: 4px 20px;
     position: absolute;
@@ -35,6 +35,10 @@
     width: 50%;
     right: 0;
 }
+
+/*
+    Navbar
+ */
 
 .navbar-static-top {
     margin-bottom: 0px;
@@ -47,9 +51,8 @@
 .navbar-inverse .navbar-nav > li > a {
     color:#ffffff;
 }
-/*Text message in navbar*/
-.navtext-right{
-    padding-right:30px;
+#badge_holder {
+    display: none;
 }
 
 #language-selector{
@@ -57,11 +60,11 @@
 }
 
 
-.modal-content {
-    padding: 20px;
-}
 
-/*Only login styling src= http://bootsnipp.com/snippets/featured/google-style-login */
+/*
+    Login styling
+    http://bootsnipp.com/snippets/featured/google-style-login
+ */
 
 .form-signin
 {
@@ -139,46 +142,20 @@
     display: block;
     margin-top: 10px;
 }
+
+
 /*
-PLUS SYMBOL
-*/
+    Timeline
+ */
 
-.plus {
-    width: 31px;
-    height: 31px;
-    border-radius: 50%;
-    border: 3px solid #2f4767;
-}
-.plus:before {
-    content: '';
-    width: 20px;
-    height: 1px;
-    border-top: 3px solid #2f4767;
-    display: block;
-    position: absolute;
-    margin-top: 12px;
-    margin-left: 3px;
-}
-.plus:after {
-    content: '';
-    width: 1px;
-    height: 20px;
-    border-right: 3px solid #2f4767;
-    display: block;
-    position: absolute;
-    margin-top: 3px;
-    margin-left: 12px;
+
+#map-page > .row > .col-md-6 {
+    padding: 0px;
 }
 
-/*timeline*/
-.page-header h1 {
-    font-size: 3.26em;
-    text-align: center;
-    color: #efefef;
-    text-shadow: 1px 1px 0 #000;
-}
-
-/** timeline box structure **/
+/*
+    timeline box structure
+ */
 #timeline {
     overflow: auto;
     position: relative;
@@ -205,7 +182,9 @@ PLUS SYMBOL
     max-width: 300px;
 }
 
-
+/*
+    Timeline line
+ */
 .timeline:before {
     top: 0;
     bottom: 0;
@@ -214,7 +193,8 @@ PLUS SYMBOL
     width: 6px;
     background-color: #828282;
     left: 50%;
-    margin-left: -1.5px;
+    margin-left: 0px;
+    height: 100vh;
 }
 
 .tldate {
@@ -224,13 +204,13 @@ PLUS SYMBOL
     color: #ededed;
     margin: 0 auto;
     padding: 6px 0;
-    font-weight: bold;
     text-align: center;
     -webkit-box-shadow: 0 0 11px rgba(0,0,0,0.35);
 }
 
 .timeline .tldate.start {
     background-color: #5aab65;
+    padding: 4px;
 }
 
 .timeline .tldate .glyphicon-flag {
@@ -258,7 +238,6 @@ PLUS SYMBOL
     color: #ededed;
     margin: 0 auto;
     padding: 3px 0;
-    font-weight: bold;
     text-align: center;
     -webkit-box-shadow: 0 0 11px rgba(0,0,0,0.35);
 }
@@ -267,7 +246,7 @@ PLUS SYMBOL
 }
 
 .timeline li {
-    margin-bottom: 25px;
+    margin-bottom: 16px;
     position: relative;
 
 }
@@ -284,12 +263,15 @@ PLUS SYMBOL
     display: table;
 }
 
-/** timeline panels **/
+/*
+    timeline panels
+ */
 .timeline li .timeline-panel {
+    margin-left: 6px;
     width: 50%;
     float: left;
     background: #fff;
-    border: 6px solid #c5c5c5;
+    border: 6px solid #828282;
     padding: 20px;
     position: relative;
     -webkit-border-radius: 8px;
@@ -306,13 +288,13 @@ IMPORTANT IMPLEMENT FOR SMARTPHONE A SET OF RULES**/
 .timeline li .timeline-panel .form-control{
     -webkit-appearance: none;
     border: 0;
-    border-bottom: 1px solid #c25b4e;
+    border-bottom: 4px solid #c25b4e;
 }
 
 .timeline li .timeline-panel .form-control-inline{
     -webkit-appearance: none;
     border: 0;
-    border-bottom: 1px solid #c25b4e;
+    border-bottom: 4px solid #c25b4e;
     max-width: 260px;
     display: inline;
     font-size:16px;
@@ -320,7 +302,6 @@ IMPORTANT IMPLEMENT FOR SMARTPHONE A SET OF RULES**/
 
 .timeline li .timeline-panel .form-need-check{
     color:red;
-    font-weight: bold;
     max-width: 235px;
 }
 
@@ -345,7 +326,6 @@ IMPORTANT IMPLEMENT FOR SMARTPHONE A SET OF RULES**/
     border-left: 15px solid #ccc;
     border-right: 0 solid #ccc;
     border-bottom: 15px solid transparent;
-    /*content: " ";*/
 }
 
 .timeline li .timeline-panel:after {
@@ -357,7 +337,6 @@ IMPORTANT IMPLEMENT FOR SMARTPHONE A SET OF RULES**/
     border-left: 14px solid #fff;
     border-right: 0 solid #fff;
     border-bottom: 14px solid transparent;
-    /*content: " ";*/
 }
 .timeline li .timeline-panel.noarrow:before, .timeline li .timeline-panel.noarrow:after {
     top:0;
@@ -386,25 +365,34 @@ IMPORTANT IMPLEMENT FOR SMARTPHONE A SET OF RULES**/
 
 
 /** timeline circle icons **/
-.timeline li .tl-circ {
+
+.timeline li .tl-ctrl {
     position: absolute;
-    top: 50px;
+    top: 30px;
     left: 50%;
+   z-index: 2;
+}
+.timeline li .tl-ctrl li {
+    list-style: none;
+    line-height: 42px;
     text-align: center;
+    width: 40px;
+    height: 40px;
+    margin-left: -45px;
+    margin-bottom: 10px;
     background: #2f4767;
     color: #fff;
-    width: 35px;
-    height: 35px;
-    line-height: 35px;
-    margin-left: -16px;
-    border: 3px solid #90acc7;
+    border: 3px solid #828282;
     border-top-right-radius: 50%;
     border-top-left-radius: 50%;
     border-bottom-right-radius: 50%;
     border-bottom-left-radius: 50%;
-   z-index: 2;
 }
-.timeline li .tl-circ .glyphicon{
+.timeline li .tl-ctrl li a {
+    color: #fff;
+    cursor: pointer;
+}
+.timeline li .tl-ctrl .glyphicon{
     top: 0px;
 }
 
@@ -413,18 +401,7 @@ IMPORTANT IMPLEMENT FOR SMARTPHONE A SET OF RULES**/
 
 .tl-heading h4{
     margin: 0;
-    color: #c25b4e;
 }
-
-/* TEST
-.tl-heading h4 {
-    margin: 0;
-    background: #c25b4e;
-    color: #ffffff;
-    font-weight: bold;
-}
-
-*/
 
 .tl-body p, .tl-body ul {
     margin-bottom: 0;
@@ -441,14 +418,38 @@ IMPORTANT IMPLEMENT FOR SMARTPHONE A SET OF RULES**/
     margin-top: 5px;
 }
 
+/*
+    FAQ page
+ */
+ .faqHeader{
+    font-size: 24px;
+    margin-top: 25px;
+}
+
+/*
+    Statistics page
+ */
+
+text {
+    fill: black;
+    font: 5px sans-serif;
+    cursor: default;
+}
+
+.dot-label text {
+    font-size: 5px;
+}
+
 /** media queries **/
 
+/* desktop */
 @media (max-width: 1920px){
     .thisone{
         top:0px;
     }
 }
 
+/* tablet */
 @media (max-width: 991px) {
     .timeline{
         top:100px;
@@ -460,6 +461,7 @@ IMPORTANT IMPLEMENT FOR SMARTPHONE A SET OF RULES**/
 
 }
 
+/* mobile */
 @media (max-width: 700px) {
 
     .page-header h1 { font-size: 1.8em; }

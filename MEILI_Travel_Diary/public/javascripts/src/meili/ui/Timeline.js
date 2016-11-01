@@ -80,6 +80,7 @@ Timeline.prototype = {
       }
 
       var selector = [
+        '<label for="mode-select">By</label>',
         '<select class="mode-select' + classes + '" tripleg-id="' + tripleg.getId() + '" name="selectmode">',
           options.join(''),
         '</select>'
@@ -102,40 +103,42 @@ Timeline.prototype = {
     if(tripleg.isLast) {
       classes.push('last')
     }
-
     var contentHtml = [
-      '<div class="tl-circ zoom-to-tripleg" tripleg-id="'+triplegId+'" style="cursor:pointer"><span class="glyphicon glyphicon-search"></span></div>',
+      '<ul class="tl-ctrl">',
+        '<li><a class="zoom-to-tripleg" tripleg-id="'+triplegId+'"><span class="glyphicon glyphicon-search medium"></span></a></li>',
+        ((tripleg.isFirst && tripleg.isLast) ? '' : '<li><a type="button" class="delete-tripleg" tripleg-id="' + triplegId + '"><span class="glyphicon glyphicon-trash"></span></a></li>'),
+      '</ul>',
 
-      '<li>',
-        '<div class="timeline-panel" style="background-color:'+tripleg.getColor(0.6)+'" id="telem'+triplegId+'" tripleg-id="' + triplegId + '">',
-          '<div class="tl-heading">',
-            '<h4>',
-              this._getModeSelector(tripleg),
-            '</h4>',
-            '<h5>',
-               '<span class="distance">Distance: ' + tripleg.getDistance() + '</span>',
-               tripleg.getTransitionTime() ? ' - <span id="transitiontime'+triplegId+'">Transfer time: ' + tripleg.getTransitionTime() + ' min </span>' : '',
-            '</h5>',
-          '</div>',
-          '<div class="tl-body">',
-
-            '<br>',
-            '<label for="timepickerstart_'+triplegId+'">Start:</label>',
-            '<div class="input-group bootstrap-timepicker timepicker">',
-              '<input id="timepickerstart_'+triplegId+'" initial-time="' + tripleg.getStartTime().getTime() + '" tripleg-id=" '+tripleg.getId()+' " class="form-control time-picker start input-small ' + classes.join(' ') + '" type="text"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>',
-            '</div>',
-
-            '<label for="timepickerstart_'+triplegId+'">Stop:</label>',
-            '<div class="input-group bootstrap-timepicker timepicker">',
-              '<input id="timepickerend_'+triplegId+'" initial-time="' + tripleg.getEndTime().getTime() + '" tripleg-id=" '+tripleg.getId()+' " type="text" class="time-picker end form-control input-small ' + classes.join(' ') + '"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>',
-            '</div>',
-            tripleg.isLast ? '' : this.generatePlaceSelector(tripleg.places, tripleg.getId()),
-            '<br>',
-            '<a class="add-transition btn btn-default" href="#" role="button" tripleg-id="' + triplegId + '"><i class="glyphicon glyphicon-transfer"></i> Did we miss a transfer? Click to add it. </a>',
-            (tripleg.isFirst && tripleg.isLast) ? '' : '<button type="button" class="btn btn-default delete-tripleg" tripleg-id="' + triplegId + '"><span class="glyphicon glyphicon-trash"></span></button>',
-          '</div>',
+      '<div class="timeline-panel" style="background-color:'+tripleg.getColor(0.6)+'" id="telem'+triplegId+'" tripleg-id="' + triplegId + '">',
+        '<div class="tl-heading">',
+        '<p><strong>',
+             '<span class="distance">Travelled ' + tripleg.getDistance() + '</span>',
+             '<span class="travel-time"> in ' + tripleg.getTravelTime() + ' min </span>',
+          '</strong></p>',
+            this._getModeSelector(tripleg),
         '</div>',
-      '</li>'
+        '<div class="tl-body">',
+
+          '<div class="row">',
+            '<div class="col-md-6">',
+              '<label for="timepickerstart_'+triplegId+'">Started</label>',
+              '<div class="input-group bootstrap-timepicker timepicker">',
+                '<input id="timepickerstart_'+triplegId+'" initial-time="' + tripleg.getStartTime().getTime() + '" tripleg-id=" '+tripleg.getId()+' " class="form-control time-picker start input-small ' + classes.join(' ') + '" type="text"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>',
+              '</div>',
+            '</div>',
+            '<div class="col-md-6">',
+              '<label for="timepickerstart_'+triplegId+'">Ended</label>',
+              '<div class="input-group bootstrap-timepicker timepicker">',
+                '<input id="timepickerend_'+triplegId+'" initial-time="' + tripleg.getEndTime().getTime() + '" tripleg-id=" '+tripleg.getId()+' " type="text" class="time-picker end form-control input-small ' + classes.join(' ') + '"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>',
+              '</div>',
+            '</div>',
+          '</div>',
+          (tripleg.isLast ? '' : this.generatePlaceSelector(tripleg.places, tripleg.getId())),
+          '<br>',
+          '<a class="add-transition btn btn-default" href="#" role="button" tripleg-id="' + triplegId + '"><i class="glyphicon glyphicon-transfer"></i> Did we miss a transfer? Click to add it. </a>',
+
+        '</div>',
+      '</div>'
     ];
     console.warn('getTransitionPlace?');
 
@@ -247,7 +250,6 @@ Timeline.prototype = {
 
     $element.on('click','.go-to-previous-trip', function(e) {
       if(this.trip.isLastUnannotated) {
-        
       } else {
         throw 'Move to next trip?';
       }
@@ -316,12 +318,15 @@ Timeline.prototype = {
               '<div class="timeline-panel" id ="firstTimelinePanel">',
                 '<div class="tl-heading">',
                   '<h4 lang="en">Time spent at '+previousPlace+'</h4>',
-                  '<p id="tldatefirstparagraph"><small class="text-muted"><i class="glyphicon glyphicon-time"></i> '+(previousTripEndDate.getHours()<10?'0':'')+previousTripEndDate.getHours()+':'+(previousTripEndDate.getMinutes()<10?'0':'')+previousTripEndDate.getMinutes()+' - '+(currentTripStartDate.getHours()<10?'0':'')+currentTripStartDate.getHours()+':'+(currentTripStartDate.getMinutes()<10?'0':'')+currentTripStartDate.getMinutes()+'</small></p>',
+                  '<p id="tldatefirstparagraph">',
+                    '<small class="text-muted">',
+                      '<i class="glyphicon glyphicon-time"></i> '+this.trip.getPreviousTripEndTime(true)+' - '+this.trip.getStartTime(true),
+                    '</small>',
+                  '</p>',
                 '</div>',
                 '<div class="tl-body">',
                   '<p lang="en">Place: '+previousPlace+'</p>',
                   '<p lang="en">Purpose: '+previousPurpose+'</p>',
-                  '<p lang="en" id="firsttimeend">Time: '+timeDiff+' hours</p>',
                 '</div>',
               '</div>',
             '</li>'
@@ -394,12 +399,13 @@ Timeline.prototype = {
           '<div class="timeline-panel" id="lastTimelinePanel">',
             '<div class="tl-heading">',
               '<h4 lang="en">End of trip</h4>',
-              '<p id="tldatelastparagraph"><small class="text-muted"><i class="glyphicon glyphicon-time"></i> ' + displayTripEndTime + '</small></p>',
+              '<p id="tldatelastparagraph">',
+                '<small class="text-muted"><i class="glyphicon glyphicon-time"></i> ' + displayTripEndTime + ', ' + this.trip.getTimeDiffToNextTrip() + ' hours to next trip start</small>',
+              '</p>',
             '</div>',
             '<div class="tl-body">',
               this.generatePlaceSelector(this.trip.getPlaces()),
               this.generatePurposeSelector(this.trip.getPurposes()),
-              '<p lang="en" id="lasttimeend">Time: '+this.trip.getTimeDiffToNextTrip()+' hours</p>',
             '</div>',
           '</div>',
         '</li>'
@@ -454,6 +460,7 @@ Timeline.prototype = {
       var className = '';
       var attributes = '';
       var specifyOptionLabel = '';
+      var label = '';
 
       for (var i=0; i < places.length; i++) {
         var place = places[i];
@@ -468,9 +475,11 @@ Timeline.prototype = {
       //  Destination place
       if(!triplegId) {
         // Add initial option?
+        label = 'Destination of trip';
         className = 'destination';
         specifyOptionLabel = 'Specify your destination';
       } else {
+        label = 'Transferred at';
         className = 'transition';
         attributes = 'tripleg-id="' + triplegId + '"';
         specifyOptionLabel = '(Optional) Specify transfer place';
@@ -483,7 +492,7 @@ Timeline.prototype = {
       }
 
       placeSelector = ['<p lang="en">',
-                        '<label for="place-selector">Place: </label>',
+                        '<label for="place-selector">' + label + '</label>',
                         '<div>',
                         '<select class="form-control form-control-inline place-selector ' + className + '" ' + attributes + '>',
                           selectorOptions.join(''),
@@ -503,7 +512,7 @@ Timeline.prototype = {
     if(purposes && purposes.length > 0) {
       var maxAccuracy = purposes[0].accuracy;
       var purposeSelector = '<p lang="en">' +
-                              '<label for="purpose-selector">Purpose: </label>'+
+                              '<label for="purpose-selector">Purpose of trip: </label>'+
                               '<div>' +
                               '<select class="form-control form-control-inline form-need-check purpose-selector">';
 
@@ -529,11 +538,11 @@ Timeline.prototype = {
     // Not the last trip leg -> generate panel
     // TODO! handle language for mode and the case that there is no mode set
     if (!tripleg.isLast){
-      var nextTripleg = tripleg.getNext();
+      var nextTripleg = tripleg.getNext().getNext();
       transitionPanel = [
         '<li>',
           '<div class="tldate transition-panel" id="tldate' + nextTripleg.getId() + '">',
-            '<p lang="en">'+ tripleg.getEndTime(true) +' - '+ nextTripleg.getStartTime(true) +' - Tranferred from '+ tripleg.getMode().name +' to '+ nextTripleg.getMode().name +'</p>',
+            '<p lang="en">'+ tripleg.getEndTime(true) +' - '+ nextTripleg.getStartTime(true) +' - Transferred from '+ tripleg.getMode().name +' to '+ nextTripleg.getMode().name +'</p>',
           '</div>',
         '</li>'];
     }
@@ -688,7 +697,7 @@ Timeline.prototype = {
   },
 
   resize: function() {
-    $('#'+this.elementId).height($('body').height()-$('#navbar-top').height()+'px');
+    $('#'+this.elementId).height($('#content').height()+'px');
   }
 
 };
