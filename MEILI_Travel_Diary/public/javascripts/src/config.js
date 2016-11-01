@@ -1,7 +1,7 @@
 var CONFIG = {
   debug: true,
   log_level: 'full',
-  api_host: '/',
+  api_host: '',
   api_url: 'apiv2',
 
   default_time_format: 'HH:mm',
