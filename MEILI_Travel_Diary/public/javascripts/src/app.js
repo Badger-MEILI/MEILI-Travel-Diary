@@ -74,16 +74,16 @@ $(function() {
     })
 
     page('/', function(ctx, next) {
-        render('views/main.html');
+        render('views/partials/main.html');
     });
 
     page('/login', function(ctx, next) {
-        render('views/login.html', function() { next(); });
+        render('views/partials/login.html', function() { next(); });
     });
 
     page('/map', function(ctx, next) {
         verifyLoggedIn(function() {
-            render('views/map.html', function() {
+            render('views/partials/map.html', function() {
 
                 ui = {
                   map: new LMap(),
@@ -135,20 +135,20 @@ $(function() {
 
     page('/statistics', function(ctx, next) {
         verifyLoggedIn(function() {
-            render('views/statistics.html', function() { next(); });
+            render('views/partials/statistics.html', function() { next(); });
         });
     });
 
     page('/faq', function(ctx, next) {
-        render('views/faq.html', function() { next(); });
+        render('views/partials/faq.html', function() { next(); });
     });
 
     page('/about', function(ctx, next) {
-        render('views/about.html', function() { next(); });
+        render('views/partials/about.html', function() { next(); });
     });
 
     page('/contact', function(ctx, next) {
-        render('views/contact.html', function() { next(); });
+        render('views/partials/contact.html', function() { next(); });
     });
 
     page({ hashbang: true });
