@@ -188,6 +188,7 @@ Timeline.prototype = {
       var fromMode = parseInt($modal.find('#select-from').val(), 10);
       var toMode = parseInt($modal.find('#select-from').val(), 10);
       this.trip.insertTransitionBetweenTriplegs(startTime, endTime, fromMode, toMode);
+      $('#transition-choice-modal').modal('hide');
     }.bind(this));
 
     // Tripleg panel mouseover
