@@ -1,30 +1,20 @@
 /*
- MEILI Travel Diary - web interface that allows to annotate GPS trajectories
- fused with accelerometer readings into travel diaries
-
- Copyright (C) 2014-2016 Adrian C. Prelipcean - http://adrianprelipcean.github.io/
- Copyright (C) 2016 adIT AI - https://github.com/adIT-AI
-
- This program is free software: you can redistribute it and/or modify
- it under the terms of the GNU Affero General Public License as
- published by the Free Software Foundation, either version 3 of the
- License, or (at your option) any later version.
-
- This program is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Affero General Public License for more details.
-
- You should have received a copy of the GNU Affero General Public License
- along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
+    General style
+*/
 html, body {
     padding: 0px;
     margin: 0px;
 }
 
+.modal-content {
+    padding: 20px;
+}
 
+
+
+/*
+    Icons
+ */
 .glyphicon.large {
     font-size: 30px;
     top: 5px;
@@ -34,6 +24,10 @@ html, body {
     top: 4px;
 }
 
+/*
+    Error message
+ */
+
 #error-message {
     margin: 4px 20px;
     position: absolute;
@@ -41,6 +35,10 @@ html, body {
     width: 50%;
     right: 0;
 }
+
+/*
+    Navbar
+ */
 
 .navbar-static-top {
     margin-bottom: 0px;
@@ -62,11 +60,11 @@ html, body {
 }
 
 
-.modal-content {
-    padding: 20px;
-}
 
-/*Only login styling src= http://bootsnipp.com/snippets/featured/google-style-login */
+/*
+    Login styling
+    http://bootsnipp.com/snippets/featured/google-style-login
+ */
 
 .form-signin
 {
@@ -144,50 +142,20 @@ html, body {
     display: block;
     margin-top: 10px;
 }
+
+
 /*
-PLUS SYMBOL
-*/
+    Timeline
+ */
 
-.plus {
-    width: 31px;
-    height: 31px;
-    border-radius: 50%;
-    border: 3px solid #2f4767;
-}
-.plus:before {
-    content: '';
-    width: 20px;
-    height: 1px;
-    border-top: 3px solid #2f4767;
-    display: block;
-    position: absolute;
-    margin-top: 12px;
-    margin-left: 3px;
-}
-.plus:after {
-    content: '';
-    width: 1px;
-    height: 20px;
-    border-right: 3px solid #2f4767;
-    display: block;
-    position: absolute;
-    margin-top: 3px;
-    margin-left: 12px;
-}
-
-/*timeline*/
-.page-header h1 {
-    font-size: 3.26em;
-    text-align: center;
-    color: #efefef;
-    text-shadow: 1px 1px 0 #000;
-}
 
 #map-page .row .col-md-6 {
     padding: 0px;
 }
 
-/** timeline box structure **/
+/*
+    timeline box structure
+ */
 #timeline {
     overflow: auto;
     position: relative;
@@ -233,13 +201,13 @@ PLUS SYMBOL
     color: #ededed;
     margin: 0 auto;
     padding: 6px 0;
-    font-weight: bold;
     text-align: center;
     -webkit-box-shadow: 0 0 11px rgba(0,0,0,0.35);
 }
 
 .timeline .tldate.start {
     background-color: #5aab65;
+    padding: 4px;
 }
 
 .timeline .tldate .glyphicon-flag {
@@ -267,7 +235,6 @@ PLUS SYMBOL
     color: #ededed;
     margin: 0 auto;
     padding: 3px 0;
-    font-weight: bold;
     text-align: center;
     -webkit-box-shadow: 0 0 11px rgba(0,0,0,0.35);
 }
@@ -293,7 +260,9 @@ PLUS SYMBOL
     display: table;
 }
 
-/** timeline panels **/
+/*
+    timeline panels
+ */
 .timeline li .timeline-panel {
     width: 50%;
     float: left;
@@ -329,7 +298,6 @@ IMPORTANT IMPLEMENT FOR SMARTPHONE A SET OF RULES**/
 
 .timeline li .timeline-panel .form-need-check{
     color:red;
-    font-weight: bold;
     max-width: 235px;
 }
 
@@ -354,7 +322,6 @@ IMPORTANT IMPLEMENT FOR SMARTPHONE A SET OF RULES**/
     border-left: 15px solid #ccc;
     border-right: 0 solid #ccc;
     border-bottom: 15px solid transparent;
-    /*content: " ";*/
 }
 
 .timeline li .timeline-panel:after {
@@ -366,7 +333,6 @@ IMPORTANT IMPLEMENT FOR SMARTPHONE A SET OF RULES**/
     border-left: 14px solid #fff;
     border-right: 0 solid #fff;
     border-bottom: 14px solid transparent;
-    /*content: " ";*/
 }
 .timeline li .timeline-panel.noarrow:before, .timeline li .timeline-panel.noarrow:after {
     top:0;
@@ -425,16 +391,6 @@ IMPORTANT IMPLEMENT FOR SMARTPHONE A SET OF RULES**/
     color: #c25b4e;
 }
 
-/* TEST
-.tl-heading h4 {
-    margin: 0;
-    background: #c25b4e;
-    color: #ffffff;
-    font-weight: bold;
-}
-
-*/
-
 .tl-body p, .tl-body ul {
     margin-bottom: 0;
 }
@@ -450,14 +406,38 @@ IMPORTANT IMPLEMENT FOR SMARTPHONE A SET OF RULES**/
     margin-top: 5px;
 }
 
+/*
+    FAQ page
+ */
+ .faqHeader{
+    font-size: 24px;
+    margin-top: 25px;
+}
+
+/*
+    Statistics page
+ */
+
+text {
+    fill: black;
+    font: 5px sans-serif;
+    cursor: default;
+}
+
+.dot-label text {
+    font-size: 5px;
+}
+
 /** media queries **/
 
+/* desktop */
 @media (max-width: 1920px){
     .thisone{
         top:0px;
     }
 }
 
+/* tablet */
 @media (max-width: 991px) {
     .timeline{
         top:100px;
@@ -469,6 +449,7 @@ IMPORTANT IMPLEMENT FOR SMARTPHONE A SET OF RULES**/
 
 }
 
+/* mobile */
 @media (max-width: 700px) {
 
     .page-header h1 { font-size: 1.8em; }
