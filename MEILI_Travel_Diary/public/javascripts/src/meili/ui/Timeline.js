@@ -106,7 +106,7 @@ Timeline.prototype = {
     var contentHtml = [
       '<ul class="tl-ctrl">',
         '<li><a class="zoom-to-tripleg" tripleg-id="'+triplegId+'"><span class="glyphicon glyphicon-search medium"></span></a></li>',
-        (tripleg.isFirst && tripleg.isLast) ? '' : '<li><a type="button" class="delete-tripleg" tripleg-id="' + triplegId + '"><span class="glyphicon glyphicon-trash"></span></a></li>',
+        ((tripleg.isFirst && tripleg.isLast) ? '' : '<li><a type="button" class="delete-tripleg" tripleg-id="' + triplegId + '"><span class="glyphicon glyphicon-trash"></span></a></li>'),
       '</ul>',
 
       '<div class="timeline-panel" style="background-color:'+tripleg.getColor(0.6)+'" id="telem'+triplegId+'" tripleg-id="' + triplegId + '">',
@@ -133,7 +133,7 @@ Timeline.prototype = {
               '</div>',
             '</div>',
           '</div>',
-          tripleg.isLast ? '' : this.generatePlaceSelector(tripleg.places, tripleg.getId()),
+          (tripleg.isLast ? '' : this.generatePlaceSelector(tripleg.places, tripleg.getId())),
           '<br>',
           '<a class="add-transition btn btn-default" href="#" role="button" tripleg-id="' + triplegId + '"><i class="glyphicon glyphicon-transfer"></i> Did we miss a transfer? Click to add it. </a>',
 
