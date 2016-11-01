@@ -8,7 +8,7 @@ var Api = function(config) {
     triplegs: 'triplegs'
   };
 
-  function url(mainPath, path) { return [config.api_url, mainPath, path].join('/') };
+  function url(mainPath, path) { return [config.api_host, config.api_url, mainPath, path].join('/') };
 
   function verifyTriplegsIsReturned(dfd, result) {
     if(result.triplegs && result.triplegs.length > 0) {
@@ -24,11 +24,11 @@ var Api = function(config) {
 
     users: {
       loggedIn: function() {
-        return request.get('/users/loggedin');
+        return request.get([config.api_host, 'users/loggedin'].join('/'));
       },
 
       login: function(username, password) {
-        return request.post('users/login', {
+        return request.post([config.api_host, 'users/login'].join('/'), {
           username: username,
           password: password
         });
