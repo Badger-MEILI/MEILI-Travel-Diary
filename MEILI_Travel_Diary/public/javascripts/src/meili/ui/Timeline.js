@@ -105,8 +105,8 @@ Timeline.prototype = {
     }
     var contentHtml = [
       '<ul class="tl-ctrl">',
-        '<li><a class="zoom-to-tripleg" tripleg-id="'+triplegId+'"><span class="glyphicon glyphicon-search medium"></span></a></li>',
-        ((tripleg.isFirst && tripleg.isLast) ? '' : '<li><a type="button" class="delete-tripleg" tripleg-id="' + triplegId + '"><span class="glyphicon glyphicon-trash"></span></a></li>'),
+      '<li><a class="zoom-to-tripleg" title="Zoom map to tripleg" tripleg-id="'+triplegId+'"><span class="glyphicon glyphicon-search medium"></span></a></li>',
+        ((tripleg.isFirst && tripleg.isLast) ? '' : '<li><a class="delete-tripleg" title="Delete tripleg" tripleg-id="' + triplegId + '"><span class="glyphicon glyphicon-trash"></span></a></li>'),
       '</ul>',
 
       '<div class="timeline-panel" style="background-color:'+tripleg.getColor(0.6)+'" id="telem'+triplegId+'" tripleg-id="' + triplegId + '">',
@@ -348,7 +348,7 @@ Timeline.prototype = {
 
       var tripStartPanel = [
         '<li>',
-          '<div class="tldate start" id="tldatefirst" style="width:330px"><span class="glyphicon large glyphicon-flag"></span><span><p lang="en" id="tldatefirstassociatedparagraph">('+currentTripStartDateLocal  +') '+currentTripStartHour+' - Started trip</p>',
+          '<div class="tldate start" id="tldatefirst" style="width:330px"><span class="glyphicon large glyphicon-flag"></span><span><p lang="en" id="tldatefirstassociatedparagraph"><strong>'+currentTripStartHour+'</strong> ('+currentTripStartDateLocal  +') - Started trip</p>',
             '<p lang="en"><i>Is this a fake trip? Click <span class="glyphicon glyphicon-trash" onclick="deleteTripModal()"></span> to delete.</i></p></span>',
           '</div>',
         '</li>'
@@ -377,7 +377,7 @@ Timeline.prototype = {
       var lastTimelineElement = [
         '<li>',
           '<div class="tldate" id="tldatelast" style="width: 390px;">',
-            '<span class="glyphicon glyphicon-flag large"></span> <span><p id="tldatelastassociatedparagraph" lang="en"> ('+currentTripEndDateLocal  +') '+ this.trip.getEndTime(true) +' - Ended trip</p>',
+            '<span class="glyphicon glyphicon-flag large"></span> <span><p id="tldatelastassociatedparagraph" lang="en"><strong>'+ this.trip.getEndTime(true) +'</strong> ('+currentTripEndDateLocal  +') - Ended trip</p>',
             '<p lang="en"><i> Is this a fake stop? Click <span class="glyphicon glyphicon-share-alt" onclick="mergeTripModal()"> </span> to merge with next trip.</i></p></span>',
           '</div>',
         '</li>'
