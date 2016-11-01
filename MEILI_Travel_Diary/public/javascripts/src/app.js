@@ -10,11 +10,13 @@ $(function() {
     var login = new Login(user);
     ui.errorMsg = new ErrorMsg();
 
+    // Catch all client errors
     window.onerror = function (errorMsg, url, lineNumber, column, errorObj) {
         log.error(errorMsg, url, lineNumber, column, errorObj);
         ui.errorMsg.show(errorMsg);
     };
 
+    // Render a document
     function render(path, callback) {
         // Getting document
         request.get(path)
@@ -29,8 +31,8 @@ $(function() {
             });
     }
 
+    // Call server to verify that the user is logged in
     function verifyLoggedIn(callback) {
-        // Call server to verify that the user is logged in
         user.verifyLoggedIn()
             .done(function() {
                 callback();
@@ -62,6 +64,11 @@ $(function() {
       }
       trip.mapLayer.addTo(map);
     }
+
+
+    // Routing
+    // -------------------------------------------
+    // -------------------------------------------
 
     // Resolve old paths
     page('/#/*', function(ctx, next) {
