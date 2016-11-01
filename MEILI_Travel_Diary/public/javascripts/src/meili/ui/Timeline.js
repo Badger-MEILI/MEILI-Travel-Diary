@@ -251,7 +251,7 @@ Timeline.prototype = {
     $element.on('click','.go-to-previous-trip', function(e) {
       if(this.trip.isLastUnannotated) {
       } else {
-        throw 'Move to next trip?';
+        throw 'Move to previous trip?';
       }
       e.preventDefault();
       return false;
@@ -259,7 +259,9 @@ Timeline.prototype = {
 
     $element.on('click','.go-to-next-trip', function(e) {
       if(this.trip.isLastUnannotated) {
-        this.trip.confirm();
+        new Confirm().show('Complete trip annotation', 'Do you really whant to complete the annotations for this trip and move to the next trip?', function() {
+          this.trip.confirm();
+        }.bind(this));
       } else {
         throw 'Move to next trip?';
       }
@@ -270,7 +272,9 @@ Timeline.prototype = {
     $element.on('click', '.delete-tripleg', function(e) {
       var triplegId = $(e.currentTarget).attr('tripleg-id');
       if(triplegId) {
-        this.trip.deleteTripleg(triplegId);
+        new Confirm().show('Delete tripleg', 'Do you really whant to delete this tripleg?', function() {
+          this.trip.deleteTripleg(triplegId);
+        }.bind(this));
       }
       e.preventDefault();
       return false;
