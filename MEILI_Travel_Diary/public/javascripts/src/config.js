@@ -12,7 +12,8 @@ var CONFIG = {
       zoom: 12
     },
     options: {
-      maxZoom: 17
+      maxZoom: 17,
+      scrollWheelZoom: false
     },
     layers: [
       {

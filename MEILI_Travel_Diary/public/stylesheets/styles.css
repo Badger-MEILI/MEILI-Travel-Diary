@@ -483,9 +483,9 @@ text {
         margin-left:40px;
     }
 
-    ul.timeline li .tl-circ {
+    ul.timeline li .tl-ctrl {
         top: 22px;
-        left: 22px;
+        left: 40px;
         margin-left: 0;
 
     }

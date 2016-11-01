@@ -10,7 +10,9 @@ LMap.prototype = {
    */
     init: function(mapConfig, userId) {
       var targetElement = 'map';
-      $('#'+targetElement).height($('#content').height());
+      if($('body').width() > 700) {
+        $('#'+targetElement).height($('#content').height());
+      }
 
       log.debug(userId, 'the map is drawn');
 
