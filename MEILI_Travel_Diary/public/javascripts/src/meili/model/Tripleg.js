@@ -95,21 +95,15 @@ Tripleg.prototype = {
   },
 
   /**
-   * Computes the transition time to the next tripleg element
-   * @param triplegid - the id of the tripleg from which the transition time will be computed
-   * @returns {string|string} - the outerHTML of a paragraph that contains the transition time in minutes
+   * Computes the travel time of this trip
    */
-  getTransitionTime: function() {
-    if(this.isLast) {
-      return;
-    } else {
+  getTravelTime: function() {
       var dateFrom = this.getStartTime();
       var dateTo = this.getEndTime();
 
       var timeDiff = Math.abs(dateTo.getTime() - dateFrom.getTime());
       var minutesDiff = Math.ceil(timeDiff / (1000 * 60));
       return minutesDiff;
-    }
   },
 
   getColor: function(alpha) {
