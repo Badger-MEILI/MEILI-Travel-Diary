@@ -19,6 +19,12 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+html, body {
+    padding: 0px;
+    margin: 0px;
+}
+
+
 .glyphicon.large {
     font-size: 30px;
     top: 5px;
@@ -175,6 +181,10 @@ PLUS SYMBOL
     text-align: center;
     color: #efefef;
     text-shadow: 1px 1px 0 #000;
+}
+
+#map-page .row .col-md-6 {
+    padding: 0px;
 }
 
 /** timeline box structure **/
