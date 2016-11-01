@@ -19,7 +19,7 @@ var CONFIG = {
       {
         type: 'base',
         visibleAtStart: true,
-        label: 'OSM',
+        label: 'Map',
         url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
         options: {
           minZoom: 2,
@@ -29,7 +29,7 @@ var CONFIG = {
       },
       {
         type: 'base',
-        label: 'ESRI',
+        label: 'Satellite',
         url: 'http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
         options: {
           attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
@@ -37,7 +37,7 @@ var CONFIG = {
       },
       {
         type: 'base',
-        label: 'Nightmode',
+        label: 'Map dark',
         url: 'http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
         options: {
           attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
@@ -48,7 +48,7 @@ var CONFIG = {
       },
       {
         type: 'overlay',
-        label: 'Roads',
+        label: 'Map roads',
         url: 'http://{s}.tile.stamen.com/toner-hybrid/{z}/{x}/{y}.png',
         options: {
           attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
