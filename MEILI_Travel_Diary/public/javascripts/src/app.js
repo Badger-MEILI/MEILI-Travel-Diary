@@ -148,5 +148,5 @@ $(function() {
         render('views/partials/contact.html', function() { next(); });
     });
 
-    page({ hashbang: true });
+    page();
 });
