@@ -1,8 +1,11 @@
 var CONFIG = {
   debug: true,
   log_level: 'full',
+
   api_host: '',
   api_url: 'apiv2',
+
+  google_analytics_tracking_id: 'UA-86711356-1',
 
   default_time_format: 'HH:mm',
 

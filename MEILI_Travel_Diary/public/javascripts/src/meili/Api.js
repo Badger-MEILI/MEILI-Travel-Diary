@@ -15,6 +15,7 @@ var Api = function(config) {
       dfd.resolve(result);
     } else {
       var msg = 'No triplegs returned';
+      log.error('Api -> verifyTriplegsIsReturned', msg);
       dfd.reject(msg);
       throw msg;
     }
@@ -79,6 +80,7 @@ var Api = function(config) {
               dfd.resolve(result);
             } else {
               var msg = 'Some problem updating purpose of trip, server responded with incorrect status';
+              log.error('Api -> updatePurposeOfTrip', msg);
               dfd.reject(msg);
               throw msg;
             }
@@ -98,6 +100,7 @@ var Api = function(config) {
               dfd.resolve(result);
             } else {
               var msg = 'Some problem updating destination poi of trip, server responded with incorrect status';
+              log.error('Api -> updateDestinationPoiIdOfTrip', msg);
               dfd.reject(msg);
               throw msg;
             }
@@ -198,6 +201,7 @@ var Api = function(config) {
               dfd.resolve(result);
             } else {
               var msg = 'Some problem updating mode, server responded with incorrect status';
+              log.error('Api -> updateMode', msg);
               dfd.reject(msg);
               throw msg;
             }
@@ -241,6 +245,7 @@ var Api = function(config) {
               dfd.resolve(result);
             } else {
               var msg = 'Some problem updating transition poi of tripleg, server responded with incorrect status';
+              log.error('Api -> updateTransitionPoiIdOfTripleg', msg);
               dfd.reject(msg);
               throw msg;
             }

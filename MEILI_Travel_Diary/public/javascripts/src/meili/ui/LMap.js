@@ -8,13 +8,13 @@ LMap.prototype = {
   /**
    * Populates layers - gets called on new trip only
    */
-    init: function(mapConfig, userId) {
+    init: function(mapConfig) {
       var targetElement = 'map';
       if($('body').width() > 700) {
         $('#'+targetElement).height($('#content').height());
       }
 
-      log.debug(userId, 'the map is drawn');
+      log.debug('UI LMap -> init', 'Map is drawn');
 
       map = new L.Map(targetElement, mapConfig.options);
 

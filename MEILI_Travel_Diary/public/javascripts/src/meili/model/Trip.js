@@ -143,6 +143,7 @@ Trip.prototype = {
       for (var i = 0; i < (newTriplegs.length+1); i++) {
         if(newTriplegs[i]) {
           newTriplegs[i] = new Tripleg(newTriplegs[i]);
+          log.debug('Trip -> updateTriplegs', 'tripleg updated', newTriplegs[i].getId());
           newTriplegs[i].on('tripleg-updated', function() { this.emit('triplegs-update', this); }.bind(this));
         }
         // Add reference to next and previous tripleg
@@ -151,6 +152,7 @@ Trip.prototype = {
         }
       };
       this.triplegs = newTriplegs;
+      log.info('Trip -> updateTriplegs', 'triplegsupdated for trip', this.getId());
       this.emit('triplegs-update', this);
     }
     return this.triplegs;
@@ -158,6 +160,7 @@ Trip.prototype = {
 
   removeTriplegs: function() {
     this._reset
+    log.debug('Trip -> removeTriplegs', 'removed for trip', this.getId());
     this.emit('triplegs-remove', this);
     this.triplegs = [];
     return this;
@@ -178,6 +181,7 @@ Trip.prototype = {
         dfd.resolve(this);
       }.bind(this))
       .fail(function(err) {
+        log.error('Trip -> updateStartTime', err);
         dfd.reject(err);
       });
 
@@ -195,6 +199,7 @@ Trip.prototype = {
           dfd.resolve(this);
       }.bind(this))
       .fail(function(err) {
+        log.error('Trip -> updateEndTime', err);
         dfd.reject(err);
       });
 
@@ -211,6 +216,7 @@ Trip.prototype = {
         dfd.resolve(this);
       }.bind(this))
       .fail(function(err) {
+        log.error('Trip -> updateTriplegStartTime', err);
         dfd.reject(err);
       });
 
@@ -227,6 +233,7 @@ Trip.prototype = {
         dfd.resolve(this);
       }.bind(this))
       .fail(function(err) {
+        log.error('Trip -> updateTriplegEndTime', err);
         dfd.reject(err);
       });
 
@@ -241,6 +248,7 @@ Trip.prototype = {
       this.updateTriplegs(result.triplegs);
       dfd.resolve(this);
     }.bind(this)).fail(function(err) {
+      log.error('Trip -> deleteTripleg', err);
       dfd.reject(err);
     });
     return dfd.promise();
@@ -251,16 +259,18 @@ Trip.prototype = {
     api.triplegs.insertTransitionBetweenTriplegs(this.getId(), startTime, endTime, fromMode, toMode)
       .done(function(result) {
         if(result.triplegs) {
+          log.debug('Trip -> insertTransitionBetweenTriplegs', 'tripleg inserted in trip', this.getId());
           this.updateTriplegs(result.triplegs);
           dfd.resolve(this.triplegs);
         } else {
           var msg = 'Got ok from server but no triplegs returned';
-          log.error(msg, 'Got: ', result, 'FOR -- Trip: ' + this.getId(), 'StartTime: ' + startTime, 'EndTime: ' + endTime, 'FromMode: ' + fromMode, 'ToMode: ' + toMode)
+          log.error('Trip -> insertTransitionBetweenTriplegs', msg, 'Got: ', result, 'FOR -- Trip: ' + this.getId(), 'StartTime: ' + startTime, 'EndTime: ' + endTime, 'FromMode: ' + fromMode, 'ToMode: ' + toMode)
           throw msg
           dfd.reject(msg);
         }
       }.bind(this))
       .fail(function(err) {
+        log.error('Trip -> insertTransitionBetweenTriplegs', err);
         dfd.reject(err);
       });
     return dfd.promise();
@@ -271,7 +281,7 @@ Trip.prototype = {
       this._updatePurpose(purposeId);
       this.emit('trip-update', this);
     }.bind(this)).fail(function(err) {
-      log.error(err);
+      log.error('Trip -> updatePurposeOfTrip', err);
     });
   },
 
@@ -280,7 +290,7 @@ Trip.prototype = {
       this._updateDestinationPlace(destinationPoiId);
       this.emit('trip-update', this);
     }.bind(this)).fail(function(err) {
-      log.error(err);
+      log.error('Trip -> updateDestinationPoiIdOfTrip', err);
     });
   },
 
@@ -292,8 +302,9 @@ Trip.prototype = {
           dfd.resolve(this);
         }.bind(this))
       .fail(function(err) {
-          dfd.reject(err);
-        });
+        log.error('Trip -> mergeWithNextTrip', err);
+        dfd.reject(err);
+      });
     return dfd.promise();
   },
 

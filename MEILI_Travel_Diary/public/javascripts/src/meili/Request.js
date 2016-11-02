@@ -7,14 +7,14 @@ var Request = function(config) {
     }
 
     var dfd = $.Deferred();
-    log.debug('Sending', options.method, 'request to', options.url)
+    log.debug('Request -> doRequest', 'Sending', options.method, 'request to', options.url)
     $.ajax(options)
     .done(function(result) {
       if(result) {
         responseValidator(dfd, result);
       } else {
         var msg = 'Request got empty result back';
-        log.error(msg);
+        log.error('Request -> doRequest', msg);
         dfd.reject(msg);
       }
     })
@@ -23,7 +23,8 @@ var Request = function(config) {
       if(jqXHR.responseJSON && jqXHR.responseJSON.error) {
         msg = jqXHR.responseJSON.error.msg;
       }
-      dfd.reject(jqXHR, textStatus, errorThrown);
+      dfd.reject(msg, jqXHR, textStatus, errorThrown);
+      log.error('Request -> doRequest', msg);
       throw msg;
     });
     return dfd.promise();

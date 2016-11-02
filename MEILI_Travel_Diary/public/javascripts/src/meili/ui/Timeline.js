@@ -43,7 +43,7 @@ Timeline.prototype = {
     newTime.setHours(e.time.hours);
     newTime = newTime.getTime();
 
-    log.info('changed timepicker start value of tripleg '+ triplegId +' to '+ newTime);
+    log.info('UI Timeline -> _onTimeSet','changed timepicker start value of tripleg '+ triplegId +' to '+ newTime);
 
     if(initialTime != newTime) {
       if ($target.hasClass('start')) {
@@ -220,7 +220,7 @@ Timeline.prototype = {
         var tripleg = this.trip.getTriplegById(triplegId);
         if(tripleg.polylineLayer) {
           map.fitBounds(tripleg.polylineLayer.getBounds());
-          log.info('Zoomed to layer ' + triplegId);
+          log.debug('UI Timeline -> zoom-to-tripleg click', 'Zoomed to layer ' + triplegId);
         }
       }
     }.bind(this));

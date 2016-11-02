@@ -1,6 +1,6 @@
 'use strict';
 
-var log = Log(CONFIG);
+var log = new Log(CONFIG);
 var api = Api(CONFIG);
 var ui  = {};
 
@@ -12,7 +12,7 @@ $(function() {
 
     // Catch all client errors
     window.onerror = function (errorMsg, url, lineNumber, column, errorObj) {
-        log.error(errorMsg, url, lineNumber, column, errorObj);
+        log.error('Window -> onerror', errorMsg, url, lineNumber, column, errorObj);
         ui.errorMsg.show(errorMsg);
     };
 
