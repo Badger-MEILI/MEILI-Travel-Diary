@@ -235,10 +235,9 @@ Tripleg.prototype = {
         this.emit('tripleg-updated');
         log.debug('Tripleg -> updatedMode', 'tripleg mode succefully updated');
       }.bind(this))
-      .fail(function(err) {
+      .fail(function(err, jqXHR) {
         var msg = 'failed to set mode on tripleg';
         log.error('Tripleg -> updateMode', msg, err);
-        dfd.reject(err);
       });
   },
 
@@ -252,10 +251,10 @@ Tripleg.prototype = {
         this.emit('tripleg-updated');
         log.debug('Tripleg -> updateTransitionPoiIdOfTripleg', 'tripleg mode succefully updated');
       }.bind(this))
-      .fail(function(err) {
+      .fail(function(err, jqXHR) {
         var msg = 'failed to set transition on tripleg';
         log.error('Tripleg -> updateTransitionPoiIdOfTripleg', msg, err);
-        dfd.reject(err);
+        dfd.reject(err, jqXHR);
       });
       return dfd.promise();
   },

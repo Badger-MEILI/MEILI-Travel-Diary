@@ -34,10 +34,10 @@ User.prototype = {
               dfd.reject('Not logged in');
           }
         }.bind(this))
-      .fail(function(err) {
+      .fail(function(err, jqXHR) {
         var msg = 'Failed to check if user is logged in';
         log.error('User -> verifyLoggedIn', msg, err);
-        dfd.reject(msg);
+        dfd.reject(msg, jqXHR);
       });
     return dfd.promise();
   },
@@ -59,9 +59,9 @@ User.prototype = {
             .done(function(trip) { dfd.resolve(trip); })
             .fail(function(err) { dfd.reject(err); });
         }.bind(this))
-      .fail(function(err) {
+      .fail(function(err, jqXHR) {
           log.error('User -> confirmTrip', err);
-          dfd.reject(err);
+          dfd.reject(err, jqXHR);
         });
     return dfd.promise();
   },
@@ -75,9 +75,9 @@ User.prototype = {
             .done(function(trip) { dfd.resolve(trip); })
             .fail(function(err) { dfd.reject(err); });
       }.bind(this))
-      .fail(function(err) {
+      .fail(function(err, jqXHR) {
         log.error('User -> getPreviousTrip', err);
-        dfd.reject(err);
+        dfd.reject(err, jqXHR);
       });
 
     return dfd.promise();
@@ -92,9 +92,9 @@ User.prototype = {
             .done(function(trip) { dfd.resolve(trip); })
             .fail(function(err) { dfd.reject(err); });
       }.bind(this))
-      .fail(function(err) {
+      .fail(function(err, jqXHR) {
         log.error('User -> getNextTrip', err);
-        dfd.reject(err);
+        dfd.reject(err, jqXHR);
       });
 
     return dfd.promise();
@@ -110,9 +110,9 @@ User.prototype = {
             .done(function(trip) { dfd.resolve(trip); })
             .fail(function(err) { dfd.reject(err); });
       }.bind(this))
-      .fail(function(err) {
+      .fail(function(err, jqXHR) {
         log.error('User -> getLastTrip', err);
-        dfd.reject(err);
+        dfd.reject(err, jqXHR);
       });
 
     return dfd.promise();
@@ -125,9 +125,9 @@ User.prototype = {
         trip.updateTriplegs(result.triplegs);
         dfd.resolve(trip);
       })
-      .fail(function(err) {
+      .fail(function(err, jqXHR) {
         log.error('User -> getTriplegsForTrip', err);
-        dfd.reject(err);
+        dfd.reject(err, jqXHR);
       });
     return dfd.promise();
   },
@@ -143,9 +143,9 @@ User.prototype = {
             this.emit('current-trip-changed', trip);
             dfd.resolve(trip);
           }.bind(this))
-        .fail(function(err) {
+        .fail(function(err, jqXHR) {
           log.error('User -> _setCurrentTrip', err);
-            dfd.reject(err);
+            dfd.reject(err, jqXHR);
           });
     } else {
       var msg = 'No trip returned from server';

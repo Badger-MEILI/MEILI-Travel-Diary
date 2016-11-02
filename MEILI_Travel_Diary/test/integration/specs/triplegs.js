@@ -36,7 +36,7 @@ function testTriplegs() {
                 ).done(function (result) {
                     done(new Error("Start time of transition should not be allowed to be later than the end time of the transition"));
                 }).fail(
-                    function (jqXHR, textStatus, errorThrown) {
+                    function (errorMsg, jqXHR, textStatus, errorThrown) {
                         if (jqXHR.responseJSON.error.code != 400) {
                             return done(new Error("Status should be 400"));
                         }
@@ -58,7 +58,7 @@ function testTriplegs() {
                     null
                 ).done(function(result) {
                     done(new Error("Invalid input parameters should not result in a succesfull call"));
-                }).fail(function (jqXHR, textStatus, errorThrown) {
+                }).fail(function (errorMsg, jqXHR, textStatus, errorThrown) {
                     if (jqXHR.responseJSON.error.code != 400) {
                         return done(new Error("Status should be 400"));
                     }
@@ -80,7 +80,7 @@ function testTriplegs() {
                     expect(result.status).to.be.equal(true);
                     expect(tripleg.getTransition().osm_id).to.be.equal(newTransitionPoiId);
                     done();
-                }).fail(function (jqXHR, textStatus, errorThrown) {
+                }).fail(function (errorMsg, jqXHR, textStatus, errorThrown) {
                     done(jqXHR);
                 });
             });
@@ -93,7 +93,7 @@ function testTriplegs() {
                     null
                 ).done(function(result) {
                     done(new Error("the specified transition poi id should not be allowed to be null"));
-                }).fail(function (jqXHR, textStatus, errorThrown) {
+                }).fail(function (errorMsg, jqXHR, textStatus, errorThrown) {
                     if (jqXHR.responseJSON.error.code != 400) {
                         return done(new Error("Status should be 400"));
                     }
@@ -110,7 +110,7 @@ function testTriplegs() {
                   undefined
                 ).done(function(result) {
                     done(new Error("the specified transition poi id should not be allowed to be undefined"));
-                }).fail(function (jqXHR, textStatus, errorThrown) {
+                }).fail(function (errorMsg, jqXHR, textStatus, errorThrown) {
                     if (jqXHR.responseJSON.error.code != 400) {
                         return done(new Error("Status should be 400"));
                     }
@@ -127,7 +127,7 @@ function testTriplegs() {
                     ''
                 ).done(function(result) {
                     done(new Error("the specified transition poi id should not be allowed to be empty"));
-                }).fail(function (jqXHR, textStatus, errorThrown) {
+                }).fail(function (errorMsg, jqXHR, textStatus, errorThrown) {
                     if (jqXHR.responseJSON.error.code != 400) {
                         return done(new Error("Status should be 400"));
                     }
@@ -146,7 +146,7 @@ function testTriplegs() {
                 ).done(function(result) {
                     done(new Error("the specified transition poi id should exists"));
                 }).fail(
-                    function (jqXHR, textStatus, errorThrown) {
+                    function (errorMsg, jqXHR, textStatus, errorThrown) {
                         if (jqXHR.responseJSON.error.code != 500) {
                             return done(new Error("Status should be 500"));
                         }
@@ -183,7 +183,7 @@ function testTriplegs() {
                 ).done(function(result) {
                     done(new Error("the specified travel mode should not be allowed to be null"));
                 }).fail(
-                    function (jqXHR, textStatus, errorThrown) {
+                    function (errorMsg, jqXHR, textStatus, errorThrown) {
                         if (jqXHR.responseJSON.error.code != 400) {
                             return done(new Error("Status should be 400"));
                         }
@@ -200,7 +200,7 @@ function testTriplegs() {
                     undefined
                 ).done(function(result) {
                     done(new Error("the specified travel mode should not be allowed to be undefined"));
-                }).fail(function (jqXHR, textStatus, errorThrown) {
+                }).fail(function (errorMsg, jqXHR, textStatus, errorThrown) {
                     if (jqXHR.responseJSON.error.code != 400) {
                         return done(new Error("Status should be 400"));
                     }
@@ -217,7 +217,7 @@ function testTriplegs() {
                     ''
                 ).done(function(result) {
                     done(new Error("the specified travel mode should not be allowed to be empty"));
-                }).fail(function (jqXHR, textStatus, errorThrown) {
+                }).fail(function (errorMsg, jqXHR, textStatus, errorThrown) {
                     if (jqXHR.responseJSON.error.code != 400) {
                         return done(new Error("Status should be 400"));
                     }
@@ -235,7 +235,7 @@ function testTriplegs() {
                     0
                 ).done(function(result) {
                     done(new Error("the specified travel mode should exists"));
-                }).fail(function (jqXHR, textStatus, errorThrown) {
+                }).fail(function (errorMsg, jqXHR, textStatus, errorThrown) {
                     if (jqXHR.responseJSON.error.code != 500) {
                         return done(new Error("Status should be 500"));
                     }

@@ -29,7 +29,7 @@ function testTrips() {
                     undefined
                 ).done(function (result) {
                     done(new Error("a request with an undefined destination poi id should not return a successfull response"));
-                }).fail(function (jqXHR, textStatus, errorThrown) {
+                }).fail(function (errorMsg, jqXHR, textStatus, errorThrown) {
                     if (jqXHR.responseJSON.error.code != 400) {
                         return done(new Error("Status should be 400"));
                     }
@@ -43,7 +43,7 @@ function testTrips() {
                     null
                 ).done(function (result) {
                     done(new Error("a request with a null destination poi id should not return a successfull response"));
-                }).fail(function (jqXHR, textStatus, errorThrown) {
+                }).fail(function (errorMsg, jqXHR, textStatus, errorThrown) {
                     if (jqXHR.responseJSON.error.code != 400) {
                         return done(new Error("Status should be 400"));
                     }
@@ -57,7 +57,7 @@ function testTrips() {
                     0
                 ).done(function (result) {
                         done(new Error("a request with a non existent destination poi id should not return a successfull response"));
-                }).fail(function (jqXHR, textStatus, errorThrown) {
+                }).fail(function (errorMsg, jqXHR, textStatus, errorThrown) {
                     if (jqXHR.responseJSON.error.code != 500)  {
                         return done(new Error("Status should be 500"));
                     }
@@ -85,7 +85,7 @@ function testTrips() {
                     undefined
                 ).done(function (result) {
                         done(new Error("a request with an undefined purpose id should not return a successfull response"));
-                    }).fail(function (jqXHR, textStatus, errorThrown) {
+                    }).fail(function (errorMsg, jqXHR, textStatus, errorThrown) {
                         if (jqXHR.responseJSON.error.code != 400) {
                             return done(new Error("Status should be 400"));
                         }
@@ -99,7 +99,7 @@ function testTrips() {
                     null
                 ).done(function (result) {
                     done(new Error("a request with a null purpose id should not return a successfull response"));
-                }).fail(function (jqXHR, textStatus, errorThrown) {
+                }).fail(function (errorMsg, jqXHR, textStatus, errorThrown) {
                     if (jqXHR.responseJSON.error.code != 400) {
                         return done(new Error("Status should be 400"));
                     }
@@ -113,7 +113,7 @@ function testTrips() {
                     0
                 ).done(function (result) {
                     done(new Error("a request with a non existent purpose id should not return a successfull response"));
-                }).fail(function (jqXHR, textStatus, errorThrown) {
+                }).fail(function (errorMsg, jqXHR, textStatus, errorThrown) {
                     if (jqXHR.responseJSON.error.code != 500) {
                         return done(new Error("Status should be 500"));
                     }

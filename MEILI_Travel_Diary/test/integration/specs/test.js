@@ -3,7 +3,7 @@ var expect = chai.expect;
 var user;
 var trip;
 
-var log = Log(CONFIG);
+var log = new Log(CONFIG);
 var api = Api({
   api_host: TEST_CONFIG.api_host,
   api_url: TEST_CONFIG.api_url

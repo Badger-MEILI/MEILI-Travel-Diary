@@ -269,9 +269,9 @@ Trip.prototype = {
           dfd.reject(msg);
         }
       }.bind(this))
-      .fail(function(err) {
+      .fail(function(err, jqXHR) {
         log.error('Trip -> insertTransitionBetweenTriplegs', err);
-        dfd.reject(err);
+        dfd.reject(err, jqXHR);
       });
     return dfd.promise();
   },
@@ -280,7 +280,7 @@ Trip.prototype = {
     return api.trips.updatePurposeOfTrip(this.getId(), purposeId).done(function(result) {
       this._updatePurpose(purposeId);
       this.emit('trip-update', this);
-    }.bind(this)).fail(function(err) {
+    }.bind(this)).fail(function(err, jqXHR) {
       log.error('Trip -> updatePurposeOfTrip', err);
     });
   },
@@ -289,7 +289,7 @@ Trip.prototype = {
     return api.trips.updateDestinationPoiIdOfTrip(this.getId(), destinationPoiId).done(function(result) {
       this._updateDestinationPlace(destinationPoiId);
       this.emit('trip-update', this);
-    }.bind(this)).fail(function(err) {
+    }.bind(this)).fail(function(err, jqXHR) {
       log.error('Trip -> updateDestinationPoiIdOfTrip', err);
     });
   },
@@ -301,9 +301,9 @@ Trip.prototype = {
           this.updateTriplegs(result.triplegs);
           dfd.resolve(this);
         }.bind(this))
-      .fail(function(err) {
+      .fail(function(err, jqXHR) {
         log.error('Trip -> mergeWithNextTrip', err);
-        dfd.reject(err);
+        dfd.reject(err, jqXHR);
       });
     return dfd.promise();
   },
