@@ -104,20 +104,14 @@ $(function() {
                 user.getLastTrip()
                   .done(function(trip) {
                     // TODO move me
-                    trip.on('trip-confirm', function(trip) {
-                        user.confirmTrip(trip.getId());
-                    });
+                    trip.on('trip-confirm', user.confirmTrip);
 
-                    user.on('current-trip-changed', function(trip) {
-                        renderTrip(trip);
-                    });
+                    user.on('current-trip-changed', renderTrip);
 
-                    trip.on('trip-update', function(trip) {
-                      renderTrip(trip);
-                    });
-                    trip.on('triplegs-update', function(trip) {
-                      renderTrip(trip);
-                    });
+                    trip.on('trip-update', renderTrip);
+
+                    trip.on('triplegs-update', renderTrip);
+
 
                     ui.timeline.on('start-time-change', function(triplegId, newStartTime) {
                         var tripleg = trip.getTriplegById(triplegId);
@@ -136,13 +130,11 @@ $(function() {
                         }
                     }.bind(trip));
 
-                    ui.timeline.on('move-to-previous-trip', function(trip) {
-                        user.getPreviousTrip(trip.getId());
-                    });
+                    ui.timeline.on('move-to-previous-trip', user.getPreviousTrip);
 
-                    ui.timeline.on('move-to-next-trip', function(trip) {
-                        user.getNextTrip(trip.getId());
-                    });
+                    ui.timeline.on('move-to-next-trip', user.getNextTrip);
+
+                    ui.timeline.on('delete-trip', user.deleteTrip);
 
                     ui.map.init(CONFIG.map, user.id);
 

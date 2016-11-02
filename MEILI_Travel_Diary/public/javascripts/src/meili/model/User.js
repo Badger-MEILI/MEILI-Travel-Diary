@@ -51,9 +51,9 @@ User.prototype = {
     return api.trips.getNumberOfTrips(this.id);
   },
 
-  confirmTrip: function(tripId) {
+  confirmTrip: function(trip) {
     var dfd = $.Deferred();
-    api.trips.confirmAnnotationOfTrip(tripId)
+    api.trips.confirmAnnotationOfTrip(trip.getId())
       .done(function(tripJson) {
           this._setCurrentTrip(tripJson)
             .done(function(trip) { dfd.resolve(trip); })
@@ -66,9 +66,9 @@ User.prototype = {
     return dfd.promise();
   },
 
-  getPreviousTrip: function(tripId) {
+  getPreviousTrip: function(trip) {
     var dfd = $.Deferred();
-    api.trips.navigateToPreviousTrip(this.id, tripId)
+    api.trips.navigateToPreviousTrip(this.id, trip.getId())
       .done(function(tripJson) {
         // init trip into Trip object and load triplegs
         this._setCurrentTrip(tripJson)
@@ -83,9 +83,9 @@ User.prototype = {
     return dfd.promise();
   },
 
-  getNextTrip: function(tripId) {
+  getNextTrip: function(trip) {
     var dfd = $.Deferred();
-    api.trips.navigateToNextTrip(this.id, tripId)
+    api.trips.navigateToNextTrip(this.id, trip.getId())
       .done(function(tripJson) {
         // init trip into Trip object and load triplegs
         this._setCurrentTrip(tripJson)
@@ -129,6 +129,24 @@ User.prototype = {
         log.error('User -> getTriplegsForTrip', err);
         dfd.reject(err, jqXHR);
       });
+    return dfd.promise();
+  },
+
+  deleteTrip: function(trip) {
+    var dfd = $.Deferred();
+    // Get last trip from api
+    api.trips.delete(trip.getId())
+      .done(function(tripJson) {
+        // init trip into Trip object and load triplegs
+        this._setCurrentTrip(tripJson)
+            .done(function(trip) { dfd.resolve(trip); })
+            .fail(function(err) { dfd.reject(err); });
+      }.bind(this))
+      .fail(function(err, jqXHR) {
+        log.error('User -> deleteTrip', err);
+        dfd.reject(err, jqXHR);
+      });
+
     return dfd.promise();
   },
 

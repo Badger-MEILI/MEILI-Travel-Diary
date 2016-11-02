@@ -259,7 +259,7 @@ Timeline.prototype = {
       if(this.trip.isAlreadyAnnotated()) {
         this.emit('move-to-next-trip', this.trip);
       } else {
-        new Confirm().show('Complete trip annotation', 'Do you really whant to complete the annotations for this trip and move to the next trip?', function() {
+        new Confirm().show('Complete trip annotation', 'Do you really want to complete the annotations for this trip and move to the next trip?', function() {
           this.trip.confirm();
         }.bind(this));
       }
@@ -270,10 +270,18 @@ Timeline.prototype = {
     $element.on('click', '.delete-tripleg', function(e) {
       var triplegId = $(e.currentTarget).attr('tripleg-id');
       if(triplegId) {
-        new Confirm().show('Delete tripleg', 'Do you really whant to delete this tripleg?', function() {
+        new Confirm().show('Delete tripleg', 'Do you really want to delete this tripleg?', function() {
           this.trip.deleteTripleg(triplegId);
         }.bind(this));
       }
+      e.preventDefault();
+      return false;
+    }.bind(this));
+
+    $element.on('click', '.delete-trip', function(e) {
+      new Confirm().show('Delete trip', 'Do you really want to delete this trip?', function() {
+        this.emit('delete-trip', this.trip);
+      }.bind(this));
       e.preventDefault();
       return false;
     }.bind(this));
@@ -350,8 +358,12 @@ Timeline.prototype = {
 
       var tripStartPanel = [
         '<li>',
-          '<div class="tldate start" id="tldatefirst" style="width:330px"><span class="glyphicon large glyphicon-flag"></span><span><p lang="en" id="tldatefirstassociatedparagraph"><strong>'+currentTripStartHour+'</strong> ('+currentTripStartDateLocal  +') - Started trip</p>',
-            '<p lang="en"><i>Is this a fake trip? Click <span class="glyphicon glyphicon-trash" onclick="deleteTripModal()"></span> to delete.</i></p></span>',
+          '<div class="tldate start" id="tldatefirst" style="width:330px">',
+            '<span class="glyphicon large glyphicon-flag"></span>',
+            '<span>',
+              '<p lang="en" id="tldatefirstassociatedparagraph"><strong>'+currentTripStartHour+'</strong> ('+currentTripStartDateLocal  +') - Started trip</p>',
+              '<button class="delete-trip btn btn-default" lang="en"><i>Is this a fake trip? Click <span class="glyphicon glyphicon-trash"></span> to delete.</i></button>',
+            '</span>',
           '</div>',
         '</li>'
       ];
