@@ -1,6 +1,6 @@
 
 var User = User || function() {
-
+  Emitter(this);
   return this;
 };
 
@@ -46,17 +46,28 @@ User.prototype = {
     return api.trips.getNumberOfTrips(this.id);
   },
 
+  confirmTrip: function(tripId) {
+    var dfd = $.Deferred();
+    api.trips.confirmAnnotationOfTrip(tripId)
+      .done(function(tripJson) {
+          this._setCurrentTrip(tripJson)
+            .done(function(trip) { dfd.resolve(trip); })
+            .fail(function(err) { dfd.reject(err); });
+        }.bind(this))
+      .fail(function(err) {
+          dfd.reject(err);
+        });
+    return dfd.promise();
+  },
+
   getPreviousTrip: function(tripId) {
     var dfd = $.Deferred();
-    api.trips.navigateToPreviousTrip(this.id)
-      .done(function(trip) {
+    api.trips.navigateToPreviousTrip(this.id, tripId)
+      .done(function(tripJson) {
         // init trip into Trip object and load triplegs
-        this._initTrip(tripJson)
-          .done(function(trip) {
-            // Set current trip and resolve
-            this.currentTrip = trip;
-            dfd.resolve(trip);
-          }.bind(this));
+        this._setCurrentTrip(tripJson)
+            .done(function(trip) { dfd.resolve(trip); })
+            .fail(function(err) { dfd.reject(err); });
       }.bind(this))
       .fail(function(err) {
         dfd.reject(err);
@@ -67,15 +78,12 @@ User.prototype = {
 
   getNextTrip: function(tripId) {
     var dfd = $.Deferred();
-    api.trips.navigateToNextTrip(this.id)
-      .done(function(trip) {
+    api.trips.navigateToNextTrip(this.id, tripId)
+      .done(function(tripJson) {
         // init trip into Trip object and load triplegs
-        this._initTrip(tripJson)
-          .done(function(trip) {
-            // Set current trip and resolve
-            this.currentTrip = trip;
-            dfd.resolve(trip);
-          }.bind(this));
+        this._setCurrentTrip(tripJson)
+            .done(function(trip) { dfd.resolve(trip); })
+            .fail(function(err) { dfd.reject(err); });
       }.bind(this))
       .fail(function(err) {
         dfd.reject(err);
@@ -90,12 +98,9 @@ User.prototype = {
     api.trips.getLast(this.id)
       .done(function(tripJson) {
         // init trip into Trip object and load triplegs
-        this._initTrip(tripJson)
-          .done(function(trip) {
-            // Set current trip and resolve
-            this.currentTrip = trip;
-            dfd.resolve(trip);
-          }.bind(this));
+        this._setCurrentTrip(tripJson)
+            .done(function(trip) { dfd.resolve(trip); })
+            .fail(function(err) { dfd.reject(err); });
       }.bind(this))
       .fail(function(err) {
         dfd.reject(err);
@@ -117,8 +122,25 @@ User.prototype = {
     return dfd.promise();
   },
 
-  _initTrip: function(tripJson) {
-    var trip = new Trip(tripJson);
-    return this.getTriplegsForTrip(trip);
+  _setCurrentTrip: function(tripJson) {
+    var dfd = $.Deferred();
+    // Set current trip
+    if(tripJson.trip_id) {
+      this.currentTrip = new Trip(tripJson);
+      // Update triplegs for trip
+      this.getTriplegsForTrip(this.currentTrip)
+        .done(function(trip) {
+            this.emit('current-trip-changed', trip);
+            dfd.resolve(trip);
+          }.bind(this))
+        .fail(function(err) {
+            dfd.reject(err);
+          });
+    } else {
+      var msg = 'No trip returned from server';
+      dfd.reject(msg);
+      throw msg;
+    }
+    return dfd.promise();
   }
 };

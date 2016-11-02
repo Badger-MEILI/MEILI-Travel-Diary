@@ -29,6 +29,11 @@ Trip.prototype = {
     return this.trip_id;
   },
 
+  isAlreadyAnnotated: function() {
+    // !TODO verify that this is the correct way
+    return this.status === 'already_annotated';
+  },
+
   getPurposes: function() {
     return this.purposes;
   },
@@ -118,6 +123,10 @@ Trip.prototype = {
   generateMapLayer: function() {
     this.mapLayer = L.featureGroup();
     this.mapLayer.addLayer(this.generatePlacePoints());
+  },
+
+  confirm: function() {
+    this.emit('trip-confirm', this);
   },
 
   // Local changes on trip
@@ -286,10 +295,6 @@ Trip.prototype = {
           dfd.reject(err);
         });
     return dfd.promise();
-  },
-
-  confirm: function() {
-    return api.trips.confirmAnnotationOfTrip(this.getId());
   },
 
   // Internal methods

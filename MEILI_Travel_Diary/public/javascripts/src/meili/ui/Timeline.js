@@ -250,21 +250,18 @@ Timeline.prototype = {
     }.bind(this));
 
     $element.on('click','.go-to-previous-trip', function(e) {
-      if(this.trip.isLastUnannotated) {
-      } else {
-        throw 'Move to previous trip?';
-      }
+      this.emit('move-to-previous-trip', this.trip);
       e.preventDefault();
       return false;
     }.bind(this));
 
     $element.on('click','.go-to-next-trip', function(e) {
-      if(this.trip.isLastUnannotated) {
+      if(this.trip.isAlreadyAnnotated()) {
+        this.emit('move-to-next-trip', this.trip);
+      } else {
         new Confirm().show('Complete trip annotation', 'Do you really whant to complete the annotations for this trip and move to the next trip?', function() {
           this.trip.confirm();
         }.bind(this));
-      } else {
-        throw 'Move to next trip?';
       }
       e.preventDefault();
       return false;

@@ -104,6 +104,14 @@ $(function() {
                 user.getLastTrip()
                   .done(function(trip) {
                     // TODO move me
+                    trip.on('trip-confirm', function(trip) {
+                        user.confirmTrip(trip.getId());
+                    });
+
+                    user.on('current-trip-changed', function(trip) {
+                        renderTrip(trip);
+                    });
+
                     trip.on('trip-update', function(trip) {
                       renderTrip(trip);
                     });
@@ -127,6 +135,14 @@ $(function() {
                             trip.updateTriplegEndTime(triplegId, newEndTime);
                         }
                     }.bind(trip));
+
+                    ui.timeline.on('move-to-previous-trip', function(trip) {
+                        user.getPreviousTrip(trip.getId());
+                    });
+
+                    ui.timeline.on('move-to-next-trip', function(trip) {
+                        user.getNextTrip(trip.getId());
+                    });
 
                     ui.map.init(CONFIG.map, user.id);
 
