@@ -5,15 +5,18 @@ var Log = Log || function(config) {
   if(typeof ga === 'undefined') {
     this.error('Cant find ga. Google Analtyics include is missing?');
   } else {
-    if(config.google_analytics_tracking_id) {
-      // Initiating Google Analytics tracking and sending page view
-      this.sendToGoogleAnalytics = true;
-      ga('create', config.google_analytics_tracking_id, 'auto');
-      this._gaSendPageView();
-    } else {
-      this.error('No Google Analytics id where configured');
+    if(location.host !== 'localhost:3000') {
+      if(config.google_analytics_tracking_id) {
+        // Initiating Google Analytics tracking and sending page view
+        this.sendToGoogleAnalytics = true;
+        ga('create', config.google_analytics_tracking_id, 'auto');
+        this._gaSendPageView();
+      } else {
+        this.error('No Google Analytics id where configured');
+      }
     }
   }
+
   return this;
 };
 
