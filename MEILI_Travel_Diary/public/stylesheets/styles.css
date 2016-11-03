@@ -202,7 +202,7 @@ html, body {
     position: absolute;
     content: " ";
     width: 6px;
-    background-color: #828282;
+    background-color: #b1b1b1;
     left: 50%;
     margin-left: 0px;
     height: 100vh;
@@ -261,7 +261,7 @@ html, body {
 }
 
 .tldate.transition-panel {
-    background-color: #828282;
+    background-color: #b1b1b1;
     font-weight: normal;
     padding: 6px;
 }
@@ -320,7 +320,7 @@ html, body {
     width: 50%;
     float: left;
     background: #fff;
-    border: 6px solid #828282;
+    border: 6px solid #b1b1b1;
     padding: 20px;
     position: relative;
     -webkit-border-radius: 8px;
@@ -419,7 +419,7 @@ IMPORTANT IMPLEMENT FOR SMARTPHONE A SET OF RULES**/
     margin-bottom: 10px;
     background: #fff;
     color: #000;
-    border: 3px solid #828282;
+    border: 3px solid #b1b1b1;
     border-top-right-radius: 50%;
     border-top-left-radius: 50%;
     border-bottom-right-radius: 50%;
