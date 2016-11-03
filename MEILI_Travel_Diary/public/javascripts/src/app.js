@@ -112,24 +112,6 @@ $(function() {
 
                     trip.on('triplegs-update', renderTrip);
 
-
-                    ui.timeline.on('start-time-change', function(triplegId, newStartTime) {
-                        var tripleg = trip.getTriplegById(triplegId);
-                        if(tripleg.isFirst) {
-                            trip.updateStartTime(newStartTime);
-                        } else {
-                            trip.updateTriplegStartTime(triplegId, newStartTime);
-                        }
-                    }.bind(trip));
-                    ui.timeline.on('end-time-change', function(triplegId, newEndTime) {
-                        var tripleg = trip.getTriplegById(triplegId);
-                        if(tripleg.isLast) {
-                            trip.updateEndTime(newEndTime);
-                        } else {
-                            trip.updateTriplegEndTime(triplegId, newEndTime);
-                        }
-                    }.bind(trip));
-
                     ui.timeline.on('move-to-previous-trip', user.getPreviousTrip);
 
                     ui.timeline.on('move-to-next-trip', user.getNextTrip);

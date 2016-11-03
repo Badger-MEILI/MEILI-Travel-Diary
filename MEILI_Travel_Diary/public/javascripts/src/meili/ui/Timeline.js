@@ -21,131 +21,28 @@ Timeline.prototype = {
     this.trip = trip;
     // Reset
     $('#'+this.elementId+' > ul').html('');
-
     this.generateFirstElement();
     var tripLayers = [];
     for (var i=0; i < this.trip.triplegs.length; i++) {
       var tripleg = this.trip.triplegs[i];
-      this.generateElement(this.trip.getId(), tripleg);
+      var triplegPanel = new TriplegPanel(this.elementId, this.trip.getId(), tripleg);
+      triplegPanel.on('start-time-change', function(tripleg, newStartTime) {
+          if(tripleg.isFirst) {
+            this.trip.updateStartTime(newStartTime);
+          } else {
+            this.trip.updateTriplegStartTime(tripleg.getId(), newStartTime);
+          }
+      }.bind(this));
+      triplegPanel.on('end-time-change', function(tripleg, newEndTime) {
+          if(tripleg.isLast) {
+            this.trip.updateEndTime(newEndTime);
+          } else {
+            this.trip.updateTriplegEndTime(tripleg.getId(), newEndTime);
+          }
+      }.bind(this));
     }
     this.generateLastElement();
 },
-
-  _onTimeSet: function(e) {
-
-    var $target = $(e.target);
-    var triplegId = parseInt($target.attr('tripleg-id'), 10);
-    var initialTime = parseInt($target.attr('initial-time'), 10);
-    var initialTimeDate = new Date(initialTime);
-
-    var newTime = new Date(initialTime);
-    newTime.setMinutes(e.time.minutes);
-    newTime.setHours(e.time.hours);
-    newTime = newTime.getTime();
-
-    log.info('UI Timeline -> _onTimeSet','changed timepicker start value of tripleg '+ triplegId +' to '+ newTime);
-
-    if(initialTime != newTime) {
-      if ($target.hasClass('start')) {
-        this.emit('start-time-change', triplegId, newTime);
-      } else if($target.hasClass('end')) {
-        this.emit('end-time-change', triplegId, newTime);
-      }
-    } else {
-      $target.timepicker('setTime', initialTimeDate.getHours()+":"+initialTimeDate.getMinutes());
-    }
-
-    e.preventDefault();
-  },
-
-  /**
-   * Returns the outerHTML of a MODE selector
-   * @param mode - an array containing mode ids and their inference confidence
-   * @param triplegid - the id of the tripleg with which the modes are associated with
-   * @returns {string} - outerHTML of the mode selector
-   */
-  _getModeSelector: function(tripleg){
-      var maxVal = tripleg.getMode().accuracy;
-      var classes = ' form-control';
-      var options = [];
-
-      if(maxVal<50) {
-        classes += ' form-need-check';
-        options.push('<option lang="en" value="-1" disabled selected style="display:none;">Specify your travel mode</option>');
-      }
-
-      for (var i = 0; i < tripleg.mode.length; i++) {
-        var mode = tripleg.mode[i];
-        options.push('<option lang="en" value="' + mode.id + '">' + mode.name + '</option>');
-      }
-
-      var selector = [
-        '<label for="mode-select">By</label>',
-        '<select class="mode-select' + classes + '" tripleg-id="' + tripleg.getId() + '" name="selectmode">',
-          options.join(''),
-        '</select>'
-      ].join('');
-
-      return selector;
-  },
-
-  /**
-   * Generates the outerHTML for the timeline element corresponding to a tripleg
-   * @param tripleg - the tripleg element
-   * @returns {string} - outerHTML of the timeline element
-   */
-  _getContent: function(tripId, tripleg) {
-    var triplegId = tripleg.getId();
-    var classes = [];
-    if(tripleg.isFirst) {
-      classes.push('first')
-    }
-    if(tripleg.isLast) {
-      classes.push('last')
-    }
-    var contentHtml = [
-      '<ul class="tl-ctrl">',
-      '<li><a class="zoom-to-tripleg" title="Zoom map to tripleg" tripleg-id="'+triplegId+'"><span class="glyphicon glyphicon-search medium"></span></a></li>',
-        ((tripleg.isFirst && tripleg.isLast) ? '' : '<li><a class="delete-tripleg" title="Delete tripleg" tripleg-id="' + triplegId + '"><span class="glyphicon glyphicon-trash"></span></a></li>'),
-      '</ul>',
-
-      '<div class="timeline-panel" style="background-color:'+tripleg.getColor(0.6)+'" id="telem'+triplegId+'" tripleg-id="' + triplegId + '">',
-        '<div class="tl-heading">',
-        '<p><strong>',
-             '<span class="distance">Travelled ' + tripleg.getDistance() + '</span>',
-             '<span class="travel-time"> in ' + tripleg.getTravelTime() + ' min </span>',
-          '</strong></p>',
-            this._getModeSelector(tripleg),
-        '</div>',
-        '<div class="tl-body">',
-
-          '<div class="row">',
-            '<div class="col-md-6">',
-              '<label for="timepickerstart_'+triplegId+'">Started</label>',
-              '<div class="input-group bootstrap-timepicker timepicker">',
-                '<input id="timepickerstart_'+triplegId+'" initial-time="' + tripleg.getStartTime().getTime() + '" tripleg-id=" '+tripleg.getId()+' " class="form-control time-picker start input-small ' + classes.join(' ') + '" type="text"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>',
-              '</div>',
-            '</div>',
-            '<div class="col-md-6">',
-              '<label for="timepickerstart_'+triplegId+'">Ended</label>',
-              '<div class="input-group bootstrap-timepicker timepicker">',
-                '<input id="timepickerend_'+triplegId+'" initial-time="' + tripleg.getEndTime().getTime() + '" tripleg-id=" '+tripleg.getId()+' " type="text" class="time-picker end form-control input-small ' + classes.join(' ') + '"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>',
-              '</div>',
-            '</div>',
-          '</div>',
-          (tripleg.isLast ? '' : this.generatePlaceSelector(tripleg.places, tripleg.getId())),
-          '<br>',
-          '<a class="add-transition btn btn-default" href="#" role="button" tripleg-id="' + triplegId + '"><i class="glyphicon glyphicon-transfer"></i> Did we miss a transfer? Click to add it. </a>',
-
-        '</div>',
-      '</div>'
-    ];
-    console.warn('getTransitionPlace?');
-
-
-
-    return contentHtml.join('');
-  },
 
   _addTime: function(time, hoursMinutes) {
     var hm = hoursMinutes.split(':');
@@ -162,12 +59,7 @@ Timeline.prototype = {
 
     var $element = $('#'+this.elementId);
 
-    // Tripleg mode change
-    $element.on('change', '.mode-select', function(e) {
-      var triplegId = parseInt($(e.target).attr('tripleg-id'), 10);
-      var tripleg = this.trip.getTriplegById(triplegId);
-      tripleg.updateMode(e.target.value);
-    }.bind(this));
+
 
     // Open transition modal
     $element.on('click','.add-transition', function(e) {
@@ -191,40 +83,6 @@ Timeline.prototype = {
       $('#transition-choice-modal').modal('hide');
     }.bind(this));
 
-    // Tripleg panel mouseover
-    $element.on('mouseover', '.timeline-panel', function(e) {
-      var triplegId = $(e.currentTarget).attr('tripleg-id');
-      if(triplegId) {
-        var tripleg = this.trip.getTriplegById(triplegId);
-        if(tripleg.polylineLayer) {
-          tripleg.polylineLayer.setStyle({ opacity: 1 });
-        }
-      }
-    }.bind(this));
-
-    // Tripleg panel mouse exit
-    $element.on('mouseout', '.timeline-panel', function(e) {
-      var triplegId = $(e.currentTarget).attr('tripleg-id');
-      if(triplegId) {
-        var tripleg = this.trip.getTriplegById(triplegId);
-        if(tripleg.polylineLayer) {
-          tripleg.polylineLayer.setStyle({ opacity: 0.6 });
-        }
-      }
-    }.bind(this));
-
-    // Tripleg panel mouse click
-    $element.on('click', '.zoom-to-tripleg', function(e) {
-      var triplegId = $(e.currentTarget).attr('tripleg-id');
-      if(triplegId) {
-        var tripleg = this.trip.getTriplegById(triplegId);
-        if(tripleg.polylineLayer) {
-          map.fitBounds(tripleg.polylineLayer.getBounds());
-          log.debug('UI Timeline -> zoom-to-tripleg click', 'Zoomed to layer ' + triplegId);
-        }
-      }
-    }.bind(this));
-
     // Trip purpose selector
     $element.on('change', '.purpose-selector', function(e) {
       if(e.target.value) {
@@ -232,16 +90,6 @@ Timeline.prototype = {
       }
     }.bind(this));
 
-    // Trip place selector
-    $element.on('change', '.place-selector.transition', function(e) {
-      if(e.target.value) {
-        var triplegId = $(e.currentTarget).attr('tripleg-id');
-        if(triplegId) {
-          var tripleg = this.trip.getTriplegById(triplegId);
-          tripleg.updateTransitionPoiIdOfTripleg(e.target.value);
-        }
-      }
-    }.bind(this));
 
     $element.on('change', '.place-selector.destination', function(e) {
       if(e.target.value) {
@@ -285,6 +133,9 @@ Timeline.prototype = {
       e.preventDefault();
       return false;
     }.bind(this));
+
+
+
   },
 
     /**
@@ -418,7 +269,7 @@ Timeline.prototype = {
               '</p>',
             '</div>',
             '<div class="tl-body">',
-              this.generatePlaceSelector(this.trip.getPlaces()),
+              this.generateDestinationPlaceSelector(this.trip.getPlaces()),
               this.generatePurposeSelector(this.trip.getPurposes()),
             '</div>',
           '</div>',
@@ -466,37 +317,21 @@ Timeline.prototype = {
    * @param places - array of places (lat, lon) that have accuracy of inference embedded
    * @returns {string|string} - outerHTML of the place selector
    */
-  generatePlaceSelector: function(places, triplegId) {
+  generateDestinationPlaceSelector: function(places) {
     var placeSelector = [];
     if (places && places.length > 0) {
 
       var selectorOptions = [];
-      var className = '';
-      var attributes = '';
-      var specifyOptionLabel = '';
-      var label = '';
+      var specifyOptionLabel = 'Specify your destination';
+      var label = 'Destination of trip';
 
       for (var i=0; i < places.length; i++) {
         var place = places[i];
-        // Handle both trip and tipleg places
-        var id = place.gid || place.osm_id;
+        var id = place.gid;
         var type = place.type ? ' ('+place.type+')' : '';
         if (id !== undefined) {
           selectorOptions.push('<option value="' + id + '">' + place.name + type + '</option>');
         }
-      }
-
-      //  Destination place
-      if(!triplegId) {
-        // Add initial option?
-        label = 'Destination of trip';
-        className = 'destination';
-        specifyOptionLabel = 'Specify your destination';
-      } else {
-        label = 'Transferred at';
-        className = 'transition';
-        attributes = 'tripleg-id="' + triplegId + '"';
-        specifyOptionLabel = '(Optional) Specify transfer place';
       }
 
       var maxAccuracy = places[0].accuracy;
@@ -508,7 +343,7 @@ Timeline.prototype = {
       placeSelector = ['<p lang="en">',
                         '<label for="place-selector">' + label + '</label>',
                         '<div>',
-                        '<select class="form-control form-control-inline place-selector ' + className + '" ' + attributes + '>',
+                        '<select class="form-control form-control-inline place-selector destination">',
                           selectorOptions.join(''),
                         '</select></p>',
                         '</div>'];
@@ -546,60 +381,9 @@ Timeline.prototype = {
   },
 
 
-  getTransitionPanel: function(tripleg) {
-    var transitionPanel = [];
+ 
 
-    // Not the last trip leg -> generate panel
-    // TODO! handle language for mode and the case that there is no mode set
-    if (!tripleg.isLast){
-      var nextTripleg = tripleg.getNext().getNext();
-      transitionPanel = [
-        '<li>',
-          '<div class="tldate transition-panel" id="tldate' + nextTripleg.getId() + '">',
-            '<p lang="en">'+ tripleg.getEndTime(true) +' - '+ nextTripleg.getStartTime(true) +' - Transferred from '+ tripleg.getMode().name +' to '+ nextTripleg.getMode().name +'</p>',
-          '</div>',
-        '</li>'];
-    }
-
-    return transitionPanel.join('');
-  },
-
-  /**
-   * Appends the timeline element of a tripleg to the timeline list and adds its listeners
-   * @param tripleg - the tripleg element
-   */
-  generateElement: function(tripId, tripleg) {
-
-    if (tripleg.getType() == 1){
-      var ul = $('#'+this.elementId+' > ul');
-      var li = document.createElement("li");
-      li.id = "listItem"+tripleg.getId();
-      var thisHtml = this._getContent(tripId, tripleg);
-
-      li.innerHTML = thisHtml;
-      // Add tripleg panel
-      ul.append(li);
-      // Add transition panel
-      ul.append(this.getTransitionPanel(tripleg));
-
-      // Activate timepickers
-      $('#timepickerstart_'+tripleg.triplegid).timepicker({
-          minuteStep: 1,
-          showMeridian: false,
-          disableMousewheel:false,
-          defaultTime: tripleg.getStartTime(true)
-      }).on('hide.timepicker', this._onTimeSet.bind(this));
-
-
-      $('#timepickerend_'+tripleg.triplegid).timepicker({
-          minuteStep: 1,
-          showMeridian: false,
-          disableMousewheel:false,
-          defaultTime: tripleg.getEndTime(true)
-      }).on('hide.timepicker', this._onTimeSet.bind(this));
-
-    }
-  },
+ 
 
   /**
    * Generates the modal dialogs for a tripleg
