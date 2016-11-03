@@ -222,7 +222,7 @@ TriplegPanel.prototype = {
       var options = [];
 
       if(maxVal<50) {
-        classes += ' form-need-check';
+        classes += ' form-value-invalid';
         options.push('<option lang="en" value="-1" disabled selected>Specify your travel mode</option>');
       }
 

@@ -319,6 +319,7 @@ Timeline.prototype = {
       var selectorOptions = [];
       var specifyOptionLabel = 'Specify your destination';
       var label = 'Destination of trip';
+      var classes = '';
 
       for (var i=0; i < places.length; i++) {
         var place = places[i];
@@ -332,13 +333,14 @@ Timeline.prototype = {
       var maxAccuracy = places[0].accuracy;
       if (maxAccuracy < 50) {
         // Can not preselect for the user
+        classes = ' form-value-invalid';
         selectorOptions.unshift('<option value="-1" disabled selected lang="en">' + specifyOptionLabel + '</option>');
       }
 
       placeSelector = ['<p lang="en">',
                         '<label for="place-selector">' + label + '</label>',
                         '<div>',
-                        '<select class="form-control form-control-inline place-selector destination">',
+                        '<select class="form-control form-control-inline place-selector destination' + classes + '">',
                           selectorOptions.join(''),
                         '</select></p>',
                         '</div>'];
@@ -355,22 +357,28 @@ Timeline.prototype = {
     var purposeSelector = '';
     if(purposes && purposes.length > 0) {
       var maxAccuracy = purposes[0].accuracy;
-      var purposeSelector = '<p lang="en">' +
-                              '<label for="purpose-selector">Purpose of trip: </label>'+
-                              '<div>' +
-                              '<select class="form-control form-control-inline form-need-check purpose-selector">';
+      var purposeOptions = [];
+      var classes = '';
 
       // Accuracy is not high enough to preselect for the user
       if (maxAccuracy < 50){
-        purposeSelector += '<option value="-1" lang="en" disabled selected>Specify your trip\'s purpose</option>';
+        classes = ' form-value-invalid';
+        purposeOptions.push('<option value="-1" lang="en" disabled selected>Specify your trip\'s purpose</option>')
       }
 
       for (var i=0; i < purposes.length; i++){
         var purpose = purposes[i];
-        purposeSelector += '<option value="' + purpose.id + '" lang="en">' + purpose.name + '</option>';
+        purposeOptions.push('<option value="' + purpose.id + '" lang="en">' + purpose.name + '</option>');
 
       }
-      purposeSelector += '</select></div>';
+      purposeSelector = '<p lang="en">' +
+                              '<label for="purpose-selector">Purpose of trip: </label>'+
+                              '<div>' +
+                                '<select class="form-control form-control-inline form-need-check purpose-selector ' + classes + '">' +
+                                  purposeOptions.join('');
+                                '</select>' +
+                              '</div>' +
+                            '</p>';
     }
     return purposeSelector;
   },

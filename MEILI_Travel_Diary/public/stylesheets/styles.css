@@ -186,8 +186,7 @@ html, body {
 
 .timeline .form-control{
     margin: 0;
-    color: #c25b4e;
-    font-size: 18px;
+    font-size: 16px;
 }
 
 .timeline li .timeline-panel .form-control-inline {
@@ -295,31 +294,18 @@ html, body {
     -webkit-appearance: none;
 }
 
-/*
-IMPORTANT IMPLEMENT FOR SMARTPHONE A SET OF RULES**/
-.timeline li .timeline-panel .form-control{
-    -webkit-appearance: none;
-    border: 0;
+.form-value-invalid {
     border-bottom: 4px solid #c25b4e;
+    color:#c25b4e;
 }
 
+/*
+IMPORTANT IMPLEMENT FOR SMARTPHONE A SET OF RULES**/
+
 .timeline li .timeline-panel .form-control-inline{
-    -webkit-appearance: none;
-    border: 0;
-    border-bottom: 4px solid #c25b4e;
     max-width: 260px;
     display: inline;
     font-size:16px;
-}
-
-.timeline li .timeline-panel .form-need-check{
-    color:red;
-    max-width: 235px;
-}
-
-.timeline li .timeline-panel .form-checked{
-    color:#c25b4e;
-    font-weight: normal;
 }
 
 .timeline li .timeline-panel:hover {
