@@ -59,6 +59,18 @@ html, body {
     padding-top: 9px;
 }
 
+/*
+    bootstrap-timepicker timepicker
+ */
+.bootstrap-timepicker.timepicker .input-group-addon {
+    background-color: #FFF;
+}
+
+.bootstrap-timepicker.timepicker .input-group-addon:hover {
+    color: #333333;
+    background-color: #e6e6e6;
+    border-color: #adadad;
+}
 
 
 /*

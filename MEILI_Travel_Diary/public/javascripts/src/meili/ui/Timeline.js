@@ -6,7 +6,7 @@ var Timeline = Timeline || function(options) {
   this.resize();
   $(window).resize(this.resize.bind(this));
 
-  this.initiateModals();
+  this.generateInsertTransitionModal();
 
   this._addListeners();
 
@@ -26,23 +26,29 @@ Timeline.prototype = {
     for (var i=0; i < this.trip.triplegs.length; i++) {
       var tripleg = this.trip.triplegs[i];
       var triplegPanel = new TriplegPanel(this.elementId, this.trip.getId(), tripleg);
-      triplegPanel.on('start-time-change', function(tripleg, newStartTime) {
-          if(tripleg.isFirst) {
-            this.trip.updateStartTime(newStartTime);
-          } else {
-            this.trip.updateTriplegStartTime(tripleg.getId(), newStartTime);
-          }
-      }.bind(this));
-      triplegPanel.on('end-time-change', function(tripleg, newEndTime) {
-          if(tripleg.isLast) {
-            this.trip.updateEndTime(newEndTime);
-          } else {
-            this.trip.updateTriplegEndTime(tripleg.getId(), newEndTime);
-          }
-      }.bind(this));
+      // Bind trip specific events on triplegpanel
+      triplegPanel.on('start-time-change', this._updateStartTime.bind(this));
+      triplegPanel.on('end-time-change', this._updateEndTime.bind(this));
+      triplegPanel.on('open-transition-modal', this.openInsertTransitionModal.bind(this));
     }
     this.generateLastElement();
-},
+  },
+
+  _updateStartTime: function(tripleg, newStartTime) {
+    if(tripleg.isFirst) {
+      this.trip.updateStartTime(newStartTime);
+    } else {
+      this.trip.updateTriplegStartTime(tripleg.getId(), newStartTime);
+    }
+  },
+
+  _updateEndTime: function(tripleg, newEndTime) {
+    if(tripleg.isLast) {
+      this.trip.updateEndTime(newEndTime);
+    } else {
+      this.trip.updateTriplegEndTime(tripleg.getId(), newEndTime);
+    }
+  },
 
   _addTime: function(time, hoursMinutes) {
     var hm = hoursMinutes.split(':');
@@ -58,17 +64,6 @@ Timeline.prototype = {
   _addListeners: function(tripId, tripleg) {
 
     var $element = $('#'+this.elementId);
-
-
-
-    // Open transition modal
-    $element.on('click','.add-transition', function(e) {
-      var triplegId = parseInt($(e.target).attr('tripleg-id'), 10);
-      var tripleg = this.trip.getTriplegById(triplegId);
-      this.openTransitionChoiceModal(tripleg);
-      e.preventDefault();
-      return false;
-    }.bind(this));
 
     // Insert transition between triplegs
     $element.on('click','.transition-accept', function(e) {
@@ -380,53 +375,14 @@ Timeline.prototype = {
     return purposeSelector;
   },
 
-
- 
-
- 
-
   /**
    * Generates the modal dialogs for a tripleg
    */
-  initiateModals: function() {
+  generateInsertTransitionModal: function() {
 
-    this.transitionModalId = 'transition-modal';
-    this.getTransitionModal = function() {
-      return $(this.transitionModalId);
-    };
-    var transitionModal = [
-      '<div id="' + this.transitionModalId + '" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">',
-        '<div class="modal-dialog modal-sm">',
-          '<div class="modal-content">',
-            '<h4>New transfer point</h4>',
-
-            '<p style="display:inline; border-bottom: 0px;">Transfer type: </p>',
-              '<select class="form-control form-control-inline" id="transition-type" style="display: inline-block; border: 0px; width:190px; color:black; font-size:15;" onchange="transitionTypeEnabler(this.id)">',
-                '<option value="1">Parking place</option>',
-                '<option value="2">Station</option>',
-              '</select>',
-
-            '<div id="station-info" style="display:none">',
-              '<input type="text" class="form-controlV2" style="display:inline-block; width:49%; margin-right:5px;" placeholder="Name" aria-describedby="basic-addon1" id="transition-name">',
-              '<input type="text" class="form-controlV2" style="display:inline-block; width:49%;" placeholder="Lines: e.g.:1,2,5" aria-describedby="basic-addon1" id="transition-lines">',
-              '<form role="form" id="checkbox-form">',
-                '<div class="checkbox" style="display: inline-block; width:30%;"><label><input type="checkbox" value="1">Bus</label></div>',
-                '<div class="checkbox" style="display: inline-block; width:30%;"><label><input type="checkbox" value="2">Tram</label></div>',
-                '<div class="checkbox" style="display: inline-block; width:30%;"><label><input type="checkbox" value="3">Subway</label></div>',
-              '</form>',
-            '</div>',
-
-            '<button id="transition-button" type="button" class="btn btn-default" style="width:48%; display:inline-block; margin-left:5px" data-dismiss="modal" onclick="transitionMarker(this.id)">Draw</button>',
-            '<button type="button" class="btn btn-default" style="width:48%; display:inline-block;" data-dismiss="modal" ">Cancel</button>',
-          '</div>',
-        '</div>',
-      '</div>'
-    ];
-    $('#'+this.elementId).append(transitionModal.join(''));
-
-    this.transitionChoiceModalId = 'transition-choice-modal';
-    var transitionChoiceModal = [
-      '<div id="' + this.transitionChoiceModalId + '" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">',
+    this.insertTransitionModalId = 'insert-transition-modal';
+    var insertTransitionModal = [
+      '<div id="' + this.insertTransitionModalId + '" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">',
         '<div class="modal-dialog modal-sm" style="width:350px">',
           '<div class="modal-content">',
             '<h4 style="border-bottom: 2px solid #c25b4e;padding-bottom: 3px;">Insert a new transfer</h4>',
@@ -445,12 +401,12 @@ Timeline.prototype = {
 
             '<label for="timepicker-start-transition">Start of transfer:</label>',
             '<div class="input-group bootstrap-timepicker timepicker">',
-              '<input id="timepicker-start-transition" type="text" class="form-control input-small"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>',
+              '<input id="timepicker-start-transition" readonly="true" type="text" class="form-control input-small"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>',
             '</div>',
 
             '<label for="timepicker-stop-transition">Stop of tranfer:</label>',
             '<div class="input-group bootstrap-timepicker timepicker">',
-              '<input id="timepicker-stop-transition" type="text" class="form-control input-small"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>',
+              '<input id="timepicker-stop-transition" readonly="true" type="text" class="form-control input-small"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>',
             '</div>',
 
             '<button type="button" class="transition-accept btn btn-default center-block" style="width:48%; display:inline-block; margin-left:5px">Accept</button>',
@@ -460,10 +416,10 @@ Timeline.prototype = {
       '</div>'
     ];
 
-    $('#'+this.elementId).append(transitionChoiceModal.join(''));
+    $('#'+this.elementId).append(insertTransitionModal.join(''));
 
-    this.openTransitionChoiceModal = function(tripleg) {
-      var $modal = $('#'+this.transitionChoiceModalId);
+    this.openInsertTransitionModal = function(tripleg) {
+      var $modal = $('#'+this.insertTransitionModalId);
 
       $modal.find('.modal-content').attr('tripleg-id', tripleg.getId());
       // Add modes to selectors
@@ -479,16 +435,15 @@ Timeline.prototype = {
         minuteStep: 1,
         showMeridian: false,
         defaultTime: tripleg.getStartTime(true),
-        appendWidgetTo: '#'+this.transitionChoiceModalId
-      }).on('hide.timepicker', function(e) {
-      }.bind(this));
+        appendWidgetTo: '#'+this.insertTransitionModalId
+      });
+
       $('#timepicker-stop-transition').timepicker({
         minuteStep: 1,
         showMeridian: false,
         defaultTime: tripleg.getEndTime(true),
-        appendWidgetTo: '#'+this.transitionChoiceModalId
-      }).on('hide.timepicker', function(e) {
-      }.bind(this));
+        appendWidgetTo: '#'+this.insertTransitionModalId
+      });
 
       $modal.modal('show');
     };

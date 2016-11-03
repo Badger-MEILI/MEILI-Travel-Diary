@@ -80,17 +80,23 @@ TriplegPanel.prototype = {
     $element.find('.time-picker.start').timepicker({
         minuteStep: 1,
         showMeridian: false,
-        disableMousewheel:false,
+        disableMousewheel:true,
         defaultTime: this.tripleg.getStartTime(true)
     }).on('hide.timepicker', this._onTimeSet.bind(this));
-
 
     $element.find('.time-picker.end').timepicker({
         minuteStep: 1,
         showMeridian: false,
-        disableMousewheel:false,
+        disableMousewheel:true,
         defaultTime: this.tripleg.getEndTime(true)
     }).on('hide.timepicker', this._onTimeSet.bind(this));
+
+    // Open insert transition modal
+    $element.on('click','.add-transition', function(e) {
+      this.emit('open-transition-modal', this.tripleg);
+      e.preventDefault();
+      return false;
+    }.bind(this));
 
   },
 
@@ -148,13 +154,13 @@ TriplegPanel.prototype = {
             '<div class="col-md-6">',
               '<label for="timepickerstart_'+triplegId+'">Started</label>',
               '<div class="input-group bootstrap-timepicker timepicker">',
-                '<input id="timepickerend_'+triplegId+'" class="form-control time-picker start input-small ' + classes.join(' ') + '" type="text"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>',
+                '<input id="timepickerend_'+triplegId+'" readonly="true" class="form-control time-picker start input-small ' + classes.join(' ') + '" type="text"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>',
               '</div>',
             '</div>',
             '<div class="col-md-6">',
               '<label for="timepickerend_'+triplegId+'">Ended</label>',
               '<div class="input-group bootstrap-timepicker timepicker">',
-                '<input id="timepickerend_'+triplegId+'" type="text" class="time-picker end form-control input-small ' + classes.join(' ') + '"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>',
+                '<input id="timepickerend_'+triplegId+'" readonly="true" type="text" class="time-picker end form-control input-small ' + classes.join(' ') + '"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>',
               '</div>',
             '</div>',
           '</div>',
@@ -251,5 +257,5 @@ TriplegPanel.prototype = {
     }
 
     return transitionPanel.join('');
-  },
+  }
 };
