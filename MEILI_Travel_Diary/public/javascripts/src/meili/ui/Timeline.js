@@ -130,6 +130,13 @@ Timeline.prototype = {
     }.bind(this));
 
 
+    $element.on('click', '.merge-with-next-trip', function(e) {
+      new Confirm().show('Merge trip', 'Do you really want to merge this trip with next trip?', function() {
+        this.trip.mergeWithNextTrip();
+      }.bind(this));
+      e.preventDefault();
+      return false;
+    }.bind(this));
 
   },
 

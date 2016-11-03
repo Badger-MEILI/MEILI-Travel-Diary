@@ -147,7 +147,7 @@ var Api = function(config) {
         );
       },
 
-      mergeWithNext: function(tripId) {
+      mergeWithNextTrip: function(tripId) {
         return request.get(
           url(mainPaths.trips, 'mergeWithNextTrip'),
           {
