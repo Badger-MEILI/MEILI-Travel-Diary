@@ -219,6 +219,11 @@ html, body {
     -webkit-box-shadow: 0 0 11px rgba(0,0,0,0.35);
 }
 
+.timeline .tldate.previous {
+    background-color: #e0a5a5;
+    color: #333333;
+}
+
 .timeline .tldate.start {
     text-align: left;
     width: 100%;
@@ -257,20 +262,25 @@ html, body {
 }
 
 .tldatecontrol {
+    cursor: pointer;
     display: block;
     width: 200px;
     background: #0071BC;
-    -moz-border-radius: 15px;
-    border-radius: 15px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
     border: 3px solid #212121;
     color: #ededed;
     margin: 0 auto;
-    padding: 3px 0;
+    padding: 0px 0px 6px 0px;
     text-align: center;
     -webkit-box-shadow: 0 0 11px rgba(0,0,0,0.35);
 }
+.tldatecontrol:hover {
+    background: #327daf;
+}
+
 .tldatecontrol a {
-    color: white;
+    color: inherit;
 }
 
 .timeline li {
@@ -317,6 +327,10 @@ html, body {
     -webkit-appearance: none;
 }
 
+.timeline li .timeline-panel.previous {
+    background-color: #eee;
+}
+
 .form-value-invalid {
     border-bottom: 4px solid #c25b4e;
     color:#c25b4e;
@@ -331,9 +345,6 @@ IMPORTANT IMPLEMENT FOR SMARTPHONE A SET OF RULES**/
     font-size:16px;
 }
 
-.timeline li .timeline-panel:hover {
-    background-color: #eee;
-}
 
 /* END OF IMPORTANT IMPLEMENT FOR SMARTPHONE A SET OF RULES**/
 

@@ -162,7 +162,7 @@ Timeline.prototype = {
           /* Add previous trip ended panel*/
           var previousTripPanel = [
             '<li>',
-              '<div class="tldate" style="width:330px"> <p lang="en">('+previousTripEndDateLocal  +') '+ this.trip.getPreviousTripEndTime(true) +' - Previous trip ended</p>',
+              '<div class="tldate previous" style="width:330px"> <p lang="en"><strong>' + this.trip.getPreviousTripEndTime(true) +'</strong> ('+previousTripEndDateLocal  +') - Previous trip ended</p>',
               '</div>',
             '</li>'
           ];
@@ -171,18 +171,18 @@ Timeline.prototype = {
           /* Add previous trip summary */
           var previousTripSummaryPanel = [
             '<li class="timeline-inverted">',
-              '<div class="timeline-panel" id ="firstTimelinePanel">',
+              '<div class="timeline-panel previous">',
                 '<div class="tl-heading">',
-                  '<h4 lang="en">Time spent at '+previousPlace+'</h4>',
-                  '<p id="tldatefirstparagraph">',
+                  '<strong>Previous trip summary</strong>',
+                '</div>',
+                '<div class="tl-body">',
+                  '<div id="tldatefirstparagraph">',
                     '<small class="text-muted">',
                       '<i class="glyphicon glyphicon-time"></i> '+this.trip.getPreviousTripEndTime(true)+' - '+this.trip.getStartTime(true),
                     '</small>',
-                  '</p>',
-                '</div>',
-                '<div class="tl-body">',
-                  '<p lang="en">Place: '+previousPlace+'</p>',
-                  '<p lang="en">Purpose: '+previousPurpose+'</p>',
+                  '</div>',
+                  '<div lang="en">Place: '+previousPlace+'</div>',
+                  '<div lang="en">Purpose: '+previousPurpose+'</div>',
                 '</div>',
               '</div>',
             '</li>'
