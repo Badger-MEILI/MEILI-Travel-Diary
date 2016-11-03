@@ -244,9 +244,9 @@ Trip.prototype = {
 
   // This is on a trip since a time change could result in multiple triplegs being affected
   // and current tiplegs state is returned
-  deleteTripleg: function(trip) {
+  deleteTripleg: function(tripleg) {
     var dfd = $.Deferred();
-    api.trips.delete(trip.getId()).done(function(result) {
+    api.triplegs.delete(tripleg.getId()).done(function(result) {
       this.updateTriplegs(result.triplegs);
       dfd.resolve(this);
     }.bind(this)).fail(function(err) {

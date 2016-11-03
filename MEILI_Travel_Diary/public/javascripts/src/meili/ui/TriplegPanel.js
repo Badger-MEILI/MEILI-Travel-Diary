@@ -68,7 +68,19 @@ TriplegPanel.prototype = {
         map.fitBounds(this.tripleg.polylineLayer.getBounds());
         log.debug('UI TriplegPanel -> zoom-to-tripleg click', 'Zoomed to layer ' + this.tripleg.getId());
       }
+      e.preventDefault();
+      return false;
     }.bind(this));
+
+    $element.on('click', '.delete-tripleg', function(e) {
+      new Confirm().show('Delete tripleg', 'Do you really want to delete this tripleg?', function() {
+        this.emit('delete-tripleg', this.tripleg);
+        log.debug('UI TriplegPanel -> delete-tripleg click', 'Delete tripleg ' + this.tripleg.getId());
+      }.bind(this));
+      e.preventDefault();
+      return false;
+    }.bind(this));
+
 
     $element.on('change', '.place-selector.transition', function(e) {
       if(e.target.value) {

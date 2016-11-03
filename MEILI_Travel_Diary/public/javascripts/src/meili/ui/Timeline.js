@@ -30,6 +30,7 @@ Timeline.prototype = {
       triplegPanel.on('start-time-change', this._updateStartTime.bind(this));
       triplegPanel.on('end-time-change', this._updateEndTime.bind(this));
       triplegPanel.on('open-transition-modal', this.openInsertTransitionModal.bind(this));
+      triplegPanel.on('delete-tripleg', this.trip.deleteTripleg.bind(this.trip));
     }
     this.generateLastElement();
   },
@@ -75,7 +76,7 @@ Timeline.prototype = {
       var fromMode = parseInt($modal.find('#select-from').val(), 10);
       var toMode = parseInt($modal.find('#select-from').val(), 10);
       this.trip.insertTransitionBetweenTriplegs(startTime, endTime, fromMode, toMode);
-      $('#transition-choice-modal').modal('hide');
+      $('#'+this.insertTransitionModalId).modal('hide');
     }.bind(this));
 
     // Trip purpose selector
@@ -104,17 +105,6 @@ Timeline.prototype = {
       } else {
         new Confirm().show('Complete trip annotation', 'Do you really want to complete the annotations for this trip and move to the next trip?', function() {
           this.trip.confirm();
-        }.bind(this));
-      }
-      e.preventDefault();
-      return false;
-    }.bind(this));
-
-    $element.on('click', '.delete-tripleg', function(e) {
-      var triplegId = $(e.currentTarget).attr('tripleg-id');
-      if(triplegId) {
-        new Confirm().show('Delete tripleg', 'Do you really want to delete this tripleg?', function() {
-          this.trip.deleteTripleg(triplegId);
         }.bind(this));
       }
       e.preventDefault();
@@ -198,7 +188,7 @@ Timeline.prototype = {
       } else {
           var firstTimePanel = [
             '<li>',
-              '<div class="tldate start" id="firstTimelinePanel">',
+              '<div class="tldate init" id="firstTimelinePanel">',
                 '<p lang="en">This is where you started using MEILI</p>',
               '</div>',
             '</li>'
