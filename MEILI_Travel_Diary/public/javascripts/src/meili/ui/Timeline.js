@@ -157,7 +157,7 @@ Timeline.prototype = {
           ];
           ul.append(navigateToPreviousTrip.join(''));
 
-          var previousTripEndDateLocal = moment(this.trip.getPreviousTripEndTime()).format('dddd, YY-MM-DD');
+          var previousTripEndDateLocal = moment(this.trip.getPreviousTripEndTime()).format('dddd, YYYY-MM-DD');
 
           /* Add previous trip ended panel*/
           var previousTripPanel = [
@@ -199,17 +199,21 @@ Timeline.prototype = {
           ul.append(firstTimePanel.join(''));
       }
       /* Add started trip info */
-      var currentTripStartDateLocal = moment(previousTripEndDate).format('dddd')+", "+moment(currentTripStartDate).format("YY-MM-DD");
+      var currentTripStartDateLocal = moment(previousTripEndDate).format('dddd')+", "+moment(currentTripStartDate).format("YYYY-MM-DD");
       var currentTripStartHour = moment(currentTripStartDate).format("hh:ss");
 
       var tripStartPanel = [
         '<li>',
-          '<div class="tldate start" id="tldatefirst" style="width:330px">',
-            '<span class="glyphicon large glyphicon-flag"></span>',
-            '<span>',
-              '<p lang="en" id="tldatefirstassociatedparagraph"><strong>'+currentTripStartHour+'</strong> ('+currentTripStartDateLocal  +') - Started trip</p>',
-              '<button class="delete-trip btn btn-default" lang="en"><i>Is this a fake trip? Click <span class="glyphicon glyphicon-trash"></span> to delete.</i></button>',
-            '</span>',
+          '<div class="tldate start row" id="tldatefirst">',
+            '<div class="col-md-1">',
+              '<span class="glyphicon glyphicon-flag large"></span>',
+            '</div>',
+            '<div class="col-md-7">',
+              '<span class="important-time">'+ this.trip.getStartTime(true) +'</span> <small>('+ currentTripStartDateLocal  +')</small> - <strong>Started trip</strong>',
+            '</div>',
+            '<div class="col-md-4 controls">',
+              '<button class="delete-trip btn btn-default" lang="en"><span class="glyphicon glyphicon-trash"></span> Delete trip</button>',
+            '</div>',
           '</div>',
         '</li>'
       ];
@@ -232,13 +236,20 @@ Timeline.prototype = {
       var ul = $('#'+this.elementId+' > ul');
 
       var currentTripEnd = this.trip.getEndTime();
-      var currentTripEndDateLocal = moment(currentTripEnd).format('dddd')+", "+moment(currentTripEnd).format("YY-MM-DD");
+      var currentTripEndDateLocal = moment(currentTripEnd).format('dddd')+", "+moment(currentTripEnd).format("YYYY-MM-DD");
 
       var lastTimelineElement = [
         '<li>',
-          '<div class="tldate" id="tldatelast" style="width: 390px;">',
-            '<span class="glyphicon glyphicon-flag large"></span> <span><p id="tldatelastassociatedparagraph" lang="en"><strong>'+ this.trip.getEndTime(true) +'</strong> ('+currentTripEndDateLocal  +') - Ended trip</p>',
-            '<p lang="en"><i> Is this a fake stop? Click <span class="glyphicon glyphicon-share-alt" onclick="mergeTripModal()"> </span> to merge with next trip.</i></p></span>',
+          '<div class="tldate end row" id="tldatelast">',
+            '<div class="col-md-1">',
+              '<span class="glyphicon glyphicon-flag large"></span>',
+            '</div>',
+            '<div class="col-md-7">',
+              '<span class="important-time">'+ this.trip.getEndTime(true) +'</span> <small>('+currentTripEndDateLocal  +')</small> - <strong>Ended trip</strong>',
+            '</div>',
+            '<div class="col-md-4 controls">',
+              '<button class="merge-with-next-trip btn btn-default" lang="en">Merge with next trip <span class="glyphicon glyphicon-share-alt"></span></button>',
+            '</div>',
           '</div>',
         '</li>'
       ];
