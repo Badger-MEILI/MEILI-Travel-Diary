@@ -412,17 +412,23 @@ IMPORTANT IMPLEMENT FOR SMARTPHONE A SET OF RULES**/
     height: 40px;
     margin-left: -45px;
     margin-bottom: 10px;
-    background: #2f4767;
-    color: #fff;
+    background: #fff;
+    color: #000;
     border: 3px solid #828282;
     border-top-right-radius: 50%;
     border-top-left-radius: 50%;
     border-bottom-right-radius: 50%;
     border-bottom-left-radius: 50%;
-}
-.timeline li .tl-ctrl li a {
-    color: #fff;
     cursor: pointer;
+}
+.timeline li .tl-ctrl li:hover {
+    color: #333333;
+    background-color: #e6e6e6;
+    border-color: #adadad;
+}
+
+.timeline li .tl-ctrl li a {
+    color: inherit;
 }
 .timeline li .tl-ctrl .glyphicon{
     top: 0px;
