@@ -210,8 +210,8 @@ html, body {
 
 .tldate {
     display: block;
-    width: 200px;
-    background: #c25b4e;
+    width: 250px;
+    background: #ccc;
     color: #ededed;
     margin: 0 auto;
     padding: 6px 0;
@@ -224,6 +224,10 @@ html, body {
     color: #333333;
 }
 
+.timeline .tldate.init {
+    background-color: #5aab65;
+}
+
 .timeline .tldate.start {
     text-align: left;
     width: 100%;
@@ -233,6 +237,7 @@ html, body {
 
 .timeline .tldate.end {
     text-align: left;
+    background-color: #c25b4e;
     width: 100%;
 }
 
