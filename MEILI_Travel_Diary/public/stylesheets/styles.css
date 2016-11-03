@@ -59,6 +59,18 @@ html, body {
     padding-top: 9px;
 }
 
+/*
+    bootstrap-timepicker timepicker
+ */
+.bootstrap-timepicker.timepicker .input-group-addon {
+    background-color: #FFF;
+}
+
+.bootstrap-timepicker.timepicker .input-group-addon:hover {
+    color: #333333;
+    background-color: #e6e6e6;
+    border-color: #adadad;
+}
 
 
 /*
@@ -174,8 +186,7 @@ html, body {
 
 .timeline .form-control{
     margin: 0;
-    color: #c25b4e;
-    font-size: 18px;
+    font-size: 16px;
 }
 
 .timeline li .timeline-panel .form-control-inline {
@@ -199,8 +210,8 @@ html, body {
 
 .tldate {
     display: block;
-    width: 200px;
-    background: #c25b4e;
+    width: 250px;
+    background: #ccc;
     color: #ededed;
     margin: 0 auto;
     padding: 6px 0;
@@ -208,9 +219,36 @@ html, body {
     -webkit-box-shadow: 0 0 11px rgba(0,0,0,0.35);
 }
 
+.timeline .tldate.previous {
+    background-color: #e0a5a5;
+    color: #333333;
+}
+
+.timeline .tldate.init {
+    background-color: #5aab65;
+}
+
 .timeline .tldate.start {
+    text-align: left;
+    width: 100%;
     background-color: #5aab65;
     padding: 4px;
+}
+
+.timeline .tldate.end {
+    text-align: left;
+    background-color: #c25b4e;
+    width: 100%;
+}
+
+.timeline .tldate > .controls {
+    text-align: right;
+    padding-top: 4px;
+}
+
+.delete-trip:hover {
+    color: white;
+    background-color: #c25b4e;
 }
 
 .timeline .tldate .glyphicon-flag {
@@ -229,20 +267,25 @@ html, body {
 }
 
 .tldatecontrol {
+    cursor: pointer;
     display: block;
     width: 200px;
     background: #0071BC;
-    -moz-border-radius: 15px;
-    border-radius: 15px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
     border: 3px solid #212121;
     color: #ededed;
     margin: 0 auto;
-    padding: 3px 0;
+    padding: 0px 0px 6px 0px;
     text-align: center;
     -webkit-box-shadow: 0 0 11px rgba(0,0,0,0.35);
 }
+.tldatecontrol:hover {
+    background: #327daf;
+}
+
 .tldatecontrol a {
-    color: white;
+    color: inherit;
 }
 
 .timeline li {
@@ -266,6 +309,12 @@ html, body {
 /*
     timeline panels
  */
+.timeline .important-time {
+    line-height: 2;
+    font-size: 150%;
+    font-weight: bold;
+}
+
 .timeline li .timeline-panel {
     margin-left: 6px;
     width: 50%;
@@ -283,36 +332,24 @@ html, body {
     -webkit-appearance: none;
 }
 
-/*
-IMPORTANT IMPLEMENT FOR SMARTPHONE A SET OF RULES**/
-.timeline li .timeline-panel .form-control{
-    -webkit-appearance: none;
-    border: 0;
-    border-bottom: 4px solid #c25b4e;
+.timeline li .timeline-panel.previous {
+    background-color: #eee;
 }
 
-.timeline li .timeline-panel .form-control-inline{
-    -webkit-appearance: none;
-    border: 0;
+.form-value-invalid {
     border-bottom: 4px solid #c25b4e;
+    color:#c25b4e;
+}
+
+/*
+IMPORTANT IMPLEMENT FOR SMARTPHONE A SET OF RULES**/
+
+.timeline li .timeline-panel .form-control-inline{
     max-width: 260px;
     display: inline;
     font-size:16px;
 }
 
-.timeline li .timeline-panel .form-need-check{
-    color:red;
-    max-width: 235px;
-}
-
-.timeline li .timeline-panel .form-checked{
-    color:#c25b4e;
-    font-weight: normal;
-}
-
-.timeline li .timeline-panel:hover {
-    background-color: #eee;
-}
 
 /* END OF IMPORTANT IMPLEMENT FOR SMARTPHONE A SET OF RULES**/
 
@@ -380,17 +417,23 @@ IMPORTANT IMPLEMENT FOR SMARTPHONE A SET OF RULES**/
     height: 40px;
     margin-left: -45px;
     margin-bottom: 10px;
-    background: #2f4767;
-    color: #fff;
+    background: #fff;
+    color: #000;
     border: 3px solid #828282;
     border-top-right-radius: 50%;
     border-top-left-radius: 50%;
     border-bottom-right-radius: 50%;
     border-bottom-left-radius: 50%;
-}
-.timeline li .tl-ctrl li a {
-    color: #fff;
     cursor: pointer;
+}
+.timeline li .tl-ctrl li:hover {
+    color: #333333;
+    background-color: #e6e6e6;
+    border-color: #adadad;
+}
+
+.timeline li .tl-ctrl li a {
+    color: inherit;
 }
 .timeline li .tl-ctrl .glyphicon{
     top: 0px;

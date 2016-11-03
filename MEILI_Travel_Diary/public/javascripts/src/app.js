@@ -104,31 +104,13 @@ $(function() {
                 user.getLastTrip()
                   .done(function(trip) {
                     // TODO move me
-                    trip.on('trip-confirm', user.confirmTrip);
+                    trip.on('trip-confirm', user.confirmTrip.bind(user));
 
                     user.on('current-trip-changed', renderTrip);
 
                     trip.on('trip-update', renderTrip);
 
                     trip.on('triplegs-update', renderTrip);
-
-
-                    ui.timeline.on('start-time-change', function(triplegId, newStartTime) {
-                        var tripleg = trip.getTriplegById(triplegId);
-                        if(tripleg.isFirst) {
-                            trip.updateStartTime(newStartTime);
-                        } else {
-                            trip.updateTriplegStartTime(triplegId, newStartTime);
-                        }
-                    }.bind(trip));
-                    ui.timeline.on('end-time-change', function(triplegId, newEndTime) {
-                        var tripleg = trip.getTriplegById(triplegId);
-                        if(tripleg.isLast) {
-                            trip.updateEndTime(newEndTime);
-                        } else {
-                            trip.updateTriplegEndTime(triplegId, newEndTime);
-                        }
-                    }.bind(trip));
 
                     ui.timeline.on('move-to-previous-trip', user.getPreviousTrip);
 

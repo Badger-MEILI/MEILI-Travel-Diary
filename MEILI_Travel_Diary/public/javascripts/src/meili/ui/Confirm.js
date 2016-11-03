@@ -13,11 +13,11 @@ Confirm.prototype = {
           '<div class="modal-content">' +
           '<div class="modal-header">' +
             '<a class="close" data-dismiss="modal" >&times;</a>' +
-            '<h3>' + heading +'</h3>' +
+            '<strong>' + heading + '</strong>' +
           '</div>' +
 
           '<div class="modal-body">' +
-            '<p>' + question + '</p>' +
+            question +
           '</div>' +
 
           '<div class="modal-footer">' +
