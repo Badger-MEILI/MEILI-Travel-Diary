@@ -108,13 +108,15 @@ Trip.prototype = {
 
   generatePlacePoints: function() {
     var placesPoints = [];
-    for (var i = 0; i < this.destination_places.length; i++) {
-      var place = this.destination_places[i];
-      if(place.accuracy === 100) {
-        var marker = L.marker([place.latitude, place.longitude]);
-        marker.bindTooltip(place.name);
-        placesPoints.push(marker);
-        break;
+    if(this.destination_places && this.destination_places.length > 0) {
+      for (var i = 0; i < this.destination_places.length; i++) {
+        var place = this.destination_places[i];
+        if(place.accuracy === 100) {
+          var marker = L.marker([place.latitude, place.longitude]);
+          marker.bindTooltip(place.name);
+          placesPoints.push(marker);
+          break;
+        }
       }
     }
     return L.featureGroup(placesPoints)
