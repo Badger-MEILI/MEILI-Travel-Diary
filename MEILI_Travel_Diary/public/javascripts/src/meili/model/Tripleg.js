@@ -106,12 +106,12 @@ Tripleg.prototype = {
       return minutesDiff;
   },
 
-  getColor: function(alpha) {
+  getColor: function(alpha, low_accuracy_color) {
     var color = CONFIG.triplegs.map.lines.default_color;
     var mode = this.getMode();
     if(mode) {
       if (mode.accuracy < 50){
-        color = CONFIG.triplegs.map.lines.low_accuracy_color;
+        color = low_accuracy_color ? low_accuracy_color : CONFIG.triplegs.map.lines.low_accuracy_color;
       } else {
         _color = CONFIG.triplegs.map.lines.active.colors[mode.id];
         color = _color ? _color : color;

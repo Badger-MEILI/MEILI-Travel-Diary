@@ -152,7 +152,7 @@ TriplegPanel.prototype = {
         ((tripleg.isFirst && tripleg.isLast) ? '' : '<li><a class="delete-tripleg" title="Delete tripleg"><span class="glyphicon glyphicon-trash"></span></a></li>'),
       '</ul>',
 
-      '<div class="timeline-panel" style="background-color:'+tripleg.getColor(0.6)+'">',
+      '<div class="timeline-panel" style="background-color:'+tripleg.getColor(0.6, '#FFF')+'">',
         '<div class="tl-heading">',
         '<p><strong>',
              '<span class="distance">Travelled ' + tripleg.getDistance() + '</span>',
