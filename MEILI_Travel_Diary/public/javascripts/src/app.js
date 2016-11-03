@@ -104,7 +104,7 @@ $(function() {
                 user.getLastTrip()
                   .done(function(trip) {
                     // TODO move me
-                    trip.on('trip-confirm', user.confirmTrip);
+                    trip.on('trip-confirm', user.confirmTrip.bind(user));
 
                     user.on('current-trip-changed', renderTrip);
 
