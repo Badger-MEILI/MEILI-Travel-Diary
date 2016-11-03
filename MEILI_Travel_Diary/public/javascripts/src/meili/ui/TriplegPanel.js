@@ -166,7 +166,7 @@ TriplegPanel.prototype = {
           '</div>',
           (tripleg.isLast ? '' : this._generatePlaceSelector(tripleg.places)),
           '<br>',
-          '<a class="add-transition btn btn-default" href="#" role="button"><i class="glyphicon glyphicon-transfer"></i> Did we miss a transfer? Click to add it. </a>',
+          '<a class="add-transition btn btn-default" href="#" role="button"><i class="glyphicon glyphicon-transfer"></i> Did we miss a transfer? Click to add</a>',
 
         '</div>',
       '</div>'
