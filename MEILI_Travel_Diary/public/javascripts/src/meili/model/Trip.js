@@ -30,7 +30,6 @@ Trip.prototype = {
   },
 
   isAlreadyAnnotated: function() {
-    // !TODO verify that this is the correct way
     return this.status === 'already_annotated';
   },
 
@@ -145,6 +144,7 @@ Trip.prototype = {
       for (var i = 0; i < (newTriplegs.length+1); i++) {
         if(newTriplegs[i]) {
           newTriplegs[i] = new Tripleg(newTriplegs[i]);
+          newTriplegs[i].status = this.status;
           log.debug('Trip -> updateTriplegs', 'tripleg updated', newTriplegs[i].getId());
           newTriplegs[i].on('tripleg-updated', function() { this.emit('triplegs-update', this); }.bind(this));
         }
