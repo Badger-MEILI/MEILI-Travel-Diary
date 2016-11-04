@@ -142,8 +142,7 @@ var Api = function(config) {
           url(mainPaths.trips, 'deleteTrip'),
           {
             trip_id: tripId
-          },
-          verifyTriplegsIsReturned
+          }
         );
       },
 

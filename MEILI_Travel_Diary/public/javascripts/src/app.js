@@ -112,7 +112,7 @@ $(function() {
 
                     ui.timeline.on('move-to-previous-trip', user.getPreviousTrip.bind(user));
                     ui.timeline.on('move-to-next-trip', user.getNextTrip.bind(user));
-                    ui.timeline.on('delete-trip', user.deleteTrip);
+                    ui.timeline.on('delete-trip', user.deleteTrip.bind(user));
 
                     ui.map.init(CONFIG.map, user.id);
 
