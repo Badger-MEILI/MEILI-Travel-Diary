@@ -285,12 +285,12 @@ function testTriplegs() {
 
             it("delete a tripleg should remove the tripleg", function(done) {
                 var numberOfTriplegsBeforeDelete = trip.triplegs.length;
-                var triplegIdToDelete = trip.getLastTripleg().getId();
+                var triplegToDelete = trip.getLastTripleg();
                 trip.deleteTripleg(
-                    triplegIdToDelete
+                    triplegToDelete
                 ).done(function(updatedTrip) {
                         // Decrement by 2 because of the passive tripleg
-                    expect(updatedTrip.getTriplegById(triplegIdToDelete)).to.be.null;
+                    expect(updatedTrip.getTriplegById(triplegToDelete.getId())).to.be.null;
                     expect(updatedTrip.triplegs.length).to.be.equal(numberOfTriplegsBeforeDelete-2);
                     done();
                 }).fail(function(err) {
