@@ -103,19 +103,15 @@ $(function() {
 
                 user.getLastTrip()
                   .done(function(trip) {
-                    // TODO move me
-                    trip.on('trip-confirm', user.confirmTrip.bind(user));
-
+                    // Adding event tracking for trip. TODO! Move into trip?
                     user.on('current-trip-changed', renderTrip);
 
+                    trip.on('trip-confirm', user.confirmTrip.bind(user));
                     trip.on('trip-update', renderTrip);
-
                     trip.on('triplegs-update', renderTrip);
 
-                    ui.timeline.on('move-to-previous-trip', user.getPreviousTrip);
-
-                    ui.timeline.on('move-to-next-trip', user.getNextTrip);
-
+                    ui.timeline.on('move-to-previous-trip', user.getPreviousTrip.bind(user));
+                    ui.timeline.on('move-to-next-trip', user.getNextTrip.bind(user));
                     ui.timeline.on('delete-trip', user.deleteTrip);
 
                     ui.map.init(CONFIG.map, user.id);
