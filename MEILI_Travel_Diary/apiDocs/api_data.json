@@ -254,6 +254,66 @@
   },
   {
     "type": "get",
+    "url": "/triplegs/getAnnotatedTriplegsOfTrip&:trip_id",
+    "title": "Gets the triplegs of an annotated given trip",
+    "name": "GetAnnotatedTriplegsOfTrip",
+    "group": "Triplegs",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": true,
+            "field": "400",
+            "description": "<p>TripIdInvalid The <code>trip_id</code> is undefined or null.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": true,
+            "field": "404",
+            "description": "<p>TripIdNotFound The <code>trip_id</code> does not exist.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": true,
+            "field": "500",
+            "description": "<p>SQLError SQL error traceback.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "trip_id",
+            "description": "<p>Id of the trip for which the triplegs will be retrieved</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Tripleg[]",
+            "optional": false,
+            "field": "Triplegs",
+            "description": "<p>An array of json objects that represent the triplegs</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "routes/apiv2/triplegs.js",
+    "groupTitle": "Triplegs"
+  },
+  {
+    "type": "get",
     "url": "/triplegs/getTriplegsOfTrip&:trip_id",
     "title": "Gets the triplegs of a given trip",
     "name": "GetTriplegsOfTrip",
