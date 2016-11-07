@@ -196,7 +196,7 @@ Timeline.prototype = {
           ul.append(firstTimePanel.join(''));
       }
       /* Add started trip info */
-      var currentTripStartDateLocal = moment(previousTripEndDate).format('dddd')+", "+moment(currentTripStartDate).format("YYYY-MM-DD");
+      var currentTripStartDateLocal = moment(currentTripStartDate).format('dddd')+", "+moment(currentTripStartDate).format("YYYY-MM-DD");
       var currentTripStartHour = moment(currentTripStartDate).format("hh:ss");
 
       var tripStartPanel = [
