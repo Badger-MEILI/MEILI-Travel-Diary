@@ -169,6 +169,9 @@ Trip.prototype = {
   },
   // Add a destination place to trips local destination_places array
   addDestinationPlace: function(id, name, point) {
+    if(this.destination_places === null || typeof this.destination_places === 'undefined') {
+      this.destination_places = [];
+    }
     this.destination_places.push({
       gid: id,
       accuracy: 100,

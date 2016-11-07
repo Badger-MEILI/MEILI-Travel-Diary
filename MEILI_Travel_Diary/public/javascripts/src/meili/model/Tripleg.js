@@ -230,6 +230,9 @@ Tripleg.prototype = {
 
   // Add a transition place to triplegs local places array
   addTransitionPlace: function(id, name, point) {
+    if(this.places === null || typeof this.places === 'undefined') {
+      this.places = [];
+    }
     this.places.push({
       osm_id: id,
       accuracy: 100,
