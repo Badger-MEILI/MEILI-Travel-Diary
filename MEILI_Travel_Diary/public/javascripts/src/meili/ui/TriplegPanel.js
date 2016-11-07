@@ -86,7 +86,7 @@ TriplegPanel.prototype = {
       if(e.target.value) {
         if(e.target.value === 'add_new') {
           // Add new transition place
-          debugger;
+          this.emit('add-new-transportation-poi', this.tripleg);
         } else {
           // Update transition place
           this.tripleg.updateTransitionPoiIdOfTripleg(e.target.value);

@@ -228,6 +228,18 @@ Tripleg.prototype = {
     return this.mapLayer;
   },
 
+  // Add a transition place to triplegs local places array
+  addTransitionPlace: function(id, name, point) {
+    this.places.push({
+      osm_id: id,
+      accuracy: 100,
+      added_by_user: true,
+      name: name,
+      lat: point.lat,
+      lon: point.lng
+    });
+  },
+
   // API connected
   // -------------------------------------------
   // -------------------------------------------
@@ -250,10 +262,10 @@ Tripleg.prototype = {
 
       api.triplegs.updateTransitionPoiIdOfTripleg(this.getId(), transitionPoiId)
       .done(function(result) {
-              dfd.resolve(result);
         this._setTransition(transitionPoiId);
         this.emit('tripleg-updated');
         log.debug('Tripleg -> updateTransitionPoiIdOfTripleg', 'tripleg mode succefully updated');
+        dfd.resolve(this);
       }.bind(this))
       .fail(function(err, jqXHR) {
         var msg = 'failed to set transition on tripleg';

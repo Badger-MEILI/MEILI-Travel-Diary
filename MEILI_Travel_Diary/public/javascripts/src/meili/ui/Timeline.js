@@ -27,11 +27,12 @@ Timeline.prototype = {
       var tripleg = this.trip.triplegs[i];
       var triplegPanel = new TriplegPanel(this.elementId, this.trip.getId(), tripleg);
       // Bind trip specific events on triplegpanel
-      triplegPanel.on('start-time-change', this._updateStartTime.bind(this));
-      triplegPanel.on('end-time-change', this._updateEndTime.bind(this));
-      triplegPanel.on('open-transition-modal', this.openInsertTransitionModal.bind(this));
-      triplegPanel.on('delete-tripleg', this.trip.deleteTripleg.bind(this.trip));
-      triplegPanel.on('map-zoom-to', function(bounds) { this.emit('map-zoom-to', bounds); }.bind(this));
+      triplegPanel.on('start-time-change',    this._updateStartTime.bind(this));
+      triplegPanel.on('end-time-change',      this._updateEndTime.bind(this));
+      triplegPanel.on('open-transition-modal',this.openInsertTransitionModal.bind(this));
+      triplegPanel.on('delete-tripleg',       this.trip.deleteTripleg.bind(this.trip));
+      triplegPanel.on('map-zoom-to',          function(bounds) { this.emit('map-zoom-to', bounds); }.bind(this));
+      triplegPanel.on('add-new-transportation-poi',  function(tripleg) { this.emit('add-new-transportation-poi', tripleg); }.bind(this));
     }
     this.generateLastElement();
   },

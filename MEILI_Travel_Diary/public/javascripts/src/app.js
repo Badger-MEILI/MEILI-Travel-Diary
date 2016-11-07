@@ -117,8 +117,14 @@ $(function() {
                     ui.timeline.on('add-new-destination', function() {
                         ui.lmap.addNewPlace().then(user.addNewDestinationPoiToCurrentTrip.bind(user));
                     }.bind(this));
+                    ui.timeline.on('add-new-transportation-poi', function(tripleg) {
+                        ui.lmap.addNewPlace().then(function(name, point) {
+                            user.insertTransportationPoi(name, point).then(function(result) {
+                                tripleg.addTransitionPlace(result.insert_transition_poi, name, point);
+                                tripleg.updateTransitionPoiIdOfTripleg(result.insert_transition_poi);
+                            });
+                        });
                     }.bind(this));
-
                     renderTrip(trip);
                     ui.lmap.fitBounds(trip.mapLayer.getBounds());
                 });

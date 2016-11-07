@@ -160,6 +160,10 @@ User.prototype = {
       });
   },
 
+  insertTransportationPoi: function(name, point) {
+    return api.pois.insertTransportationPoi(name, point, this.id);
+  },
+
   _setCurrentTrip: function(tripJson) {
     var dfd = $.Deferred();
     // Set current trip
