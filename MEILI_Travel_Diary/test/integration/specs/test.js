@@ -34,6 +34,7 @@ describe("MEILI test: ", function() {
 
   testTrips();
   testTriplegs();
+  testPois();
 
   after(function(done) {
     // Reset test data
