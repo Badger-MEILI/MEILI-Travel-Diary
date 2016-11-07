@@ -25,6 +25,9 @@ function testPois() {
                     trip.updateDestinationPoiIdOfTrip(result.insert_destination_poi).done(function() {
                         // Get last trip to verify
                         user.getLastTrip().done(function(trip) {
+
+                            console.log(trip.destination_places);
+
                             // Make sure trip have destinations
                             expect(trip.destination_places).to.not.be.equal(null);
 
@@ -32,11 +35,11 @@ function testPois() {
                             // loop trip to find inserted destination
                             for (var i = 0; i < trip.destination_places.length; i++) {
                                 var poi = trip.destination_places[i];
-                                if(poi.name === nameToInsertname && poi.latitude === pointToInsert.lat && poi.longitude === pointToInsert.lng) {
+                                if(poi.name === nameToInsert && poi.latitude === pointToInsert.lat && poi.longitude === pointToInsert.lng) {
                                     isOnTrip = true;
                                 }
                             };
-                            expect(isOnTrip).to.not.be.equal(true);
+                            expect(isOnTrip).to.be.equal(true);
                             done();
                         });
                     });
