@@ -150,7 +150,7 @@ User.prototype = {
     return dfd.promise();
   },
 
-  insertDestinationPoi: function(name, point) {
+  addNewDestinationPoiToCurrentTrip: function(name, point) {
     return api.pois.insertDestinationPoi(name, point, this.id).done(function(result) {
         this.currentTrip.addDestinationPlace(result.insert_destination_poi, name, point);
         this.currentTrip.updateDestinationPoiIdOfTrip(result.insert_destination_poi);
