@@ -183,7 +183,7 @@ router.get("/updateEndTimeOfTrip", function(req,res){
  *
  * @apiSuccess {Tripleg[]} Triplegs An array of json objects that represent the triplegs of the trip after the merge is performed
  */
-router.get("/updateEndTimeOfTrip", function(req,res){
+router.get("/mergeWithNextTrip", function(req,res){
     var results = {};
     results.triplegs = [];
     var trip_id = req.query.trip_id;
