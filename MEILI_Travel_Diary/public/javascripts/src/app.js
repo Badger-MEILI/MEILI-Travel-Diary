@@ -115,12 +115,7 @@ $(function() {
                     ui.timeline.on('delete-trip', user.deleteTrip.bind(user));
                     ui.timeline.on('map-zoom-to', ui.lmap.fitBounds.bind(ui.lmap))
                     ui.timeline.on('add-new-destination', function() {
-                        ui.lmap.addNewPoint().then(function(name, point) {
-                            api.pois.insertDestinationPoi(name, point, user.id).done(function(result) {
-                                trip.addDestinationPlace(result.insert_destination_poi, name, point);
-                                trip.updateDestinationPoiIdOfTrip(result.insert_destination_poi);
-                            });
-                        });
+                        ui.lmap.addNewPoint().then(user.insertDestinationPoi.bind(user));
 
                     }.bind(this));
 

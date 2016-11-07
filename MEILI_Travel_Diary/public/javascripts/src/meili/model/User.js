@@ -150,6 +150,16 @@ User.prototype = {
     return dfd.promise();
   },
 
+  insertDestinationPoi: function(name, point) {
+    return api.pois.insertDestinationPoi(name, point, this.id).done(function(result) {
+        this.currentTrip.addDestinationPlace(result.insert_destination_poi, name, point);
+        this.currentTrip.updateDestinationPoiIdOfTrip(result.insert_destination_poi);
+      }.bind(this))
+      .fail(function(err, jqXHR) {
+        log.error('User -> insertDestinationPoi', err);
+      });
+  },
+
   _setCurrentTrip: function(tripJson) {
     var dfd = $.Deferred();
     // Set current trip
