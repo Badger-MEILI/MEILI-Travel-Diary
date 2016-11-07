@@ -265,7 +265,7 @@ Tripleg.prototype = {
         this._setTransition(transitionPoiId);
         this.emit('tripleg-updated');
         log.debug('Tripleg -> updateTransitionPoiIdOfTripleg', 'tripleg mode succefully updated');
-        dfd.resolve(this);
+        dfd.resolve(result);
       }.bind(this))
       .fail(function(err, jqXHR) {
         var msg = 'failed to set transition on tripleg';
