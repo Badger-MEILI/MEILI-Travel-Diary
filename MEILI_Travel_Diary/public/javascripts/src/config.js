@@ -119,7 +119,15 @@ var CONFIG = {
           iconUrl: 'images/start_flag.png',
           iconSize: [30, 30],
           iconAnchor: [0, 30]
-        })
+        }),
+        passive_point: {
+          radius: 4,
+          fillColor: "#000",
+          color: "#000",
+          weight: 2,
+          opacity: 0.8,
+          fillOpacity: 0.8
+        }
       }
     }
   }

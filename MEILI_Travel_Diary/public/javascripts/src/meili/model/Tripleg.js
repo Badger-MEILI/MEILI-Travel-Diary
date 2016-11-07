@@ -318,9 +318,11 @@ Tripleg.prototype = {
         // Regular point
         marker = L.circleMarker(point, CONFIG.triplegs.map.markers.regular);
       }
-    } else {
-      // PASSIVE TRIPLEGS
+    } else if(isFirstPoint || isLastPoint) {
+      // PASSIVE TRIPLEGS, only shown for first and last point
       marker = L.marker(point, { icon: CONFIG.triplegs.map.markers.transition });
+    } else {
+      marker = L.circleMarker(point, CONFIG.triplegs.map.markers.passive_point);
     }
     // Add a tooltip for simpler debugging
     if(marker) {
