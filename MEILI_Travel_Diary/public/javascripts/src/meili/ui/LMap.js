@@ -32,15 +32,6 @@ var LMap = LMap || function(mapConfig) {
 
 LMap.prototype = {
 
-  insertDraggablePoint: function(name) {
-    var marker = new L.marker(this.map.getCenter(),{
-      draggable: true
-    });
-    marker.bindTooltip(name);
-    marker.addTo(this.map);
-    return marker;
-  },
-
   addNewPoint: function() {
     var dfd = $.Deferred();
     new Confirm().show(
@@ -48,12 +39,18 @@ LMap.prototype = {
       '<label for="poi-name">Name of the palce</label><input type="text" class="form-control" placeholder="Name" name="poi-name" id="poi-name" />',
       function($element) {
         var poiName = $element.find('#poi-name').val();
-        var point = this.insertDraggablePoint(poiName);
-        point.on("drag", function(e) {
-          var marker = e.target;
-          var position = marker.getLatLng();
-          dfd.resolve(poiName, position);
-        });
+        // Set map cursor to marker icon
+        $(this.map.getContainer()).css({'cursor': 'url(/images/marker-icon.png) 12 32, default'});
+        function mapClicked(e) {
+          // remove event handler
+          this.map.off('click', mapClicked);
+          // Reset cursor
+          $(this.map.getContainer()).css({'cursor': 'auto'});
+          // resolve with clicked position
+          dfd.resolve(poiName, e.latlng);
+        }
+        // bind map click handler
+        this.map.on('click', mapClicked.bind(this));
       }.bind(this));
     return dfd.promise();
   },
