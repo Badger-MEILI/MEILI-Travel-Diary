@@ -4,23 +4,22 @@ npm-debug.log
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 # User-specific stuff:
-MEILI-Travel-Diary/.idea/workspace.xml
-MEILI-Travel-Diary/.idea/tasks.xml
+MEILI-Travel-Diary/.idea/
 
 # Sensitive or high-churn files:
-.idea/dataSources.ids
-.idea/dataSources.xml
-.idea/dataSources.local.xml
-.idea/sqlDataSources.xml
-.idea/dynamic.xml
-.idea/uiDesigner.xml
+#.idea/dataSources.ids
+#.idea/dataSources.xml
+#.idea/dataSources.local.xml
+#.idea/sqlDataSources.xml
+#.idea/dynamic.xml
+#.idea/uiDesigner.xml
 
 # Gradle:
-.idea/gradle.xml
-.idea/libraries
+#.idea/gradle.xml
+#.idea/libraries
 
 # Mongo Explorer plugin:
-.idea/mongoSettings.xml
+#.idea/mongoSettings.xml
 
 ## File-based project format:
 *.iws
@@ -31,7 +30,7 @@ MEILI-Travel-Diary/.idea/tasks.xml
 /out/
 
 # mpeltonen/sbt-idea plugin
-.idea_modules/
+MEILI-Travel-Diary/.idea_modules/
 
 # JIRA plugin
 atlassian-ide-plugin.xml
