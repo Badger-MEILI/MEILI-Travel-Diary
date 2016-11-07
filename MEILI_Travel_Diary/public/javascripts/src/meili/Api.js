@@ -5,7 +5,8 @@ var Api = function(config) {
 
   var mainPaths = {
     trips: 'trips',
-    triplegs: 'triplegs'
+    triplegs: 'triplegs',
+    pois: 'pois'
   };
 
   function url(mainPath, path) { return [config.api_host, config.api_url, mainPath, path].join('/') };
@@ -245,6 +246,53 @@ var Api = function(config) {
             } else {
               var msg = 'Some problem updating transition poi of tripleg, server responded with incorrect status';
               log.error('Api -> updateTransitionPoiIdOfTripleg', msg);
+              dfd.reject(msg);
+              throw msg;
+            }
+          }
+        );
+      }
+    },
+
+    pois: {
+      insertDestinationPoi: function(name, point, userId) {
+        return request.get(
+          url(mainPaths.pois, 'insertDestinationPoi'),
+          {
+            name_: name,
+            latitude: point.lat,
+            longitude: point.lng,
+            declaring_user_id: userId
+          },
+          function(dfd, result) {
+            if(result.insert_destination_poi) {
+              dfd.resolve(result);
+            } else {
+              var msg = 'Problem inserting destination poi';
+              log.error('Api -> insertDestinationPoi', msg);
+              dfd.reject(msg);
+              throw msg;
+            }
+          }
+        );
+      },
+      insertTransitionPoi: function(name, point, userId) {
+        return request.get(
+          url(mainPaths.pois, 'insertTransportationPoi'),
+          {
+            name_: name,
+            latitude: point.lat,
+            longitude: point.lng,
+            declaring_user_id: userId,
+            //transportation_lines: null,
+            //transportation_types: null
+          },
+          function(dfd, result) {
+            if(result.insert_transition_poi) {
+              dfd.resolve(result);
+            } else {
+              var msg = 'Problem inserting transition poi';
+              log.error('Api -> insertTransitionPoi', msg);
               dfd.reject(msg);
               throw msg;
             }
