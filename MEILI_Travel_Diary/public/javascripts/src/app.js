@@ -48,7 +48,7 @@ $(function() {
       // Reset.
       if(trip.mapLayer) {
         trip.mapLayer.clearLayers();
-        map.removeLayer(trip.mapLayer);
+        ui.lmap.map.removeLayer(trip.mapLayer);
       }
 
       trip.generateMapLayer();
@@ -62,7 +62,7 @@ $(function() {
         var triplegLayer = tripleg.generateMapLayer();
         trip.mapLayer.addLayer(triplegLayer);
       }
-      trip.mapLayer.addTo(map);
+      trip.mapLayer.addTo(ui.lmap.map);
     }
 
 
@@ -92,7 +92,7 @@ $(function() {
     page('/map', function(ctx, next) {
         verifyLoggedIn(function() {
             render('views/partials/map.html', function() {
-                ui.map = new LMap();
+                ui.lmap = new LMap(CONFIG.map, user.id);
                 ui.timeline = new Timeline({ elementId: 'timeline'});
 
                 user.getNumberOfTrips()
@@ -113,11 +113,19 @@ $(function() {
                     ui.timeline.on('move-to-previous-trip', user.getPreviousTrip.bind(user));
                     ui.timeline.on('move-to-next-trip', user.getNextTrip.bind(user));
                     ui.timeline.on('delete-trip', user.deleteTrip.bind(user));
+                    ui.timeline.on('map-zoom-to', ui.lmap.fitBounds.bind(ui.lmap))
+                    ui.timeline.on('add-new-destination', function() {
+                        ui.lmap.addNewPoint().then(function(name, point) {
+                            api.pois.insertDestinationPoi(name, point, user.id).done(function(result) {
+                                trip.addDestinationPlace(result.insert_destination_poi, name, point);
+                                trip.updateDestinationPoiIdOfTrip(result.insert_destination_poi);
+                            });
+                        });
 
-                    ui.map.init(CONFIG.map, user.id);
+                    }.bind(this));
 
                     renderTrip(trip);
-                    map.fitBounds(trip.mapLayer.getBounds());
+                    ui.lmap.fitBounds(trip.mapLayer.getBounds());
                 });
             });
         });

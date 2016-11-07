@@ -31,6 +31,7 @@ Timeline.prototype = {
       triplegPanel.on('end-time-change', this._updateEndTime.bind(this));
       triplegPanel.on('open-transition-modal', this.openInsertTransitionModal.bind(this));
       triplegPanel.on('delete-tripleg', this.trip.deleteTripleg.bind(this.trip));
+      triplegPanel.on('map-zoom-to', function(bounds) { this.emit('map-zoom-to', bounds); }.bind(this));
     }
     this.generateLastElement();
   },
@@ -89,7 +90,12 @@ Timeline.prototype = {
 
     $element.on('change', '.place-selector.destination', function(e) {
       if(e.target.value) {
-        this.trip.updateDestinationPoiIdOfTrip(e.target.value);
+        if(e.target.value === 'add_new') {
+          // add new point
+          this.emit('add-new-destination', this);
+        } else {
+          this.trip.updateDestinationPoiIdOfTrip(e.target.value);
+        }
       }
     }.bind(this));
 
@@ -345,6 +351,8 @@ Timeline.prototype = {
         selectorOptions.unshift('<option value="-1" disabled selected lang="en">' + specifyOptionLabel + '</option>');
       }
 
+      selectorOptions.push('<option value="add_new">Add new ...</option>');
+
       placeSelector = ['<p lang="en">',
                         '<label for="place-selector">' + label + '</label>',
                         '<div>',
@@ -379,6 +387,7 @@ Timeline.prototype = {
         purposeOptions.push('<option value="' + purpose.id + '" lang="en">' + purpose.name + '</option>');
 
       }
+
       purposeSelector = '<p lang="en">' +
                               '<label for="purpose-selector">Purpose of trip: </label>'+
                               '<div>' +

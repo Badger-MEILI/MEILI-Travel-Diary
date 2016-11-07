@@ -33,7 +33,7 @@ Confirm.prototype = {
         '</div>');
 
     confirmModal.find('#confirm-ok-button').click(function(e) {
-      callback();
+      callback(confirmModal);
       confirmModal.modal('hide');
       e.preventDefault();
     });
