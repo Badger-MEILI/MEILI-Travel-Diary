@@ -115,7 +115,7 @@ $(function() {
                     ui.timeline.on('delete-trip', user.deleteTrip.bind(user));
                     ui.timeline.on('map-zoom-to', ui.lmap.fitBounds.bind(ui.lmap))
                     ui.timeline.on('add-new-destination', function() {
-                        ui.lmap.addNewPoint().then(user.insertDestinationPoi.bind(user));
+                        ui.lmap.addNewPlace().then(user.insertDestinationPoi.bind(user));
 
                     }.bind(this));
 

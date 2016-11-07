@@ -32,11 +32,15 @@ var LMap = LMap || function(mapConfig) {
 
 LMap.prototype = {
 
-  addNewPoint: function() {
+  addNewPlace: function() {
     var dfd = $.Deferred();
-    new Confirm().show(
-      'Add a new point',
-      '<label for="poi-name">Name of the palce</label><input type="text" class="form-control" placeholder="Name" name="poi-name" id="poi-name" />',
+    new Confirm().show({
+        heading: 'Add a new point',
+        question: 'Enter a name and place a point on the map.<br/><br/>' +
+                  '<label for="poi-name">Name of the palce</label>' +
+                  '<input type="text" class="form-control" name="poi-name" id="poi-name" />',
+        okButtonTxt: 'Place point on map'
+      },
       function($element) {
         var poiName = $element.find('#poi-name').val();
         // Set map cursor to marker icon

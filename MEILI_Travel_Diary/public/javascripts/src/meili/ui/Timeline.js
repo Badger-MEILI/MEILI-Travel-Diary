@@ -109,7 +109,7 @@ Timeline.prototype = {
       if(this.trip.isAlreadyAnnotated()) {
         this.emit('move-to-next-trip', this.trip);
       } else {
-        new Confirm().show('Complete trip annotation', 'Do you really want to complete the annotations for this trip and move to the next trip?', function() {
+        new Confirm().show({ heading: 'Complete trip annotation', question: 'Do you really want to complete the annotations for this trip and move to the next trip?' }, function() {
           this.trip.confirm();
         }.bind(this));
       }
@@ -118,7 +118,7 @@ Timeline.prototype = {
     }.bind(this));
 
     $element.on('click', '.delete-trip', function(e) {
-      new Confirm().show('Delete trip', 'Do you really want to delete this trip?', function() {
+      new Confirm().show({ heading: 'Delete trip', question: 'Do you really want to delete this trip?' }, function() {
         this.emit('delete-trip', this.trip);
       }.bind(this));
       e.preventDefault();
@@ -127,7 +127,7 @@ Timeline.prototype = {
 
 
     $element.on('click', '.merge-with-next-trip', function(e) {
-      new Confirm().show('Merge trip', 'Do you really want to merge this trip with next trip?', function() {
+      new Confirm().show({ heading: 'Merge trip', question: 'Do you really want to merge this trip with next trip?' }, function() {
         this.trip.mergeWithNextTrip();
       }.bind(this));
       e.preventDefault();

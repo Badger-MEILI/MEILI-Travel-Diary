@@ -73,7 +73,7 @@ TriplegPanel.prototype = {
     }.bind(this));
 
     $element.on('click', '.delete-tripleg', function(e) {
-      new Confirm().show('Delete tripleg', 'Do you really want to delete this tripleg?', function() {
+      new Confirm().show({ heading: 'Delete tripleg', question: 'Do you really want to delete this tripleg?' }, function() {
         this.emit('delete-tripleg', this.tripleg);
         log.debug('UI TriplegPanel -> delete-tripleg click', 'Delete tripleg ' + this.tripleg.getId());
       }.bind(this));
