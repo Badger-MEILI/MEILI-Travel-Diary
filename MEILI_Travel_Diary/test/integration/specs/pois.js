@@ -26,8 +26,6 @@ function testPois() {
                         // Get last trip to verify
                         user.getLastTrip().done(function(trip) {
 
-                            console.log(trip.destination_places);
-
                             // Make sure trip have destinations
                             expect(trip.destination_places).to.not.be.equal(null);
 
