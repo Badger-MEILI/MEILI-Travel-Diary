@@ -32,6 +32,8 @@ var myClient = segmenter.client;
  */
 router.get('/loggedin', function (req, res) {
     var checkMe=undefined;
+    console.log('request is authenticated');
+    console.log(req.isAuthenticated());
     if (req.user!=undefined) checkMe = req.user.userId +", "+req.user.userName;
     console.log(checkMe);
     res.send(checkMe+"");
