@@ -167,6 +167,17 @@ Trip.prototype = {
     this.triplegs = [];
     return this;
   },
+  // Add a destination place to trips local destination_places array
+  addDestinationPlace: function(id, name, point) {
+    this.destination_places.push({
+      gid: id,
+      accuracy: 100,
+      added_by_user: true,
+      name: name,
+      latitude: point.lat,
+      longitude: point.lng
+    });
+  },
 
   // API connected
   // -------------------------------------------

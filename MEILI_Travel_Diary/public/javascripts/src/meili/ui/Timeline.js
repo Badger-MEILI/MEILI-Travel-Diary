@@ -27,10 +27,12 @@ Timeline.prototype = {
       var tripleg = this.trip.triplegs[i];
       var triplegPanel = new TriplegPanel(this.elementId, this.trip.getId(), tripleg);
       // Bind trip specific events on triplegpanel
-      triplegPanel.on('start-time-change', this._updateStartTime.bind(this));
-      triplegPanel.on('end-time-change', this._updateEndTime.bind(this));
-      triplegPanel.on('open-transition-modal', this.openInsertTransitionModal.bind(this));
-      triplegPanel.on('delete-tripleg', this.trip.deleteTripleg.bind(this.trip));
+      triplegPanel.on('start-time-change',    this._updateStartTime.bind(this));
+      triplegPanel.on('end-time-change',      this._updateEndTime.bind(this));
+      triplegPanel.on('open-transition-modal',this.openInsertTransitionModal.bind(this));
+      triplegPanel.on('delete-tripleg',       this.trip.deleteTripleg.bind(this.trip));
+      triplegPanel.on('map-zoom-to',          function(bounds) { this.emit('map-zoom-to', bounds); }.bind(this));
+      triplegPanel.on('add-new-transportation-poi',  function(tripleg) { this.emit('add-new-transportation-poi', tripleg); }.bind(this));
     }
     this.generateLastElement();
   },
@@ -89,7 +91,12 @@ Timeline.prototype = {
 
     $element.on('change', '.place-selector.destination', function(e) {
       if(e.target.value) {
-        this.trip.updateDestinationPoiIdOfTrip(e.target.value);
+        if(e.target.value === 'add_new') {
+          // add new point
+          this.emit('add-new-destination', this);
+        } else {
+          this.trip.updateDestinationPoiIdOfTrip(e.target.value);
+        }
       }
     }.bind(this));
 
@@ -103,7 +110,7 @@ Timeline.prototype = {
       if(this.trip.isAlreadyAnnotated()) {
         this.emit('move-to-next-trip', this.trip);
       } else {
-        new Confirm().show('Complete trip annotation', 'Do you really want to complete the annotations for this trip and move to the next trip?', function() {
+        new Confirm().show({ heading: 'Complete trip annotation', question: 'Do you really want to complete the annotations for this trip and move to the next trip?' }, function() {
           this.trip.confirm();
         }.bind(this));
       }
@@ -112,7 +119,7 @@ Timeline.prototype = {
     }.bind(this));
 
     $element.on('click', '.delete-trip', function(e) {
-      new Confirm().show('Delete trip', 'Do you really want to delete this trip?', function() {
+      new Confirm().show({ heading: 'Delete trip', question: 'Do you really want to delete this trip?' }, function() {
         this.emit('delete-trip', this.trip);
       }.bind(this));
       e.preventDefault();
@@ -121,7 +128,7 @@ Timeline.prototype = {
 
 
     $element.on('click', '.merge-with-next-trip', function(e) {
-      new Confirm().show('Merge trip', 'Do you really want to merge this trip with next trip?', function() {
+      new Confirm().show({ heading: 'Merge trip', question: 'Do you really want to merge this trip with next trip?' }, function() {
         this.trip.mergeWithNextTrip();
       }.bind(this));
       e.preventDefault();
@@ -345,6 +352,8 @@ Timeline.prototype = {
         selectorOptions.unshift('<option value="-1" disabled selected lang="en">' + specifyOptionLabel + '</option>');
       }
 
+      selectorOptions.push('<option value="add_new">Add new ...</option>');
+
       placeSelector = ['<p lang="en">',
                         '<label for="place-selector">' + label + '</label>',
                         '<div>',
@@ -379,6 +388,7 @@ Timeline.prototype = {
         purposeOptions.push('<option value="' + purpose.id + '" lang="en">' + purpose.name + '</option>');
 
       }
+
       purposeSelector = '<p lang="en">' +
                               '<label for="purpose-selector">Purpose of trip: </label>'+
                               '<div>' +

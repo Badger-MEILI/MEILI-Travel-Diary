@@ -276,7 +276,7 @@ var Api = function(config) {
           }
         );
       },
-      insertTransitionPoi: function(name, point, userId) {
+      insertTransportationPoi: function(name, point, userId) {
         return request.get(
           url(mainPaths.pois, 'insertTransportationPoi'),
           {

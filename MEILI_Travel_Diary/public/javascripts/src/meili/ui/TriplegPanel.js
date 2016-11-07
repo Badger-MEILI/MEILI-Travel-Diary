@@ -65,7 +65,7 @@ TriplegPanel.prototype = {
     // Tripleg panel mouse click
     $element.on('click', '.zoom-to-tripleg', function(e) {
       if(this.tripleg.polylineLayer) {
-        map.fitBounds(this.tripleg.polylineLayer.getBounds());
+        this.emit('map-zoom-to', this.tripleg.polylineLayer.getBounds())
         log.debug('UI TriplegPanel -> zoom-to-tripleg click', 'Zoomed to layer ' + this.tripleg.getId());
       }
       e.preventDefault();
@@ -73,7 +73,7 @@ TriplegPanel.prototype = {
     }.bind(this));
 
     $element.on('click', '.delete-tripleg', function(e) {
-      new Confirm().show('Delete tripleg', 'Do you really want to delete this tripleg?', function() {
+      new Confirm().show({ heading: 'Delete tripleg', question: 'Do you really want to delete this tripleg?' }, function() {
         this.emit('delete-tripleg', this.tripleg);
         log.debug('UI TriplegPanel -> delete-tripleg click', 'Delete tripleg ' + this.tripleg.getId());
       }.bind(this));
@@ -84,7 +84,13 @@ TriplegPanel.prototype = {
 
     $element.on('change', '.place-selector.transition', function(e) {
       if(e.target.value) {
-        this.tripleg.updateTransitionPoiIdOfTripleg(e.target.value);
+        if(e.target.value === 'add_new') {
+          // Add new transition place
+          this.emit('add-new-transportation-poi', this.tripleg);
+        } else {
+          // Update transition place
+          this.tripleg.updateTransitionPoiIdOfTripleg(e.target.value);
+        }
       }
     }.bind(this));
 
@@ -210,6 +216,8 @@ TriplegPanel.prototype = {
         // Can not preselect for the user
         selectorOptions.unshift('<option value="-1" disabled selected lang="en">' + specifyOptionLabel + '</option>');
       }
+
+      selectorOptions.push('<option value="add_new">Add new ...</option>');
 
       placeSelector = ['<p lang="en">',
                         '<label for="place-selector">' + label + '</label>',
