@@ -8,7 +8,7 @@ var Tripleg = Tripleg || function(tripleg) {
   // Make sure that modes are in order
   this._sortModes();
   // Make sure transitions are in order
-  this._setTransition();
+  this._sortTransitionPlaces();
 
   return this;
 };
