@@ -120,7 +120,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // TODO - figure out if this is needed
-app.use(session({secret: 'blahblah',resave: true,
+    app.use(session({secret: 'blahblah',resave: false,
     saveUninitialized: true}));
 
 // declare and initialize passport

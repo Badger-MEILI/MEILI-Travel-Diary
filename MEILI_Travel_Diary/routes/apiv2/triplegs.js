@@ -53,6 +53,53 @@ router.get("/getTriplegsOfTrip", function(req,res){
     }
 });
 
+
+/**
+ * @api {get} /triplegs/getAnnotatedTriplegsOfTrip&:trip_id Gets the triplegs of an annotated given trip
+ * @apiName GetAnnotatedTriplegsOfTrip
+ * @apiGroup Triplegs
+ *
+ * @apiError [400] TripIdInvalid The <code>trip_id</code> is undefined or null.
+ * @apiError [404] TripIdNotFound The <code>trip_id</code> does not exist.
+ * @apiError [500] SQLError SQL error traceback.
+ *
+ * @apiParam {Number} trip_id Id of the trip for which the triplegs will be retrieved
+ *
+ * @apiSuccess {Tripleg[]} Triplegs An array of json objects that represent the triplegs
+ */
+router.get("/getAnnotatedTriplegsOfTrip", function(req,res){
+    var results = {};
+    results.triplegs = [];
+    var trip_id = req.query.trip_id;
+
+    if (!trip_id) {
+        return util.handleError(res, 400, "Invalid trip id");
+    }
+
+    else
+    {
+        var sqlQuery = "select * from apiv2.pagination_get_triplegs_of_trip_GT("+trip_id+")";
+        var prioryQuery = apiClient.query(sqlQuery);
+
+        prioryQuery.on('row', function (row) {
+            results.triplegs = row.pagination_get_triplegs_of_trip || [];
+        });
+
+        prioryQuery.on('error', function (row) {
+            return util.handleError(res, 500, row.message);
+        });
+
+        prioryQuery.on('end', function () {
+            if (results.triplegs.length > 0)
+                return res.json(results);
+            else {
+                return util.handleError(res, 404, "Trip id does not exist");
+            }
+        });
+    }
+});
+
+
 /**
  * @api {get} /triplegs/updateStartTimeOfTripleg&:tripleg_id&:start_time Updates the start time of a tripleg
  * @apiName UpdateStartTimeOfTripleg
