@@ -329,7 +329,7 @@ Timeline.prototype = {
    */
   generateDestinationPlaceSelector: function(places) {
     var placeSelector = [];
-    if (places && places.length > 0) {
+    if (places && $.isArray(places)) {
 
       var selectorOptions = [];
       var specifyOptionLabel = 'Specify your destination';
