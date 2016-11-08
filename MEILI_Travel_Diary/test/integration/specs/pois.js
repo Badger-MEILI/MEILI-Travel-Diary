@@ -72,14 +72,15 @@ function testPois() {
                     // Set it on trip
                     trip.getFirstTripleg().updateTransitionPoiIdOfTripleg(result.insert_transition_poi).done(function() {
                         // Get last trip to verify
-                        user.getLastTrip().done(function(updatedTriptrip) {
+                        user.getLastTrip().done(function(updatedTrip) {
                             var updatedTripleg = updatedTrip.getFirstTripleg();
-                            // Make sure trip have destinations
+
+                            // Make sure tripleg have destinations
                             expect(updatedTripleg.places).to.not.be.equal(null);
 
                             var isOnTripleg = false;
                             // loop trip to find inserted destination
-                            for (var i = 0; i < trip.places.length; i++) {
+                            for (var i = 0; i < updatedTripleg.places.length; i++) {
                                 var poi = updatedTripleg.places[i];
                                 if(poi.name === nameToInsert && poi.lat === pointToInsert.lat && poi.lon === pointToInsert.lng) {
                                     isOnTripleg = true;
