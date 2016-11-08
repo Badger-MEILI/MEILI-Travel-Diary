@@ -12,7 +12,11 @@ $(function() {
 
     // Catch all client errors
     window.onerror = function (errorMsg, url, lineNumber, column, errorObj) {
-        log.error('Window -> onerror', errorMsg, url, lineNumber, column, errorObj);
+        var stack = '';
+        try {
+            stack = errorObj && errorObj.stack ? ' >> STACK >> ' + errorObj.stack.toString() : '';
+        } catch(e) {}
+        log.error('Window -> onerror', errorMsg, url, lineNumber, column, stack);
         ui.errorMsg.show(errorMsg);
     };
 
