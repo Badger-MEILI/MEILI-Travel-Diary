@@ -326,32 +326,34 @@ Tripleg.prototype = {
 
   _generateMapMarker: function(point, isFirstPoint, isLastPoint) {
     var marker;
-    if(this.getType() == 1) {
-      // ACTIVE TRIPLEG
-      if(this.isFirst && isFirstPoint) {
-        // Start point
-        marker = L.marker(point, { icon: CONFIG.triplegs.map.markers.start });
-      } else if(this.isLast && isLastPoint) {
-        // End point
-        marker = L.marker(point, { icon: CONFIG.triplegs.map.markers.stop });
-      } else if(point.osm_id) {
-        // Place, add better way to check?
-        marker = L.marker(point);
+    if(point.lat && point.lon) {
+      if(this.getType() == 1) {
+        // ACTIVE TRIPLEG
+        if(this.isFirst && isFirstPoint) {
+          // Start point
+          marker = L.marker(point, { icon: CONFIG.triplegs.map.markers.start });
+        } else if(this.isLast && isLastPoint) {
+          // End point
+          marker = L.marker(point, { icon: CONFIG.triplegs.map.markers.stop });
+        } else if(point.osm_id) {
+          // Place, add better way to check?
+          marker = L.marker(point);
+        } else {
+          // Regular point
+          marker = L.circleMarker(point, CONFIG.triplegs.map.markers.regular);
+        }
+      } else if(isFirstPoint || isLastPoint) {
+        // PASSIVE TRIPLEGS, only shown for first and last point
+        marker = L.marker(point, { icon: CONFIG.triplegs.map.markers.transition });
       } else {
-        // Regular point
-        marker = L.circleMarker(point, CONFIG.triplegs.map.markers.regular);
+        marker = L.circleMarker(point, CONFIG.triplegs.map.markers.passive_point);
       }
-    } else if(isFirstPoint || isLastPoint) {
-      // PASSIVE TRIPLEGS, only shown for first and last point
-      marker = L.marker(point, { icon: CONFIG.triplegs.map.markers.transition });
-    } else {
-      marker = L.circleMarker(point, CONFIG.triplegs.map.markers.passive_point);
-    }
-    // Add a tooltip for simpler debugging
-    if(marker) {
-      var tooltipInfo = util.formatTime(point.time, 'YYYY-MM-DD HH:mm:ss') || point.name;
-      if(tooltipInfo) {
-        marker.bindTooltip(tooltipInfo);
+      // Add a tooltip for simpler debugging
+      if(marker) {
+        var tooltipInfo = util.formatTime(point.time, 'YYYY-MM-DD HH:mm:ss') || point.name;
+        if(tooltipInfo) {
+          marker.bindTooltip(tooltipInfo);
+        }
       }
     }
     return marker;
