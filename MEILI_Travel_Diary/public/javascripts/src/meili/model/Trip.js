@@ -42,11 +42,19 @@ Trip.prototype = {
   },
 
   getFirstTripleg: function() {
-    return this.triplegs[0];
+    var tripleg;
+    if(this.triplegs && this.triplegs.length > 0) {
+      tripleg = this.triplegs[0];
+    }
+    return tripleg;
   },
 
   getLastTripleg: function() {
-    return this.triplegs[this.triplegs.length-1];
+    var tripleg;
+    if(this.triplegs && this.triplegs.length > 0) {
+      tripleg = this.triplegs[this.triplegs.length-1];
+    }
+    return tripleg;
   },
 
   getTriplegById: function(triplegId) {
@@ -94,15 +102,23 @@ Trip.prototype = {
   },
 
   getTimeDiffToPreviousTrip: function() {
-    var timeDiff = Math.abs(this.getStartTime().getTime() - this.getPreviousTripEndTime().getTime());
-    var hoursDiff = Math.ceil(timeDiff / (1000 * 60 * 60));
-    return hoursDiff;
+    if(this.getPreviousTripEndTime()) {
+      var timeDiff = Math.abs(this.getStartTime().getTime() - this.getPreviousTripEndTime().getTime());
+      var hoursDiff = Math.ceil(timeDiff / (1000 * 60 * 60));
+      return hoursDiff;
+    } else {
+      return '';
+    }
   },
 
   getTimeDiffToNextTrip: function() {
-    var timeDiff = Math.abs(this.getNextTripStartTime().getTime() - this.getEndTime().getTime());
-    var hoursDiff = Math.ceil(timeDiff / (1000 * 60 * 60));
-    return hoursDiff;
+    if(this.getNextTripStartTime()) {
+      var timeDiff = Math.abs(this.getNextTripStartTime().getTime() - this.getEndTime().getTime());
+      var hoursDiff = Math.ceil(timeDiff / (1000 * 60 * 60));
+      return hoursDiff;
+    } else {
+      return '';
+    }
   },
 
   generatePlacePoints: function() {

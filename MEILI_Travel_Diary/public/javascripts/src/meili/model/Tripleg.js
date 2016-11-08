@@ -60,11 +60,19 @@ Tripleg.prototype = {
   },
 
   getFirstPoint: function() {
-    return this.points[0];
+    var point;
+    if(this.points && this.points.length > 0) {
+      point = this.points[0];
+    }
+    return point;
   },
 
   getLastPoint: function() {
-    return this.points[this.points.length-1];
+    var point;
+    if(this.points && this.points.length > 0) {
+      point = this.points[this.points.length-1];
+    }
+    return point;
   },
 
   isAlreadyAnnotated: function() {
