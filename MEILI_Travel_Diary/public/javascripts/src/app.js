@@ -44,11 +44,11 @@ $(function() {
 
      function renderTrip(trip) {
 
-      // Render timeline
-      ui.timeline.render(trip);
+        // Render timeline
+        ui.timeline.render(trip);
 
-      // Render map
-      ui.lmap.render(trip.generateMapLayer());
+        // Render map
+        ui.lmap.render(trip.generateMapLayer());
     }
 
 
@@ -81,38 +81,41 @@ $(function() {
                 ui.lmap = new LMap(CONFIG.map, user.id);
                 ui.timeline = new Timeline({ elementId: 'timeline'});
 
-                user.getNumberOfTrips()
-                  .done(function(result) {
-                    $('#tripsLeft').html(result.rows[0].user_get_badge_trips_info);
-                    $('#badge_holder').show();
-                });
-
-                user.getLastTrip()
-                  .done(function(trip) {
-                    // Adding event tracking for trip. TODO! Move into trip?
-                    user.on('current-trip-changed', renderTrip);
+                // keep track of user changing trip
+                user.on('current-trip-changed', function(trip) {
+                    // update number of trips left to annotate
+                    user.getNumberOfTrips()
+                      .done(function(result) {
+                        $('#tripsLeft').html(result.rows[0].user_get_badge_trips_info);
+                        $('#badge_holder').show();
+                    });
 
                     trip.on('trip-confirm', user.confirmTrip.bind(user));
                     trip.on('trip-update', renderTrip);
                     trip.on('triplegs-update', renderTrip);
 
-                    ui.timeline.on('move-to-previous-trip', user.getPreviousTrip.bind(user));
-                    ui.timeline.on('move-to-next-trip', user.getNextTrip.bind(user));
-                    ui.timeline.on('delete-trip', user.deleteTrip.bind(user));
-                    ui.timeline.on('map-zoom-to', ui.lmap.fitBounds.bind(ui.lmap))
-                    ui.timeline.on('add-new-destination', function() {
-                        ui.lmap.addNewPlace().then(user.addNewDestinationPoiToCurrentTrip.bind(user));
-                    }.bind(this));
-                    ui.timeline.on('add-new-transportation-poi', function(tripleg) {
-                        ui.lmap.addNewPlace().then(function(name, point) {
-                            user.insertTransportationPoi(name, point).then(function(result) {
-                                tripleg.addTransitionPlace(result.insert_transition_poi, name, point);
-                                tripleg.updateTransitionPoiIdOfTripleg(result.insert_transition_poi);
-                            });
-                        });
-                    }.bind(this));
                     renderTrip(trip);
                 });
+
+                // Adding timeline events
+                ui.timeline.on('move-to-previous-trip', user.getPreviousTrip.bind(user));
+                ui.timeline.on('move-to-next-trip', user.getNextTrip.bind(user));
+                ui.timeline.on('delete-trip', user.deleteTrip.bind(user));
+                ui.timeline.on('map-zoom-to', ui.lmap.fitBounds.bind(ui.lmap))
+                ui.timeline.on('add-new-destination', function() {
+                    ui.lmap.addNewPlace().then(user.addNewDestinationPoiToCurrentTrip.bind(user));
+                }.bind(this));
+                ui.timeline.on('add-new-transportation-poi', function(tripleg) {
+                    ui.lmap.addNewPlace().then(function(name, point) {
+                        user.insertTransportationPoi(name, point).then(function(result) {
+                            tripleg.addTransitionPlace(result.insert_transition_poi, name, point);
+                            tripleg.updateTransitionPoiIdOfTripleg(result.insert_transition_poi);
+                        });
+                    });
+                }.bind(this));
+
+                // Initiate by getting last trip for user and rendering it
+                user.getLastTrip().done(renderTrip);
             });
         });
     });
