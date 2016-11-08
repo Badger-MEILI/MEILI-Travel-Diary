@@ -67,7 +67,7 @@ var CONFIG = {
     map: {
       lines: {
         low_accuracy_color: '#c25b4e',
-        dafult_color: 'black',
+        default_color: 'rgb(70,70,70)',
         active: {
           colors: {
             1:  'rgb(31,120,180)', // blue

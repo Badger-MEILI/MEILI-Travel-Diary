@@ -237,7 +237,8 @@ TriplegPanel.prototype = {
    * @returns {string} - outerHTML of the mode selector
    */
   _getModeSelector: function(tripleg){
-      var maxVal = tripleg.getMode().accuracy;
+      var mode = tripleg.getMode();
+      var maxVal = mode ? mode.accuracy : 0;
       var classes = ' form-control';
       var options = [];
 
@@ -268,10 +269,12 @@ TriplegPanel.prototype = {
     // TODO! handle language for mode and the case that there is no mode set
     if (!tripleg.isLast){
       var nextTripleg = tripleg.getNext().getNext();
+      var fromMode = tripleg.getMode()  ? ' from ' + tripleg.getMode().name : '';
+      var toMode = nextTripleg.getMode() ? ' to ' + nextTripleg.getMode().name : '';
       transitionPanel = [
         '<li>',
           '<div class="tldate transition-panel" id="tldate' + nextTripleg.getId() + '">',
-            '<p lang="en">'+ tripleg.getEndTime(true) +' - '+ nextTripleg.getStartTime(true) +' - Transferred from '+ tripleg.getMode().name +' to '+ nextTripleg.getMode().name +'</p>',
+            '<p lang="en">'+ tripleg.getEndTime(true) +' - '+ nextTripleg.getStartTime(true) +' - Transferred'+ fromMode + toMode +'</p>',
           '</div>',
         '</li>'];
     }

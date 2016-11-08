@@ -25,7 +25,7 @@ Tripleg.prototype = {
 
   getMode: function() {
     var mode;
-    if(this.mode && this.mode.length > 0) {
+    if(this.mode && this.mode.length > 0 && this.mode[0].accuracy > 50) {
       mode = this.mode[0];
     }
     return mode;
@@ -33,7 +33,7 @@ Tripleg.prototype = {
 
   getTransition: function() {
     var transition;
-    if(this.places && this.places.length > 0) {
+    if(this.places && this.places.length > 0 && this.places[0].accuracy > 50) {
       transition = this.places[0];
     }
     return transition;
