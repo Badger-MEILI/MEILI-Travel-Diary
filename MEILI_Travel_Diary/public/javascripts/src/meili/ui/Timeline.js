@@ -21,6 +21,7 @@ Timeline.prototype = {
     this.trip = trip;
     // Reset
     $('#'+this.elementId+' > ul').html('');
+    $('#'+this.elementId).scrollTop(0);
     this.generateFirstElement();
     var tripLayers = [];
     for (var i=0; i < this.trip.triplegs.length; i++) {
