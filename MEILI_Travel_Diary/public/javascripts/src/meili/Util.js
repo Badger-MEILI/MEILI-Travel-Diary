@@ -14,7 +14,7 @@ var Util = function(config) {
     },
 
     sortByAccuracy: function(array) {
-      if(array) {
+      if($.isArray(array)) {
         return array.sort(
           function(a, b) {
             if (a.accuracy < b.accuracy) {
