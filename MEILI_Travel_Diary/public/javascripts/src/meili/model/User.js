@@ -120,7 +120,11 @@ User.prototype = {
 
   getTriplegsForTrip: function(trip) {
     var dfd = $.Deferred();
-    api.triplegs.get(trip.getId())
+    var triplegGetter = api.triplegs.get;
+    if(trip.isAlreadyAnnotated()) {
+      triplegGetter = api.triplegs.getAnnotated;
+    }
+    triplegGetter(trip.getId())
       .done(function(result) {
         trip.updateTriplegs(result.triplegs);
         dfd.resolve(trip);

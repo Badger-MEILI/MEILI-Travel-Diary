@@ -160,10 +160,19 @@ var Api = function(config) {
 
     triplegs: {
 
-      get: function(tripId){
+      get: function(tripId) {
         return request.get(
           url(mainPaths.triplegs, 'getTriplegsOfTrip'),
-          { trip_id: tripId }
+          { trip_id: tripId },
+          verifyTriplegsIsReturned
+        );
+      },
+
+      getAnnotated: function(tripId) {
+        return request.get(
+          url(mainPaths.triplegs, 'getAnnotatedTriplegsOfTrip'),
+          { trip_id: tripId },
+          verifyTriplegsIsReturned
         );
       },
 
