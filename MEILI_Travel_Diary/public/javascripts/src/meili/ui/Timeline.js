@@ -21,7 +21,6 @@ Timeline.prototype = {
     this.trip = trip;
     // Reset
     $('#'+this.elementId+' > ul').html('');
-    $('#'+this.elementId).scrollTop(0);
     this.generateFirstElement();
     var tripLayers = [];
     for (var i=0; i < this.trip.triplegs.length; i++) {
@@ -36,6 +35,10 @@ Timeline.prototype = {
       triplegPanel.on('add-new-transportation-poi',  function(tripleg) { this.emit('add-new-transportation-poi', tripleg); }.bind(this));
     }
     this.generateLastElement();
+  },
+
+  scrollToTop: function() {
+    $('#'+this.elementId).scrollTop(0);
   },
 
   _updateStartTime: function(tripleg, newStartTime) {

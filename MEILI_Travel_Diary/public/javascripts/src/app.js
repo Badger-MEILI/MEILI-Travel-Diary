@@ -99,6 +99,9 @@ $(function() {
                     trip.on('triplegs-update', renderTrip);
 
                     renderTrip(trip);
+
+                    // Ugly hack to scroll timeline to top on trip change
+                    ui.timeline.scrollToTop();
                 });
 
                 // Adding timeline events
