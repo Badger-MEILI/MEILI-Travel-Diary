@@ -43,26 +43,12 @@ $(function() {
     }
 
      function renderTrip(trip) {
-      // TODO! move into Trip..
-
-      // Reset.
-      if(trip.mapLayer) {
-        trip.mapLayer.clearLayers();
-        ui.lmap.map.removeLayer(trip.mapLayer);
-      }
-
-      trip.generateMapLayer();
 
       // Render timeline
       ui.timeline.render(trip);
 
       // Render map
-     for (var i=0; i < trip.triplegs.length; i++) {
-        var tripleg = trip.triplegs[i];
-        var triplegLayer = tripleg.generateMapLayer();
-        trip.mapLayer.addLayer(triplegLayer);
-      }
-      trip.mapLayer.addTo(ui.lmap.map);
+      ui.lmap.render(trip.generateMapLayer());
     }
 
 
@@ -126,7 +112,6 @@ $(function() {
                         });
                     }.bind(this));
                     renderTrip(trip);
-                    ui.lmap.fitBounds(trip.mapLayer.getBounds());
                 });
             });
         });

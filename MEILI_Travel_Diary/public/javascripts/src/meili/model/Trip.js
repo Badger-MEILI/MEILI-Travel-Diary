@@ -139,7 +139,17 @@ Trip.prototype = {
 
   generateMapLayer: function() {
     this.mapLayer = L.featureGroup();
+
+    // Trip points
     this.mapLayer.addLayer(this.generatePlacePoints());
+
+    // Triplegs
+    for (var i=0; i < this.triplegs.length; i++) {
+      var tripleg = this.triplegs[i];
+      var triplegLayer = tripleg.generateMapLayer();
+      this.mapLayer.addLayer(triplegLayer);
+    }
+    return this.mapLayer;
   },
 
   confirm: function() {

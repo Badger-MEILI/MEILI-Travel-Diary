@@ -26,6 +26,10 @@ var LMap = LMap || function(mapConfig) {
   };
   layerControl.addTo(this.map);
 
+  // Create a trip layer
+  this.tripLayer = new L.FeatureGroup();
+  this.tripLayer.addTo(this.map);
+
   this.map.setView(mapConfig.start.center, mapConfig.zoom);
   return this;
 };
@@ -61,8 +65,16 @@ LMap.prototype = {
 
   fitBounds: function(bounds) {
     this.map.fitBounds(bounds);
+  },
+
+  clear: function() {
+    this.tripLayer.clearLayers();
+  },
+
+  render: function(tripLayer) {
+    this.clear();
+    this.tripLayer.addLayer(tripLayer);
+    this.fitBounds(this.tripLayer.getBounds());
   }
-
-
 
 };
