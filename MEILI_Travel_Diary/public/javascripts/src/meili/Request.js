@@ -24,7 +24,7 @@ var Request = function(config) {
         msg = jqXHR.responseJSON.error.msg;
       }
       dfd.reject(msg, jqXHR, textStatus, errorThrown);
-      log.error('Request -> doRequest', msg);
+      log.error('Request -> doRequest', msg, JSON.stringify(options));
       throw msg;
     });
     return dfd.promise();
