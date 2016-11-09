@@ -93,9 +93,7 @@ function testPois() {
                 }).fail(function(err) {
                     done(err);
                 });
-
             });
-
         });
     });
 };

@@ -78,11 +78,11 @@ router.get("/getAnnotatedTriplegsOfTrip", function(req,res){
 
     else
     {
-        var sqlQuery = "select * from apiv2.pagination_get_triplegs_of_trip_GT("+trip_id+")";
+        var sqlQuery = "select * from apiv2.pagination_get_triplegs_of_trip_gt("+trip_id+")";
         var prioryQuery = apiClient.query(sqlQuery);
 
         prioryQuery.on('row', function (row) {
-            results.triplegs = row.pagination_get_triplegs_of_trip || [];
+            results.triplegs = row.pagination_get_triplegs_of_trip_gt || [];
         });
 
         prioryQuery.on('error', function (row) {

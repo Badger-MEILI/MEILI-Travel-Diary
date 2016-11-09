@@ -225,7 +225,7 @@ router.get("/mergeWithNextTrip", function(req,res){
  *
  * @apiSuccess {Trip} Trip Gets the json representation of the next trip to process for the user that performed the action.
  */
-router.get("/insertTransitionBetweenTriplegs", function(req,res){
+router.get("/insertPeriodBetweenTrips", function(req,res){
     var results = {};
     results.trip = [];
     var user_id = req.query.user_id;
