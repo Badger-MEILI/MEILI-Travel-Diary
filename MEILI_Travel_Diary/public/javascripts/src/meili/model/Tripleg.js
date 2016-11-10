@@ -79,6 +79,10 @@ Tripleg.prototype = {
     return this.status === 'already_annotated';
   },
 
+  editable: function() {
+    return !this.isAlreadyAnnotated();
+  },
+
   /**
    * Computes the distance in kilometers of a tripleg and returns it as a string
    * @param triplegid - the id of the tripleg for which the distance has to be computed

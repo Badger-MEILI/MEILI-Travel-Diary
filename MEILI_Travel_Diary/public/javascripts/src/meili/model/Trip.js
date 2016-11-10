@@ -33,6 +33,10 @@ Trip.prototype = {
     return this.status === 'already_annotated';
   },
 
+  editable: function() {
+    return !this.isAlreadyAnnotated();
+  },
+
   getPurposes: function() {
     return this.purposes;
   },
