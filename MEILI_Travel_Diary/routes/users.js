@@ -193,19 +193,22 @@ router.post('/insertLocationsIOS',  function(req, res) {
     }
 
     if (data.length>0)
+    {
+        var prioryQuery = myClient.query(sql+ "values "+values.toString());
 
-        var prioryQuery = myClient.query(sql+ "values "+values.toString() , function(err) {
-            if (err) {
+            prioryQuery.on('error', function(err) {
                 res.end("failure");
                 throw err;
-            }
-            else{
+            });
+
+
+            prioryQuery.on('end', function(){
                 res.end("success");
                 // After a batch of insertions from the client, try and segment all residue data that are not already part of any trip
                 // NOTE - this will probably make nodeJS hang since it is an intensive operation, offload to client based segmentation as soon as a final segmentation strategy has been decided on.
                 segmenter.generateTrips(userId);
-            }
-        });
+            })
+    }
     else res.end("failure");
 });
 
@@ -239,19 +242,19 @@ router.post('/insertLocationsAndroid',  function(req, res) {
             "'"+accelerometerObject.zIsMoving+"'", "'"+accelerometerObject.zMax+"'", "'"+accelerometerObject.zMean+"'", "'"+accelerometerObject.zMin+"'", "'"+accelerometerObject.zNumberOfPeaks+"'", "'"+accelerometerObject.zStdDev+"'", "'"+locationObject.provider+"'");
         values.push("("+object.toString()+")");
     }
-    if (data.length>0)
-        var prioryQuery = myClient.query(sql+ "values "+values.toString() , function(err) {
-            if (err) {
-                res.end("failure");
-                throw err;
-            }
-            else{
-                res.end("OK");
-                // After a batch of insertions from the client, try and segment all residue data that are not already part of any trip
-                // NOTE - this will probably make nodeJS hang since it is an intensive operation, offload to client based segmentation as soon as a final segmentation strategy has been decided on.
-                segmenter.generateTrips(userId);
-            }
+    if (data.length>0) {
+        var prioryQuery = myClient.query(sql + "values " + values.toString());
+
+        prioryQuery.on('error', function (err) {
+            res.end("failure");
+            throw err;
         });
+
+        prioryQuery.on('end', function(){
+                res.end("OK");
+                segmenter.generateTrips(userId);
+        });
+    }
     else res.end("failure");
 });
 

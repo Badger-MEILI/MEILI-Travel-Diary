@@ -308,7 +308,7 @@ function generateTriplegSql(arrayOfTriplegs) {
 
         });
 
-        prioryQuery.on('done', function(){
+        prioryQuery.on('end', function(){
             console.log('generated triplegs for '+user_id)
         })
 }
@@ -394,11 +394,11 @@ function generateSql(trips,userId) {
     if (trips.length>0)
         var prioryQuery = myClient.query(sql+ " values "+values.toString());
 
-        prioryQuery.on('error', function(err) {
+    prioryQuery.on('error', function(err) {
                 throw err;
             });
 
-            prioryQuery.on('done', function(){
+    prioryQuery.on('end', function(){
                 generateTriplegs(userId);
             })
 
