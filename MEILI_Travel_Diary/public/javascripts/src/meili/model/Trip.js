@@ -11,9 +11,11 @@ var Trip = Trip || function(trip, triplegs) {
   if(this.purposes) {
     this._sortPurposes();
   }
-  // Make sure places is sorted at init
-  if(this.destination_places) {
+  // Make sure places is sorted at init and that it is an array
+  if(this.destination_places && $.isArray(this.destination_places)) {
     this._sortDestinationPlaces();
+  } else {
+    this.destination_places = [];
   }
 
   return this;
@@ -43,6 +45,28 @@ Trip.prototype = {
 
   getPlaces: function() {
     return this.destination_places;
+  },
+
+  getDestinationPlace: function(property) {
+    var place;
+    if(this.destination_places && this.destination_places.length > 0 && this.destination_places[0].accuracy > 50) {
+      place = this.destination_places[0];
+      if(property) {
+        place = place[property] || null;
+      }
+    }
+    return place;
+  },
+
+  getPurpose: function(property) {
+    var purpose;
+    if(this.purposes && this.purposes.length > 0 && this.purposes[0].accuracy > 50) {
+      purpose = this.purposes[0];
+      if(property) {
+        purpose = purpose[property] || null;
+      }
+    }
+    return purpose;
   },
 
   getFirstTripleg: function() {
