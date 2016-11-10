@@ -289,8 +289,10 @@ function generateTriplegSql(arrayOfTriplegs) {
 
     var sql ="INSERT INTO apiv2.triplegs_inf(trip_id, user_id, from_time, to_time, type_of_tripleg)";
     var values = [];
+    var user_id = 0;
 
     for (var i=0; i<triplegs.length;i++){
+        user_id = triplegs[i].user_id;
         var object =[];
         object.push("'"+triplegs[i].trip_id+"'","'"+triplegs[i].user_id+"'","'"+triplegs[i].from_time+"'","'"+triplegs[i].to_time+"'","'"+triplegs[i].type_of_tripleg+"'");
         values.push("("+object.toString()+")");
@@ -299,11 +301,16 @@ function generateTriplegSql(arrayOfTriplegs) {
     console.log('executing triplegs -> ' + sql+ "values "+values.toString());
 
     if (triplegs.length>0)
-        var prioryQuery = myClient.query(sql+ "values "+values.toString() , function(err) {
-            if (err) {
+        var prioryQuery = myClient.query(sql+ "values "+values.toString());
+
+        prioryQuery.on('error', function(err) {
                 throw err;
-            }
+
         });
+
+        prioryQuery.on('done', function(){
+            console.log('generated triplegs for '+user_id)
+        })
 }
 
 /**
@@ -385,13 +392,15 @@ function generateSql(trips,userId) {
 
     console.log('executing -> ' + sql+ " values "+values.toString());
     if (trips.length>0)
-        var prioryQuery = myClient.query(sql+ " values "+values.toString() , function(err) {
-            if (err) {
+        var prioryQuery = myClient.query(sql+ " values "+values.toString());
+
+        prioryQuery.on('error', function(err) {
                 throw err;
-            }
-            else{
+            });
+
+            prioryQuery.on('done', function(){
                 generateTriplegs(userId);
-            }
-        });
+            })
+
 }
 module.exports.client = myClient;

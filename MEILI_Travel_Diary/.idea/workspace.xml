@@ -5,11 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1e2cf684-ae55-4d7a-8e15-763edce44804" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apiDocs/api_project.js" afterPath="$PROJECT_DIR$/apiDocs/api_project.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apiDocs/api_project.json" afterPath="$PROJECT_DIR$/apiDocs/api_project.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/integration/specs/pois.js" afterPath="$PROJECT_DIR$/test/integration/specs/pois.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/routes/apiv2/triplegs.js" afterPath="$PROJECT_DIR$/routes/apiv2/triplegs.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/routes/apiv2/trips.js" afterPath="$PROJECT_DIR$/routes/apiv2/trips.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/routes/segmenter.js" afterPath="$PROJECT_DIR$/routes/segmenter.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="foo.iws" />
@@ -48,17 +44,17 @@
         <entry file="file://$PROJECT_DIR$/routes/database.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="450">
-              <caret line="26" column="58" selection-start-line="26" selection-start-column="58" selection-end-line="26" selection-end-column="58" />
+              <caret line="38" column="13" selection-start-line="38" selection-start-column="13" selection-end-line="38" selection-end-column="13" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="triplegs.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="triplegs.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/routes/apiv2/triplegs.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.71597636" vertical-offset="1293" max-vertical-offset="6858">
-              <caret line="92" column="0" selection-start-line="92" selection-start-column="0" selection-end-line="92" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="1293" max-vertical-offset="6858">
+              <caret line="89" column="5" selection-start-line="89" selection-start-column="5" selection-end-line="89" selection-end-column="6" />
               <folding />
             </state>
           </provider>
@@ -109,8 +105,8 @@
       <file leaf-file-name="users.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/routes/users.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="3688" max-vertical-offset="4752">
-              <caret line="214" column="29" selection-start-line="214" selection-start-column="14" selection-end-line="214" selection-end-column="29" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="3780" max-vertical-offset="4752">
+              <caret line="211" column="3" selection-start-line="211" selection-start-column="3" selection-end-line="211" selection-end-column="3" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -118,28 +114,22 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="request.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/node_modules/passport/lib/http/request.js">
+      <file leaf-file-name="triplegs.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test/integration/specs/triplegs.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1285" max-vertical-offset="2052">
-              <caret line="93" column="57" selection-start-line="93" selection-start-column="57" selection-end-line="93" selection-end-column="57" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="4980" max-vertical-offset="5526">
+              <caret line="295" column="33" selection-start-line="295" selection-start-column="19" selection-end-line="295" selection-end-column="33" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="app.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/public/javascripts/src/app.js">
+      <file leaf-file-name="segmenter.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/routes/segmenter.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="262" max-vertical-offset="2790">
-              <caret line="27" column="30" selection-start-line="27" selection-start-column="30" selection-end-line="27" selection-end-column="30" />
-              <folding>
-                <marker date="1478690499493" expanded="true" signature="1399:1419" placeholder="{...}" />
-                <marker date="1478690499493" expanded="true" signature="3563:3681" placeholder="{...}" />
-                <marker date="1478690499493" expanded="true" signature="3774:4203" placeholder="{...}" />
-                <marker date="1478690499493" expanded="true" signature="3845:4183" placeholder="{...}" />
-                <marker date="1478690499493" expanded="true" signature="3935:4159" placeholder="{...}" />
-              </folding>
+            <state vertical-scroll-proportion="1.2832981" vertical-offset="4649" max-vertical-offset="7074">
+              <caret line="311" column="57" selection-start-line="311" selection-start-column="57" selection-end-line="311" selection-end-column="57" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -192,7 +182,6 @@
         <option value="$PROJECT_DIR$/routes/apiv2/pois.js" />
         <option value="$PROJECT_DIR$/public/javascripts/src/meili/model/Trip.js" />
         <option value="$PROJECT_DIR$/public/javascripts/src/meili/model/Tripleg.js" />
-        <option value="$PROJECT_DIR$/routes/segmenter.js" />
         <option value="$PROJECT_DIR$/test/integration/specs/test.js" />
         <option value="$PROJECT_DIR$/test/integration/specs/triplegs.js" />
         <option value="$PROJECT_DIR$/test/integration/specs/trips.js" />
@@ -203,6 +192,7 @@
         <option value="$PROJECT_DIR$/routes/apiv2/trips.js" />
         <option value="$PROJECT_DIR$/routes/database.js" />
         <option value="$PROJECT_DIR$/routes/apiv2/triplegs.js" />
+        <option value="$PROJECT_DIR$/routes/segmenter.js" />
       </list>
     </option>
   </component>
@@ -664,7 +654,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1" y="27" width="1922" height="1054" extended-state="6" />
+    <frame x="-1" y="27" width="1922" height="1054" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32868758" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -801,11 +791,11 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="262" max-vertical-offset="2790">
           <caret line="27" column="30" selection-start-line="27" selection-start-column="30" selection-end-line="27" selection-end-column="30" />
           <folding>
-            <marker date="1478690499493" expanded="true" signature="1399:1419" placeholder="{...}" />
-            <marker date="1478690499493" expanded="true" signature="3563:3681" placeholder="{...}" />
-            <marker date="1478690499493" expanded="true" signature="3774:4203" placeholder="{...}" />
-            <marker date="1478690499493" expanded="true" signature="3845:4183" placeholder="{...}" />
-            <marker date="1478690499493" expanded="true" signature="3935:4159" placeholder="{...}" />
+            <marker date="1478690499493" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1478690499493" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1478690499493" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1478690499493" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1478690499493" expanded="true" signature="-1:-1" placeholder="{...}" />
           </folding>
         </state>
       </provider>
@@ -942,16 +932,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/routes/segmenter.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="270" max-vertical-offset="7254">
-          <caret line="303" column="0" selection-start-line="303" selection-start-column="0" selection-end-line="303" selection-end-column="0" />
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public/javascripts/src/meili/model/Tripleg.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="5059" max-vertical-offset="6120">
@@ -977,13 +957,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="523" max-vertical-offset="1062">
           <caret line="52" column="0" selection-start-line="35" selection-start-column="2" selection-end-line="52" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/integration/specs/triplegs.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="4987" max-vertical-offset="5526">
-          <caret line="295" column="33" selection-start-line="295" selection-start-column="19" selection-end-line="295" selection-end-column="33" />
         </state>
       </provider>
     </entry>
@@ -1038,11 +1011,11 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="262" max-vertical-offset="2790">
           <caret line="27" column="30" selection-start-line="27" selection-start-column="30" selection-end-line="27" selection-end-column="30" />
           <folding>
-            <marker date="1478690499493" expanded="true" signature="1399:1419" placeholder="{...}" />
-            <marker date="1478690499493" expanded="true" signature="3563:3681" placeholder="{...}" />
-            <marker date="1478690499493" expanded="true" signature="3774:4203" placeholder="{...}" />
-            <marker date="1478690499493" expanded="true" signature="3845:4183" placeholder="{...}" />
-            <marker date="1478690499493" expanded="true" signature="3935:4159" placeholder="{...}" />
+            <marker date="1478690499493" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1478690499493" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1478690499493" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1478690499493" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1478690499493" expanded="true" signature="-1:-1" placeholder="{...}" />
           </folding>
         </state>
       </provider>
@@ -1068,16 +1041,6 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="1281" max-vertical-offset="7866">
           <caret line="110" column="20" selection-start-line="110" selection-start-column="20" selection-end-line="110" selection-end-column="20" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/routes/users.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="3688" max-vertical-offset="4752">
-          <caret line="214" column="29" selection-start-line="214" selection-start-column="14" selection-end-line="214" selection-end-column="29" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1107,18 +1070,44 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/routes/database.js">
+    <entry file="file://$PROJECT_DIR$/routes/apiv2/triplegs.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="450">
-          <caret line="26" column="58" selection-start-line="26" selection-start-column="58" selection-end-line="26" selection-end-column="58" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="1293" max-vertical-offset="6858">
+          <caret line="89" column="5" selection-start-line="89" selection-start-column="5" selection-end-line="89" selection-end-column="6" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/routes/apiv2/triplegs.js">
+    <entry file="file://$PROJECT_DIR$/routes/database.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.71597636" vertical-offset="1293" max-vertical-offset="6858">
-          <caret line="92" column="0" selection-start-line="92" selection-start-column="0" selection-end-line="92" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="450">
+          <caret line="38" column="13" selection-start-line="38" selection-start-column="13" selection-end-line="38" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/routes/users.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="3780" max-vertical-offset="4752">
+          <caret line="211" column="3" selection-start-line="211" selection-start-column="3" selection-end-line="211" selection-end-column="3" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/integration/specs/triplegs.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="4980" max-vertical-offset="5526">
+          <caret line="295" column="33" selection-start-line="295" selection-start-column="19" selection-end-line="295" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/routes/segmenter.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.2832981" vertical-offset="4649" max-vertical-offset="7074">
+          <caret line="311" column="57" selection-start-line="311" selection-start-column="57" selection-end-line="311" selection-end-column="57" />
           <folding />
         </state>
       </provider>
