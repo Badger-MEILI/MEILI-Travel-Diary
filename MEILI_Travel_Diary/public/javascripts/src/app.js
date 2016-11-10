@@ -98,6 +98,10 @@ $(function() {
                     trip.on('trip-update', renderTrip);
                     trip.on('triplegs-update', renderTrip);
 
+                    trip.on('split-trip', function () {
+                        user.splitTrip(arguments[0], arguments[1]);
+                    });
+
                     renderTrip(trip);
 
                     // Ugly hack to scroll timeline to top on trip change

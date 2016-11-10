@@ -382,8 +382,8 @@ Tripleg.prototype = {
                         console.log(selectedValue);
                         if (selectedValue === 'TRANSITION')
                             tripleg.getParentTrip().insertTransitionBetweenTriplegs(point.time, point.time, 1, 1);
-                        //else if (selectedValue === 'STOP')
-                          //  tripleg.getParentTrip()
+                        else if (selectedValue === 'STOP')
+                            tripleg.getParentTrip().emit('split-trip', point.time, point.time);
                     }
 
                     pointChangeModal.modal('hide');
