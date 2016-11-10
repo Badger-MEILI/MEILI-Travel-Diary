@@ -23,18 +23,24 @@ Tripleg.prototype = {
     return this.triplegid;
   },
 
-  getMode: function() {
+  getMode: function(property) {
     var mode;
     if(this.mode && this.mode.length > 0 && this.mode[0].accuracy > 50) {
       mode = this.mode[0];
+      if(property) {
+        mode = mode[property] || null;
+      }
     }
     return mode;
   },
 
-  getTransition: function() {
+  getTransition: function(property) {
     var transition;
     if(this.places && this.places.length > 0 && this.places[0].accuracy > 50) {
       transition = this.places[0];
+      if(property) {
+        transition = transition[property] || null;
+      }
     }
     return transition;
   },
