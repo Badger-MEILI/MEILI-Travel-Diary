@@ -139,6 +139,7 @@ User.prototype = {
     splitTrip: function (start_time, end_time) {
         var dfd = $.Deferred();
         api.trips.splitTrip(this.id, start_time, end_time).done(function(tripJson) {
+            console.log(tripJson);
             this._setCurrentTrip(tripJson)
                 .done(function(trip) { dfd.resolve(trip); })
                 .fail(function(err) { dfd.reject(err); });

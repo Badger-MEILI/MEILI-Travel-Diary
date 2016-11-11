@@ -6,10 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="1e2cf684-ae55-4d7a-8e15-763edce44804" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/src/meili/Api.js" afterPath="$PROJECT_DIR$/public/javascripts/src/meili/Api.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/src/meili/model/Tripleg.js" afterPath="$PROJECT_DIR$/public/javascripts/src/meili/model/Tripleg.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/src/meili/model/User.js" afterPath="$PROJECT_DIR$/public/javascripts/src/meili/model/User.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/src/app.js" afterPath="$PROJECT_DIR$/public/javascripts/src/app.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/routes/database.js" afterPath="$PROJECT_DIR$/routes/database.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/routes/apiv2/trips.js" afterPath="$PROJECT_DIR$/routes/apiv2/trips.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/routes/users.js" afterPath="$PROJECT_DIR$/routes/users.js" />
     </list>
     <ignored path="foo.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -36,8 +36,18 @@
       <file leaf-file-name="trips.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/routes/apiv2/trips.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="3776" max-vertical-offset="9126">
-              <caret line="230" column="36" selection-start-line="230" selection-start-column="36" selection-end-line="230" selection-end-column="36" />
+            <state vertical-scroll-proportion="-10.970589" vertical-offset="3299" max-vertical-offset="9126">
+              <caret line="204" column="59" selection-start-line="204" selection-start-column="59" selection-end-line="204" selection-end-column="59" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="database.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/routes/database.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="450">
+              <caret line="36" column="17" selection-start-line="36" selection-start-column="17" selection-end-line="36" selection-end-column="17" />
               <folding />
             </state>
           </provider>
@@ -56,55 +66,40 @@
       <file leaf-file-name="Api.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/javascripts/src/meili/Api.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1542" max-vertical-offset="6138">
-              <caret line="91" column="56" selection-start-line="91" selection-start-column="56" selection-end-line="91" selection-end-column="56" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="1542" max-vertical-offset="6156">
+              <caret line="100" column="38" selection-start-line="100" selection-start-column="38" selection-end-line="100" selection-end-column="38" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="User.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="User.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/javascripts/src/meili/model/User.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.21923077" vertical-offset="2370" max-vertical-offset="3780">
-              <caret line="138" column="49" selection-start-line="138" selection-start-column="49" selection-end-line="138" selection-end-column="49" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="2370" max-vertical-offset="3798">
+              <caret line="140" column="23" selection-start-line="140" selection-start-column="23" selection-end-line="140" selection-end-column="23" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="test.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test/integration/specs/test.js">
+      <file leaf-file-name="trips.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test/integration/specs/trips.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1116">
-              <caret line="3" column="4" selection-start-line="3" selection-start-column="4" selection-end-line="3" selection-end-column="4" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="2162" max-vertical-offset="2934">
+              <caret line="147" column="77" selection-start-line="147" selection-start-column="77" selection-end-line="147" selection-end-column="77" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="leafletembed.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/public/javascripts/src/leafletembed.js">
+      <file leaf-file-name="users.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/routes/users.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="58917" max-vertical-offset="76932">
-              <caret line="3680" column="30" selection-start-line="3680" selection-start-column="9" selection-end-line="3680" selection-end-column="30" />
+            <state vertical-scroll-proportion="0.9324578" vertical-offset="2419" max-vertical-offset="4824">
+              <caret line="162" column="21" selection-start-line="162" selection-start-column="21" selection-end-line="162" selection-end-column="21" />
               <folding>
-                <marker date="1476090312748" expanded="true" signature="55078:55113" placeholder="..." />
-                <marker date="1476090312748" expanded="true" signature="56064:56097" placeholder="..." />
-                <marker date="1476090312748" expanded="true" signature="56230:56263" placeholder="..." />
-                <marker date="1476090312748" expanded="true" signature="56397:56430" placeholder="..." />
-                <marker date="1476090312748" expanded="true" signature="56857:56889" placeholder="..." />
-                <marker date="1476090312748" expanded="true" signature="57335:57346" placeholder="..." />
-                <marker date="1476090312748" expanded="true" signature="57416:57469" placeholder="..." />
-                <marker date="1476090312748" expanded="true" signature="57523:57593" placeholder="..." />
-                <marker date="1476090312748" expanded="true" signature="58138:58208" placeholder="..." />
-                <marker date="1476090312748" expanded="true" signature="59581:59613" placeholder="..." />
-                <marker date="1476090312748" expanded="true" signature="60580:60615" placeholder="..." />
-                <marker date="1476090312748" expanded="true" signature="62046:62079" placeholder="..." />
-                <marker date="1476090312748" expanded="true" signature="62389:62422" placeholder="..." />
-                <marker date="1476090312748" expanded="true" signature="62729:62762" placeholder="..." />
-                <marker date="1476090312748" expanded="true" signature="69816:69829" placeholder="..." />
-                <marker date="1476090312748" expanded="true" signature="71129:71142" placeholder="..." />
+                <element signature="n#!!doc" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -126,16 +121,6 @@
                 <marker date="1478690499497" expanded="true" signature="17168:17216" placeholder="..." />
                 <marker date="1478690499497" expanded="true" signature="17354:17386" placeholder="..." />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Confirm.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/public/javascripts/src/meili/ui/Confirm.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="864">
-              <caret line="6" column="26" selection-start-line="6" selection-start-column="26" selection-end-line="6" selection-end-column="26" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -208,17 +193,17 @@
         <option value="$PROJECT_DIR$/node_modules/passport/lib/http/request.js" />
         <option value="$PROJECT_DIR$/app.js" />
         <option value="$PROJECT_DIR$/test/integration/specs/pois.js" />
-        <option value="$PROJECT_DIR$/routes/apiv2/trips.js" />
-        <option value="$PROJECT_DIR$/routes/database.js" />
         <option value="$PROJECT_DIR$/routes/apiv2/triplegs.js" />
-        <option value="$PROJECT_DIR$/routes/users.js" />
         <option value="$PROJECT_DIR$/routes/segmenter.js" />
         <option value="$PROJECT_DIR$/public/views/partials/main.html" />
         <option value="$PROJECT_DIR$/public/javascripts/src/meili/model/Trip.js" />
         <option value="$PROJECT_DIR$/public/javascripts/src/meili/model/Tripleg.js" />
         <option value="$PROJECT_DIR$/public/javascripts/src/app.js" />
-        <option value="$PROJECT_DIR$/public/javascripts/src/meili/Api.js" />
+        <option value="$PROJECT_DIR$/routes/database.js" />
         <option value="$PROJECT_DIR$/public/javascripts/src/meili/model/User.js" />
+        <option value="$PROJECT_DIR$/public/javascripts/src/meili/Api.js" />
+        <option value="$PROJECT_DIR$/routes/apiv2/trips.js" />
+        <option value="$PROJECT_DIR$/routes/users.js" />
       </list>
     </option>
   </component>
@@ -586,7 +571,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="restartRequiresConfirmation" value="true" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
-    <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file:///home/adi/Documents/Personal Docs/git/MEILI/MEILI-Travel-Diary/MEILI_Travel_Diary/public/javascripts/src/app.js&#10;seg&#9;FILE&#9;file:///home/adi/Documents/Personal Docs/git/MEILI/MEILI-Travel-Diary/MEILI_Travel_Diary/routes/segmenter.js&#10;trips&#9;FILE&#9;file:///home/adi/Documents/Personal Docs/git/MEILI/MEILI-Travel-Diary/MEILI_Travel_Diary/routes/apiv2/trips.js&#10;databa&#9;FILE&#9;file:///home/adi/Documents/Personal Docs/git/MEILI/MEILI-Travel-Diary/MEILI_Travel_Diary/routes/database.js&#10;datab&#9;FILE&#9;file:///home/adi/Documents/Personal Docs/git/MEILI/MEILI-Travel-Diary/MEILI_Travel_Diary/routes/database.js&#10;d&#9;FILE&#9;file:///home/adi/Documents/Personal Docs/git/MEILI/MEILI-Travel-Diary/MEILI_Travel_Diary/routes/database.js&#10;users&#9;FILE&#9;file:///home/adi/Documents/Personal Docs/git/MEILI/MEILI-Travel-Diary/MEILI_Travel_Diary/routes/users.js&#10;tr&#9;FILE&#9;file:///home/adi/Documents/Personal Docs/git/MEILI/MEILI-Travel-Diary/MEILI_Travel_Diary/routes/apiv2/triplegs.js&#10;api&#9;FILE&#9;file:///home/adi/Documents/Personal Docs/git/MEILI/MEILI-Travel-Diary/MEILI_Travel_Diary/routes/api.js&#10;leafletem&#9;FILE&#9;file:///home/adi/Documents/Personal Docs/git/MEILI/MEILI-Travel-Diary/MEILI_Travel_Diary/public/javascripts/leafletembed.js&#10;leafle&#9;FILE&#9;file:///home/adi/Documents/Personal Docs/git/MEILI/MEILI-Travel-Diary/MEILI_Travel_Diary/public/javascripts/leafletembed.js&#10;trip&#9;FILE&#9;file:///home/adi/Documents/Personal Docs/git/MEILI/MEILI-Travel-Diary/MEILI_Travel_Diary/public/javascripts/TripElements/TripPagination.js&#10;leaflet&#9;FILE&#9;file:///home/adi/Documents/Personal Docs/git/MEILI/MEILI-Travel-Diary/MEILI_Travel_Diary/public/javascripts/leafletembed.js&#10;~1&#9;null&#9;null" />
+    <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file:///home/adi/Documents/Personal Docs/git/MEILI/MEILI-Travel-Diary/MEILI_Travel_Diary/routes/apiv2/trips.js&#10;data&#9;FILE&#9;file:///home/adi/Documents/Personal Docs/git/MEILI/MEILI-Travel-Diary/MEILI_Travel_Diary/routes/database.js&#10;seg&#9;FILE&#9;file:///home/adi/Documents/Personal Docs/git/MEILI/MEILI-Travel-Diary/MEILI_Travel_Diary/routes/segmenter.js&#10;trips&#9;FILE&#9;file:///home/adi/Documents/Personal Docs/git/MEILI/MEILI-Travel-Diary/MEILI_Travel_Diary/routes/apiv2/trips.js&#10;databa&#9;FILE&#9;file:///home/adi/Documents/Personal Docs/git/MEILI/MEILI-Travel-Diary/MEILI_Travel_Diary/routes/database.js&#10;datab&#9;FILE&#9;file:///home/adi/Documents/Personal Docs/git/MEILI/MEILI-Travel-Diary/MEILI_Travel_Diary/routes/database.js&#10;d&#9;FILE&#9;file:///home/adi/Documents/Personal Docs/git/MEILI/MEILI-Travel-Diary/MEILI_Travel_Diary/routes/database.js&#10;users&#9;FILE&#9;file:///home/adi/Documents/Personal Docs/git/MEILI/MEILI-Travel-Diary/MEILI_Travel_Diary/routes/users.js&#10;tr&#9;FILE&#9;file:///home/adi/Documents/Personal Docs/git/MEILI/MEILI-Travel-Diary/MEILI_Travel_Diary/routes/apiv2/triplegs.js&#10;api&#9;FILE&#9;file:///home/adi/Documents/Personal Docs/git/MEILI/MEILI-Travel-Diary/MEILI_Travel_Diary/routes/api.js&#10;leafletem&#9;FILE&#9;file:///home/adi/Documents/Personal Docs/git/MEILI/MEILI-Travel-Diary/MEILI_Travel_Diary/public/javascripts/leafletembed.js&#10;leafle&#9;FILE&#9;file:///home/adi/Documents/Personal Docs/git/MEILI/MEILI-Travel-Diary/MEILI_Travel_Diary/public/javascripts/leafletembed.js&#10;trip&#9;FILE&#9;file:///home/adi/Documents/Personal Docs/git/MEILI/MEILI-Travel-Diary/MEILI_Travel_Diary/public/javascripts/TripElements/TripPagination.js&#10;leaflet&#9;FILE&#9;file:///home/adi/Documents/Personal Docs/git/MEILI/MEILI-Travel-Diary/MEILI_Travel_Diary/public/javascripts/leafletembed.js&#10;~1&#9;null&#9;null" />
     <property name="options.lastSelected" value="Errors" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="options.splitter.details.proportions" value="0.2" />
@@ -684,18 +669,18 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1" y="27" width="1922" height="1054" extended-state="7" />
+    <frame x="-1" y="27" width="1922" height="1054" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32868758" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33565623" sideWeight="0.8490765" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3263647" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32752612" sideWeight="0.49920845" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32752612" sideWeight="0.49920845" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25593668" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3986014" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.35772356" sideWeight="0.49920845" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.35772356" sideWeight="0.49920845" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25224274" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.35772356" sideWeight="0.50079155" order="3" side_tool="true" content_ui="tabs" x="0" y="470" width="1920" height="166" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290398" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -763,22 +748,22 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="2913" max-vertical-offset="76932">
           <caret line="206" column="4" selection-start-line="206" selection-start-column="4" selection-end-line="206" selection-end-column="4" />
           <folding>
-            <marker date="1476090312748" expanded="true" signature="55078:55113" placeholder="..." />
-            <marker date="1476090312748" expanded="true" signature="56064:56097" placeholder="..." />
-            <marker date="1476090312748" expanded="true" signature="56230:56263" placeholder="..." />
-            <marker date="1476090312748" expanded="true" signature="56397:56430" placeholder="..." />
-            <marker date="1476090312748" expanded="true" signature="56857:56889" placeholder="..." />
-            <marker date="1476090312748" expanded="true" signature="57335:57346" placeholder="..." />
-            <marker date="1476090312748" expanded="true" signature="57416:57469" placeholder="..." />
-            <marker date="1476090312748" expanded="true" signature="57523:57593" placeholder="..." />
-            <marker date="1476090312748" expanded="true" signature="58138:58208" placeholder="..." />
-            <marker date="1476090312748" expanded="true" signature="59581:59613" placeholder="..." />
-            <marker date="1476090312748" expanded="true" signature="60580:60615" placeholder="..." />
-            <marker date="1476090312748" expanded="true" signature="62046:62079" placeholder="..." />
-            <marker date="1476090312748" expanded="true" signature="62389:62422" placeholder="..." />
-            <marker date="1476090312748" expanded="true" signature="62729:62762" placeholder="..." />
-            <marker date="1476090312748" expanded="true" signature="69816:69829" placeholder="..." />
-            <marker date="1476090312748" expanded="true" signature="71129:71142" placeholder="..." />
+            <marker date="1476090312748" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1476090312748" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1476090312748" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1476090312748" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1476090312748" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1476090312748" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1476090312748" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1476090312748" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1476090312748" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1476090312748" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1476090312748" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1476090312748" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1476090312748" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1476090312748" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1476090312748" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1476090312748" expanded="true" signature="-1:-1" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -918,13 +903,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/integration/specs/trips.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2081" max-vertical-offset="2934">
-          <caret line="146" column="77" selection-start-line="146" selection-start-column="77" selection-end-line="146" selection-end-column="77" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public/images/Bus.png">
       <provider selected="true" editor-type-id="images">
         <state />
@@ -967,14 +945,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/routes/database.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="450">
-          <caret line="32" column="27" selection-start-line="32" selection-start-column="27" selection-end-line="32" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1096" max-vertical-offset="3348">
@@ -990,16 +960,6 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="4980" max-vertical-offset="5526">
           <caret line="288" column="20" selection-start-line="288" selection-start-column="20" selection-end-line="288" selection-end-column="20" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/routes/users.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2376" max-vertical-offset="4806">
-          <caret line="151" column="45" selection-start-line="151" selection-start-column="45" selection-end-line="151" selection-end-column="45" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1080,22 +1040,22 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="58917" max-vertical-offset="76932">
           <caret line="3680" column="30" selection-start-line="3680" selection-start-column="9" selection-end-line="3680" selection-end-column="30" />
           <folding>
-            <marker date="1476090312748" expanded="true" signature="55078:55113" placeholder="..." />
-            <marker date="1476090312748" expanded="true" signature="56064:56097" placeholder="..." />
-            <marker date="1476090312748" expanded="true" signature="56230:56263" placeholder="..." />
-            <marker date="1476090312748" expanded="true" signature="56397:56430" placeholder="..." />
-            <marker date="1476090312748" expanded="true" signature="56857:56889" placeholder="..." />
-            <marker date="1476090312748" expanded="true" signature="57335:57346" placeholder="..." />
-            <marker date="1476090312748" expanded="true" signature="57416:57469" placeholder="..." />
-            <marker date="1476090312748" expanded="true" signature="57523:57593" placeholder="..." />
-            <marker date="1476090312748" expanded="true" signature="58138:58208" placeholder="..." />
-            <marker date="1476090312748" expanded="true" signature="59581:59613" placeholder="..." />
-            <marker date="1476090312748" expanded="true" signature="60580:60615" placeholder="..." />
-            <marker date="1476090312748" expanded="true" signature="62046:62079" placeholder="..." />
-            <marker date="1476090312748" expanded="true" signature="62389:62422" placeholder="..." />
-            <marker date="1476090312748" expanded="true" signature="62729:62762" placeholder="..." />
-            <marker date="1476090312748" expanded="true" signature="69816:69829" placeholder="..." />
-            <marker date="1476090312748" expanded="true" signature="71129:71142" placeholder="..." />
+            <marker date="1476090312748" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1476090312748" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1476090312748" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1476090312748" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1476090312748" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1476090312748" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1476090312748" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1476090312748" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1476090312748" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1476090312748" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1476090312748" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1476090312748" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1476090312748" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1476090312748" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1476090312748" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1476090312748" expanded="true" signature="-1:-1" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -1142,14 +1102,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/routes/apiv2/trips.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="3776" max-vertical-offset="9126">
-          <caret line="230" column="36" selection-start-line="230" selection-start-column="36" selection-end-line="230" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public/javascripts/src/meili/model/Tripleg.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="6567" max-vertical-offset="7506">
@@ -1168,17 +1120,51 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/public/javascripts/src/meili/Api.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1542" max-vertical-offset="6138">
-          <caret line="91" column="56" selection-start-line="91" selection-start-column="56" selection-end-line="91" selection-end-column="56" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="1542" max-vertical-offset="6156">
+          <caret line="100" column="38" selection-start-line="100" selection-start-column="38" selection-end-line="100" selection-end-column="38" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/public/javascripts/src/meili/model/User.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.21923077" vertical-offset="2370" max-vertical-offset="3780">
-          <caret line="138" column="49" selection-start-line="138" selection-start-column="49" selection-end-line="138" selection-end-column="49" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="2370" max-vertical-offset="3798">
+          <caret line="140" column="23" selection-start-line="140" selection-start-column="23" selection-end-line="140" selection-end-column="23" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/integration/specs/trips.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="2162" max-vertical-offset="2934">
+          <caret line="147" column="77" selection-start-line="147" selection-start-column="77" selection-end-line="147" selection-end-column="77" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/routes/database.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="450">
+          <caret line="36" column="17" selection-start-line="36" selection-start-column="17" selection-end-line="36" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/routes/apiv2/trips.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-10.970589" vertical-offset="3299" max-vertical-offset="9126">
+          <caret line="204" column="59" selection-start-line="204" selection-start-column="59" selection-end-line="204" selection-end-column="59" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/routes/users.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.9324578" vertical-offset="2419" max-vertical-offset="4824">
+          <caret line="162" column="21" selection-start-line="162" selection-start-column="21" selection-end-line="162" selection-end-column="21" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

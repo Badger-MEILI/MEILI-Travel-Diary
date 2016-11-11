@@ -160,6 +160,7 @@ router.post('/registerUser', function(req, res) {
 router.post('/insertLog',  function(req, res) {
     // TODO - kill this
     res.end("success");
+    return "success";
 });
 
 

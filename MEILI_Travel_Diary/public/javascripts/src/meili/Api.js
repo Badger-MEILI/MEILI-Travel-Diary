@@ -98,6 +98,7 @@ var Api = function(config) {
                     end_time: end_time
                 },
                 function(dfd, result) {
+                    console.log(result);
                     if(result.status == true) {
                         dfd.resolve(result);
                     } else {
