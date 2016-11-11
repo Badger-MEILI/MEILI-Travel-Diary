@@ -195,7 +195,7 @@ TriplegPanel.prototype = {
   },
 
   _generateDeleteTriplegButton: function(tripleg) {
-    if(tripleg.editable() && tripleg.isFirst && tripleg.isLast) {
+    if(tripleg.editable() && !(tripleg.isFirst && tripleg.isLast)) {
       return '<li><a class="delete-tripleg" title="Delete tripleg"><span class="glyphicon glyphicon-trash"></span></a></li>';
     }
   },
