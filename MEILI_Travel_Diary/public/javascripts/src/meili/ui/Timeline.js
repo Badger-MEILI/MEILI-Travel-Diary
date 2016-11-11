@@ -220,21 +220,38 @@ Timeline.prototype = {
               '<span class="important-time">'+ this.trip.getStartTime(true) +'</span> <small>('+ currentTripStartDateLocal  +')</small> - <strong>Started trip</strong>',
             '</div>',
             '<div class="col-md-4 controls">',
-              '<button class="delete-trip btn btn-default" lang="en"><span class="glyphicon glyphicon-trash"></span> Delete trip</button>',
+              this._generateDeleteTripButton(this.trip),
             '</div>',
           '</div>',
         '</li>'
       ];
 
       ul.append(tripStartPanel.join(''));
+  },
 
-      var seePrevious = document.getElementById('seePrevious');
+  _generateDeleteTripButton: function(trip) {
+    if(trip.editable()) {
+      return '<button class="delete-trip btn btn-default" lang="en"><span class="glyphicon glyphicon-trash"></span> Delete trip</button>';
+    } else {
+      return '';
+    }
+  },
 
-      /**
-       * LISTENERS
-       */
-      //if (seePrevious!=null)
-      //    seePrevious.onclick = previousFunction;
+  _generateMergeTripsButton: function(trip) {
+    if(trip.editable()) {
+      return '<button class="merge-with-next-trip btn btn-default" lang="en">Merge with next trip <span class="glyphicon glyphicon-share-alt"></span></button>';
+    } else {
+      return '';
+    }
+  },
+
+  _generateViewElement: function(label, value) {
+    htmlStr = '';
+    if(value) {
+      htmlStr = '<label>' + label + '</label>' +
+             '<p class="form-control-static">'+ value + '</p>';
+    }
+    return htmlStr;
   },
 
   /**
@@ -256,7 +273,7 @@ Timeline.prototype = {
               '<span class="important-time">'+ this.trip.getEndTime(true) +'</span> <small>('+currentTripEndDateLocal  +')</small> - <strong>Ended trip</strong>',
             '</div>',
             '<div class="col-md-4 controls">',
-              '<button class="merge-with-next-trip btn btn-default" lang="en">Merge with next trip <span class="glyphicon glyphicon-share-alt"></span></button>',
+              this._generateMergeTripsButton(this.trip),
             '</div>',
           '</div>',
         '</li>'
@@ -283,8 +300,8 @@ Timeline.prototype = {
               '</p>',
             '</div>',
             '<div class="tl-body">',
-              this.generateDestinationPlaceSelector(this.trip.getPlaces()),
-              this.generatePurposeSelector(this.trip.getPurposes()),
+              this.generateDestinationPlaceSelector(this.trip),
+              this.generatePurposeSelector(this.trip),
             '</div>',
           '</div>',
         '</li>'
@@ -314,16 +331,6 @@ Timeline.prototype = {
       }
       ul.append(navigateToNextTrip.join(''));
 
-      /**
-       * NO LISTENERS YET
-       */
-
-  /*    var processNext = document.getElementById('processNext');
-
-      if (processNext!=null)
-          processNext.onclick = nextFunction;
-
-    */
   },
 
   /**
@@ -331,42 +338,48 @@ Timeline.prototype = {
    * @param places - array of places (lat, lon) that have accuracy of inference embedded
    * @returns {string|string} - outerHTML of the place selector
    */
-  generateDestinationPlaceSelector: function(places) {
-    var placeSelector = [];
+  generateDestinationPlaceSelector: function(trip) {
+    var elementHtml = '';
+    var label = 'Destination of trip';
+    var places = trip.getPlaces();
     if (places && $.isArray(places)) {
+      if(trip.editable()) {
+        var placeSelector = [];
+        var selectorOptions = [];
+        var specifyOptionLabel = 'Specify your destination';
+        var classes = '';
 
-      var selectorOptions = [];
-      var specifyOptionLabel = 'Specify your destination';
-      var label = 'Destination of trip';
-      var classes = '';
-
-      for (var i=0; i < places.length; i++) {
-        var place = places[i];
-        var id = place.gid;
-        var type = place.type ? ' ('+place.type+')' : '';
-        if (id !== undefined) {
-          selectorOptions.push('<option value="' + id + '">' + place.name + type + '</option>');
+        for (var i=0; i < places.length; i++) {
+          var place = places[i];
+          var id = place.gid;
+          var type = place.type ? ' ('+place.type+')' : '';
+          if (id !== undefined) {
+            selectorOptions.push('<option value="' + id + '">' + place.name + type + '</option>');
+          }
         }
+
+        var maxAccuracy = places[0].accuracy;
+        if (maxAccuracy < 50) {
+          // Can not preselect for the user
+          classes = ' form-value-invalid';
+          selectorOptions.unshift('<option value="-1" disabled selected lang="en">' + specifyOptionLabel + '</option>');
+        }
+
+        selectorOptions.push('<option value="add_new">Add new ...</option>');
+
+        placeSelector = ['<p lang="en">',
+                          '<label for="place-selector">' + label + '</label>',
+                          '<div>',
+                          '<select class="form-control form-control-inline place-selector destination' + classes + '">',
+                            selectorOptions.join(''),
+                          '</select></p>',
+                          '</div>'];
+        elementHtml = placeSelector.join('');
+      } else {
+        elementHtml = this._generateViewElement(label, trip.getDestinationPlace('name'));
       }
-
-      var maxAccuracy = places[0].accuracy;
-      if (maxAccuracy < 50) {
-        // Can not preselect for the user
-        classes = ' form-value-invalid';
-        selectorOptions.unshift('<option value="-1" disabled selected lang="en">' + specifyOptionLabel + '</option>');
-      }
-
-      selectorOptions.push('<option value="add_new">Add new ...</option>');
-
-      placeSelector = ['<p lang="en">',
-                        '<label for="place-selector">' + label + '</label>',
-                        '<div>',
-                        '<select class="form-control form-control-inline place-selector destination' + classes + '">',
-                          selectorOptions.join(''),
-                        '</select></p>',
-                        '</div>'];
     }
-    return placeSelector.join('');
+    return elementHtml;
   },
 
   /**
@@ -374,35 +387,43 @@ Timeline.prototype = {
    * @param purposes - an array of purposes and their inference certainty
    * @returns {string|string} outerHTML of the purpose selector
    */
-  generatePurposeSelector: function(purposes) {
-    var purposeSelector = '';
+  generatePurposeSelector: function(trip) {
+    var elementHtml = '';
+    var label = 'Purpose of trip:';
+    var purposes = trip.getPurposes();
     if(purposes && purposes.length > 0) {
-      var maxAccuracy = purposes[0].accuracy;
-      var purposeOptions = [];
-      var classes = '';
+      if(trip.editable()) {
+        var purposeSelector = '';
+        var maxAccuracy = purposes[0].accuracy;
+        var purposeOptions = [];
+        var classes = '';
 
-      // Accuracy is not high enough to preselect for the user
-      if (maxAccuracy < 50){
-        classes = ' form-value-invalid';
-        purposeOptions.push('<option value="-1" lang="en" disabled selected>Specify your trip\'s purpose</option>')
+        // Accuracy is not high enough to preselect for the user
+        if (maxAccuracy < 50){
+          classes = ' form-value-invalid';
+          purposeOptions.push('<option value="-1" lang="en" disabled selected>Specify your trip\'s purpose</option>')
+        }
+
+        for (var i=0; i < purposes.length; i++){
+          var purpose = purposes[i];
+          purposeOptions.push('<option value="' + purpose.id + '" lang="en">' + purpose.name + '</option>');
+
+        }
+
+        purposeSelector = '<p lang="en">' +
+                                '<label for="purpose-selector">' + label + '</label>'+
+                                '<div>' +
+                                  '<select class="form-control form-control-inline form-need-check purpose-selector ' + classes + '">' +
+                                    purposeOptions.join('');
+                                  '</select>' +
+                                '</div>' +
+                              '</p>';
+        elementHtml = purposeSelector;
+      } else {
+        elementHtml = this._generateViewElement(label, trip.getPurpose('name'));
       }
-
-      for (var i=0; i < purposes.length; i++){
-        var purpose = purposes[i];
-        purposeOptions.push('<option value="' + purpose.id + '" lang="en">' + purpose.name + '</option>');
-
-      }
-
-      purposeSelector = '<p lang="en">' +
-                              '<label for="purpose-selector">Purpose of trip: </label>'+
-                              '<div>' +
-                                '<select class="form-control form-control-inline form-need-check purpose-selector ' + classes + '">' +
-                                  purposeOptions.join('');
-                                '</select>' +
-                              '</div>' +
-                            '</p>';
     }
-    return purposeSelector;
+    return elementHtml;
   },
 
   /**
