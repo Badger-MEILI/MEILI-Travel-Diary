@@ -89,6 +89,27 @@ var Api = function(config) {
         );
       },
 
+      splitTrip: function(userId, start_time, end_time){
+            return request.get(
+                url(mainPaths.trips, 'insertPeriodBetweenTrips'),
+                {
+                    user_id: userId,
+                    start_time: start_time,
+                    end_time: end_time
+                },
+                function(dfd, result) {
+                    if(result.trip) {
+                        dfd.resolve(result.trip);
+                    } else {
+                        var msg = 'Some problem splitting one trip in two, server responded with incorrect status';
+                        log.error('Api -> insertPeriodBetweenTrips', msg);
+                        dfd.reject(msg);
+                        throw msg;
+                    }
+                }
+            );
+        },
+
       updateDestinationPoiIdOfTrip: function(tripId, destinationPoiId) {
         return request.get(
           url(mainPaths.trips, 'updateDestinationPoiIdOfTrip'),

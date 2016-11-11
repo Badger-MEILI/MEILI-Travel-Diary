@@ -197,6 +197,7 @@ Trip.prototype = {
 
       for (var i = 0; i < (newTriplegs.length+1); i++) {
         if(newTriplegs[i]) {
+            newTriplegs[i].trip = this;
           newTriplegs[i] = new Tripleg(newTriplegs[i]);
           newTriplegs[i].status = this.status;
           log.debug('Trip -> updateTriplegs', 'tripleg updated', newTriplegs[i].getId());

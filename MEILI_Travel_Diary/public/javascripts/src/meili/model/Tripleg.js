@@ -23,7 +23,12 @@ Tripleg.prototype = {
     return this.triplegid;
   },
 
+    getParentTrip: function(){
+        return this.trip;
+    },
+
   getMode: function(property) {
+
     var mode;
     if(this.mode && this.mode.length > 0 && this.mode[0].accuracy > 50) {
       mode = this.mode[0];
@@ -336,6 +341,7 @@ Tripleg.prototype = {
 
   _generateMapMarker: function(point, isFirstPoint, isLastPoint) {
     var marker;
+      var tripleg = this;
     if(point.lat && point.lon) {
       if(this.getType() == 1) {
         // ACTIVE TRIPLEG
@@ -351,6 +357,51 @@ Tripleg.prototype = {
         } else {
           // Regular point
           marker = L.circleMarker(point, CONFIG.triplegs.map.markers.regular);
+            marker.on('click', function _generateMarkerModal(){
+
+                var pointChangeModal =
+                    $('<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">' +
+                    '<div class="modal-dialog">' +
+                    '<div class="modal-content">' +
+                    '<div class="modal-header">' +
+                    '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>' +
+                    '<h4 class="modal-title" id="myModalLabel">Change point type</h4>' +
+                    '</div>' +
+                    '<div class="modal-body">' +
+                    '<label class="radio">' +
+                    '<input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="TRANSITION"> This was a transition point' +
+                    '</label>' +
+                    '<label class="radio">' +
+                    '<input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="STOP"> This was a stop point' +
+                    '</label>' +
+                    '</div>' +
+                    '<div class="modal-footer">' +
+                    '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>' +
+                    '<button type="button" class="btn btn-primary" id="confirm-change">Accept</button>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>');
+
+                pointChangeModal.modal('show');
+
+                pointChangeModal.find('#confirm-change').click(function(e) {
+
+                    var selectedValue = $("input[name=inlineRadioOptions]:checked").val();
+
+                    if (selectedValue){
+                        console.log(selectedValue);
+                        if (selectedValue === 'TRANSITION')
+                            tripleg.getParentTrip().insertTransitionBetweenTriplegs(point.time, point.time, 1, 1);
+                        else if (selectedValue === 'STOP')
+                            tripleg.getParentTrip().emit('split-trip', point.time, point.time);
+                    }
+
+                    pointChangeModal.modal('hide');
+                });
+
+                console.log(tripleg);
+            });
         }
       } else if(isFirstPoint || isLastPoint) {
         // PASSIVE TRIPLEGS, only shown for first and last point

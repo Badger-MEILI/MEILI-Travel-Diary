@@ -238,11 +238,12 @@ router.get("/insertPeriodBetweenTrips", function(req,res){
 
     else
     {
-        var sqlQuery = "select * from apiv2.insert_stationary_trip_for_user($bd$"+ start_time +"$bd$,$bd$"+ end_time +"$bd$,$bd$"+ user_id+"$bd)";
+        var sqlQuery = "select * from apiv2.insert_stationary_trip_for_user($bd$"+ start_time +"$bd$,$bd$"+ end_time +"$bd$,$bd$"+ user_id+"$bd$)";
         var prioryQuery = apiClient.query(sqlQuery);
 
         prioryQuery.on('row', function (row) {
-                results.trip = row.insert_stationary_trip_for_user;
+            console.log(row);
+                results.trip = row;
         });
 
         prioryQuery.on('error', function(row){
