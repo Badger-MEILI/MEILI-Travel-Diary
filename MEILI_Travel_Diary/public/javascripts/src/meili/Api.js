@@ -98,9 +98,8 @@ var Api = function(config) {
                     end_time: end_time
                 },
                 function(dfd, result) {
-                    console.log(result);
-                    if(result.status == true) {
-                        dfd.resolve(result);
+                    if(result.trip) {
+                        dfd.resolve(result.trip);
                     } else {
                         var msg = 'Some problem splitting one trip in two, server responded with incorrect status';
                         log.error('Api -> insertPeriodBetweenTrips', msg);
