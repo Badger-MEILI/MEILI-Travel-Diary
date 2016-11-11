@@ -99,14 +99,12 @@ TriplegPanel.prototype = {
         minuteStep: 1,
         showMeridian: false,
         disableMousewheel:true,
-        defaultTime: this.tripleg.getStartTime(true)
     }).on('hide.timepicker', this._onTimeSet.bind(this));
 
     $element.find('.time-picker.end').timepicker({
         minuteStep: 1,
         showMeridian: false,
         disableMousewheel:true,
-        defaultTime: this.tripleg.getEndTime(true)
     }).on('hide.timepicker', this._onTimeSet.bind(this));
 
     // Open insert transition modal
@@ -144,18 +142,10 @@ TriplegPanel.prototype = {
    * @returns {string} - outerHTML of the timeline element
    */
   _generateContent: function(tripId, tripleg) {
-    var triplegId = tripleg.getId();
-    var classes = [];
-    if(tripleg.isFirst) {
-      classes.push('first')
-    }
-    if(tripleg.isLast) {
-      classes.push('last')
-    }
     var contentHtml = [
       '<ul class="tl-ctrl">',
       '<li><a class="zoom-to-tripleg" title="Zoom map to tripleg"><span class="glyphicon glyphicon-search medium"></span></a></li>',
-        ((tripleg.isFirst && tripleg.isLast) ? '' : '<li><a class="delete-tripleg" title="Delete tripleg"><span class="glyphicon glyphicon-trash"></span></a></li>'),
+        this._generateDeleteTriplegButton(tripleg),
       '</ul>',
 
       '<div class="timeline-panel" style="background-color:'+tripleg.getColor(0.6, '#FFF')+'">',
@@ -170,22 +160,15 @@ TriplegPanel.prototype = {
 
           '<div class="row">',
             '<div class="col-md-6">',
-              '<label for="timepickerstart_'+triplegId+'">Started</label>',
-              '<div class="input-group bootstrap-timepicker timepicker">',
-                '<input id="timepickerend_'+triplegId+'" readonly="true" class="form-control time-picker start input-small ' + classes.join(' ') + '" type="text"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>',
-              '</div>',
+                this._generateTimepicker(tripleg, 'Started', tripleg.getStartTime(true)),
             '</div>',
             '<div class="col-md-6">',
-              '<label for="timepickerend_'+triplegId+'">Ended</label>',
-              '<div class="input-group bootstrap-timepicker timepicker">',
-                '<input id="timepickerend_'+triplegId+'" readonly="true" type="text" class="time-picker end form-control input-small ' + classes.join(' ') + '"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>',
-              '</div>',
+                this._generateTimepicker(tripleg, 'Ended', tripleg.getEndTime(true)),
             '</div>',
           '</div>',
-          (tripleg.isLast ? '' : this._generatePlaceSelector(tripleg.places)),
+          this._generatePlaceSelector(tripleg),
           '<br>',
-          '<a class="add-transition btn btn-default" href="#" role="button"><i class="glyphicon glyphicon-transfer"></i> Did we miss a transfer? Click to add</a>',
-
+          this._generateInsertTransferButton(tripleg),
         '</div>',
       '</div>'
     ];
@@ -193,41 +176,88 @@ TriplegPanel.prototype = {
     return contentHtml.join('');
   },
 
-  _generatePlaceSelector: function(places) {
-    var placeSelector = [];
-    if (places && places.length > 0) {
+  _generateTimepicker: function(tripleg, label, time) {
+    var timepickerHtml = '';
+    if(tripleg.editable()) {
+      var triplegId = tripleg.getId();
+      var classes = [];
+      if(tripleg.isFirst) { classes.push('first') }
+      if(tripleg.isLast) { classes.push('last') }
 
-      var selectorOptions = [];
-      var label = 'Transferred at';
-      var specifyOptionLabel = '(Optional) Specify transfer place';
-
-
-      for (var i=0; i < places.length; i++) {
-        var place = places[i];
-        var id = place.osm_id;
-        var type = place.type ? ' ('+place.type+')' : '';
-        if (id !== undefined) {
-          selectorOptions.push('<option value="' + id + '">' + place.name + type + '</option>');
-        }
-      }
-
-      var maxAccuracy = places[0].accuracy;
-      if (maxAccuracy < 50) {
-        // Can not preselect for the user
-        selectorOptions.unshift('<option value="-1" disabled selected lang="en">' + specifyOptionLabel + '</option>');
-      }
-
-      selectorOptions.push('<option value="add_new">Add new ...</option>');
-
-      placeSelector = ['<p lang="en">',
-                        '<label for="place-selector">' + label + '</label>',
-                        '<div>',
-                        '<select class="form-control form-control-inline place-selector transition">',
-                          selectorOptions.join(''),
-                        '</select></p>',
-                        '</div>'];
+      timepickerHtml = ['<label for="timepickerstart_'+triplegId+'">'+ label +'</label>',
+                '<div class="input-group bootstrap-timepicker timepicker">',
+                  '<input id="timepickerend_'+triplegId+'" value="' + time + '" readonly="true" class="form-control time-picker start input-small ' + classes.join(' ') + '" type="text"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>',
+                '</div>'].join('')
+    } else {
+      timepickerHtml = this._generateViewElement(label, time);
     }
-    return placeSelector.join('');
+    return timepickerHtml;
+  },
+
+  _generateDeleteTriplegButton: function(tripleg) {
+    if(tripleg.editable() && tripleg.isFirst && tripleg.isLast) {
+      return '<li><a class="delete-tripleg" title="Delete tripleg"><span class="glyphicon glyphicon-trash"></span></a></li>';
+    }
+  },
+
+  _generateInsertTransferButton: function(tripleg) {
+    if(tripleg.editable()) {
+      return '<a class="add-transition btn btn-default" href="#" role="button"><i class="glyphicon glyphicon-transfer"></i> Did we miss a transfer? Click to add</a>';
+    } else {
+      return '';
+    }
+  },
+
+  _generatePlaceSelector: function(tripleg) {
+    var places = tripleg.places;
+    var label = 'Transferred at';
+
+    if(tripleg.editable()) {
+      var placeSelector = [];
+      if (!tripleg.isLast && places && places.length > 0) {
+
+        var selectorOptions = [];
+        var specifyOptionLabel = '(Optional) Specify transfer place';
+
+
+        for (var i=0; i < places.length; i++) {
+          var place = places[i];
+          var id = place.osm_id;
+          var type = place.type ? ' ('+place.type+')' : '';
+          if (id !== undefined) {
+            selectorOptions.push('<option value="' + id + '">' + place.name + type + '</option>');
+          }
+        }
+
+        var maxAccuracy = places[0].accuracy;
+        if (maxAccuracy < 50) {
+          // Can not preselect for the user
+          selectorOptions.unshift('<option value="-1" disabled selected lang="en">' + specifyOptionLabel + '</option>');
+        }
+
+        selectorOptions.push('<option value="add_new">Add new ...</option>');
+
+        placeSelector = ['<p lang="en">',
+                          '<label for="place-selector">' + label + '</label>',
+                          '<div>',
+                          '<select class="form-control form-control-inline place-selector transition">',
+                            selectorOptions.join(''),
+                          '</select></p>',
+                          '</div>'];
+      }
+      return placeSelector.join('');
+    } else {
+      return this._generateViewElement(label, tripleg.getTransition('name'));
+    }
+  },
+
+  _generateViewElement: function(label, value) {
+    htmlStr = '';
+    if(value) {
+      htmlStr = '<label>' + label + '</label>' +
+             '<p class="form-control-static">'+ value + '</p>';
+    }
+    return htmlStr;
   },
 
     /**
@@ -237,6 +267,8 @@ TriplegPanel.prototype = {
    * @returns {string} - outerHTML of the mode selector
    */
   _getModeSelector: function(tripleg){
+    var label = 'By';
+    if(tripleg.editable()) {
       var mode = tripleg.getMode();
       var maxVal = mode ? mode.accuracy : 0;
       var classes = ' form-control';
@@ -253,13 +285,16 @@ TriplegPanel.prototype = {
       }
 
       var selector = [
-        '<label for="mode-select">By</label>',
+        '<label for="mode-select">' + label + '</label>',
         '<select class="mode-select' + classes + '" name="selectmode">',
           options.join(''),
         '</select>'
       ].join('');
 
       return selector;
+    } else {
+      return this._generateViewElement(label, tripleg.getMode('name'));
+    }
   },
 
    getTransitionPanel: function(tripleg) {
