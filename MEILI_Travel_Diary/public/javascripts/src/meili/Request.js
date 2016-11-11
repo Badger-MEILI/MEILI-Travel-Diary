@@ -23,8 +23,14 @@ var Request = function(config) {
       if(jqXHR.responseJSON && jqXHR.responseJSON.error) {
         msg = jqXHR.responseJSON.error.msg;
       }
-      dfd.reject(msg, jqXHR, textStatus, errorThrown);
       log.error('Request -> doRequest', msg, JSON.stringify(options));
+
+      // Unauthorizedm, send user to login page
+      if(jqXHR.status === 401) {
+        page('/login');
+      }
+
+      dfd.reject(msg, jqXHR, textStatus, errorThrown);
       throw msg;
     });
     return dfd.promise();

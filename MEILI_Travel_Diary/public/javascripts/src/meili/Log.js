@@ -40,7 +40,7 @@ Log.prototype = {
   },
 
   debug: function() {
-    if(this.config.debug && !this._keepQuiet()) {
+    if(this.config.debug && !this._keepQuiet() && console.debug) {
       console.debug( Array.prototype.slice.call(arguments).join(' ') );
     }
   },
