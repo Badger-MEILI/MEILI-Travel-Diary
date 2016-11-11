@@ -68,8 +68,9 @@ passport.use(new LocalStrategy(
 
             prioryQuery.on('end', function(){
 
-                console.log("RESULTS ARE");
                 console.log(results);
+
+                segmenter.generateTrips(results[0].id);
                 if (results[0].id!=null && results[0].id!=undefined){
                     //retrieved id successfully
                     done(null, {userId: results[0].id, userName: username});

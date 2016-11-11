@@ -24,8 +24,17 @@ var router = express.Router();
 var passport = require('passport');
 var pg = require('pg');
 var credentials = require('./database');
-var segmenter = require('./segmenter.js');
-var myClient = segmenter.client;
+var segmenter = require('./segmenter')
+
+var myClient = new pg.Client(credentials);
+
+//Connect to the database with one client specific to each user to avoid overflow of clients
+myClient.connect(function(err){
+    if (err){
+        return console.error('could not connect to postgres', err);
+    }
+    else console.log('connection successfull');
+});
 
 /**
  * Checks if the user is logged in or not
@@ -72,7 +81,6 @@ router.post('/loginUser', function(req, res) {
     var alreadyExists = false;
     // Grab data from http request
     var data = {username: req.body.username, password:req.body.password};
-    console.log(data);
 
     var prioryQuery = myClient.query("SELECT login_user as id FROM raw_data.login_user( '" + data.username+"' ,'"+data.password+"')");
     console.log(prioryQuery);
@@ -121,44 +129,53 @@ router.post('/registerUser', function(req, res) {
     var alreadyExists = false;
     var numberOfRowsReturned = 0;
 
-    // Check if the username is already taken
-    var prioryQuery = myClient.query("SELECT id FROM raw_data.user_table where username = '" + data.username+"'");
+    var uploadClient = new pg.Client(credentials);
+    uploadClient.connect(function(err){
+        if (err){
+            return console.error('could not connect to postgres', err);
+        }
+        else {
+            console.log('connected registration client');
+            // Check if the username is already taken
+            var prioryQuery = uploadClient.query("SELECT id FROM raw_data.user_table where username = '" + data.username+"'");
 
-        prioryQuery.on('row', function (row) {
-            // The user name is already taken
-            numberOfRowsReturned++;
-            alreadyExists=true;
-        });
+            prioryQuery.on('row', function (row) {
+                // The user name is already taken
+                numberOfRowsReturned++;
+                alreadyExists=true;
+            });
 
-        if (numberOfRowsReturned>0) alreadyExists=true;
+            if (numberOfRowsReturned>0) alreadyExists=true;
 
-        prioryQuery.on('end', function(){
-            if (alreadyExists) {
-                // Inform the user that the username has been already taken
-                res.end("username taken");
-                return "username exists";
-            } else {
-                // SQL Query > Insert Data
-                // New user name
-                var query = myClient.query("select register_user as id from raw_data.register_user($1, $2, $3, $4)",
-                    [data.username, data.password, data.phone_model, data.phone_os]);
+            prioryQuery.on('end', function(){
+                if (alreadyExists) {
+                    // Inform the user that the username has been already taken
+                    res.end("username taken");
+                    return "username exists";
+                } else {
+                    // SQL Query > Insert Data
+                    // New user name
+                    var query = myClient.query("select register_user as id from raw_data.register_user($1, $2, $3, $4)",
+                        [data.username, data.password, data.phone_model, data.phone_os]);
 
-                // Stream results back one row at a time
-                query.on('row', function (row) {
-                    results.push(row);
-                });
+                    // Stream results back one row at a time
+                    query.on('row', function (row) {
+                        results.push(row);
+                    });
 
-                query.on('end', function () {
-                    return res.json(results);
-                });
-            }});
+                    query.on('end', function () {
+                        uploadClient.end();
+                        return res.json(results);
+                    });
+                }});
+        }
+    });
 });
 
 /**
  * Description of how the user interactis via the client
  */
 router.post('/insertLog',  function(req, res) {
-    // TODO - kill this
     res.end("success");
     return "success";
 });
@@ -195,20 +212,29 @@ router.post('/insertLocationsIOS',  function(req, res) {
 
     if (data.length>0)
     {
-        var prioryQuery = myClient.query(sql+ "values "+values.toString());
+        var uploadClient = new pg.Client(credentials);
+        uploadClient.connect(function(err){
+            if (err){
+                return console.error('could not connect to postgres', err);
+            }
+            else {
+                var prioryQuery = uploadClient.query(sql + "values " + values.toString());
 
-            prioryQuery.on('error', function(err) {
-                res.end("failure");
-                throw err;
-            });
+                prioryQuery.on('error', function (err) {
+                    res.end("failure");
+                    throw err;
+                });
 
 
-            prioryQuery.on('end', function(){
-                res.end("success");
-                // After a batch of insertions from the client, try and segment all residue data that are not already part of any trip
-                // NOTE - this will probably make nodeJS hang since it is an intensive operation, offload to client based segmentation as soon as a final segmentation strategy has been decided on.
-                segmenter.generateTrips(userId);
-            })
+                prioryQuery.on('end', function () {
+                    res.end("success");
+                    uploadClient.end();
+                    // After a batch of insertions from the client, try and segment all residue data that are not already part of any trip
+                    // NOTE - this will probably make nodeJS hang since it is an intensive operation, offload to client based segmentation as soon as a final segmentation strategy has been decided on.
+                    segmenter.generateTrips(userId);
+                })
+            }
+    })
     }
     else res.end("failure");
 });
@@ -243,19 +269,29 @@ router.post('/insertLocationsAndroid',  function(req, res) {
             "'"+accelerometerObject.zIsMoving+"'", "'"+accelerometerObject.zMax+"'", "'"+accelerometerObject.zMean+"'", "'"+accelerometerObject.zMin+"'", "'"+accelerometerObject.zNumberOfPeaks+"'", "'"+accelerometerObject.zStdDev+"'", "'"+locationObject.provider+"'");
         values.push("("+object.toString()+")");
     }
+
     if (data.length>0) {
-        var prioryQuery = myClient.query(sql + "values " + values.toString());
+        var uploadClient = new pg.Client(credentials);
+        uploadClient.connect(function(err) {
+            if (err) {
+                return console.error('could not connect to postgres', err);
+            }
+            else {
 
-        prioryQuery.on('error', function (err) {
-            res.end("failure");
-            throw err;
-        });
+                var prioryQuery = uploadClient.query(sql + "values " + values.toString());
 
-        prioryQuery.on('end', function(){
-                res.end("OK");
-                segmenter.generateTrips(userId);
-        });
-    }
+                prioryQuery.on('error', function (err) {
+                    res.end("failure");
+                    throw err;
+                });
+
+                prioryQuery.on('end', function () {
+                    uploadClient.end();
+                    res.end("OK");
+                    segmenter.generateTrips(userId);
+                });
+            }
+        })}
     else res.end("failure");
 });
 

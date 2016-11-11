@@ -116,12 +116,13 @@ module.exports = {
                 var centroidLon = 0;
 
                 for (var i = 0; i < min; i++) {
+
                     var currentLocation = extend(points[i],{});
+                    if (prevFrom == null) prevFrom = extend(currentLocation,{});
 
                     // accuracy filter for point
                     if (allConditionsAreMet(currentLocation)) {
                         pointsInActiveTrip++;
-                        if (prevFrom == null) prevFrom = extend(currentLocation,{});
                         if (prevLocation == null) {
                             prevLocation = extend(currentLocation, {});
                         }
@@ -153,16 +154,28 @@ module.exports = {
                                  if (!skipOne) {
 
                                      if (stopNumber >= 1) {
+
                                          // if the stop was actually important
                                          if ((endLocation.time_ - firstLocation.time_) >= 5 * 60000 && (pointsInActiveTrip >= 4)) {
                                              centroidLat = 0;
                                              centroidLon = 0;
                                              skipOne = true;
 
+                                             console.log('stop candidates');
+                                             console.log(firstLocation.id+' '+firstLocation.time_);
+                                             console.log(endLocation.id+' '+endLocation.time_);
+                                             console.log('end of stop candidates');
+
+
                                              var fromID = extend(firstLocation, {});
                                              var toID = extend(endLocation, {});
 
-                                             prevTo = extend(fromID, {});
+                                             prevTo = extend(toID, {});
+
+                                             console.log('stop candidates from to');
+                                             console.log(prevFrom.id+' '+prevFrom.time_);
+                                             console.log(prevTo.id+' '+prevTo.time_);
+                                             console.log('end of stop candidates from to');
 
                                              var activeTrip = {};
                                              activeTrip.user_id = userId;
@@ -300,17 +313,22 @@ function generateTriplegSql(arrayOfTriplegs) {
 
     console.log('executing triplegs -> ' + sql+ "values "+values.toString());
 
-    if (triplegs.length>0)
-        var prioryQuery = myClient.query(sql+ "values "+values.toString());
+    if (triplegs.length>0) {
+        var prioryQuery = myClient.query(sql + "values " + values.toString());
 
-        prioryQuery.on('error', function(err) {
-                throw err;
-
+        prioryQuery.on('error', function (err) {
+            myClient.end();
+            throw err;
         });
 
-        prioryQuery.on('end', function(){
-            console.log('generated triplegs for '+user_id)
+        prioryQuery.on('end', function () {
+            myClient.end();
+            console.log('generated triplegs for ' + user_id)
         })
+    }
+    else {
+        myClient.end();
+    }
 }
 
 /**
@@ -391,16 +409,19 @@ function generateSql(trips,userId) {
     }
 
     console.log('executing -> ' + sql+ " values "+values.toString());
-    if (trips.length>0)
-        var prioryQuery = myClient.query(sql+ " values "+values.toString());
+    if (trips.length>0) {
+        var prioryQuery = myClient.query(sql + " values " + values.toString());
 
-    prioryQuery.on('error', function(err) {
-                throw err;
-            });
+        prioryQuery.on('error', function (err) {
+            myClient.end();
+            throw err;
+        });
 
-    prioryQuery.on('end', function(){
-                generateTriplegs(userId);
-            })
-
+        prioryQuery.on('end', function () {
+            generateTriplegs(userId);
+        })
+    }
+    else {
+        myClient.end();
+    }
 }
-module.exports.client = myClient;
