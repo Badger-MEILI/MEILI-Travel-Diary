@@ -24,9 +24,10 @@ var router = express.Router();
 var passport = require('passport');
 var pg = require('pg');
 var credentials = require('./database');
-var segmenter = require('./segmenter')
+var segmenter = require('./segmenter');
 
-var myClient = new pg.Client(credentials);
+var myClient = new pg.Client(credentials.connectionString);
+var pool = segmenter.pool;
 
 //Connect to the database with one client specific to each user to avoid overflow of clients
 myClient.connect(function(err){
@@ -139,25 +140,23 @@ router.post('/registerUser', function(req, res) {
     var alreadyExists = false;
     var numberOfRowsReturned = 0;
 
-    var uploadClient = new pg.Client(credentials);
-    uploadClient.connect(function(err){
-        if (err){
-            return console.error('could not connect to postgres', err);
-        }
-        else {
-            console.log('connected registration client');
-            // Check if the username is already taken
-            var prioryQuery = uploadClient.query("SELECT id FROM raw_data.user_table where username = '" + data.username+"'");
 
-            prioryQuery.on('row', function (row) {
+            // Check if the username is already taken
+            pool.query("SELECT id FROM raw_data.user_table where username = '" + data.username+"'", function(err, result){
+
+                if (err) {
+                    console.log('failed to register user')
+                    res.end("failed to register user");
+                }
+
+            for (var j in result.rows){
                 // The user name is already taken
                 numberOfRowsReturned++;
                 alreadyExists=true;
-            });
+            };
 
             if (numberOfRowsReturned>0) alreadyExists=true;
 
-            prioryQuery.on('end', function(){
                 if (alreadyExists) {
                     // Inform the user that the username has been already taken
                     res.end("username taken");
@@ -174,12 +173,10 @@ router.post('/registerUser', function(req, res) {
                     });
 
                     query.on('end', function () {
-                        uploadClient.end();
                         return res.json(results);
                     });
-                }});
-        }
-    });
+                }
+            });
 });
 
 /**
@@ -222,30 +219,20 @@ router.post('/insertLocationsIOS',  function(req, res) {
 
     if (data.length>0)
     {
-        var uploadClient = new pg.Client(credentials);
-        uploadClient.connect(function(err){
-            if (err){
-                return console.error('could not connect to postgres', err);
-            }
-            else {
-                var prioryQuery = uploadClient.query(sql + "values " + values.toString());
+        pool.query(sql + "values " + values.toString(), function(err, result){
 
-                prioryQuery.on('error', function (err) {
+            if(err){
                     res.end("failure");
                     console.log('error with sql function '+sql+ " values "+values.toString());
                     console.log(err);
-                });
-
-
-                prioryQuery.on('end', function () {
+            }
+            else {
                     res.end("success");
-                    uploadClient.end();
                     // After a batch of insertions from the client, try and segment all residue data that are not already part of any trip
                     // NOTE - this will probably make nodeJS hang since it is an intensive operation, offload to client based segmentation as soon as a final segmentation strategy has been decided on.
                     segmenter.generateTrips(userId);
-                })
             }
-    })
+    });
     }
     else res.end("failure");
 });
@@ -282,28 +269,21 @@ router.post('/insertLocationsAndroid',  function(req, res) {
     }
 
     if (data.length>0) {
-        var uploadClient = new pg.Client(credentials);
-        uploadClient.connect(function(err) {
-            if (err) {
-                return console.error('could not connect to postgres', err);
-            }
-            else {
 
-                var prioryQuery = uploadClient.query(sql + "values " + values.toString());
+                pool.query(sql + "values " + values.toString(), function(err,result) {
 
-                prioryQuery.on('error', function (err) {
-                    res.end("failure");
-                    console.log('error with sql function '+sql+ " values "+values.toString());
-                    console.log(err);
+
+                    if (err) {
+                        res.end("failure");
+                        console.log('error with sql function ' + sql + " values " + values.toString());
+                        console.log(err);
+                    }
+                    else {
+                        res.end("OK");
+                        segmenter.generateTrips(userId);
+                    }
                 });
-
-                prioryQuery.on('end', function () {
-                    uploadClient.end();
-                    res.end("OK");
-                    segmenter.generateTrips(userId);
-                });
-            }
-        })}
+        }
     else res.end("failure");
 });
 

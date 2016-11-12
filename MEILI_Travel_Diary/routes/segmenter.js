@@ -21,16 +21,11 @@
 
 
 var pg = require('pg');
-var credentials = require('./database');
-var myClient = new pg.Client(credentials);
+var Promise = require('es6-promise').Promise;
 
-//Connect to the database with one client specific to each user to avoid overflow of clients
-myClient.connect(function(err){
-    if (err){
-        return console.error('could not connect to postgres', err);
-    }
-    else console.log('connection successfull');
-});
+var credentials = require('./database');
+
+var pool = new pg.Pool(credentials.poolConfig);
 
 /**
  * String to json converter
@@ -78,6 +73,7 @@ module.exports = {
      */
     generateTrips: function (userId) {
 
+
         console.log('generating trips for ' + userId);
         // counter for number of points clustered in the stop period
         var stopNumber = 0;
@@ -95,26 +91,32 @@ module.exports = {
         var pointsInActiveTrip = 0;
 
 
-            var prioryQuery = myClient.query("select get_stream_for_stop_detection as response from apiv2.get_stream_for_stop_detection("+userId+");");
+            pool.query("select get_stream_for_stop_detection as response from apiv2.get_stream_for_stop_detection("+userId+");",
+            function(err, result){
+
+
 
             // Gets the stream that has to be segmented
-            prioryQuery.on('row', function (row) {
-                results.push(row);
-            });
+            for (var j in result.rows)
+                results.push(result.rows[j]);
 
-
-            prioryQuery.on('error', function(err){
+            if (err){
                 console.log(err);
-            });
-
-            prioryQuery.on('end', function(){
+            }
+            else{
                 var points = getJson(results[0].response);
 
-                console.log('point support' + points.length);
+
                 if (points!=null)
+                {
                     var min = points.length;
+                    console.log('point support' + points.length);
+                }
                 else
+                {
                     var min =-1;
+                    console.log('no point support');
+                }
 
                 var skipOne = true;
 
@@ -237,6 +239,7 @@ module.exports = {
                 }
                 console.log('generated '+tripArray.length+' trips for user '+ userId);
                 generateSql(tripArray,userId);
+            };
             });
     }
 };
@@ -250,13 +253,16 @@ function generateTriplegs(userId) {
     var arrayOfTriplegs = [];
     var results = [];
 
-        var prioryQuery = myClient.query("select get_stream_for_tripleg_detection as response from apiv2.get_stream_for_tripleg_detection("+userId+");");
+        pool.query("select get_stream_for_tripleg_detection as response from apiv2.get_stream_for_tripleg_detection("+userId+");", function(err, result){
 
-        prioryQuery.on('row', function (row) {
-            results.push(row);
-        });
+        for (var j in result.rows)
+            results.push(result.rows[j]);
 
-        prioryQuery.on('end', function(){
+            if (err){
+                console.log(err);
+            }
+            else
+            {
             var firstPoint = null;
             var lastPoint = null;
             var prevPoint = null;
@@ -297,7 +303,9 @@ function generateTriplegs(userId) {
             }
             console.log('generated '+arrayOfTriplegs.length+' triplegs for user '+ userId);
             generateTriplegSql(arrayOfTriplegs);
-        });
+        };
+
+    });
 }
 
 /**
@@ -322,21 +330,15 @@ function generateTriplegSql(arrayOfTriplegs) {
     console.log('executing triplegs -> ' + sql+ "values "+values.toString());
 
     if (triplegs.length>0) {
-        var prioryQuery = myClient.query(sql + "values " + values.toString());
+        pool.query(sql + "values " + values.toString(), function(err, result){
 
-        prioryQuery.on('error', function (err) {
-            myClient.end();
+            if (err){
             console.log('error with sql function '+sql+" values "+values.toString());
             console.log(err);
+            }
+            else
+            console.log('generated triplegs for ' + user_id);
         });
-
-        prioryQuery.on('end', function () {
-            myClient.end();
-            console.log('generated triplegs for ' + user_id)
-        })
-    }
-    else {
-        myClient.end();
     }
 }
 
@@ -419,19 +421,16 @@ function generateSql(trips,userId) {
 
     console.log('executing -> ' + sql+ " values "+values.toString());
     if (trips.length>0) {
-        var prioryQuery = myClient.query(sql + " values " + values.toString());
+        pool.query(sql + " values " + values.toString(), function (err, result){
 
-        prioryQuery.on('error', function (err) {
-            myClient.end();
+        if(err) {
             console.log('error with sql function '+sql+" values "+values.toString());
             console.log(err);
-        });
-
-        prioryQuery.on('end', function () {
+        }
+        else
             generateTriplegs(userId);
-        })
-    }
-    else {
-        myClient.end();
+        });
     }
 }
+
+module.exports.pool = pool;
