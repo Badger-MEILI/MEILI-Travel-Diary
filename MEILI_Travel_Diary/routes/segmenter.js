@@ -102,9 +102,15 @@ module.exports = {
                 results.push(row);
             });
 
+
+            prioryQuery.on('error', function(err){
+                console.log(err);
+            });
+
             prioryQuery.on('end', function(){
                 var points = getJson(results[0].response);
 
+                console.log('point support' + points.length);
                 if (points!=null)
                     var min = points.length;
                 else
