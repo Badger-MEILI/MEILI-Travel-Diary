@@ -483,7 +483,7 @@ router.get("/navigateToPreviousTrip", function(req,res){
 
     else
     {
-            var sqlQuery = "select * from apiv2.pagination_navigate_to_previous_trip($bd$"+user_id+"$bd$,$bd$"+trip_id+"$bd$)";
+        var sqlQuery = "select * from apiv2.pagination_navigate_to_previous_trip($bd$"+user_id+"$bd$,$bd$"+trip_id+"$bd$)";
         var prioryQuery = apiClient.query(sqlQuery);
 
         prioryQuery.on('row', function (row) {
@@ -491,7 +491,7 @@ router.get("/navigateToPreviousTrip", function(req,res){
         });
 
         prioryQuery.on('error', function(row){
-            return util.handleError(res, 500, row.message);
+            return util.handleError(res, 500, row.message+' '+sqlQuery);
         });
 
         prioryQuery.on('end', function () {

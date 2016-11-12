@@ -144,6 +144,8 @@ app.use('/apiv2/tests', auth, testEndPoint);
 // default fallback
 app.use('/', routes);
 
+app.disable('etag');
+
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
