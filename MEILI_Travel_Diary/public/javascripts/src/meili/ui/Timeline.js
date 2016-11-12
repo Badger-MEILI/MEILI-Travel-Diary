@@ -358,7 +358,10 @@ Timeline.prototype = {
           }
         }
 
-        var maxAccuracy = places[0].accuracy;
+          var maxAccuracy =0;
+          if(places.length>0)
+            maxAccuracy = places[0].accuracy;
+
         if (maxAccuracy < 50) {
           // Can not preselect for the user
           classes = ' form-value-invalid';
