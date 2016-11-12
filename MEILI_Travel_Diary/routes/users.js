@@ -100,8 +100,9 @@ router.post('/loginUser', function(req, res) {
 /**
  * Mostly for debug purposes -> forces the generation of trips and triplegs
  */
-router.post('/generateTripsAndTriplegsOfUsers', function(req, res){
-    var user_id= req.body.userId;
+router.get('/generateTripsAndTriplegsOfUsers', function(req, res){
+    var user_id= req.query.userId;
+    console.log('generating for user '+user_id);
     segmenter.generateTrips(user_id);
     return res.json('success');
 });
