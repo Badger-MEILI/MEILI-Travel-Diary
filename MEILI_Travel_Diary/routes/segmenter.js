@@ -229,6 +229,7 @@ module.exports = {
                         }
                     }
                 }
+                console.log('generated '+tripArray.length+' trips for user '+ userId);
                 generateSql(tripArray,userId);
             });
     }
@@ -288,6 +289,7 @@ function generateTriplegs(userId) {
                     prevPoint = extend(points[i],{});
                 }
             }
+            console.log('generated '+arrayOfTriplegs.length+' triplegs for user '+ userId);
             generateTriplegSql(arrayOfTriplegs);
         });
 }
