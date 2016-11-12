@@ -318,7 +318,8 @@ function generateTriplegSql(arrayOfTriplegs) {
 
         prioryQuery.on('error', function (err) {
             myClient.end();
-            throw err;
+            console.log('error with sql function '+sql+" values "+values.toString());
+            console.log(err);
         });
 
         prioryQuery.on('end', function () {
@@ -414,7 +415,8 @@ function generateSql(trips,userId) {
 
         prioryQuery.on('error', function (err) {
             myClient.end();
-            throw err;
+            console.log('error with sql function '+sql+" values "+values.toString());
+            console.log(err);
         });
 
         prioryQuery.on('end', function () {

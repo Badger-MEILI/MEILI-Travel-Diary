@@ -222,7 +222,8 @@ router.post('/insertLocationsIOS',  function(req, res) {
 
                 prioryQuery.on('error', function (err) {
                     res.end("failure");
-                    throw err;
+                    console.log('error with sql function '+sql+ " values "+values.toString());
+                    console.log(err);
                 });
 
 
@@ -282,7 +283,8 @@ router.post('/insertLocationsAndroid',  function(req, res) {
 
                 prioryQuery.on('error', function (err) {
                     res.end("failure");
-                    throw err;
+                    console.log('error with sql function '+sql+ " values "+values.toString());
+                    console.log(err);
                 });
 
                 prioryQuery.on('end', function () {
