@@ -98,6 +98,15 @@ router.post('/loginUser', function(req, res) {
 });
 
 /**
+ * Mostly for debug purposes -> forces the generation of trips and triplegs
+ */
+router.post('/generateTripsAndTriplegsOfUsers', function(req, res){
+    var user_id= req.body.userId;
+    segmenter.generateTrips(user_id);
+    return res.json('success');
+});
+
+/**
  * Insert text from contact form into the database
  */
 router.post('/contactForm', function(req, res) {
