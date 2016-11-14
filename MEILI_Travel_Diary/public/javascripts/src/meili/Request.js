@@ -23,6 +23,10 @@ var Request = function(config) {
       if(jqXHR.responseJSON && jqXHR.responseJSON.error) {
         msg = jqXHR.responseJSON.error.msg;
       }
+      // do not log passwords
+      if(options && options.data && options.data.password) {
+        delete options.data.password;
+      }
       log.error('Request -> doRequest', msg, JSON.stringify(options));
 
       // Unauthorizedm, send user to login page
