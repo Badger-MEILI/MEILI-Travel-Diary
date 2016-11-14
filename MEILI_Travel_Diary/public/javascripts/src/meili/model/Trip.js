@@ -10,10 +10,12 @@ var Trip = Trip || function(trip, triplegs) {
   // Make sure purposes is sorted at init
   if(this.purposes) {
     this._sortPurposes();
+    this._checkIfPurposeIsAccurateAndSyncToServer();
   }
   // Make sure places is sorted at init and that it is an array
   if(this.destination_places && $.isArray(this.destination_places)) {
     this._sortDestinationPlaces();
+    this._checkIfDestinationIsAccurateAndSyncToServer();
   } else {
     this.destination_places = [];
   }
@@ -383,6 +385,15 @@ Trip.prototype = {
   // -------------------------------------------
   // -------------------------------------------
 
+  _checkIfPurposeIsAccurateAndSyncToServer: function() {
+    var purpose = this.getPurpose();
+    // If purpose accuracy is set by server then make sure to sync it to the server
+    // !TODO move this logic to server?
+    if(purpose && purpose.accuracy > 50 && purpose.accuracy < 100) {
+      this.updatePurposeOfTrip(purpose.id);
+    }
+  },
+
   _updatePurpose: function(purposeId) {
     for (var i = 0; i < this.purposes.length; i++) {
       if(this.purposes[i].id == purposeId) {
@@ -392,6 +403,15 @@ Trip.prototype = {
       }
     }
     this._sortPurposes();
+  },
+
+  _checkIfDestinationIsAccurateAndSyncToServer: function() {
+    var destination = this.getDestinationPlace();
+    // If destination accuracy is set by server then make sure to sync it to the server
+    // !TODO move this logic to server?
+    if(destination && destination.accuracy > 50 && destination.accuracy < 100) {
+      this.updateDestinationPoiIdOfTrip(destination.gid);
+    }
   },
 
   _updateDestinationPlace: function(destinationPlaceId) {

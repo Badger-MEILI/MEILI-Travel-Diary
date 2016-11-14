@@ -7,6 +7,7 @@ var Tripleg = Tripleg || function(tripleg) {
   Emitter($.extend(this, tripleg));
   // Make sure that modes are in order
   this._sortModes();
+  this._checkIfModeIsAccurateAndSyncToServer();
   // Make sure transitions are in order
   this._sortTransitionPlaces();
 
@@ -304,6 +305,15 @@ Tripleg.prototype = {
   // Internal methods
   // -------------------------------------------
   // -------------------------------------------
+
+  _checkIfModeIsAccurateAndSyncToServer: function() {
+    var mode = this.getMode();
+    // If mode accuracy is set by server then make sure to sync it to the server
+    // !TODO move this logic to server?
+    if(mode && mode.accuracy > 50 && mode.accuracy < 100) {
+      this.updateDestinationPoiIdOfTrip(mode.id);
+    }
+  },
 
   _setMode: function(modeId) {
     log.info('tripleg setting mode', modeId);
