@@ -126,10 +126,10 @@ module.exports = {
                 for (var i = 0; i < min; i++) {
 
                     var currentLocation = extend(points[i],{});
+                    if (prevFrom == null) prevFrom = extend(currentLocation,{});
 
                     // accuracy filter for point
                     if (allConditionsAreMet(currentLocation)) {
-                        if (prevFrom == null) prevFrom = extend(currentLocation,{});
                         pointsInActiveTrip++;
                         if (prevLocation == null) {
                             prevLocation = extend(currentLocation, {});
@@ -178,7 +178,7 @@ module.exports = {
                                              var fromID = extend(firstLocation, {});
                                              var toID = extend(endLocation, {});
 
-                                             prevTo = extend(toID, {});
+                                             prevTo = extend(fromID, {});
 
                                              console.log('stop candidates from to');
                                              console.log(prevFrom.id+' '+prevFrom.time_);
