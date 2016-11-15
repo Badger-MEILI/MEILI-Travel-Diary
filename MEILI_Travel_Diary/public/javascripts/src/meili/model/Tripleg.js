@@ -362,8 +362,8 @@ Tripleg.prototype = {
           // End point
           marker = L.marker(point, { icon: CONFIG.triplegs.map.markers.stop });
         } else if(point.osm_id) {
-          // Place, add better way to check?
-          marker = L.marker(point);
+          // Transfer place, add better way to check?
+          marker = L.marker(point, { icon: CONFIG.triplegs.map.markers.transfer });
         } else {
           // Regular point
           marker = L.circleMarker(point, CONFIG.triplegs.map.markers.regular);

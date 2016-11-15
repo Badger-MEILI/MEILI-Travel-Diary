@@ -110,6 +110,11 @@ var CONFIG = {
           iconSize: [20, 20],
           iconAnchor: [10, 10]
         }),
+        transfer: L.icon({
+          iconUrl: 'images/Bus.png',
+          iconSize: [20, 20],
+          iconAnchor: [10, 10]
+        }),
         stop: L.icon({
           iconUrl: 'images/stop_flag.png',
           iconSize: [30, 30],
