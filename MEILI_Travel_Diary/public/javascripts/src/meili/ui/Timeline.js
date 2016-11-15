@@ -222,7 +222,7 @@ Timeline.prototype = {
   },
 
   _generateMergeTripsButton: function(trip) {
-    if(trip.editable() && this.trip.getNextTripStartTime() !== null) {
+    if(trip.editable() && this.trip.getNextTripStartTime() && this.trip.getNextTripStartTime() !== null) {
       return '<button class="merge-with-next-trip btn btn-default" lang="en">Merge with next trip <span class="glyphicon glyphicon-share-alt"></span></button>';
     } else {
       return '';
@@ -269,7 +269,7 @@ Timeline.prototype = {
       // Add ended trip info
       // TODO! move into separate method
       var displayTripEndTime = this.trip.getEndTime(true);
-      if (this.trip.getNextTripStartTime() !== null) {
+      if (this.trip.getNextTripStartTime() && this.trip.getNextTripStartTime() !== null) {
           // Add previous trip ended panel
           displayTripEndTime = this.trip.getEndTime(true) + ' - ' + this.trip.getNextTripStartTime(true);
       }
@@ -304,7 +304,7 @@ Timeline.prototype = {
           '</div>',
         '</li>'];
 
-      if (this.trip.getNextTripStartTime() !== null) {
+      if (this.trip.getNextTripStartTime() && this.trip.getNextTripStartTime() !== null) {
         /* Add process next trip */
         navigateToNextTrip = [
           '<li id="processNext">',
