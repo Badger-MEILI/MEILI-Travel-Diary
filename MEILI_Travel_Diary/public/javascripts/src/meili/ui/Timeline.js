@@ -222,7 +222,7 @@ Timeline.prototype = {
   },
 
   _generateMergeTripsButton: function(trip) {
-    if(trip.editable()) {
+    if(trip.editable() && this.trip.getNextTripStartTime() !== null) {
       return '<button class="merge-with-next-trip btn btn-default" lang="en">Merge with next trip <span class="glyphicon glyphicon-share-alt"></span></button>';
     } else {
       return '';
