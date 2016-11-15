@@ -311,7 +311,7 @@ Tripleg.prototype = {
     // If mode accuracy is set by server then make sure to sync it to the server
     // !TODO move this logic to server?
     if(mode && mode.accuracy > 50 && mode.accuracy < 100) {
-      this.updateDestinationPoiIdOfTrip(mode.id);
+      this.updateMode(mode.id);
     }
   },
 
