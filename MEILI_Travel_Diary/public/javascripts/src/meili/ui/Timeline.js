@@ -294,25 +294,20 @@ Timeline.prototype = {
       ul.append(lastTripControl.join(''));
 
 
-
       // Navigation to next trip
       // TODO! move into separate method
-      var navigateToNextTrip = [
-        '<li>',
-          '<div class="tldate">',
-            '<p lang="en"> These are all the trip data available now</p>',
+      var moveToNextTripLabel = 'Annotate last trip';
+      if (this.trip.getNextTripStartTime() && this.trip.getNextTripStartTime() !== null) {
+        moveToNextTripLabel = 'Process the next trip';
+      }
+
+      /* Add process next trip */
+      navigateToNextTrip = [
+        '<li id="processNext">',
+          '<div class="tldatecontrol">',
+            '<a class="go-to-next-trip" href="#" lang="en">' + moveToNextTripLabel + ' <i class="glyphicon medium glyphicon-arrow-right"></i> </a>',
           '</div>',
         '</li>'];
-
-      if (this.trip.getNextTripStartTime() && this.trip.getNextTripStartTime() !== null) {
-        /* Add process next trip */
-        navigateToNextTrip = [
-          '<li id="processNext">',
-            '<div class="tldatecontrol">',
-              '<a class="go-to-next-trip" href="#" lang="en">Process the next trip <i class="glyphicon medium glyphicon-arrow-right"></i> </a>',
-            '</div>',
-          '</li>'];
-      }
       ul.append(navigateToNextTrip.join(''));
 
   },
