@@ -367,20 +367,6 @@ Trip.prototype = {
     });
   },
 
-  mergeWithNextTrip: function() {
-    var dfd = $.Deferred();
-    api.trips.mergeWithNextTrip(this.getId())
-      .done(function(result) {
-          this.updateTriplegs(result.triplegs);
-          dfd.resolve(this);
-        }.bind(this))
-      .fail(function(err, jqXHR) {
-        log.error('Trip -> mergeWithNextTrip', err);
-        dfd.reject(err, jqXHR);
-      });
-    return dfd.promise();
-  },
-
   // Internal methods
   // -------------------------------------------
   // -------------------------------------------

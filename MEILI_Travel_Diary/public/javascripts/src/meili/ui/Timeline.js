@@ -117,7 +117,7 @@ Timeline.prototype = {
 
     $element.on('click', '.merge-with-next-trip', function(e) {
       new Confirm().show({ heading: 'Merge trip', question: 'Do you really want to merge this trip with next trip?' }, function() {
-        this.trip.mergeWithNextTrip();
+        this.emit('merge-trip', this.trip);
       }.bind(this));
       e.preventDefault();
       return false;

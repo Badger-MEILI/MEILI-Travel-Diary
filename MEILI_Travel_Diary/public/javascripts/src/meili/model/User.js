@@ -136,16 +136,32 @@ User.prototype = {
     return dfd.promise();
   },
 
-    splitTrip: function (start_time, end_time) {
-        var dfd = $.Deferred();
-        api.trips.splitTrip(this.id, start_time, end_time).done(function(tripJson) {
-            this._setCurrentTrip(tripJson)
-                .done(function(trip) { dfd.resolve(trip); })
-                .fail(function(err) { dfd.reject(err); });
-        }.bind(this)).fail(function(err, jqXHR) {
-            log.error('Trip -> split trip', err);
-        });
-    },
+  splitTrip: function (start_time, end_time) {
+    var dfd = $.Deferred();
+    api.trips.splitTrip(this.id, start_time, end_time).done(function(tripJson) {
+      this.getLastTrip()
+        .done(function(trip) { dfd.resolve(trip); })
+        .fail(function(err) { dfd.reject(err); });
+    }.bind(this)).fail(function(err, jqXHR) {
+        log.error('Trip -> split trip', err);
+    });
+    return dfd.promise();
+  },
+
+  mergeWithNextTrip: function(trip) {
+    var dfd = $.Deferred();
+    api.trips.mergeWithNextTrip(trip.getId())
+      .done(function(result) {
+          this.getLastTrip()
+            .done(function(trip) { dfd.resolve(trip); })
+            .fail(function(err) { dfd.reject(err); });
+        }.bind(this))
+      .fail(function(err, jqXHR) {
+        log.error('Trip -> mergeWithNextTrip', err);
+        dfd.reject(err, jqXHR);
+      });
+    return dfd.promise();
+  },
 
   deleteTrip: function(trip) {
     var dfd = $.Deferred();

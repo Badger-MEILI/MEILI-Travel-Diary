@@ -97,10 +97,7 @@ $(function() {
                     trip.on('trip-confirm', user.confirmTrip.bind(user));
                     trip.on('trip-update', renderTrip);
                     trip.on('triplegs-update', renderTrip);
-
-                    trip.on('split-trip', function () {
-                        user.splitTrip(arguments[0], arguments[1]);
-                    });
+                    trip.on('split-trip', user.splitTrip.bind(user));
 
                     renderTrip(trip);
 
@@ -112,6 +109,7 @@ $(function() {
                 ui.timeline.on('move-to-previous-trip', user.getPreviousTrip.bind(user));
                 ui.timeline.on('move-to-next-trip', user.getNextTrip.bind(user));
                 ui.timeline.on('delete-trip', user.deleteTrip.bind(user));
+                ui.timeline.on('merge-trip', user.mergeWithNextTrip.bind(user));
                 ui.timeline.on('map-zoom-to', ui.lmap.fitBounds.bind(ui.lmap))
                 ui.timeline.on('add-new-destination', function() {
                     ui.lmap.addNewPlace().then(user.addNewDestinationPoiToCurrentTrip.bind(user));
