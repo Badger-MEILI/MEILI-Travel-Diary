@@ -63,7 +63,9 @@ router.get("/getLastTripOfUser", function(req,res){
     }
     else
     {
-        var sqlQuery = "select * from apiv2.pagination_get_next_process("+user_id+")";
+        // TODO - this is a hack, not a solution
+        //var sqlQuery = "select * from apiv2.pagination_get_next_process("+user_id+")";
+        var sqlQuery = "select * from apiv2.get_next_trip_response_temp_fix("+user_id+")";
         var logQuery = apiClient.query(sqlQuery);
 
         logQuery.on('row', function(row){
