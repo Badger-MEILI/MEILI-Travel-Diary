@@ -107,13 +107,6 @@ TriplegPanel.prototype = {
         disableMousewheel:true,
     }).on('hide.timepicker', this._onTimeSet.bind(this));
 
-    // Open insert transition modal
-    $element.on('click','.add-transition', function(e) {
-      this.emit('open-transition-modal', this.tripleg);
-      e.preventDefault();
-      return false;
-    }.bind(this));
-
   },
 
  /**
@@ -168,7 +161,7 @@ TriplegPanel.prototype = {
           '</div>',
           this._generatePlaceSelector(tripleg),
           '<br>',
-          this._generateInsertTransferButton(tripleg),
+          '<p><i><strong>Did we miss a transfer?</strong><br> Click on a point in the map to insert.</i></p>',
         '</div>',
       '</div>'
     ];
@@ -197,14 +190,6 @@ TriplegPanel.prototype = {
   _generateDeleteTriplegButton: function(tripleg) {
     if(tripleg.editable() && !(tripleg.isFirst && tripleg.isLast)) {
       return '<li><a class="delete-tripleg" title="Delete tripleg"><span class="glyphicon glyphicon-trash"></span></a></li>';
-    }
-  },
-
-  _generateInsertTransferButton: function(tripleg) {
-    if(tripleg.editable()) {
-      return '<a class="add-transition btn btn-default" href="#" role="button"><i class="glyphicon glyphicon-transfer"></i> Did we miss a transfer? Click to add</a>';
-    } else {
-      return '';
     }
   },
 
