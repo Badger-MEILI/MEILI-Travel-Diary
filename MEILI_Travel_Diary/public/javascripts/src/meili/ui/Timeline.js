@@ -113,7 +113,7 @@ Timeline.prototype = {
 
           var allTriplegsOk = true;
           for (var j in this.trip.triplegs){
-              if (this.trip.triplegs[j].mode[0].accuracy<50) {
+              if (this.trip.triplegs[j].mode[0].accuracy<50 && this.trip.triplegs[j].type_of_tripleg==1) {
                   safeToMoveToNext = false;
                   allTriplegsOk = false;
               }
