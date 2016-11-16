@@ -5,6 +5,7 @@
 
     <div class="panel-group" id="accordion">
         <div class="faqHeader"><p lang="en">MEILI Mobility Collector Web App</p><p lang="sv">MEILI hemsida</p></div>
+
         <div class="panel panel-default">
             <div class="panel-heading" style="background-color: #D1DAE2">
                 <h4 class="panel-title">
@@ -29,7 +30,7 @@
             </div>
             <div id="collapseTenWeb" class="panel-collapse collapse">
                 <div class="panel-body">
-                    <p lang="en"> You should use an email address that you check periodically throughout the survey so that the SPOT team can get in touch with you in case of potential problems. The email address that you provide is treated confidentially and is only used by the SPOT project team.</p>
+                    <p lang="en"> You should use an email address that you check periodically throughout the survey so that the project team can get in touch with you in case of potential problems. The email address that you provide is treated confidentially and is only used for this specific project.</p>
                     <p lang="sv"> Du ska använda samma e-postadress som du lämnade när du anmälde dig till undersökningen. Du bör läsa din e-post regelbundet under hela undersökningsperioden så att SPOT kan komma i kontakt med dig om det skulle uppstå problem. Den e-postadress du uppger behandlas konfidentiellt och används bara av ansvariga för undersökningen. </p>
                 </div>
             </div>
@@ -46,7 +47,7 @@
             </div>
             <div id="collapseOne" class="panel-collapse collapse">
                 <div class="panel-body">
-                    <p lang="en">MEILI tries to capture all your trips. This entails the collection of sensor data from your phone (GPS and accelerometer) and the automatic trip-semantic enrichment of the collected information (time-, geographic-, and travel mode aspects of your trip and its triplegs as well as the purpose and destination of your trip). As with all technical and automatic processes, a number of things can go wrong. However, you can help MEILI by verifying and, if necessary, by complementing and changing the geographic aspects of the collected information and how this information been enriched (location and start and end time of a trip and its triplegs, the travel mode of a tripleg, and the destination and purpose of the trip).</p>
+                    <p lang="en">MEILI tries to capture all of your trips. This entails the collection of sensor data from your phone (GPS and accelerometer) and the automatic trip-semantic enrichment of the collected information (time-, geographic-, and travel mode aspects of your trip and its triplegs as well as the purpose and destination of your trip). As with all technical and automatic processes, a number of things can go wrong. However, you can help MEILI by verifying and, if necessary, by complementing and changing the geographic aspects of the collected information and how this information been enriched (location and start and end time of a trip and its triplegs, the travel mode of a tripleg, and the destination and purpose of the trip). MEILI currently supports the following direct edit operations: delete the entire trip or just a trip leg <span class="glyphicon glyphicon-trash"></span>, merge trips <span class="glyphicon glyphicon-share-alt"></span>, change start and end time of the trip and trips legs, add travel mode for each trip leg and the destiantion and purpose of the trip. To insert a transition point (where you changed travel mode) or change the stop point of the trip you just click on a point and change the attribute of that point.</p>
                     <p lang="sv">Du ska granska start och sluttid för förflyttningen, färdsätt, eventuella bytespunkter, målpunkt och ärende. MEILI försöker registrera alla dina förflyttningar. Det innebär automatisk insamling från din mobil. Tekniska och automatiska processer är dock inte alltid felfria, och du kan hjälpa MEILI genom att verifiera och justera den insamlade informationen.</p>
                 </div>
             </div>
@@ -61,8 +62,8 @@
             </div>
             <div id="collapseTen" class="panel-collapse collapse">
                 <div class="panel-body">
-                    <p lang="en"> You can edit your input at anytime you want. MEILI currently supports the following direct edit operations on the timeline: delete <span class="glyphicon glyphicon-trash"></span> and merge <span class="glyphicon glyphicon-share-alt"></span> trips and insert "Did we miss a transition?" and delete <span class="glyphicon glyphicon-trash"></span> triplegs.</b>.</p>
-                    <p lang="sv"> Du kan justera din resdata när du vill. MEILI stödjer för närvarande följande justeringar: ta bort <span class="glyphicon glyphicon-trash"></span> och sammanfoga <span class="glyphicon glyphicon-share-alt"></span> förflyttningar, samt lägg till "Missade vi ett byte?".</b></p>
+                    <p lang="en"> As long as you haven't completed your annotation and proceeded to the next trip you can edit your input at anytime you want. Unfortunately, you cannot go back and annotate a trip that has been confirmed. Previously annotated trips can only be viewed, not annotated.</p>
+                    <p lang="sv"> Du kan justera din resdata när du vill. MEILI stödjer för närvarande följande justeringar: ta bort <span class="glyphicon glyphicon-trash"></span> och sammanfoga <span class="glyphicon glyphicon-share-alt"></span> förflyttningar, samt lägg till "Missade vi ett byte?".</p>
                 </div>
             </div>
         </div>
@@ -91,7 +92,7 @@
             </div>
             <div id="collapseTwo" class="panel-collapse collapse">
                 <div class="panel-body">
-                    <p lang="en">MEILI tries to automatically segment the long sequence of the sensor measurements it has obtained from your phone into trips and triplegs. In large part due to the inherent noise in the measurements sometimes this segmentation fails. You can help MEILI to correct these mistakes by changing the location or times of trip and tripleg starts and ends.</p>
+                    <p lang="en">MEILI tries to automatically segment the long sequence of the sensor measurements it has obtained from your phone into trips and triplegs. Sometimes this segmentation fails, in large part due to the inherent noise in the measurements. You can help MEILI to correct these mistakes by changing the location or times of trip and tripleg starts and ends. This can be done by clicking on a point and change the attribute of that point to a stop point or a transition point.</p>
                     <p lang="sv">MEILI försöker automatiskt att dela upp de långa förflyttningarna och dela in dem i olika färdsätt. Ibland misslyckas denna uppdelning. Du kan då hjälpa MEILI att justera dessa misstag genom att ändra förflyttningens tidpunkt, start eller målpunkt.</p>
                 </div>
             </div>
@@ -100,13 +101,13 @@
         <div class="panel panel-default">
             <div class="panel-heading" style="background-color: #D1DAE2">
                 <h4 class="panel-title">
-                        <a lang="en" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">What should I do if the detected destination location of my trip is incorrect?</a>
-                        <a lang="sv" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">Vad ska jag göra om den föreslagna målpunkten för min förflyttning är felaktig?</a>
+                    <a lang="en" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">What should I do if the detected destination location of my trip is incorrect?</a>
+                    <a lang="sv" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">Vad ska jag göra om den föreslagna målpunkten för min förflyttning är felaktig?</a>
                 </h4>
             </div>
             <div id="collapseThree" class="panel-collapse collapse">
                 <div class="panel-body">
-                    <p lang="en"> You can either click on your trip's incorrectly detected destination on the map and chose the "I did not stop here" option in the dialog box or use the "Click <span class="glyphicon glyphicon-share-alt"></span> to merge with next trip" option from the trip end element on the timeline.</p>
+                    <p lang="en"> You can either click on the point closest to the actual destination of you trip and change the attribute of that point to a stop point. If your actual destination has been allocated to the next trip you can use the "Merge with next trip <span class="glyphicon glyphicon-share-alt"></span>" option from the trip end element on the timeline. When you do this your current trip will be merged with the next trip and you can set the correct stop point.</p>
                     <p lang="sv"> Du kan antingen klicka på den felaktigt föreslagna målpunkten på kartan och välja "detta var inte min målpunkt" i dialogrutan eller "klicka <span class="glyphicon glyphicon-share-alt"></span> för att sammanfoga med nästa förflyttning". </p>
                 </div>
             </div>
@@ -121,7 +122,7 @@
             </div>
             <div id="collapseFive" class="panel-collapse collapse">
                 <div class="panel-body">
-                    <p lang="en">Technology is not always perfect. In order to acquire your positions during your trips MEILI needs to have good visibility to a number of the GPS satellites in the sky. You can help MEILI to gain a better visibility by wearing your phone, when possible, in a way that during your trips it has a relatively clear line-of-sight to the sky. If you feel the need to complement the locations that MEILI managed to collect, you can add a new location by pointing and double clicking on the line segment of your trip that you want to complement and dragging the point drawing tool to the desired location.</p>
+                    <p lang="en">Technology is not always perfect. In order to acquire your positions during your trips MEILI needs to have good visibility to a number of the GPS satellites in the sky. You can help MEILI to gain a better visibility by wearing your phone, when possible, in a way that during your trips it has a relatively clear line-of-sight to the sky. Unfortunately you cannot manually add or delete points.</p>
                     <p lang="sv">För att registrera dina positioner under förflyttningarna på ett korrekt sätt behöver MEILI ha bra kontakt med flera GPS satelliter. För att underlätta registreringen är det viktigt att du placerar din telefon så att den får god kontakt med satelliterna, dvs inte långt ner i en väska. Om du behöver komplettera de platser som MEILI registrerat så kan du lägga till platser genom att klicka och sedan dubbelklicka på den del av din förflyttning som du vill justera. Använd ritverktyget och dra punkten till önksad position.</p>
                 </div>
             </div>
@@ -136,38 +137,8 @@
             </div>
             <div id="collapseSix" class="panel-collapse collapse">
                 <div class="panel-body">
-                    <p lang="en"> You can add a missing location for your place of transfer by double clicking on the incomplete line segment and dragging the point drawing tool to the desired location and marking this newly added location as a transfer location. </p>
+                    <p lang="en"> You can add a missing location for your place of transfer by clicking on the point closest to where you made you transfer and change this point to a transition point.</p>
                     <p lang="sv"> Du kan lägga till en missad bytespunkt genom att dubbelklicka på förflyttningen (linje på kartan) och dra punkten till önskad plats. </p>
-                </div>
-            </div>
-        </div>
-
-        <div class="panel panel-default">
-            <div class="panel-heading" style="background-color: #D1DAE2">
-                <h4 class="panel-title">
-                    <a lang="en" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseEight">What should I do if my trips are sparsely recorded?</a>
-                    <a lang="sv" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseEight">Vad ska jag göra om mina förflyttningar bara är glest registrerade?</a>
-                </h4>
-            </div>
-            <div id="collapseEight" class="panel-collapse collapse">
-                <div class="panel-body">
-                    <p lang="en">If you feel that MEILI did not collect all critical locations of your trip, you can complement the trip with a new location by double clicking on the incomplete line segment and dragging the point drawing tool to the desired location.</p>
-                    <p lang="sv">Om MEILI inte registerarde alla dina besökta platser/målpunkter kan du komplettera förflyttningen genom att dubbelklicka på förflyttningen (linje på kartan) och dra den nya punkten till önskad plats.</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="panel panel-default">
-            <div class="panel-heading" style="background-color: #D1DAE2">
-                <h4 class="panel-title">
-                    <a lang="en" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseNine">How should I annotate short triplegs?</a>
-                    <a lang="sv" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseNine">Hur ska jag granska mycket korta förflyttningar?</a>
-                </h4>
-            </div>
-            <div id="collapseNine" class="panel-collapse collapse">
-                <div class="panel-body">
-                   <p lang="en"> If the measured locations are too space to define a tripleg of your trip then you can complement the trip with a new location by double clicking on the incomplete line segment and dragging the point drawing tool to the desired location. </p>
-                    <p lang="sv"> Om de registrerade platserna är för nära varandra för att utgöra en förflyttning så kan du komplettera förflyttningen genom att dubbelklicka på förflyttningen (linje på kartan) och dra den nya punkten till önskad plats. </p>
                 </div>
             </div>
         </div>
@@ -181,7 +152,7 @@
             </div>
             <div id="collapse1" class="panel-collapse collapse">
                 <div class="panel-body">
-                    <p lang="en">You should make a mental note about this missing trip and report it to the SPOT team in the after survey follow up.</p>
+                    <p lang="en">You should make a note about this missing trip and report it to the project team in the questionnaire that you will answer after the trial.</p>
                     <p lang="sv">Du bör skicka ett e-postmeddelande till spot@sweco.se</p>
                 </div>
             </div>
@@ -196,7 +167,7 @@
             </div>
             <div id="collapse1miss" class="panel-collapse collapse">
                 <div class="panel-body">
-                    <p lang="en">You can complement the trip with a new location by double clicking on the incomplete line segment and dragging the point drawing tool to the desired location.</p>
+                    <p lang="en">You cannot add any points to you trip, only change points to transition points or stop points and merge trips.</p>
                     <p lang="sv">Du kan komplettera förflyttningen med en ny punkt genom att dubbelklicka på förflyttningen (linje på kartan) och dra den nya punkten till önskad plats.</p>
                 </div>
             </div>
@@ -205,13 +176,29 @@
         <div class="panel panel-default">
             <div class="panel-heading" style="background-color: #D1DAE2">
                 <h4 class="panel-title">
-                    <a lang="en" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse1edit">Can I edit the places I have added? </a>
+                    <a lang="en" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse2miss">What do I do if can't find my destination in the drop list? </a>
+                    <a lang="sv" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse2miss">abcd?</a>
+                </h4>
+            </div>
+            <div id="collapse2miss" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <p lang="en">The predefined destiantions are taken from the Open street map POI database. If you can't find your destination in the drop list you can add a new destination. Choose "Add new" from the drop list, choose a name of the place and click on "Place point on map". When you do this you can place the marker on the map and create a new destination.</p>
+                    <p lang="sv">Du kan komplettera förflyttningen med en ny punkt genom att dubbelklicka på förflyttningen (linje på kartan) och dra den nya punkten till önskad plats.</p>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="panel panel-default">
+            <div class="panel-heading" style="background-color: #D1DAE2">
+                <h4 class="panel-title">
+                    <a lang="en" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse1edit">Can I edit the destination I have added? </a>
                     <a lang="sv" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse1edit">Kan jag justera de platser/målpunkter jag har lagt till?</a>
                 </h4>
             </div>
             <div id="collapse1edit" class="panel-collapse collapse">
                 <div class="panel-body">
-                    <p lang="en">Yes you can change both the location (by dragging the corresponding marker on the map) and any other information (in the corresponding dialog box) of the personal places that you have previously added.</p>
+                    <p lang="en">No, you cannot make changes to personal destiantions that you have previously added. But you can always add a new destination if there is something wrong with the one you previously added.</p>
                     <p lang="sv">Ja, du kan justera både plats (genom att flytta markören på kartan) och annan information (via dialogrutorna) för de platser du har lagt till.</p>
                 </div>
             </div>
@@ -228,7 +215,7 @@
             </div>
             <div id="collapseSeven" class="panel-collapse collapse">
                 <div class="panel-body">
-                    <p lang="en">You can stop the collection by accessing MEILI's main page (MEILI Mobility Collector Control Center) and pushing the "Stop collection" button. Once started through the same interface, this is the only way to stop MEILI. In particular, to make sure that MEILI is never accidentally off, once started, MEILI will restart automatically even if your phone is restarted.</p>
+                    <p lang="en">You can stop the collection by opening the Mobility collector application in your smartphone and push the "Stop collection" button. Once started through the same interface, this is the only way to stop MEILI. To make sure that MEILI is never accidentally turned off, once started, MEILI will restart automatically even if your phone is restarted.</p>
                     <p lang="sv">Om du inte vill bidra med data efter försöket är det bara att stänga av insamlingen genom att klicka på Stop/Stoppa insamling.</p>
                 </div>
             </div>
@@ -243,7 +230,7 @@
             </div>
             <div id="collapse5" class="panel-collapse collapse">
                 <div class="panel-body">
-                    <p lang="en"> You do not have to worry about MEILI's battery consumption. Thanks to the sophisticated battery savings methods of MEILI, for an average user for an entire day of collection MEILI will use about 30% of the total battery capacity. The battery consumption increases significantly when travelling long distances, but usually in these cases (car or train) you will have a power source for charging nearby.</p>
+                    <p lang="en"> Thanks to the sophisticated battery savings methods of MEILI, for an average user for an entire day of collection MEILI will use about 30% of the total battery capacity. The battery consumption increases significantly when travelling long distances, but usually in these cases (car or train) you will have a power source for charging nearby.</p>
                     <p lang="sv"> En dags registrerande av förflyttningar kommer att använda ca 30 % av ett normalt batteris kapacitet. Batteriåtgången ökar då man förflyttar sig långa sträckor. Du bör vara beredd på att du kan komma att behöva ladda telefonen under dagen.  </p>
                 </div>
             </div>
@@ -275,7 +262,7 @@
             </div>
             <div id="collapse7" class="panel-collapse collapse">
                 <div class="panel-body">
-                    <p lang="en">Only a very limited number of authorised researchers within the SPOT project that is funded by Trafikverket have access to the data.</p>
+                    <p lang="en">Only a very limited number of authorised researchers within the project have access to the data.</p>
                     <p lang="sv">Endast en liten grupp av godkända forskare som är ansvariga för undersökningen kommer ha tillgång till det insamlade resdatat. </p>
                 </div>
             </div>
@@ -290,7 +277,7 @@
             </div>
             <div id="collapse8" class="panel-collapse collapse">
                 <div class="panel-body">
-                    <p lang="en">The data is primarily used to evaluate and improve MEILI. All data will be treated anonymously and the users privacy and security will be treated at utmost respect and care. Within the transport science research domain, this kind of data will be used to provide insight into individual and group travel behavior for transport modeling and subsequent planning purposes. The aim of such use is never to re-identify a specific individual and in all cases the data is analyzed in an aggregated, privacy-preserving fashion.</p>
+                    <p lang="en">The data is primarily used to evaluate and improve the system. All data will be treated anonymously and the users privacy and security will be treated at utmost respect and care. Within the transport science research domain, this kind of data will be used to provide insight into individual and group travel behavior for transport modeling and subsequent planning purposes. The aim of such use is never to re-identify a specific individual and in all cases the data is analyzed in an aggregated, privacy-preserving fashion.</p>
                     <p lang="sv">Det insamlade resdatat används huvudsakligen för att utvärdera och förbättara MEILI. All resdata kommer att behandlas anonymt och användarnas integritet och säkerhet kommer att behandlas med omsorg och respekt. Den insamlade informationen kommer att användas inom forskning gällande resvanor. Syftet är att vara underlag till vidare analyser och modellering. Syftet är aldrig att identifiera en specifik individ och resdatat analyseras alltid agreggerat för att skydda den enskillde individen. </p>
                 </div>
             </div>
@@ -307,7 +294,7 @@
             </div>
             <div id="collapse9" class="panel-collapse collapse">
                 <div class="panel-body">
-                    <p lang="en">You can directly submit issues to MEILI through its contact form that you can access from the "Contact" tab. Should the form be not appropriate for your enquiry feel free to contact the SPOT support team at spot@sweco.se.</p>
+                    <p lang="en">For further help or any oher issues please contact the project manager at andreas.allstrom@sweco.se.</p>
                     <p lang="sv">Du kan alltid lämna synpunkter till MEILI genom kontaktformuläret på hemsidan "Kontakt". Det går också att kontakta SPOT via spot@sweco.se.</p>
                 </div>
             </div>
