@@ -98,9 +98,37 @@ Timeline.prototype = {
       if(this.trip.isAlreadyAnnotated()) {
         this.emit('move-to-next-trip', this.trip);
       } else {
+            var safeToMoveToNext = true;
+            var errorDisplayMessage = '';
+            if (this.trip.purposes[0].accuracy <50) {
+                safeToMoveToNext = false;
+                errorDisplayMessage +=' trip purpose';
+            }
+
+
+          if (this.trip.destination_places[0].accuracy<50) {
+              safeToMoveToNext = false;
+              errorDisplayMessage += (errorDisplayMessage.length!=0) ? ', trip destination' :' trip destination';
+          }
+
+          var allTriplegsOk = true;
+          for (var j in this.trip.triplegs){
+              if (this.trip.triplegs[j].mode[0].accuracy<50) {
+                  safeToMoveToNext = false;
+                  allTriplegsOk = false;
+              }
+          }
+
+          if (!allTriplegsOk)
+          errorDisplayMessage += (errorDisplayMessage.length!=0) ? ', tripleg travel mode' :' tripleg travel mode';
+
+          errorDisplayMessage = 'Please specify the following:' +errorDisplayMessage;
+              if (safeToMoveToNext)
         new Confirm().show({ heading: 'Complete trip annotation', question: 'Do you really want to complete the annotations for this trip and move to the next trip?' }, function() {
           this.trip.confirm();
         }.bind(this));
+         else new Confirm().show({ heading: 'Insufficient trip information', question: errorDisplayMessage }, function() {
+          }.bind(this));
       }
       e.preventDefault();
       return false;
