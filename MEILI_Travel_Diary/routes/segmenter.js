@@ -213,7 +213,7 @@ module.exports = {
                                              passiveTrip.number_of_triplegs = 1;
 
                                              // makes sure that none of the trips are generated while still in a stop period
-                                             if (activeTrip.from_time != activeTrip.to_time)
+                                             if (activeTrip.from_time != activeTrip.to_time && passiveTrip.from_time != passiveTrip.to_time)
                                              {
                                                 tripArray.push(activeTrip);
                                                 tripArray.push(passiveTrip);
