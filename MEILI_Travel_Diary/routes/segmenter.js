@@ -178,6 +178,7 @@ module.exports = {
                                              var fromID = extend(firstLocation, {});
                                              var toID = extend(endLocation, {});
 
+
                                              prevTo = extend(fromID, {});
 
                                              console.log('stop candidates from to');
@@ -211,8 +212,11 @@ module.exports = {
                                              passiveTrip.duration_of_trip = 0;
                                              passiveTrip.number_of_triplegs = 1;
 
-                                             tripArray.push(activeTrip);
-                                             tripArray.push(passiveTrip);
+                                             if (activeTrip.from_time != activeTrip.to_time)
+                                             {
+                                                tripArray.push(activeTrip);
+                                                tripArray.push(passiveTrip);
+                                             }
 
                                              // insert active prevFrom -> prevTo
                                              //insert passive From -> To
