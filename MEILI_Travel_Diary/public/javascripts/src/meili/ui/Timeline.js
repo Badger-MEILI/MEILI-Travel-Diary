@@ -98,36 +98,38 @@ Timeline.prototype = {
       if(this.trip.isAlreadyAnnotated()) {
         this.emit('move-to-next-trip', this.trip);
       } else {
-            var safeToMoveToNext = true;
-            var errorDisplayMessage = '';
-            if (this.trip.purposes[0].accuracy <50) {
-                safeToMoveToNext = false;
-                errorDisplayMessage +=' trip purpose';
-            }
-
-
-          if (this.trip.destination_places[0].accuracy<50) {
+          var safeToMoveToNext = true;
+          var errorDisplayMessage = '';
+          var tripPurpose = this.trip.getPurpose();
+          if (!tripPurpose || (tripPurpose && tripPurpose.accuracy < 50)) {
               safeToMoveToNext = false;
-              errorDisplayMessage += (errorDisplayMessage.length!=0) ? ', trip destination' :' trip destination';
+              errorDisplayMessage +=' <strong>trip purpose</strong>';
+          }
+
+          var tripDestination = this.trip.getDestinationPlace();
+          if (!tripDestination || (tripDestination && tripDestination.accuracy < 50)) {
+              safeToMoveToNext = false;
+              errorDisplayMessage += ((errorDisplayMessage.length!=0) ? ', ' :' ') + '<strong>trip destination</strong>';
           }
 
           var allTriplegsOk = true;
-          for (var j in this.trip.triplegs){
-              if (this.trip.triplegs[j].mode[0].accuracy<50 && this.trip.triplegs[j].type_of_tripleg==1) {
-                  safeToMoveToNext = false;
-                  allTriplegsOk = false;
-              }
+          for (var j = 0; j < this.trip.triplegs.length; j++) {
+            var tripleg = this.trip.triplegs[j];
+            if (tripleg.getType() == 1 && !tripleg.getMode() || (tripleg.getMode() && tripleg.getMode().accuracy < 50)) {
+                safeToMoveToNext = false;
+                allTriplegsOk = false;
+            }
           }
 
           if (!allTriplegsOk)
-          errorDisplayMessage += (errorDisplayMessage.length!=0) ? ', tripleg travel mode' :' tripleg travel mode';
+          errorDisplayMessage += ((errorDisplayMessage.length!=0) ? ', ' : ' ') + '<strong>tripleg travel mode</strong>';
 
           errorDisplayMessage = 'Please specify the following:' +errorDisplayMessage;
               if (safeToMoveToNext)
         new Confirm().show({ heading: 'Complete trip annotation', question: 'Do you really want to complete the annotations for this trip and move to the next trip?' }, function() {
           this.trip.confirm();
         }.bind(this));
-         else new Confirm().show({ heading: 'Insufficient trip information', question: errorDisplayMessage }, function() {
+         else new Confirm().show({ heading: 'Insufficient trip information', question: errorDisplayMessage, type: 'error' }, function() {
           }.bind(this));
       }
       e.preventDefault();

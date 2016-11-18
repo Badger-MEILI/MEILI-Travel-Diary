@@ -10,6 +10,9 @@ html, body {
     padding: 20px;
 }
 
+.modal.error {
+    color: #a21919;;
+}
 
 
 /*

@@ -7,8 +7,16 @@ Confirm.prototype = {
   show: function(options, callback) {
     var okButtonTxt = options.okButtonTxt || 'Ok';
     var cancelButtonTxt = options.cancelButtonTxt || 'Cancel';
+    var type = (' ' + options.type) || '';
+
+    var cancleButton = '<a href="#!" class="btn" data-dismiss="modal">' +
+                        cancelButtonTxt +
+                      '</a>';
+    if(options.type === 'error') {
+      cancleButton = '';
+    }
      var confirmModal =
-      $('<div class="modal fade">' +
+      $('<div class="modal fade' + type + '">' +
           '<div class="modal-dialog">' +
           '<div class="modal-content">' +
           '<div class="modal-header">' +
@@ -21,9 +29,7 @@ Confirm.prototype = {
           '</div>' +
 
           '<div class="modal-footer">' +
-            '<a href="#!" class="btn" data-dismiss="modal">' +
-              cancelButtonTxt +
-            '</a>' +
+            cancleButton +
             '<a href="#" id="confirm-ok-button" class="btn btn-primary">' +
               okButtonTxt +
             '</a>' +
