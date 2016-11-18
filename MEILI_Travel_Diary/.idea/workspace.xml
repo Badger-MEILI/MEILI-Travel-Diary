@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="1e2cf684-ae55-4d7a-8e15-763edce44804" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/routes/users.js" afterPath="$PROJECT_DIR$/routes/users.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="foo.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -95,8 +94,8 @@
       <file leaf-file-name="users.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/routes/users.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.68441063" vertical-offset="1026" max-vertical-offset="5166">
-              <caret line="96" column="45" selection-start-line="96" selection-start-column="45" selection-end-line="96" selection-end-column="45" />
+            <state vertical-scroll-proportion="-1.1977186" vertical-offset="3888" max-vertical-offset="6246">
+              <caret line="200" column="60" selection-start-line="200" selection-start-column="60" selection-end-line="200" selection-end-column="60" />
               <folding />
             </state>
           </provider>
@@ -1149,8 +1148,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/routes/users.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.68441063" vertical-offset="1026" max-vertical-offset="5166">
-          <caret line="96" column="45" selection-start-line="96" selection-start-column="45" selection-end-line="96" selection-end-column="45" />
+        <state vertical-scroll-proportion="-1.1977186" vertical-offset="3888" max-vertical-offset="6246">
+          <caret line="200" column="60" selection-start-line="200" selection-start-column="60" selection-end-line="200" selection-end-column="60" />
           <folding />
         </state>
       </provider>

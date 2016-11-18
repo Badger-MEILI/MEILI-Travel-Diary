@@ -198,6 +198,66 @@ router.post('/insertLog',  function(req, res) {
 /**
  * Insert a location from the iOS devices
  */
+router.post('/insertLocationsIOSTest',  function(req, res) {
+
+    console.log('started logging test ');
+    var data =  JSON.parse(req.body.dataToUpload);
+
+    console.log(req.body.dataToUpload);
+
+    var sql = "INSERT INTO raw_data.location_table (upload,  accuracy_, altitude_, bearing_, lat_, lon_, time_, speed_, satellites_, user_id, size, totalismoving, totalmax, totalmean, totalmin,"+
+        "totalnumberofpeaks, totalnumberofsteps, totalstddev, "+
+        "xismoving, xmaximum, xmean, xminimum, xnumberofpeaks, xstddev,"+
+        "yismoving, ymax, ymean, ymin, ynumberofpeaks, ystddev, zismoving, zmax, zmean, zmin, znumberofpeaks, zstddev, "+
+        "provider"+
+        ")"; //+" VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27, $28, $29, $30, $31, $32, $33, $34, $35, $36, $37)";
+
+    var values = [];
+    var userId = 0;
+
+    for (var i=0; i<data.length;i++){
+        var object = [];
+        userId = data[i].userid;
+        object.push("'"+data[i].upload+"'", "'"+data[i].accuracy+"'", "'"+data[i].altitude+"'", "'"+data[i].bearing+"'", "'"+data[i].latitude+"'", "'"+data[i].longitude+"'",
+            "'"+data[i].time_+"000'", "'"+data[i].speed_+"'", "'"+data[i].satellites_+"'", "'"+data[i].userid+"'",
+            "'"+data[i].size+"'", "'"+data[i].totalIsMoving+"'", "'"+data[i].totalMax+"'", "'"+data[i].totalMean+"'", "'"+data[i].totalMin+"'",
+            "'"+data[i].totalNumberOfPeaks+"'", "'"+data[i].totalNumberOfSteps+"'", "'"+data[i].totalStdDev+"'",
+            "'"+data[i].xIsMoving+"'", "'"+data[i].xMax+"'", "'"+data[i].xMean+"'", "'"+data[i].xMin+"'", "'"+data[i].xNumberOfPeaks+"'", "'"+data[i].xStdDev+"'",
+            "'"+data[i].yIsMoving+"'", "'"+data[i].yMax+"'", "'"+data[i].yMean+"'", "'"+data[i].yMin+"'", "'"+data[i].yNumberOfPeask+"'", "'"+data[i].yStdDev+"'",
+            "'"+data[i].zIsMoving+"'", "'"+data[i].zMax+"'", "'"+data[i].zMean+"'", "'"+data[i].zMin+"'", "'"+data[i].zNumberOfPeaks+"'", "'"+data[i].zStdDev+"'", "'maybeGPS'");
+        values.push("("+object.toString()+")");
+    }
+
+    if (data.length>0)
+    {
+        pool.query(sql + "values " + values.toString(), function(err, result){
+
+            if(err){
+                res.end("failure");
+                console.log('error with sql function '+sql+ " values "+values.toString());
+                console.log(err);
+            }
+            else {
+                res.end("success");
+                // After a batch of insertions from the client, try and segment all residue data that are not already part of any trip
+                // NOTE - this will probably make nodeJS hang since it is an intensive operation, offload to client based segmentation as soon as a final segmentation strategy has been decided on.
+                segmenter.generateTrips(userId);
+            }
+        });
+
+        console.log('ended logging test 1');
+
+    }
+    else {
+        console.log('ended logging test 2');
+
+        res.end("failure");
+    }
+});
+
+/**
+ * Insert a location from the iOS devices
+ */
 router.post('/insertLocationsIOS',  function(req, res) {
 
     var data =  JSON.parse(req.body.dataToUpload);
