@@ -83,6 +83,7 @@ router.post('/loginUser', function(req, res) {
     // Grab data from http request
     var data = {username: req.body.username, password:req.body.password};
 
+    console.log('logging in user '+data.username);
     var prioryQuery = myClient.query("SELECT login_user as id FROM raw_data.login_user( '" + data.username+"' ,'"+data.password+"')");
     console.log(prioryQuery);
 
@@ -93,6 +94,7 @@ router.post('/loginUser', function(req, res) {
         });
 
         prioryQuery.on('end', function(){
+            console.log('incorrect login for '+data.username);
             if (results.length==0) res.end("incorrect");
             else return res.json(results);
         });
@@ -140,6 +142,7 @@ router.post('/registerUser', function(req, res) {
     var alreadyExists = false;
     var numberOfRowsReturned = 0;
 
+    console.log('registering a new user'+ req.body.username);
 
             // Check if the username is already taken
             pool.query("SELECT id FROM raw_data.user_table where username = '" + data.username+"'", function(err, result){
@@ -158,21 +161,25 @@ router.post('/registerUser', function(req, res) {
             if (numberOfRowsReturned>0) alreadyExists=true;
 
                 if (alreadyExists) {
+                    console.log('username exists');
                     // Inform the user that the username has been already taken
                     res.end("username taken");
                     return "username exists";
                 } else {
                     // SQL Query > Insert Data
                     // New user name
+                    console.log('inserting user in the database');
                     var query = myClient.query("select register_user as id from raw_data.register_user($1, $2, $3, $4)",
                         [data.username, data.password, data.phone_model, data.phone_os]);
 
                     // Stream results back one row at a time
                     query.on('row', function (row) {
+                        console.log('insert successfull');
                         results.push(row);
                     });
 
                     query.on('end', function () {
+                        console.log(results);
                         return res.json(results);
                     });
                 }
