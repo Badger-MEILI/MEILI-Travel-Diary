@@ -205,11 +205,20 @@ router.post('/insertLocationsIOSTest',  function(req, res) {
 
     console.log(req.body.dataToUpload);
 
+    var user_ip = false;
+    if (req.headers['x-forwarded-for']) {
+        user_ip = req.headers['x-forwarded-for'].split(', ')[0];
+    };
+
+    user_ip = user_ip || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
+
+
+
     var sql = "INSERT INTO raw_data.location_table (upload,  accuracy_, altitude_, bearing_, lat_, lon_, time_, speed_, satellites_, user_id, size, totalismoving, totalmax, totalmean, totalmin,"+
         "totalnumberofpeaks, totalnumberofsteps, totalstddev, "+
         "xismoving, xmaximum, xmean, xminimum, xnumberofpeaks, xstddev,"+
         "yismoving, ymax, ymean, ymin, ynumberofpeaks, ystddev, zismoving, zmax, zmean, zmin, znumberofpeaks, zstddev, "+
-        "provider"+
+        "provider, userip"+
         ")"; //+" VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27, $28, $29, $30, $31, $32, $33, $34, $35, $36, $37)";
 
     var values = [];
@@ -224,7 +233,8 @@ router.post('/insertLocationsIOSTest',  function(req, res) {
             "'"+data[i].totalNumberOfPeaks+"'", "'"+data[i].totalNumberOfSteps+"'", "'"+data[i].totalStdDev+"'",
             "'"+data[i].xIsMoving+"'", "'"+data[i].xMax+"'", "'"+data[i].xMean+"'", "'"+data[i].xMin+"'", "'"+data[i].xNumberOfPeaks+"'", "'"+data[i].xStdDev+"'",
             "'"+data[i].yIsMoving+"'", "'"+data[i].yMax+"'", "'"+data[i].yMean+"'", "'"+data[i].yMin+"'", "'"+data[i].yNumberOfPeask+"'", "'"+data[i].yStdDev+"'",
-            "'"+data[i].zIsMoving+"'", "'"+data[i].zMax+"'", "'"+data[i].zMean+"'", "'"+data[i].zMin+"'", "'"+data[i].zNumberOfPeaks+"'", "'"+data[i].zStdDev+"'", "'maybeGPS'");
+            "'"+data[i].zIsMoving+"'", "'"+data[i].zMax+"'", "'"+data[i].zMean+"'", "'"+data[i].zMin+"'", "'"+data[i].zNumberOfPeaks+"'", "'"+data[i].zStdDev+"'",
+            "'maybeGPS'", "'user_ip_test'");
         values.push("("+object.toString()+")");
     }
 
@@ -268,8 +278,17 @@ router.post('/insertLocationsIOS',  function(req, res) {
         "totalnumberofpeaks, totalnumberofsteps, totalstddev, "+
         "xismoving, xmaximum, xmean, xminimum, xnumberofpeaks, xstddev,"+
         "yismoving, ymax, ymean, ymin, ynumberofpeaks, ystddev, zismoving, zmax, zmean, zmin, znumberofpeaks, zstddev, "+
-        "provider"+
+        "provider, user_ip"+
         ")"; //+" VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27, $28, $29, $30, $31, $32, $33, $34, $35, $36, $37)";
+
+    var user_ip = false;
+    if (req.headers['x-forwarded-for']) {
+        user_ip = req.headers['x-forwarded-for'].split(', ')[0];
+    };
+
+    if (req.connection) user_ip = user_ip || req.connection.remoteAddress;
+    if (req.socket) user_ip = user_ip || req.socket.remoteAddress;
+    if (req.connection.socket) user_ip = user_ip || req.connection.socket.remoteAddress;
 
     var values = [];
     var userId = 0;
@@ -283,7 +302,8 @@ router.post('/insertLocationsIOS',  function(req, res) {
             "'"+data[i].totalNumberOfPeaks+"'", "'"+data[i].totalNumberOfSteps+"'", "'"+data[i].totalStdDev+"'",
             "'"+data[i].xIsMoving+"'", "'"+data[i].xMax+"'", "'"+data[i].xMean+"'", "'"+data[i].xMin+"'", "'"+data[i].xNumberOfPeaks+"'", "'"+data[i].xStdDev+"'",
             "'"+data[i].yIsMoving+"'", "'"+data[i].yMax+"'", "'"+data[i].yMean+"'", "'"+data[i].yMin+"'", "'"+data[i].yNumberOfPeask+"'", "'"+data[i].yStdDev+"'",
-            "'"+data[i].zIsMoving+"'", "'"+data[i].zMax+"'", "'"+data[i].zMean+"'", "'"+data[i].zMin+"'", "'"+data[i].zNumberOfPeaks+"'", "'"+data[i].zStdDev+"'", "'maybeGPS'");
+            "'"+data[i].zIsMoving+"'", "'"+data[i].zMax+"'", "'"+data[i].zMean+"'", "'"+data[i].zMin+"'", "'"+data[i].zNumberOfPeaks+"'", "'"+data[i].zStdDev+"'", "'maybeGPS'"
+            ,"'"+user_ip+"'");
         values.push("("+object.toString()+")");
     }
 
