@@ -290,6 +290,7 @@ router.post('/insertLocationsIOS',  function(req, res) {
     if (req.socket) user_ip = user_ip || req.socket.remoteAddress;
     if (req.connection.socket) user_ip = user_ip || req.connection.socket.remoteAddress;
 
+    console.log('request with ip '+user_ip);
     var values = [];
     var userId = 0;
 
