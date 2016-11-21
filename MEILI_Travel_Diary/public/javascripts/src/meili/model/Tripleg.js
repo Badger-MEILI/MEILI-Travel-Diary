@@ -192,8 +192,8 @@ Tripleg.prototype = {
     /**
      * DESKTOP ONLY EVENTS
      */
-    console.warn('add events on polyline?');
 /*
+    !TODO Add events to map objects
     if(this.type_of_tripleg == 1) {
       // ACTIVE TRIPLEG
       polylineLayer.on('mouseover', highlightFeature);
@@ -409,8 +409,6 @@ Tripleg.prototype = {
 
                     pointChangeModal.modal('hide');
                 });
-
-                console.log(tripleg);
             });
         }
       } else if(isFirstPoint || isLastPoint) {
