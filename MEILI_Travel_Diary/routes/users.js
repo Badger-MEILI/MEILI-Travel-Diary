@@ -94,8 +94,11 @@ router.post('/loginUser', function(req, res) {
         });
 
         prioryQuery.on('end', function(){
-            console.log('incorrect login for '+data.username);
-            if (results.length==0) res.end("incorrect");
+
+            if (results.length==0) {
+                console.log('incorrect login for '+data.username);
+                res.end("incorrect");
+            }
             else return res.json(results);
         });
 });
@@ -107,6 +110,16 @@ router.get('/generateTripsAndTriplegsOfUsers', function(req, res){
     var user_id= req.query.userId;
     console.log('generating for user '+user_id);
     segmenter.generateTrips(user_id);
+    return res.json('success');
+});
+
+/**
+ * Mostly for debug purposes -> forces the generation of trips and triplegs
+ */
+router.get('/generateTriplegsOfUsers', function(req, res){
+    var user_id= req.query.userId;
+    console.log('generating for user '+user_id);
+    segmenter.generateTriplegsExposed(user_id);
     return res.json('success');
 });
 

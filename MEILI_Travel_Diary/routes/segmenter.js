@@ -246,6 +246,9 @@ module.exports = {
                 generateSql(tripArray,userId);
             };
             });
+    },
+    generateTriplegsExposed: function (userId) {
+        generateTriplegs(userId);
     }
 };
 
