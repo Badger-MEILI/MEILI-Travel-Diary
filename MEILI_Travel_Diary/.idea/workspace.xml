@@ -33,10 +33,13 @@
       <file leaf-file-name="Timeline.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/javascripts/src/meili/ui/Timeline.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="2106" max-vertical-offset="8064">
-              <caret line="128" column="22" selection-start-line="128" selection-start-column="22" selection-end-line="128" selection-end-column="22" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="2142" max-vertical-offset="8100">
+              <caret line="130" column="22" selection-start-line="130" selection-start-column="22" selection-end-line="130" selection-end-column="22" />
               <folding>
-                <marker date="1479305116858" expanded="true" signature="6443:6454" placeholder="..." />
+                <marker date="1479486178581" expanded="true" signature="3331:3414" placeholder="{...}" />
+                <marker date="1479486178581" expanded="true" signature="3873:4107" placeholder="{...}" />
+                <marker date="1479486178581" expanded="true" signature="3984:4097" placeholder="{...}" />
+                <marker date="1479486178581" expanded="true" signature="6721:6732" placeholder="..." />
               </folding>
             </state>
           </provider>
@@ -65,9 +68,12 @@
       <file leaf-file-name="Confirm.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/javascripts/src/meili/ui/Confirm.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-3.9411764" vertical-offset="298" max-vertical-offset="864">
-              <caret line="24" column="31" selection-start-line="24" selection-start-column="31" selection-end-line="24" selection-end-column="31" />
-              <folding />
+            <state vertical-scroll-proportion="-3.9411764" vertical-offset="406" max-vertical-offset="972">
+              <caret line="30" column="31" selection-start-line="30" selection-start-column="31" selection-end-line="30" selection-end-column="31" />
+              <folding>
+                <marker date="1479486178581" expanded="true" signature="412:1399" placeholder="{...}" />
+                <marker date="1479486178581" expanded="true" signature="458:1397" placeholder="{...}" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -95,8 +101,8 @@
       <file leaf-file-name="users.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/routes/users.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.68441063" vertical-offset="1026" max-vertical-offset="5166">
-              <caret line="96" column="45" selection-start-line="96" selection-start-column="45" selection-end-line="96" selection-end-column="45" />
+            <state vertical-scroll-proportion="0.72623575" vertical-offset="4532" max-vertical-offset="6624">
+              <caret line="292" column="44" selection-start-line="292" selection-start-column="44" selection-end-line="292" selection-end-column="44" />
               <folding />
             </state>
           </provider>
@@ -1095,18 +1101,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/public/javascripts/src/meili/ui/Confirm.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.9411764" vertical-offset="298" max-vertical-offset="864">
-          <caret line="24" column="31" selection-start-line="24" selection-start-column="31" selection-end-line="24" selection-end-column="31" />
-          <folding />
+        <state vertical-scroll-proportion="-3.9411764" vertical-offset="406" max-vertical-offset="972">
+          <caret line="30" column="31" selection-start-line="30" selection-start-column="31" selection-end-line="30" selection-end-column="31" />
+          <folding>
+            <marker date="1479486178581" expanded="true" signature="412:1399" placeholder="{...}" />
+            <marker date="1479486178581" expanded="true" signature="458:1397" placeholder="{...}" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/public/javascripts/src/meili/ui/Timeline.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2106" max-vertical-offset="8064">
-          <caret line="128" column="22" selection-start-line="128" selection-start-column="22" selection-end-line="128" selection-end-column="22" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="2142" max-vertical-offset="8100">
+          <caret line="130" column="22" selection-start-line="130" selection-start-column="22" selection-end-line="130" selection-end-column="22" />
           <folding>
-            <marker date="1479305116858" expanded="true" signature="6443:6454" placeholder="..." />
+            <marker date="1479486178581" expanded="true" signature="3331:3414" placeholder="{...}" />
+            <marker date="1479486178581" expanded="true" signature="3873:4107" placeholder="{...}" />
+            <marker date="1479486178581" expanded="true" signature="3984:4097" placeholder="{...}" />
+            <marker date="1479486178581" expanded="true" signature="6721:6732" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -1149,8 +1161,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/routes/users.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.68441063" vertical-offset="1026" max-vertical-offset="5166">
-          <caret line="96" column="45" selection-start-line="96" selection-start-column="45" selection-end-line="96" selection-end-column="45" />
+        <state vertical-scroll-proportion="0.72623575" vertical-offset="4532" max-vertical-offset="6624">
+          <caret line="292" column="44" selection-start-line="292" selection-start-column="44" selection-end-line="292" selection-end-column="44" />
           <folding />
         </state>
       </provider>
