@@ -40,12 +40,12 @@ Log.prototype = {
   },
 
   debug: function() {
-    if(this.config.debug && !this._keepQuiet() && console.debug) {
+    if(this.config.debug && !this._keepQuiet() && console && console.debug) {
       console.debug( Array.prototype.slice.call(arguments).join(' ') );
     }
   },
   info: function() {
-    if(!this._keepQuiet()) {
+    if(!this._keepQuiet() && console && console.info) {
       console.info( Array.prototype.slice.call(arguments).join(' ') );
     }
   },
@@ -57,7 +57,9 @@ Log.prototype = {
         args.shift(); // remove first
         var errorMsg = args.join(' ');
         this._gaSendEvent('ERROR', action, errorMsg);
-        console.error('ERROR', action,  errorMsg);
+        if(console && console.error) {
+          console.error('ERROR', action,  errorMsg);
+        }
       }
     }
   }
