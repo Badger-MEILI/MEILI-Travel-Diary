@@ -289,14 +289,16 @@ TriplegPanel.prototype = {
     // TODO! handle language for mode and the case that there is no mode set
     if (!tripleg.isLast){
       var nextTripleg = tripleg.getNext().getNext();
-      var fromMode = tripleg.getMode()  ? ' from ' + tripleg.getMode().name : '';
-      var toMode = nextTripleg.getMode() ? ' to ' + nextTripleg.getMode().name : '';
-      transitionPanel = [
-        '<li>',
-          '<div class="tldate transition-panel" id="tldate' + nextTripleg.getId() + '">',
-            '<p lang="en">'+ tripleg.getEndTime(true) +' - '+ nextTripleg.getStartTime(true) +' - Transferred'+ fromMode + toMode +'</p>',
-          '</div>',
-        '</li>'];
+      if(nextTripleg) {
+        var fromMode = tripleg.getMode()  ? ' from ' + tripleg.getMode().name : '';
+        var toMode = nextTripleg.getMode() ? ' to ' + nextTripleg.getMode().name : '';
+        transitionPanel = [
+          '<li>',
+            '<div class="tldate transition-panel" id="tldate' + nextTripleg.getId() + '">',
+              '<p lang="en">'+ tripleg.getEndTime(true) +' - '+ nextTripleg.getStartTime(true) +' - Transferred'+ fromMode + toMode +'</p>',
+            '</div>',
+          '</li>'];
+      }
     }
 
     return transitionPanel.join('');
