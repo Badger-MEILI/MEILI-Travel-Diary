@@ -37,7 +37,7 @@ $ npm run init_meili_with_zone -- --namedb=target_db --username=target_user --ho
 | ------------- |-------------|
 | `--` namedb      | The name of the Postgres database you will use with MEILI |
 | `--` username      | The Postgres username that will perform the operations on the database      |
-| `--` hostdb | The host of the Postgres       |
+| `--` hostdb | The host of the Postgres database      |
 | `--` min_lat | The **minimum latitude** of the geographical region of interest (latitude of the lower left corner)     |
 | `--` min_lon | The **minimum longitude** of the geographical region of interest (longitude of the lower left corner)      |
 | `--` max_lat | The **maximum latitude** of the geographical region of interest (latitude of the upper right corner)      |
