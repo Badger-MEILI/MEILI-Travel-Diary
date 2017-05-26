@@ -34,7 +34,7 @@ $ npm run init_meili_with_zone -- --namedb=target_db --username=target_user --ho
 #### Parameters
 
 | Parameter        | Role           |
-| ------------- |:-------------:|
+| ------------- |-------------|
 | `--` namedb      | The name of the Postgres database you will use with MEILI |
 | `--` username      | The Postgres username that will perform the operations on the database      |
 | `--` hostdb | The host of the Postgres       |
