@@ -24,9 +24,28 @@ The MEILI Database is built on top of NodeJS and ExpressJS and uses multiple thi
 
 ### Installation
 
-First, set up your database (see the **MEILI Database** docs).
+Decide on the geographical region where you want to run MEILI and initialize the system with the following script.
 
-Then go to the root folder of MEILI Travel Diary and start the Express app
+```
+$ cd /path/to/folder
+$ npm run init_meili_with_zone -- --namedb=target_db --username=target_user --hostdb=target_host --min_lat=region_min_lat --min_lon=region_min_lon --max_lat=region_max_lat --max_lon=region_max_lon
+```
+
+#### Parameters
+
+| Parameter        | Role           |
+| ------------- |:-------------:|
+| `--` namedb      | The name of the Postgres database you will use with MEILI |
+| `--` username      | The Postgres username that will perform the operations on the database      |
+| `--` hostdb | The host of the Postgres       |
+| `--` min_lat | The **minimum latitude** of the geographical region of interest (latitude of the lower left corner)     |
+| `--` min_lon | The **minimum longitude** of the geographical region of interest (longitude of the lower left corner)      |
+| `--` max_lat | The **maximum latitude** of the geographical region of interest (latitude of the upper right corner)      |
+| `--` max_lon | The **maximum longitude** of the geographical region of interest (longitude of the upper right corner)      |
+
+### Start up MEILI web app
+
+If you already performed the previous step and want to start the web app, run:
 
 ```
 $ cd /path/to/folder
@@ -51,13 +70,11 @@ Want to contribute? Great! See the Todos list for needed improvements. Also, you
  
 ### Todos
 
- - Write unit tests
- - Figure out a smart way to do the localization 
- - AngularJS is used in a very hacky way, that should change  
+ - Improve test coverage
+ - Figure out a smart way to do the localization  
  - Secure the password field when communicating to the MEILI Database 
- - Responsive design
- - Remove / improve the in-memory storage of the trips that are being annotated to maintain consistency with the remote database
- - Look into licensing of images and clipart 
+ - Responsive design 
+ - License images and clipart 
 
 ## Building the API docs 
 
@@ -68,7 +85,7 @@ $ apidoc -i routes/apiv2/ -o apiDocs/
 ```
 
 
-Need help setting up MEILI in production
+Need help setting up MEILI in production?
 ----
 For any inquiries regarding setting up MEILI in production, you can contact the team leader for the MEILI system project (see http://adrianprelipcean.github.io/)
 
@@ -78,8 +95,8 @@ License
 MEILI Travel Diary - web interface that allows to annotate GPS trajectories
  fused with accelerometer readings into travel diaries
 
-Copyright &copy; 2014-2016 Adrian C. Prelipcean - http://adrianprelipcean.github.io/ 
-Copyright &copy: 2016 Badger AB - https://github.com/Badger-MEILI
+Copyright &copy; 2014-2017 Adrian C. Prelipcean - http://adrianprelipcean.github.io/ 
+Copyright &copy: 2016-2017 Badger AB - https://github.com/Badger-MEILI
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU Affero General Public License as

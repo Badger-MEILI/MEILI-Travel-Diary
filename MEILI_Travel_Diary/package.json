@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node bin/www",
-    "test-client": "mocha-phantomjs --ignore-resource-errors -s webSecurityEnabled=false test/integration/index.html?SILENT=$SILENT"
+    "test-client": "mocha-phantomjs --ignore-resource-errors -s webSecurityEnabled=false test/integration/index.html?SILENT=$SILENT",
+ "init_meili_with_zone":"bash ./init_meili.sh"
   },
   "main": "bin/www",
   "dependencies": {
